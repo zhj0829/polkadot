@@ -708,6 +708,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "bp-kusama"
+version = "0.1.0"
+dependencies = [
+ "bp-messages",
+ "bp-polkadot-core",
+ "bp-runtime",
+ "sp-api",
+ "sp-std",
+]
+
+[[package]]
 name = "bp-message-dispatch"
 version = "0.1.0"
 dependencies = [
@@ -733,6 +744,17 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-core",
+ "sp-std",
+]
+
+[[package]]
+name = "bp-polkadot"
+version = "0.1.0"
+dependencies = [
+ "bp-messages",
+ "bp-polkadot-core",
+ "bp-runtime",
+ "sp-api",
  "sp-std",
 ]
 
@@ -3186,6 +3208,7 @@ version = "0.9.13"
 dependencies = [
  "beefy-primitives",
  "bitvec",
+ "bp-polkadot",
  "frame-benchmarking",
  "frame-election-provider-support",
  "frame-executive",
@@ -3203,6 +3226,7 @@ dependencies = [
  "pallet-bags-list",
  "pallet-balances",
  "pallet-bounties",
+ "pallet-bridge-grandpa",
  "pallet-collective",
  "pallet-democracy",
  "pallet-election-provider-multi-phase",
@@ -6864,6 +6888,7 @@ version = "0.9.13"
 dependencies = [
  "beefy-primitives",
  "bitvec",
+ "bp-kusama",
  "frame-benchmarking",
  "frame-election-provider-support",
  "frame-executive",
@@ -6880,6 +6905,7 @@ dependencies = [
  "pallet-bags-list",
  "pallet-balances",
  "pallet-bounties",
+ "pallet-bridge-grandpa",
  "pallet-collective",
  "pallet-democracy",
  "pallet-election-provider-multi-phase",
