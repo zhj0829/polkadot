@@ -17,7 +17,7 @@
 //! Cross-Consensus Message format data structures.
 
 use super::MultiLocation;
-use crate::v1::{MultiAssetFilter, MultiAssets, WildMultiAsset};
+use crate::v1::{MultiAssetFilter, MultiAssets, MultiAsset as NewMultiAsset, WildMultiAsset};
 use alloc::{vec, vec::Vec};
 use core::{
 	convert::{TryFrom, TryInto},
@@ -295,10 +295,10 @@ impl MultiAsset {
 	}
 }
 
-impl TryFrom<crate::v1::MultiAsset> for MultiAsset {
+impl TryFrom<NewMultiAsset> for MultiAsset {
 	type Error = ();
 
-	fn try_from(m: crate::v1::MultiAsset) -> result::Result<MultiAsset, ()> {
+	fn try_from(m: NewMultiAsset) -> result::Result<MultiAsset, ()> {
 		use crate::v1::{AssetId::*, Fungibility::*};
 		use MultiAsset::*;
 		Ok(match (m.id, m.fun) {

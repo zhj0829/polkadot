@@ -31,7 +31,7 @@ mod multi_asset;
 mod multi_location;
 mod order;
 mod traits;
-use super::v1::{MultiLocation as MultiLocation1, Response as Response1, Xcm as Xcm1};
+use super::v1::{MultiLocation as MultiLocation1, Response as NewResponse, Xcm as NewXcm};
 pub use junction::{BodyId, BodyPart, Junction, NetworkId};
 pub use multi_asset::{AssetInstance, MultiAsset};
 pub use multi_location::MultiLocation::{self, *};
@@ -323,47 +323,47 @@ pub mod opaque {
 }
 
 // Convert from a v1 response to a v0 response
-impl TryFrom<Response1> for Response {
+impl TryFrom<NewResponse> for Response {
 	type Error = ();
-	fn try_from(new_response: Response1) -> result::Result<Self, ()> {
+	fn try_from(new_response: NewResponse) -> result::Result<Self, ()> {
 		Ok(match new_response {
-			Response1::Assets(assets) => Self::Assets(assets.try_into()?),
-			Response1::Version(..) => return Err(()),
+			NewResponse::Assets(assets) => Self::Assets(assets.try_into()?),
+			NewResponse::Version(..) => return Err(()),
 		})
 	}
 }
 
-impl<Call> TryFrom<Xcm1<Call>> for Xcm<Call> {
+impl<Call> TryFrom<NewXcm<Call>> for Xcm<Call> {
 	type Error = ();
-	fn try_from(x: Xcm1<Call>) -> result::Result<Xcm<Call>, ()> {
+	fn try_from(x: NewXcm<Call>) -> result::Result<Xcm<Call>, ()> {
 		use Xcm::*;
 		Ok(match x {
-			Xcm1::WithdrawAsset { assets, effects } => WithdrawAsset {
+			NewXcm::WithdrawAsset { assets, effects } => WithdrawAsset {
 				assets: assets.try_into()?,
 				effects: effects
 					.into_iter()
 					.map(Order::try_from)
 					.collect::<result::Result<_, _>>()?,
 			},
-			Xcm1::ReserveAssetDeposited { assets, effects } => ReserveAssetDeposit {
+			NewXcm::ReserveAssetDeposited { assets, effects } => ReserveAssetDeposit {
 				assets: assets.try_into()?,
 				effects: effects
 					.into_iter()
 					.map(Order::try_from)
 					.collect::<result::Result<_, _>>()?,
 			},
-			Xcm1::ReceiveTeleportedAsset { assets, effects } => TeleportAsset {
+			NewXcm::ReceiveTeleportedAsset { assets, effects } => TeleportAsset {
 				assets: assets.try_into()?,
 				effects: effects
 					.into_iter()
 					.map(Order::try_from)
 					.collect::<result::Result<_, _>>()?,
 			},
-			Xcm1::QueryResponse { query_id, response } =>
+			NewXcm::QueryResponse { query_id, response } =>
 				QueryResponse { query_id, response: response.try_into()? },
-			Xcm1::TransferAsset { assets, beneficiary } =>
+			NewXcm::TransferAsset { assets, beneficiary } =>
 				TransferAsset { assets: assets.try_into()?, dest: beneficiary.try_into()? },
-			Xcm1::TransferReserveAsset { assets, dest, effects } => TransferReserveAsset {
+			NewXcm::TransferReserveAsset { assets, dest, effects } => TransferReserveAsset {
 				assets: assets.try_into()?,
 				dest: dest.try_into()?,
 				effects: effects
@@ -371,18 +371,18 @@ impl<Call> TryFrom<Xcm1<Call>> for Xcm<Call> {
 					.map(Order::try_from)
 					.collect::<result::Result<_, _>>()?,
 			},
-			Xcm1::HrmpNewChannelOpenRequest { sender, max_message_size, max_capacity } =>
+			NewXcm::HrmpNewChannelOpenRequest { sender, max_message_size, max_capacity } =>
 				HrmpNewChannelOpenRequest { sender, max_message_size, max_capacity },
-			Xcm1::HrmpChannelAccepted { recipient } => HrmpChannelAccepted { recipient },
-			Xcm1::HrmpChannelClosing { initiator, sender, recipient } =>
+			NewXcm::HrmpChannelAccepted { recipient } => HrmpChannelAccepted { recipient },
+			NewXcm::HrmpChannelClosing { initiator, sender, recipient } =>
 				HrmpChannelClosing { initiator, sender, recipient },
-			Xcm1::Transact { origin_type, require_weight_at_most, call } =>
+			NewXcm::Transact { origin_type, require_weight_at_most, call } =>
 				Transact { origin_type, require_weight_at_most, call: call.into() },
-			Xcm1::RelayedFrom { who, message } => RelayedFrom {
+			NewXcm::RelayedFrom { who, message } => RelayedFrom {
 				who: MultiLocation1 { interior: who, parents: 0 }.try_into()?,
 				message: alloc::boxed::Box::new((*message).try_into()?),
 			},
-			Xcm1::SubscribeVersion { .. } | Xcm1::UnsubscribeVersion => return Err(()),
+			NewXcm::SubscribeVersion { .. } | NewXcm::UnsubscribeVersion => return Err(()),
 		})
 	}
 }

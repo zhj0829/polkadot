@@ -16,6 +16,7 @@
 
 //! Support data structures for `MultiLocation`, primarily the `Junction` datatype.
 
+use crate::v1::Junction as NewJunction;
 use alloc::vec::Vec;
 use parity_scale_codec::{Decode, Encode};
 use scale_info::TypeInfo;
@@ -159,9 +160,9 @@ pub enum Junction {
 	Plurality { id: BodyId, part: BodyPart },
 }
 
-impl From<crate::v1::Junction> for Junction {
-	fn from(v1: crate::v1::Junction) -> Junction {
-		use crate::v1::Junction::*;
+impl From<NewJunction> for Junction {
+	fn from(v1: NewJunction) -> Junction {
+		use NewJunction::*;
 		match v1 {
 			Parachain(id) => Self::Parachain(id),
 			AccountId32 { network, id } => Self::AccountId32 { network, id },
