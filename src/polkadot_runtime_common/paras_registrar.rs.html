@@ -1168,6 +1168,9 @@
 <span id="1168">1168</span>
 <span id="1169">1169</span>
 <span id="1170">1170</span>
+<span id="1171">1171</span>
+<span id="1172">1172</span>
+<span id="1173">1173</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1327,6 +1330,8 @@
 		<span class="ident">ParaLocked</span>,
 		<span class="doccomment">/// The ID given for registration has not been reserved.</span>
 		<span class="ident">NotReserved</span>,
+		<span class="doccomment">/// Registering parachain with empty code is not allowed.</span>
+		<span class="ident">EmptyCode</span>,
 	}
 
 	<span class="doccomment">/// Pending swap operations.</span>
@@ -1717,6 +1722,7 @@
 		<span class="ident">parachain</span>: <span class="ident">bool</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">ParaGenesisArgs</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>), <span class="ident">sp_runtime::DispatchError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">configuration::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::config</span>();
+		<span class="macro">ensure!</span>(<span class="ident">validation_code</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">0</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::EmptyCode</span>);
 		<span class="macro">ensure!</span>(<span class="ident">validation_code</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">config</span>.<span class="ident">max_code_size</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::CodeTooLarge</span>);
 		<span class="macro">ensure!</span>(
 			<span class="ident">genesis_head</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">config</span>.<span class="ident">max_head_data_size</span> <span class="kw">as</span> <span class="ident">usize</span>,

@@ -2124,6 +2124,44 @@
 <span id="2124">2124</span>
 <span id="2125">2125</span>
 <span id="2126">2126</span>
+<span id="2127">2127</span>
+<span id="2128">2128</span>
+<span id="2129">2129</span>
+<span id="2130">2130</span>
+<span id="2131">2131</span>
+<span id="2132">2132</span>
+<span id="2133">2133</span>
+<span id="2134">2134</span>
+<span id="2135">2135</span>
+<span id="2136">2136</span>
+<span id="2137">2137</span>
+<span id="2138">2138</span>
+<span id="2139">2139</span>
+<span id="2140">2140</span>
+<span id="2141">2141</span>
+<span id="2142">2142</span>
+<span id="2143">2143</span>
+<span id="2144">2144</span>
+<span id="2145">2145</span>
+<span id="2146">2146</span>
+<span id="2147">2147</span>
+<span id="2148">2148</span>
+<span id="2149">2149</span>
+<span id="2150">2150</span>
+<span id="2151">2151</span>
+<span id="2152">2152</span>
+<span id="2153">2153</span>
+<span id="2154">2154</span>
+<span id="2155">2155</span>
+<span id="2156">2156</span>
+<span id="2157">2157</span>
+<span id="2158">2158</span>
+<span id="2159">2159</span>
+<span id="2160">2160</span>
+<span id="2161">2161</span>
+<span id="2162">2162</span>
+<span id="2163">2163</span>
+<span id="2164">2164</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2996,8 +3034,10 @@
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">schedule_para_initialize</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>, <span class="ident">genesis</span>: <span class="ident">ParaGenesisArgs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
 		<span class="kw">let</span> <span class="ident">scheduled_session</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::scheduled_session</span>();
 
-		<span class="comment">// Make sure parachain isn&#39;t already in our system.</span>
+		<span class="comment">// Make sure parachain isn&#39;t already in our system and that the onboarding parameters are</span>
+		<span class="comment">// valid.</span>
 		<span class="macro">ensure!</span>(<span class="ident"><span class="self">Self</span>::can_schedule_para_initialize</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">genesis</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::CannotOnboard</span>);
+		<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">genesis</span>.<span class="ident">validation_code</span>.<span class="number">0</span>.<span class="ident">is_empty</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::CannotOnboard</span>);
 
 		<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">ParaLifecycle::Onboarding</span>);
 		<span class="ident">UpcomingParasGenesis</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">genesis</span>);
@@ -3012,10 +3052,24 @@
 
 	<span class="doccomment">/// Schedule a para to be cleaned up at the start of the next session.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// Will return error if para is not a stable parachain or parathread.</span>
+	<span class="doccomment">/// Will return error if either is true:</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// - para is not a stable parachain or parathread (i.e. [`ParaLifecycle::is_stable`] is `false`)</span>
+	<span class="doccomment">/// - para has a pending upgrade.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// No-op if para is not registered at all.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">schedule_para_cleanup</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="comment">// Disallow offboarding in case there is an upcoming upgrade.</span>
+		<span class="comment">//</span>
+		<span class="comment">// This is not a fundamential limitation but rather simplification: it allows us to get</span>
+		<span class="comment">// away without introducing additional logic for pruning and, more importantly, enacting</span>
+		<span class="comment">// ongoing PVF pre-checking votings. It also removes some nasty edge cases.</span>
+		<span class="comment">//</span>
+		<span class="comment">// This implicitly assumes that the given para exists, i.e. it&#39;s lifecycle != None.</span>
+		<span class="kw">if</span> <span class="ident">FutureCodeHash</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::CannotOffboard</span>.<span class="ident">into</span>())
+		}
+
 		<span class="kw">let</span> <span class="ident">lifecycle</span> <span class="op">=</span> <span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>);
 		<span class="kw">match</span> <span class="ident">lifecycle</span> {
 			<span class="comment">// If para is not registered, nothing to do!</span>
@@ -3304,12 +3358,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-	<span class="kw">use</span> <span class="ident">frame_support::assert_ok</span>;
+	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">assert_err</span>, <span class="ident">assert_ok</span>};
 	<span class="kw">use</span> <span class="ident">primitives::v1::BlockNumber</span>;
 
 	<span class="kw">use</span> <span class="kw">crate</span>::{
 		<span class="ident">configuration::HostConfiguration</span>,
-		<span class="ident">mock</span>::{<span class="ident">new_test_ext</span>, <span class="ident">Configuration</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">Paras</span>, <span class="ident">ParasShared</span>, <span class="ident">System</span>},
+		<span class="ident">mock</span>::{<span class="ident">new_test_ext</span>, <span class="ident">Configuration</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">Paras</span>, <span class="ident">ParasShared</span>, <span class="ident">System</span>, <span class="ident">Test</span>},
 	};
 
 	<span class="kw">fn</span> <span class="ident">run_to_block</span>(<span class="ident">to</span>: <span class="ident">BlockNumber</span>, <span class="ident">new_session</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
@@ -3459,6 +3513,32 @@
 			<span class="ident">past_code</span>,
 			<span class="ident">ParaPastCodeMeta</span> { <span class="ident">upgrade_times</span>: <span class="ident">Vec::new</span>(), <span class="ident">last_pruned</span>: <span class="prelude-val">Some</span>(<span class="number">66</span>) }
 		);
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">schedule_para_init_rejects_empty_code</span>() {
+		<span class="ident">new_test_ext</span>(<span class="ident">MockGenesisConfig::default</span>()).<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Paras::schedule_para_initialize</span>(
+					<span class="number">1000</span>.<span class="ident">into</span>(),
+					<span class="ident">ParaGenesisArgs</span> {
+						<span class="ident">parachain</span>: <span class="bool-val">false</span>,
+						<span class="ident">genesis_head</span>: <span class="ident">Default::default</span>(),
+						<span class="ident">validation_code</span>: <span class="ident">ValidationCode</span>(<span class="macro">vec!</span>[]),
+					}
+				),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::CannotOnboard</span>,
+			);
+
+			<span class="macro">assert_ok!</span>(<span class="ident">Paras::schedule_para_initialize</span>(
+				<span class="number">1000</span>.<span class="ident">into</span>(),
+				<span class="ident">ParaGenesisArgs</span> {
+					<span class="ident">parachain</span>: <span class="bool-val">false</span>,
+					<span class="ident">genesis_head</span>: <span class="ident">Default::default</span>(),
+					<span class="ident">validation_code</span>: <span class="ident">ValidationCode</span>(<span class="macro">vec!</span>[<span class="number">1</span>]),
+				}
+			));
+		});
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
@@ -3943,55 +4023,51 @@
 				<span class="ident">expected_at</span>
 			};
 
+			<span class="comment">// Cannot offboard while an upgrade is pending.</span>
+			<span class="macro">assert_err!</span>(<span class="ident">Paras::schedule_para_cleanup</span>(<span class="ident">para_id</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::CannotOffboard</span>);
+
+			<span class="comment">// Enact the upgrade.</span>
+			<span class="comment">//</span>
+			<span class="comment">// For that run to block #7 and submit a new head.</span>
+			<span class="macro">assert_eq!</span>(<span class="ident">expected_at</span>, <span class="number">7</span>);
+			<span class="ident">run_to_block</span>(<span class="number">7</span>, <span class="prelude-val">None</span>);
+			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::block_number</span>(), <span class="number">7</span>);
+			<span class="ident">Paras::note_new_head</span>(<span class="ident">para_id</span>, <span class="ident">Default::default</span>(), <span class="ident">expected_at</span>);
+
 			<span class="macro">assert_ok!</span>(<span class="ident">Paras::schedule_para_cleanup</span>(<span class="ident">para_id</span>));
 
-			<span class="comment">// Just scheduling cleanup shouldn&#39;t change anything.</span>
-			{
-				<span class="macro">assert_eq!</span>(
-					<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::ActionsQueue::get</span>(<span class="ident">Paras::scheduled_session</span>()),
-					<span class="macro">vec!</span>[<span class="ident">para_id</span>],
-				);
-				<span class="macro">assert_eq!</span>(<span class="ident">Paras::parachains</span>(), <span class="macro">vec!</span>[<span class="ident">para_id</span>]);
-
-				<span class="macro">assert!</span>(<span class="ident">Paras::past_code_meta</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">most_recent_change</span>().<span class="ident">is_none</span>());
-				<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeUpgrades::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>), <span class="prelude-val">Some</span>(<span class="ident">expected_at</span>));
-				<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeHash::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>), <span class="prelude-val">Some</span>(<span class="ident">new_code</span>.<span class="ident">hash</span>()));
-				<span class="macro">assert_eq!</span>(<span class="ident">Paras::current_code</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>), <span class="prelude-val">Some</span>(<span class="ident">original_code</span>.<span class="ident">clone</span>()));
-				<span class="ident">check_code_is_stored</span>(<span class="kw-2">&amp;</span><span class="ident">original_code</span>);
-				<span class="ident">check_code_is_stored</span>(<span class="kw-2">&amp;</span><span class="ident">new_code</span>);
-
-				<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::Heads::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>), <span class="prelude-val">Some</span>(<span class="ident">Default::default</span>()));
-			}
-
-			<span class="comment">// run to block #4, with a 2 session changes at the end of the block 2 &amp; 3.</span>
-			<span class="ident">run_to_block</span>(<span class="number">4</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">4</span>]));
+			<span class="comment">// run to block #10, with a 2 session changes at the end of the block 7 &amp; 8 (so 8 and 9</span>
+			<span class="comment">// observe the new sessions).</span>
+			<span class="ident">run_to_block</span>(<span class="number">10</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">8</span>, <span class="number">9</span>]));
 
 			<span class="comment">// cleaning up the parachain should place the current parachain code</span>
 			<span class="comment">// into the past code buffer &amp; schedule cleanup.</span>
-			<span class="macro">assert_eq!</span>(<span class="ident">Paras::past_code_meta</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">most_recent_change</span>(), <span class="prelude-val">Some</span>(<span class="number">3</span>));
-			<span class="macro">assert_eq!</span>(
-				<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodeHash::get</span>(<span class="kw-2">&amp;</span>(<span class="ident">para_id</span>, <span class="number">3</span>)),
-				<span class="prelude-val">Some</span>(<span class="ident">original_code</span>.<span class="ident">hash</span>())
-			);
-			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodePruning::get</span>(), <span class="macro">vec!</span>[(<span class="ident">para_id</span>, <span class="number">3</span>)]);
+			<span class="comment">//</span>
+			<span class="comment">// Why 7 and 8? See above, the clean up scheduled above was processed at the block 8.</span>
+			<span class="comment">// The initial upgrade was enacted at the block 7.</span>
+			<span class="macro">assert_eq!</span>(<span class="ident">Paras::past_code_meta</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">most_recent_change</span>(), <span class="prelude-val">Some</span>(<span class="number">8</span>));
+			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodeHash::get</span>(<span class="kw-2">&amp;</span>(<span class="ident">para_id</span>, <span class="number">8</span>)), <span class="prelude-val">Some</span>(<span class="ident">new_code</span>.<span class="ident">hash</span>()));
+			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodePruning::get</span>(), <span class="macro">vec!</span>[(<span class="ident">para_id</span>, <span class="number">7</span>), (<span class="ident">para_id</span>, <span class="number">8</span>)]);
 			<span class="ident">check_code_is_stored</span>(<span class="kw-2">&amp;</span><span class="ident">original_code</span>);
+			<span class="ident">check_code_is_stored</span>(<span class="kw-2">&amp;</span><span class="ident">new_code</span>);
 
 			<span class="comment">// any future upgrades haven&#39;t been used to validate yet, so those</span>
 			<span class="comment">// are cleaned up immediately.</span>
 			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeUpgrades::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">is_none</span>());
 			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeHash::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">is_none</span>());
 			<span class="macro">assert!</span>(<span class="ident">Paras::current_code</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">is_none</span>());
-			<span class="ident">check_code_is_not_stored</span>(<span class="kw-2">&amp;</span><span class="ident">new_code</span>);
 
 			<span class="comment">// run to do the final cleanup</span>
-			<span class="kw">let</span> <span class="ident">cleaned_up_at</span> <span class="op">=</span> <span class="number">3</span> <span class="op">+</span> <span class="ident">code_retention_period</span> <span class="op">+</span> <span class="number">1</span>;
+			<span class="kw">let</span> <span class="ident">cleaned_up_at</span> <span class="op">=</span> <span class="number">8</span> <span class="op">+</span> <span class="ident">code_retention_period</span> <span class="op">+</span> <span class="number">1</span>;
 			<span class="ident">run_to_block</span>(<span class="ident">cleaned_up_at</span>, <span class="prelude-val">None</span>);
 
 			<span class="comment">// now the final cleanup: last past code cleaned up, and this triggers meta cleanup.</span>
 			<span class="macro">assert_eq!</span>(<span class="ident">Paras::past_code_meta</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>), <span class="ident">Default::default</span>());
-			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodeHash::get</span>(<span class="kw-2">&amp;</span>(<span class="ident">para_id</span>, <span class="number">3</span>)).<span class="ident">is_none</span>());
+			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodeHash::get</span>(<span class="kw-2">&amp;</span>(<span class="ident">para_id</span>, <span class="number">7</span>)).<span class="ident">is_none</span>());
+			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodeHash::get</span>(<span class="kw-2">&amp;</span>(<span class="ident">para_id</span>, <span class="number">8</span>)).<span class="ident">is_none</span>());
 			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PastCodePruning::get</span>().<span class="ident">is_empty</span>());
 			<span class="ident">check_code_is_not_stored</span>(<span class="kw-2">&amp;</span><span class="ident">original_code</span>);
+			<span class="ident">check_code_is_not_stored</span>(<span class="kw-2">&amp;</span><span class="ident">new_code</span>);
 		});
 	}
 
