@@ -1876,7 +1876,7 @@
 	<span class="ident">artifact_ttl</span>: <span class="ident">Duration</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Fatal</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">to_remove</span> <span class="op">=</span> <span class="ident">artifacts</span>.<span class="ident">prune</span>(<span class="ident">artifact_ttl</span>);
-	<span class="macro">tracing::info!</span>(
+	<span class="macro">tracing::debug!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="string">&quot;PVF pruning: {} artifacts reached their end of life&quot;</span>,
 		<span class="ident">to_remove</span>.<span class="ident">len</span>(),
