@@ -2269,27 +2269,27 @@
 		);
 
 		<span class="ident">result_tx_pvf_1_1</span>
-			.<span class="ident">send</span>(<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbigiousWorkerDeath</span>)))
+			.<span class="ident">send</span>(<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbiguousWorkerDeath</span>)))
 			.<span class="ident">unwrap</span>();
 		<span class="macro">assert_matches!</span>(
 			<span class="ident">result_rx_pvf_1_1</span>.<span class="ident">now_or_never</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>(),
-			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbigiousWorkerDeath</span>))
+			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbiguousWorkerDeath</span>))
 		);
 
 		<span class="ident">result_tx_pvf_1_2</span>
-			.<span class="ident">send</span>(<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbigiousWorkerDeath</span>)))
+			.<span class="ident">send</span>(<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbiguousWorkerDeath</span>)))
 			.<span class="ident">unwrap</span>();
 		<span class="macro">assert_matches!</span>(
 			<span class="ident">result_rx_pvf_1_2</span>.<span class="ident">now_or_never</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>(),
-			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbigiousWorkerDeath</span>))
+			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbiguousWorkerDeath</span>))
 		);
 
 		<span class="ident">result_tx_pvf_2</span>
-			.<span class="ident">send</span>(<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbigiousWorkerDeath</span>)))
+			.<span class="ident">send</span>(<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbiguousWorkerDeath</span>)))
 			.<span class="ident">unwrap</span>();
 		<span class="macro">assert_matches!</span>(
 			<span class="ident">result_rx_pvf_2</span>.<span class="ident">now_or_never</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>(),
-			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbigiousWorkerDeath</span>))
+			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::AmbiguousWorkerDeath</span>))
 		);
 	}
 
