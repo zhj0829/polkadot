@@ -308,7 +308,7 @@ prefix to use, see how <code>Prefix</code> generic is implemented above.</p>
 <span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">my_storage</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">MyStorage</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Blake2_128Concat</span>, <span class="ident">u32</span>, <span class="ident">u32</span><span class="op">&gt;</span>;</code></pre></div>
 <p>The optional attribute <code>#[pallet::unbounded]</code> allows to declare the storage as unbounded.
-When implementating the storage info (when #[pallet::generate_storage_info]` is specified
+When implementating the storage info (when <code>#[pallet::generate_storage_info]</code> is specified
 on the pallet struct placeholder), the size of the storage will be declared as unbounded.
 This can be useful for storage which can never go into PoV (Proof of Validity).</p>
 <p>The optional attributes <code>#[cfg(..)]</code> allow conditional compilation for the storage.</p>

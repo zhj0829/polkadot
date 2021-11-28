@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Error",""]],"fn":[["leaf_index_to_mmr_size",""],["leaf_index_to_pos",""]],"mod":[["util",""]],"struct":[["MMR",""],["MerkleProof",""]],"trait":[["MMRStore",""],["Merge",""]],"type":[["Result",""]]});
+initSidebarItems({"enum":[["Error",""]],"mod":[["helper",""],["util",""]],"struct":[["MMR",""],["MerkleProof",""]],"trait":[["MMRStore",""],["Merge",""]],"type":[["Result",""]]});

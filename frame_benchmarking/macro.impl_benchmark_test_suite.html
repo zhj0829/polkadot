@@ -42,21 +42,21 @@
 	<span class="kw">fn</span> <span class="ident">bench_accumulate_dummy</span>() {
 		<span class="ident">new_test_ext</span>().<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="macro">assert_ok!</span>(<span class="ident">test_benchmark_accumulate_dummy</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span>());
-		}
+		})
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">bench_set_dummy</span>() {
 		<span class="ident">new_test_ext</span>().<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="macro">assert_ok!</span>(<span class="ident">test_benchmark_set_dummy</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span>());
-		}
+		})
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">bench_sort_vector</span>() {
 		<span class="ident">new_test_ext</span>().<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="macro">assert_ok!</span>(<span class="ident">test_benchmark_sort_vector</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span>());
-		}
+		})
 	}
 }</code></pre></div>
 <h2 id="arguments" class="section-header"><a href="#arguments">Arguments</a></h2>
