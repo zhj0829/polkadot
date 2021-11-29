@@ -2386,7 +2386,7 @@
 		<span class="macro">assert_matches!</span>(<span class="ident">result_rx</span>.<span class="ident">now_or_never</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>(), <span class="prelude-val">Err</span>(<span class="ident">PrepareError::TimedOut</span>));
 		<span class="macro">assert_matches!</span>(
 			<span class="ident">result_rx_execute</span>.<span class="ident">now_or_never</span>().<span class="ident">unwrap</span>().<span class="ident">unwrap</span>(),
-			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InvalidCandidate</span>(<span class="ident">InvalidCandidate::WorkerReportedError</span>(<span class="kw">_</span>)))
+			<span class="prelude-val">Err</span>(<span class="ident">ValidationError::InternalError</span>(<span class="kw">_</span>))
 		);
 
 		<span class="comment">// Reversed case: first send multiple precheck requests, then ask for an execution.</span>
