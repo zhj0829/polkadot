@@ -135,6 +135,9 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -153,84 +156,87 @@
 
 <span class="doccomment">//! A pallet for managing validators on Rococo.</span>
 
-<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">decl_error</span>, <span class="ident">decl_event</span>, <span class="ident">decl_module</span>, <span class="ident">decl_storage</span>, <span class="ident">traits::EnsureOrigin</span>};
 <span class="kw">use</span> <span class="ident">sp_staking::SessionIndex</span>;
 <span class="kw">use</span> <span class="ident">sp_std::vec::Vec</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
+
 <span class="kw">type</span> <span class="ident">Session</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">pallet_session::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-<span class="doccomment">/// Configuration for the parachain proposer.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Config</span>: <span class="ident">pallet_session::Config</span> {
-	<span class="doccomment">/// The overreaching event type.</span>
-	<span class="kw">type</span> <span class="ident">Event</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Event</span><span class="op">&gt;</span>;
+<span class="attribute">#[<span class="ident">frame_support::pallet</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pallet</span> {
+	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">dispatch::DispatchResult</span>, <span class="ident">pallet_prelude</span>::<span class="kw-2">*</span>, <span class="ident">traits::EnsureOrigin</span>};
+	<span class="kw">use</span> <span class="ident">frame_system::pallet_prelude</span>::<span class="kw-2">*</span>;
 
-	<span class="doccomment">/// Privileged origin that can add or remove validators.</span>
-	<span class="kw">type</span> <span class="ident">PrivilegedOrigin</span>: <span class="ident">EnsureOrigin</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Origin</span><span class="op">&gt;</span>;
-}
+	<span class="attribute">#[<span class="ident">pallet::pallet</span>]</span>
+	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">_</span>);
 
-<span class="macro">decl_event!</span> {
-	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">ValidatorId</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">pallet_session::Config</span><span class="op">&gt;</span><span class="ident">::ValidatorId</span> {
+	<span class="doccomment">/// Configuration for the parachain proposer.</span>
+	<span class="attribute">#[<span class="ident">pallet::config</span>]</span>
+	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Config</span>: <span class="ident">frame_system::Config</span> <span class="op">+</span> <span class="ident">pallet_session::Config</span> {
+		<span class="doccomment">/// The overreaching event type.</span>
+		<span class="kw">type</span> <span class="ident">Event</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">IsType</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Event</span><span class="op">&gt;</span>;
+
+		<span class="doccomment">/// Privileged origin that can add or remove validators.</span>
+		<span class="kw">type</span> <span class="ident">PrivilegedOrigin</span>: <span class="ident">EnsureOrigin</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Origin</span><span class="op">&gt;</span>;
+	}
+
+	<span class="attribute">#[<span class="ident">pallet::event</span>]</span>
+	<span class="attribute">#[<span class="ident">pallet::generate_deposit</span>(<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">deposit_event</span>)]</span>
+	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
 		<span class="doccomment">/// New validators were added to the set.</span>
-		<span class="ident">ValidatorsRegistered</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorId</span><span class="op">&gt;</span>),
+		<span class="ident">ValidatorsRegistered</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>),
 		<span class="doccomment">/// Validators were removed from the set.</span>
-		<span class="ident">ValidatorsDeregistered</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorId</span><span class="op">&gt;</span>),
+		<span class="ident">ValidatorsDeregistered</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>),
 	}
-}
 
-<span class="macro">decl_error!</span> {
-	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {}
-}
+	<span class="doccomment">/// Validators that should be retired, because their Parachain was deregistered.</span>
+	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">ValidatorsToRetire</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
+		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
-<span class="macro">decl_storage!</span> {
-	<span class="kw">trait</span> <span class="ident">Store</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">ParachainProposer</span> {
-		<span class="doccomment">/// Validators that should be retired, because their Parachain was deregistered.</span>
-		<span class="ident">ValidatorsToRetire</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>;
-		<span class="doccomment">/// Validators that should be added.</span>
-		<span class="ident">ValidatorsToAdd</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>;
-	}
-}
+	<span class="doccomment">/// Validators that should be added.</span>
+	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">ValidatorsToAdd</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
-<span class="macro">decl_module!</span> {
-	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">enum</span> <span class="ident">Call</span> <span class="kw">where</span> <span class="ident">origin</span>: <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Origin</span> {
-		<span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
-
-		<span class="kw">fn</span> <span class="ident">deposit_event</span>() <span class="op">=</span> <span class="ident">default</span>;
-
+	<span class="attribute">#[<span class="ident">pallet::call</span>]</span>
+	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="doccomment">/// Add new validators to the set.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// The new validators will be active from current session + 2.</span>
-		<span class="attribute">#[<span class="ident">weight</span> <span class="op">=</span> <span class="number">100_000</span>]</span>
-		<span class="kw">fn</span> <span class="ident">register_validators</span>(
-			<span class="ident">origin</span>,
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">100_000</span>)]</span>
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_validators</span>(
+			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">validators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>,
-		) {
+		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
 			<span class="ident">T::PrivilegedOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="ident">validators</span>.<span class="ident">clone</span>().<span class="ident">into_iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">ValidatorsToAdd</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::append</span>(<span class="ident">v</span>));
 
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">RawEvent::ValidatorsRegistered</span>(<span class="ident">validators</span>));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ValidatorsRegistered</span>(<span class="ident">validators</span>));
+			<span class="prelude-val">Ok</span>(())
 		}
 
 		<span class="doccomment">/// Remove validators from the set.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// The removed validators will be deactivated from current session + 2.</span>
-		<span class="attribute">#[<span class="ident">weight</span> <span class="op">=</span> <span class="number">100_000</span>]</span>
-		<span class="kw">fn</span> <span class="ident">deregister_validators</span>(
-			<span class="ident">origin</span>,
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">100_000</span>)]</span>
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deregister_validators</span>(
+			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">validators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span>,
-		) {
+		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
 			<span class="ident">T::PrivilegedOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="ident">validators</span>.<span class="ident">clone</span>().<span class="ident">into_iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">ValidatorsToRetire</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::append</span>(<span class="ident">v</span>));
 
-			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">RawEvent::ValidatorsDeregistered</span>(<span class="ident">validators</span>));
+			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ValidatorsDeregistered</span>(<span class="ident">validators</span>));
+			<span class="prelude-val">Ok</span>(())
 		}
 	}
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">pallet_session::SessionManager</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">pallet_session::SessionManager</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="kw">fn</span> <span class="ident">new_session</span>(<span class="ident">new_index</span>: <span class="ident">SessionIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">if</span> <span class="ident">new_index</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span> {
 			<span class="kw">return</span> <span class="prelude-val">None</span>
@@ -258,7 +264,7 @@
 	<span class="kw">fn</span> <span class="ident">start_session</span>(<span class="ident">_start_index</span>: <span class="ident">SessionIndex</span>) {}
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">pallet_session::historical::SessionManager</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span>, ()<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">pallet_session::historical::SessionManager</span><span class="op">&lt;</span><span class="ident">T::ValidatorId</span>, ()<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="kw">fn</span> <span class="ident">new_session</span>(<span class="ident">new_index</span>: <span class="ident">SessionIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T::ValidatorId</span>, ())<span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">pallet_session::SessionManager</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new_session</span>(<span class="ident">new_index</span>)
 			.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> (<span class="ident">v</span>, <span class="ident">Default::default</span>())).<span class="ident">collect</span>())
