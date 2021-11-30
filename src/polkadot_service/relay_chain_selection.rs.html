@@ -517,6 +517,43 @@
 <span id="517">517</span>
 <span id="518">518</span>
 <span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -627,11 +664,31 @@
 	}
 }
 
+<span class="doccomment">/// Determines whether the chain is a relay chain</span>
+<span class="doccomment">/// and hence has to take approval votes and disputes</span>
+<span class="doccomment">/// into account.</span>
+<span class="kw">enum</span> <span class="ident">IsDisputesAwareWithOverseer</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">sc_client_api::Backend</span><span class="op">&lt;</span><span class="ident">PolkadotBlock</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="ident">Yes</span>(<span class="ident">SelectRelayChainInner</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">Handle</span><span class="op">&gt;</span>),
+	<span class="ident">No</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">IsDisputesAwareWithOverseer</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+	<span class="ident">B</span>: <span class="ident">sc_client_api::Backend</span><span class="op">&lt;</span><span class="ident">PolkadotBlock</span><span class="op">&gt;</span>,
+	<span class="ident">SelectRelayChainInner</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">Handle</span><span class="op">&gt;</span>: <span class="ident">Clone</span>,
+{
+	<span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="kw">match</span> <span class="self">self</span> {
+			<span class="ident"><span class="self">Self</span>::Yes</span>(<span class="kw-2">ref</span> <span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Yes</span>(<span class="ident">inner</span>.<span class="ident">clone</span>()),
+			<span class="ident"><span class="self">Self</span>::No</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::No</span>,
+		}
+	}
+}
+
 <span class="doccomment">/// A chain-selection implementation which provides safety for relay chains.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SelectRelayChain</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">sc_client_api::Backend</span><span class="op">&lt;</span><span class="ident">PolkadotBlock</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-	<span class="ident">is_relay_chain</span>: <span class="ident">bool</span>,
 	<span class="ident">longest_chain</span>: <span class="ident">sc_consensus::LongestChain</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">PolkadotBlock</span><span class="op">&gt;</span>,
-	<span class="ident">selection</span>: <span class="ident">SelectRelayChainInner</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">Handle</span><span class="op">&gt;</span>,
+	<span class="ident">selection</span>: <span class="ident">IsDisputesAwareWithOverseer</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">SelectRelayChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
@@ -640,11 +697,7 @@
 	<span class="ident">SelectRelayChainInner</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">Handle</span><span class="op">&gt;</span>: <span class="ident">Clone</span>,
 {
 	<span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span> {
-			<span class="ident">longest_chain</span>: <span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">clone</span>(),
-			<span class="ident">is_relay_chain</span>: <span class="self">self</span>.<span class="ident">is_relay_chain</span>,
-			<span class="ident">selection</span>: <span class="self">self</span>.<span class="ident">selection</span>.<span class="ident">clone</span>(),
-		}
+		<span class="self">Self</span> { <span class="ident">longest_chain</span>: <span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">clone</span>(), <span class="ident">selection</span>: <span class="self">self</span>.<span class="ident">selection</span>.<span class="ident">clone</span>() }
 	}
 }
 
@@ -652,18 +705,35 @@
 <span class="kw">where</span>
 	<span class="ident">B</span>: <span class="ident">sc_client_api::Backend</span><span class="op">&lt;</span><span class="ident">PolkadotBlock</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
+	<span class="doccomment">/// Use the plain longest chain algorithm exclusively.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_longest_chain</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Using {} chain selection algorithm&quot;</span>, <span class="string">&quot;longest&quot;</span>);
+
+		<span class="self">Self</span> {
+			<span class="ident">longest_chain</span>: <span class="ident">sc_consensus::LongestChain::new</span>(<span class="ident">backend</span>.<span class="ident">clone</span>()),
+			<span class="ident">selection</span>: <span class="ident">IsDisputesAwareWithOverseer::No</span>,
+		}
+	}
+
 	<span class="doccomment">/// Create a new [`SelectRelayChain`] wrapping the given chain backend</span>
 	<span class="doccomment">/// and a handle to the overseer.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">overseer</span>: <span class="ident">Handle</span>, <span class="ident">is_relay_chain</span>: <span class="ident">bool</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_disputes_aware</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">overseer</span>: <span class="ident">Handle</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
 		<span class="macro">tracing::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-			<span class="string">&quot;Using {} as chain selection algorithm&quot;</span>,
-			<span class="kw">if</span> <span class="ident">is_relay_chain</span> { <span class="string">&quot;dispute aware relay&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;longest&quot;</span> }
+			<span class="string">&quot;Using {} chain selection algorithm&quot;</span>,
+			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;disputes&quot;</span>) {
+				<span class="string">&quot;dispute aware relay&quot;</span>
+			} <span class="kw">else</span> {
+				<span class="comment">// no disputes are queried, that logic is disabled</span>
+				<span class="comment">// in `fn finality_target_with_longest_chain`.</span>
+				<span class="string">&quot;short-circuited relay&quot;</span>
+			}
 		);
 		<span class="ident">SelectRelayChain</span> {
 			<span class="ident">longest_chain</span>: <span class="ident">sc_consensus::LongestChain::new</span>(<span class="ident">backend</span>.<span class="ident">clone</span>()),
-			<span class="ident">selection</span>: <span class="ident">SelectRelayChainInner::new</span>(<span class="ident">backend</span>, <span class="ident">overseer</span>, <span class="ident">metrics</span>),
-			<span class="ident">is_relay_chain</span>,
+			<span class="ident">selection</span>: <span class="ident">IsDisputesAwareWithOverseer::Yes</span>(<span class="ident">SelectRelayChainInner::new</span>(
+				<span class="ident">backend</span>, <span class="ident">overseer</span>, <span class="ident">metrics</span>,
+			)),
 		}
 	}
 
@@ -679,18 +749,17 @@
 	<span class="ident">B</span>: <span class="ident">sc_client_api::Backend</span><span class="op">&lt;</span><span class="ident">PolkadotBlock</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">leaves</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>, <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
-		<span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_relay_chain</span> {
-			<span class="kw">return</span> <span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">leaves</span>().<span class="kw">await</span>
+		<span class="kw">match</span> <span class="self">self</span>.<span class="ident">selection</span> {
+			<span class="ident">IsDisputesAwareWithOverseer::Yes</span>(<span class="kw-2">ref</span> <span class="ident">selection</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">selection</span>.<span class="ident">leaves</span>().<span class="kw">await</span>,
+			<span class="ident">IsDisputesAwareWithOverseer::No</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">leaves</span>().<span class="kw">await</span>,
 		}
-
-		<span class="self">self</span>.<span class="ident">selection</span>.<span class="ident">leaves</span>().<span class="kw">await</span>
 	}
 
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">best_chain</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotHeader</span>, <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
-		<span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_relay_chain</span> {
-			<span class="kw">return</span> <span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">best_chain</span>().<span class="kw">await</span>
+		<span class="kw">match</span> <span class="self">self</span>.<span class="ident">selection</span> {
+			<span class="ident">IsDisputesAwareWithOverseer::Yes</span>(<span class="kw-2">ref</span> <span class="ident">selection</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">selection</span>.<span class="ident">best_chain</span>().<span class="kw">await</span>,
+			<span class="ident">IsDisputesAwareWithOverseer::No</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">best_chain</span>().<span class="kw">await</span>,
 		}
-		<span class="self">self</span>.<span class="ident">selection</span>.<span class="ident">best_chain</span>().<span class="kw">await</span>
 	}
 
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">finality_target</span>(
@@ -701,12 +770,17 @@
 		<span class="kw">let</span> <span class="ident">longest_chain_best</span> <span class="op">=</span>
 			<span class="self">self</span>.<span class="ident">longest_chain</span>.<span class="ident">finality_target</span>(<span class="ident">target_hash</span>, <span class="ident">maybe_max_number</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
-		<span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_relay_chain</span> {
-			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">longest_chain_best</span>)
+		<span class="kw">if</span> <span class="kw">let</span> <span class="ident">IsDisputesAwareWithOverseer::Yes</span>(<span class="kw-2">ref</span> <span class="ident">selection</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">selection</span> {
+			<span class="ident">selection</span>
+				.<span class="ident">finality_target_with_longest_chain</span>(
+					<span class="ident">target_hash</span>,
+					<span class="ident">longest_chain_best</span>,
+					<span class="ident">maybe_max_number</span>,
+				)
+				.<span class="kw">await</span>
+		} <span class="kw">else</span> {
+			<span class="prelude-val">Ok</span>(<span class="ident">longest_chain_best</span>)
 		}
-		<span class="self">self</span>.<span class="ident">selection</span>
-			.<span class="ident">finality_target_with_longest_chain</span>(<span class="ident">target_hash</span>, <span class="ident">longest_chain_best</span>, <span class="ident">maybe_max_number</span>)
-			.<span class="kw">await</span>
 	}
 }
 
