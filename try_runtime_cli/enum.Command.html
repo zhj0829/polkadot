@@ -10,14 +10,14 @@
 ensure the new migrations are being executed. Re-executing already existing migrations is
 evidently not very exciting.</p>
 </div><div class="sub-variant" id="variant.OnRuntimeUpgrade.fields"><h3>Tuple Fields of <b>OnRuntimeUpgrade</b></h3><div><span id="variant.OnRuntimeUpgrade.field.0" class="variant small-section-header"><a href="#variant.OnRuntimeUpgrade.field.0" class="anchor field"></a><code>0:&nbsp;OnRuntimeUpgradeCmd</code></span></div></div><div id="variant.ExecuteBlock" class="variant small-section-header"><a href="#variant.ExecuteBlock" class="anchor field"></a><code>ExecuteBlock(ExecuteBlockCmd)</code></div><div class="docblock"><p>Executes the given block against some state.</p>
-<p>Unlike [<code>Command:::OnRuntimeUpgrade</code>], this command needs two inputs: the state, and the
+<p>Unlike <a href="enum.Command.html#variant.OnRuntimeUpgrade" title="Command::OnRuntimeUpgrade"><code>Command::OnRuntimeUpgrade</code></a>, this command needs two inputs: the state, and the
 block data. Since the state could be cached (see <a href="enum.State.html#variant.Snap" title="State::Snap"><code>State::Snap</code></a>), different flags are
 provided for both. <code>--block-at</code> and <code>--block-uri</code>, if provided, are only used for fetching
 the block. For convenience, these flags can be both emitted, if the <a href="enum.State.html#variant.Live" title="State::Live"><code>State::Live</code></a> is
 being used.</p>
 <p>Note that by default, this command does not overwrite the code, so in wasm execution, the
 live chain’s code is used. This can be disabled if desired, see
-[<code>ExecuteBlockCmd::overwrite_wasm_code</code>].</p>
+<code>ExecuteBlockCmd::overwrite_wasm_code</code>.</p>
 <p>Note that if you do overwrite the wasm code, or generally use the local runtime for this,
 you might</p>
 <ul>
@@ -29,22 +29,22 @@ your local runtime and the remote counterparts, the signatures cannot be verifie
 different state transition function.</li>
 </ul>
 <p>To make testing slightly more dynamic, you can disable the state root  check by enabling
-[<code>ExecuteBlockCmd::no_check</code>]. If you get signature verification errors, you should
+<code>ExecuteBlockCmd::no_check</code>. If you get signature verification errors, you should
 manually tweak your local runtime’s spec version to fix this.</p>
 <p>A subtle detail of execute block is that if you want to execute block 100 of a live chain
 again, you need to scrape the state of block 99. This is already done automatically if you
 use <a href="enum.State.html#variant.Live" title="State::Live"><code>State::Live</code></a>, and the parent hash of the target block is used to scrape the state.
 If <a href="enum.State.html#variant.Snap" title="State::Snap"><code>State::Snap</code></a> is being used, then this needs to be manually taken into consideration.</p>
 <p>This executes the same runtime api as normal block import, namely <code>Core_execute_block</code>. If
-[<code>ExecuteBlockCmd::no_check</code>] is set, it uses a custom, try-runtime-only runtime
+<code>ExecuteBlockCmd::no_check</code> is set, it uses a custom, try-runtime-only runtime
 api called <code>TryRuntime_execute_block_no_check</code>.</p>
 </div><div class="sub-variant" id="variant.ExecuteBlock.fields"><h3>Tuple Fields of <b>ExecuteBlock</b></h3><div><span id="variant.ExecuteBlock.field.0" class="variant small-section-header"><a href="#variant.ExecuteBlock.field.0" class="anchor field"></a><code>0:&nbsp;ExecuteBlockCmd</code></span></div></div><div id="variant.OffchainWorker" class="variant small-section-header"><a href="#variant.OffchainWorker" class="anchor field"></a><code>OffchainWorker(OffchainWorkerCmd)</code></div><div class="docblock"><p>Executes <em>the offchain worker hooks</em> of a given block against some state.</p>
-<p>Similar to [<code>Command:::ExecuteBlock</code>], this command needs two inputs: the state, and the
+<p>Similar to <a href="enum.Command.html#variant.ExecuteBlock" title="Command::ExecuteBlock"><code>Command::ExecuteBlock</code></a>, this command needs two inputs: the state, and the
 header data. Likewise, <code>--header-at</code> and <code>--header-uri</code> can be filled, or omitted if
 <a href="enum.State.html#variant.Live" title="State::Live"><code>State::Live</code></a> is used.</p>
-<p>Similar to [<code>Command:::ExecuteBlock</code>], this command does not overwrite the code, so in wasm
+<p>Similar to <a href="enum.Command.html#variant.ExecuteBlock" title="Command::ExecuteBlock"><code>Command::ExecuteBlock</code></a>, this command does not overwrite the code, so in wasm
 execution, the live chain’s code is used. This can be disabled if desired, see
-[<code>OffchainWorkerCmd::overwrite_wasm_code</code>].</p>
+<code>OffchainWorkerCmd::overwrite_wasm_code</code>.</p>
 <p>This executes the same runtime api as normal block import, namely
 <code>OffchainWorkerApi_offchain_worker</code>.</p>
 </div><div class="sub-variant" id="variant.OffchainWorker.fields"><h3>Tuple Fields of <b>OffchainWorker</b></h3><div><span id="variant.OffchainWorker.field.0" class="variant small-section-header"><a href="#variant.OffchainWorker.field.0" class="anchor field"></a><code>0:&nbsp;OffchainWorkerCmd</code></span></div></div><div id="variant.FollowChain" class="variant small-section-header"><a href="#variant.FollowChain" class="anchor field"></a><code>FollowChain(FollowChainCmd)</code></div><div class="docblock"><p>Follow the given chain’s finalized blocks and apply all of its extrinsics.</p>

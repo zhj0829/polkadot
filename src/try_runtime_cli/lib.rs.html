@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;3fdb445&#x2F;utils&#x2F;frame&#x2F;try-runtime&#x2F;cli&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../try_runtime_cli/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;20b5492&#x2F;utils&#x2F;frame&#x2F;try-runtime&#x2F;cli&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../try_runtime_cli/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -843,7 +843,7 @@
 <span class="doccomment">//! #### Adding pre/post hooks</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! One of the gems that come only in the `try-runtime` feature flag is the `pre_upgrade` and</span>
-<span class="doccomment">//! `post_upgrade` hooks for [`OnRuntimeUpgrade`]. This trait is implemented either inside the</span>
+<span class="doccomment">//! `post_upgrade` hooks for `OnRuntimeUpgrade`. This trait is implemented either inside the</span>
 <span class="doccomment">//! pallet, or manually in a runtime, to define a migration. In both cases, these functions can be</span>
 <span class="doccomment">//! added, given the right flag:</span>
 <span class="doccomment">//!</span>
@@ -859,7 +859,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! These hooks allow you to execute some code, only within the `on-runtime-upgrade` command, before</span>
 <span class="doccomment">//! and after the migration. If any data needs to be temporarily stored between the pre/post</span>
-<span class="doccomment">//! migration hooks, [`OnRuntimeUpgradeHelpersExt`] can help with that.</span>
+<span class="doccomment">//! migration hooks, `OnRuntimeUpgradeHelpersExt` can help with that.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! #### Logging</span>
 <span class="doccomment">//!</span>
@@ -869,7 +869,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! #### Guarding migrations</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Always make sure that any migration code is guarded either by [`StorageVersion`], or by some</span>
+<span class="doccomment">//! Always make sure that any migration code is guarded either by `StorageVersion`, or by some</span>
 <span class="doccomment">//! custom storage item, so that it is NEVER executed twice, even if the code lives in two</span>
 <span class="doccomment">//! consecutive runtimes.</span>
 <span class="doccomment">//!</span>
@@ -878,7 +878,7 @@
 <span class="doccomment">//! Run the migrations of the local runtime on the state of polkadot, from the polkadot repo where</span>
 <span class="doccomment">//! we have `--chain polkadot-dev`, on the latest finalized block&#39;s state</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```sh</span>
 <span class="doccomment">//! RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \</span>
 <span class="doccomment">//!     cargo run try-runtime \</span>
 <span class="doccomment">//!     --execution Native \</span>
@@ -892,7 +892,7 @@
 <span class="doccomment">//! Same as previous one, but let&#39;s say we want to run this command from the substrate repo, where</span>
 <span class="doccomment">//! we don&#39;t have a matching spec name/version.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```sh</span>
 <span class="doccomment">//! RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \</span>
 <span class="doccomment">//!     cargo run try-runtime \</span>
 <span class="doccomment">//!     --execution Native \</span>
@@ -906,7 +906,7 @@
 <span class="doccomment">//! Same as the previous one, but run it at specific block number&#39;s state. This means that this</span>
 <span class="doccomment">//! block hash&#39;s state shall not yet have been pruned in `rpc.polkadot.io`.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```sh</span>
 <span class="doccomment">//! RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \</span>
 <span class="doccomment">//!     cargo run try-runtime \</span>
 <span class="doccomment">//!     --execution Native \</span>
@@ -924,7 +924,7 @@
 <span class="doccomment">//! First, let&#39;s assume you are in a branch that has the same spec name/version as the live polkadot</span>
 <span class="doccomment">//! network.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```sh</span>
 <span class="doccomment">//! RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \</span>
 <span class="doccomment">//!     cargo run try-runtime \</span>
 <span class="doccomment">//!     --execution Wasm \</span>
@@ -940,14 +940,14 @@
 <span class="doccomment">//! change `--execution Wasm` to `--execution Native` to achieve this. Your logs of `executor=trace`</span>
 <span class="doccomment">//! should show something among the lines of:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```text</span>
 <span class="doccomment">//! Request for native execution succeeded (native: polkadot-9900 (parity-polkadot-0.tx7.au0), chain: polkadot-9900 (parity-polkadot-0.tx7.au0))</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! If you don&#39;t have matching spec versions, then are doomed to execute wasm. In this case, you can</span>
 <span class="doccomment">//! manually overwrite the wasm code with your local runtime:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```sh</span>
 <span class="doccomment">//! RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \</span>
 <span class="doccomment">//!     cargo run try-runtime \</span>
 <span class="doccomment">//!     --execution Wasm \</span>
@@ -960,12 +960,12 @@
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! For all of these blocks, the block with hash `&lt;block-hash&gt;` is being used, and the initial state</span>
-<span class="doccomment">//! is the state of the parent hash. This is because by omitting [`ExecuteBlockCmd::block_at`], the</span>
+<span class="doccomment">//! is the state of the parent hash. This is because by omitting `ExecuteBlockCmd::block_at`, the</span>
 <span class="doccomment">//! `--at` is used for both. This should be good enough for 99% of the cases. The only case where</span>
 <span class="doccomment">//! you need to specify `block-at` and `block-ws-uri` is with snapshots. Let&#39;s say you have a file</span>
 <span class="doccomment">//! `snap` and you know it corresponds to the state of the parent block of `X`. Then you&#39;d do:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```sh</span>
 <span class="doccomment">//! RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \</span>
 <span class="doccomment">//!     cargo run try-runtime \</span>
 <span class="doccomment">//!     --execution Wasm \</span>
@@ -1024,7 +1024,7 @@
 
 	<span class="doccomment">/// Executes the given block against some state.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// Unlike [`Command:::OnRuntimeUpgrade`], this command needs two inputs: the state, and the</span>
+	<span class="doccomment">/// Unlike [`Command::OnRuntimeUpgrade`], this command needs two inputs: the state, and the</span>
 	<span class="doccomment">/// block data. Since the state could be cached (see [`State::Snap`]), different flags are</span>
 	<span class="doccomment">/// provided for both. `--block-at` and `--block-uri`, if provided, are only used for fetching</span>
 	<span class="doccomment">/// the block. For convenience, these flags can be both emitted, if the [`State::Live`] is</span>
@@ -1032,7 +1032,7 @@
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Note that by default, this command does not overwrite the code, so in wasm execution, the</span>
 	<span class="doccomment">/// live chain&#39;s code is used. This can be disabled if desired, see</span>
-	<span class="doccomment">/// [`ExecuteBlockCmd::overwrite_wasm_code`].</span>
+	<span class="doccomment">/// `ExecuteBlockCmd::overwrite_wasm_code`.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Note that if you do overwrite the wasm code, or generally use the local runtime for this,</span>
 	<span class="doccomment">/// you might</span>
@@ -1044,7 +1044,7 @@
 	<span class="doccomment">///     different state transition function.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// To make testing slightly more dynamic, you can disable the state root  check by enabling</span>
-	<span class="doccomment">/// [`ExecuteBlockCmd::no_check`]. If you get signature verification errors, you should</span>
+	<span class="doccomment">/// `ExecuteBlockCmd::no_check`. If you get signature verification errors, you should</span>
 	<span class="doccomment">/// manually tweak your local runtime&#39;s spec version to fix this.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// A subtle detail of execute block is that if you want to execute block 100 of a live chain</span>
@@ -1053,19 +1053,19 @@
 	<span class="doccomment">/// If [`State::Snap`] is being used, then this needs to be manually taken into consideration.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// This executes the same runtime api as normal block import, namely `Core_execute_block`. If</span>
-	<span class="doccomment">/// [`ExecuteBlockCmd::no_check`] is set, it uses a custom, try-runtime-only runtime</span>
+	<span class="doccomment">/// `ExecuteBlockCmd::no_check` is set, it uses a custom, try-runtime-only runtime</span>
 	<span class="doccomment">/// api called `TryRuntime_execute_block_no_check`.</span>
 	<span class="ident">ExecuteBlock</span>(<span class="ident">commands::execute_block::ExecuteBlockCmd</span>),
 
 	<span class="doccomment">/// Executes *the offchain worker hooks* of a given block against some state.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// Similar to [`Command:::ExecuteBlock`], this command needs two inputs: the state, and the</span>
+	<span class="doccomment">/// Similar to [`Command::ExecuteBlock`], this command needs two inputs: the state, and the</span>
 	<span class="doccomment">/// header data. Likewise, `--header-at` and `--header-uri` can be filled, or omitted if</span>
 	<span class="doccomment">/// [`State::Live`] is used.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// Similar to [`Command:::ExecuteBlock`], this command does not overwrite the code, so in wasm</span>
+	<span class="doccomment">/// Similar to [`Command::ExecuteBlock`], this command does not overwrite the code, so in wasm</span>
 	<span class="doccomment">/// execution, the live chain&#39;s code is used. This can be disabled if desired, see</span>
-	<span class="doccomment">/// [`OffchainWorkerCmd::overwrite_wasm_code`].</span>
+	<span class="doccomment">/// `OffchainWorkerCmd::overwrite_wasm_code`.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// This executes the same runtime api as normal block import, namely</span>
 	<span class="doccomment">/// `OffchainWorkerApi_offchain_worker`.</span>

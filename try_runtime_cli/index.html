@@ -101,7 +101,7 @@ well with try-runtime’s expensive RPC queries:</p>
 following points makes sure you can <em>effectively</em> test your migrations with try-runtime.</p>
 <h4 id="adding-prepost-hooks" class="section-header"><a href="#adding-prepost-hooks">Adding pre/post hooks</a></h4>
 <p>One of the gems that come only in the <code>try-runtime</code> feature flag is the <code>pre_upgrade</code> and
-<code>post_upgrade</code> hooks for [<code>OnRuntimeUpgrade</code>]. This trait is implemented either inside the
+<code>post_upgrade</code> hooks for <code>OnRuntimeUpgrade</code>. This trait is implemented either inside the
 pallet, or manually in a runtime, to define a migration. In both cases, these functions can be
 added, given the right flag:</p>
 
@@ -113,98 +113,90 @@ added, given the right flag:</p>
 <p>(The pallet macro syntax will support this simply as a part of <code>#[pallet::hooks]</code>).</p>
 <p>These hooks allow you to execute some code, only within the <code>on-runtime-upgrade</code> command, before
 and after the migration. If any data needs to be temporarily stored between the pre/post
-migration hooks, [<code>OnRuntimeUpgradeHelpersExt</code>] can help with that.</p>
+migration hooks, <code>OnRuntimeUpgradeHelpersExt</code> can help with that.</p>
 <h4 id="logging" class="section-header"><a href="#logging">Logging</a></h4>
 <p>It is super helpful to make sure your migration code uses logging (always with a <code>runtime</code> log
 target prefix, e.g. <code>runtime::balance</code>) and state exactly at which stage it is, and what it is
 doing.</p>
 <h4 id="guarding-migrations" class="section-header"><a href="#guarding-migrations">Guarding migrations</a></h4>
-<p>Always make sure that any migration code is guarded either by [<code>StorageVersion</code>], or by some
+<p>Always make sure that any migration code is guarded either by <code>StorageVersion</code>, or by some
 custom storage item, so that it is NEVER executed twice, even if the code lives in two
 consecutive runtimes.</p>
 <h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
 <p>Run the migrations of the local runtime on the state of polkadot, from the polkadot repo where
 we have <code>--chain polkadot-dev</code>, on the latest finalized block’s state</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">RUST_LOG</span><span class="op">=</span><span class="ident">runtime</span><span class="op">=</span><span class="ident">trace</span>,<span class="kw">try</span><span class="op">-</span><span class="ident">runtime::cli</span><span class="op">=</span><span class="ident">trace</span>,<span class="ident">executor</span><span class="op">=</span><span class="ident">trace</span> \
-    <span class="ident">cargo</span> <span class="ident">run</span> <span class="kw">try</span><span class="op">-</span><span class="ident">runtime</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">execution</span> <span class="ident">Native</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">chain</span> <span class="ident">polkadot</span><span class="op">-</span><span class="ident">dev</span> \
-    <span class="ident">on</span><span class="op">-</span><span class="ident">runtime</span><span class="op">-</span><span class="ident">upgrade</span> \
-    <span class="ident">live</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io</span></code></pre></div>
+<div class="example-wrap"><pre class="language-sh"><code>RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \
+    cargo run try-runtime \
+    --execution Native \
+    --chain polkadot-dev \
+    on-runtime-upgrade \
+    live \
+    --uri wss://rpc.polkadot.io</code></pre></div>
 <p>Same as previous one, but let’s say we want to run this command from the substrate repo, where
 we don’t have a matching spec name/version.</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">RUST_LOG</span><span class="op">=</span><span class="ident">runtime</span><span class="op">=</span><span class="ident">trace</span>,<span class="kw">try</span><span class="op">-</span><span class="ident">runtime::cli</span><span class="op">=</span><span class="ident">trace</span>,<span class="ident">executor</span><span class="op">=</span><span class="ident">trace</span> \
-    <span class="ident">cargo</span> <span class="ident">run</span> <span class="kw">try</span><span class="op">-</span><span class="ident">runtime</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">execution</span> <span class="ident">Native</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">chain</span> <span class="ident">dev</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">no</span><span class="op">-</span><span class="ident">spec</span><span class="op">-</span><span class="ident">name</span><span class="op">-</span><span class="ident">check</span> \ # <span class="ident">mind</span> <span class="ident">this</span> <span class="macro">one!</span>
-    <span class="ident">on</span><span class="op">-</span><span class="ident">runtime</span><span class="op">-</span><span class="ident">upgrade</span> \
-    <span class="ident">live</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io</span></code></pre></div>
+<div class="example-wrap"><pre class="language-sh"><code>RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \
+    cargo run try-runtime \
+    --execution Native \
+    --chain dev \
+    --no-spec-name-check \ # mind this one!
+    on-runtime-upgrade \
+    live \
+    --uri wss://rpc.polkadot.io</code></pre></div>
 <p>Same as the previous one, but run it at specific block number’s state. This means that this
 block hash’s state shall not yet have been pruned in <code>rpc.polkadot.io</code>.</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">RUST_LOG</span><span class="op">=</span><span class="ident">runtime</span><span class="op">=</span><span class="ident">trace</span>,<span class="kw">try</span><span class="op">-</span><span class="ident">runtime::cli</span><span class="op">=</span><span class="ident">trace</span>,<span class="ident">executor</span><span class="op">=</span><span class="ident">trace</span> \
-    <span class="ident">cargo</span> <span class="ident">run</span> <span class="kw">try</span><span class="op">-</span><span class="ident">runtime</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">execution</span> <span class="ident">Native</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">chain</span> <span class="ident">dev</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">no</span><span class="op">-</span><span class="ident">spec</span><span class="op">-</span><span class="ident">name</span><span class="op">-</span><span class="ident">check</span> \ # <span class="ident">mind</span> <span class="ident">this</span> <span class="macro">one!</span> <span class="ident">on</span><span class="op">-</span><span class="ident">runtime</span><span class="op">-</span><span class="ident">upgrade</span> \
-    <span class="ident">on</span><span class="op">-</span><span class="ident">runtime</span><span class="op">-</span><span class="ident">upgrade</span> \
-    <span class="ident">live</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io \</span>
-    <span class="op">-</span><span class="op">-</span><span class="ident">at</span> <span class="op">&lt;</span><span class="ident">block</span><span class="op">-</span><span class="ident">hash</span><span class="op">&gt;</span></code></pre></div>
+<div class="example-wrap"><pre class="language-sh"><code>RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \
+    cargo run try-runtime \
+    --execution Native \
+    --chain dev \
+    --no-spec-name-check \ # mind this one! on-runtime-upgrade \
+    on-runtime-upgrade \
+    live \
+    --uri wss://rpc.polkadot.io \
+    --at &lt;block-hash&gt;</code></pre></div>
 <p>Moving to <code>execute-block</code> and <code>offchain-workers</code>. For these commands, you always needs to
 specify a block hash. For the rest of these examples, we assume we’re in the polkadot repo.</p>
 <p>First, let’s assume you are in a branch that has the same spec name/version as the live polkadot
 network.</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">RUST_LOG</span><span class="op">=</span><span class="ident">runtime</span><span class="op">=</span><span class="ident">trace</span>,<span class="kw">try</span><span class="op">-</span><span class="ident">runtime::cli</span><span class="op">=</span><span class="ident">trace</span>,<span class="ident">executor</span><span class="op">=</span><span class="ident">trace</span> \
-    <span class="ident">cargo</span> <span class="ident">run</span> <span class="kw">try</span><span class="op">-</span><span class="ident">runtime</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">execution</span> <span class="ident">Wasm</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">chain</span> <span class="ident">polkadot</span><span class="op">-</span><span class="ident">dev</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io \</span>
-    <span class="ident">execute</span><span class="op">-</span><span class="ident">block</span> \
-    <span class="ident">live</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">at</span> <span class="op">&lt;</span><span class="ident">block</span><span class="op">-</span><span class="ident">hash</span><span class="op">&gt;</span></code></pre></div>
+<div class="example-wrap"><pre class="language-sh"><code>RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \
+    cargo run try-runtime \
+    --execution Wasm \
+    --chain polkadot-dev \
+    --uri wss://rpc.polkadot.io \
+    execute-block \
+    live \
+    --at &lt;block-hash&gt;</code></pre></div>
 <p>This is wasm, so it will technically execute the code that lives on the live network. Let’s say
 you want to execute your local runtime. Since you have a matching spec versions, you can simply
 change <code>--execution Wasm</code> to <code>--execution Native</code> to achieve this. Your logs of <code>executor=trace</code>
 should show something among the lines of:</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">Request</span> <span class="kw">for</span> <span class="ident">native</span> <span class="ident">execution</span> <span class="ident">succeeded</span> (<span class="ident">native</span>: <span class="ident">polkadot</span><span class="op">-</span><span class="number">9900</span> (<span class="ident">parity</span><span class="op">-</span><span class="ident">polkadot</span><span class="op">-</span><span class="number">0</span>.<span class="ident">tx7</span>.<span class="ident">au0</span>), <span class="ident">chain</span>: <span class="ident">polkadot</span><span class="op">-</span><span class="number">9900</span> (<span class="ident">parity</span><span class="op">-</span><span class="ident">polkadot</span><span class="op">-</span><span class="number">0</span>.<span class="ident">tx7</span>.<span class="ident">au0</span>))</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Request for native execution succeeded (native: polkadot-9900 (parity-polkadot-0.tx7.au0), chain: polkadot-9900 (parity-polkadot-0.tx7.au0))</code></pre></div>
 <p>If you don’t have matching spec versions, then are doomed to execute wasm. In this case, you can
 manually overwrite the wasm code with your local runtime:</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">RUST_LOG</span><span class="op">=</span><span class="ident">runtime</span><span class="op">=</span><span class="ident">trace</span>,<span class="kw">try</span><span class="op">-</span><span class="ident">runtime::cli</span><span class="op">=</span><span class="ident">trace</span>,<span class="ident">executor</span><span class="op">=</span><span class="ident">trace</span> \
-    <span class="ident">cargo</span> <span class="ident">run</span> <span class="kw">try</span><span class="op">-</span><span class="ident">runtime</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">execution</span> <span class="ident">Wasm</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">chain</span> <span class="ident">polkadot</span><span class="op">-</span><span class="ident">dev</span> \
-    <span class="ident">execute</span><span class="op">-</span><span class="ident">block</span> \
-    <span class="ident">live</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io \</span>
-    <span class="op">-</span><span class="op">-</span><span class="ident">at</span> <span class="op">&lt;</span><span class="ident">block</span><span class="op">-</span><span class="ident">hash</span><span class="op">&gt;</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">overwrite</span><span class="op">-</span><span class="ident">wasm</span><span class="op">-</span><span class="ident">code</span></code></pre></div>
+<div class="example-wrap"><pre class="language-sh"><code>RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \
+    cargo run try-runtime \
+    --execution Wasm \
+    --chain polkadot-dev \
+    execute-block \
+    live \
+    --uri wss://rpc.polkadot.io \
+    --at &lt;block-hash&gt; \
+    --overwrite-wasm-code</code></pre></div>
 <p>For all of these blocks, the block with hash <code>&lt;block-hash&gt;</code> is being used, and the initial state
-is the state of the parent hash. This is because by omitting [<code>ExecuteBlockCmd::block_at</code>], the
+is the state of the parent hash. This is because by omitting <code>ExecuteBlockCmd::block_at</code>, the
 <code>--at</code> is used for both. This should be good enough for 99% of the cases. The only case where
 you need to specify <code>block-at</code> and <code>block-ws-uri</code> is with snapshots. Let’s say you have a file
 <code>snap</code> and you know it corresponds to the state of the parent block of <code>X</code>. Then you’d do:</p>
-
-<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="ident">RUST_LOG</span><span class="op">=</span><span class="ident">runtime</span><span class="op">=</span><span class="ident">trace</span>,<span class="kw">try</span><span class="op">-</span><span class="ident">runtime::cli</span><span class="op">=</span><span class="ident">trace</span>,<span class="ident">executor</span><span class="op">=</span><span class="ident">trace</span> \
-    <span class="ident">cargo</span> <span class="ident">run</span> <span class="kw">try</span><span class="op">-</span><span class="ident">runtime</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">execution</span> <span class="ident">Wasm</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">chain</span> <span class="ident">polkadot</span><span class="op">-</span><span class="ident">dev</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io \</span>
-    <span class="ident">execute</span><span class="op">-</span><span class="ident">block</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">block</span><span class="op">-</span><span class="ident">at</span> <span class="op">&lt;</span><span class="ident">x</span><span class="op">&gt;</span> \
-    <span class="op">-</span><span class="op">-</span><span class="ident">block</span><span class="op">-</span><span class="ident">ws</span><span class="op">-</span><span class="ident">uri</span> <span class="ident">wss</span>:<span class="comment">//rpc.polkadot.io \</span>
-    <span class="op">-</span><span class="op">-</span><span class="ident">overwrite</span><span class="op">-</span><span class="ident">wasm</span><span class="op">-</span><span class="ident">code</span> \
-    <span class="ident">snap</span> \
-    <span class="op">-</span><span class="ident">s</span> <span class="ident">snap</span> \</code></pre></div>
-</div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+<div class="example-wrap"><pre class="language-sh"><code>RUST_LOG=runtime=trace,try-runtime::cli=trace,executor=trace \
+    cargo run try-runtime \
+    --execution Wasm \
+    --chain polkadot-dev \
+    --uri wss://rpc.polkadot.io \
+    execute-block \
+    --block-at &lt;x&gt; \
+    --block-ws-uri wss://rpc.polkadot.io \
+    --overwrite-wasm-code \
+    snap \
+    -s snap \</code></pre></div></div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.SharedParams.html" title="try_runtime_cli::SharedParams struct">SharedParams</a></div><div class="item-right docblock-short"><p>Shared parameters of the <code>try-runtime</code> commands</p>
 </div><div class="item-left module-item"><a class="struct" href="struct.TryRuntimeCmd.html" title="try_runtime_cli::TryRuntimeCmd struct">TryRuntimeCmd</a></div><div class="item-right docblock-short"><p>Our <code>try-runtime</code> command.</p>
 </div></div><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
