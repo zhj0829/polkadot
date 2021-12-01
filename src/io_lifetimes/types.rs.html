@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;io-lifetimes-0.3.1&#x2F;src&#x2F;types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../io_lifetimes/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;io-lifetimes-0.3.3&#x2F;src&#x2F;types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../io_lifetimes/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -492,22 +492,6 @@
 <span id="492">492</span>
 <span id="493">493</span>
 <span id="494">494</span>
-<span id="495">495</span>
-<span id="496">496</span>
-<span id="497">497</span>
-<span id="498">498</span>
-<span id="499">499</span>
-<span id="500">500</span>
-<span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
-<span id="510">510</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::fmt</span>;
 <span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 <span class="kw">use</span> <span class="ident">std::mem::forget</span>;
@@ -518,12 +502,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">convert::TryFrom</span>,
-    <span class="ident">ffi::c_void</span>,
     <span class="ident">os::windows::io</span>::{
         <span class="ident">AsRawHandle</span>, <span class="ident">AsRawSocket</span>, <span class="ident">FromRawHandle</span>, <span class="ident">FromRawSocket</span>, <span class="ident">IntoRawHandle</span>, <span class="ident">IntoRawSocket</span>,
         <span class="ident">RawHandle</span>, <span class="ident">RawSocket</span>,
     },
-    <span class="ident">ptr::NonNull</span>,
 };
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">use</span> <span class="ident">winapi</span>::{<span class="ident">um::handleapi::INVALID_HANDLE_VALUE</span>, <span class="ident">um::winsock2::INVALID_SOCKET</span>};
@@ -567,7 +549,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BorrowedHandle</span><span class="op">&lt;</span><span class="lifetime">&#39;handle</span><span class="op">&gt;</span> {
-    <span class="ident">handle</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">c_void</span><span class="op">&gt;</span>,
+    <span class="ident">handle</span>: <span class="ident">RawHandle</span>,
     <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;handle</span> <span class="ident">OwnedHandle</span><span class="op">&gt;</span>,
 }
 
@@ -634,7 +616,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OwnedHandle</span> {
-    <span class="ident">handle</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">c_void</span><span class="op">&gt;</span>,
+    <span class="ident">handle</span>: <span class="ident">RawHandle</span>,
 }
 
 <span class="doccomment">/// An owned socket.</span>
@@ -675,7 +657,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HandleOrInvalid</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OwnedHandle</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HandleOrInvalid</span>(<span class="ident">OwnedHandle</span>);
 
 <span class="comment">// The Windows [`HANDLE`] type may be transferred across and shared between</span>
 <span class="comment">// thread boundaries (despite containing a `*mut void`, which in general isn&#39;t</span>
@@ -725,7 +707,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">borrow_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">RawHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">handle</span>.<span class="ident">is_null</span>());
         <span class="self">Self</span> {
-            <span class="ident">handle</span>: <span class="ident">NonNull::new_unchecked</span>(<span class="ident">handle</span>),
+            <span class="ident">handle</span>,
             <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
         }
     }
@@ -756,19 +738,8 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">handle_or_invalid</span>: <span class="ident">HandleOrInvalid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, ()<span class="op">&gt;</span> {
-        <span class="comment">// In theory, we ought to be able to assume that the pointer here is</span>
-        <span class="comment">// never null, use `OwnedHandle` rather than `Option&lt;OwnedHandle&gt;`, and</span>
-        <span class="comment">// obviate the the panic path here.  Unfortunately, Win32 documentation</span>
-        <span class="comment">// doesn&#39;t explicitly guarantee this anywhere.</span>
-        <span class="comment">//</span>
-        <span class="comment">// APIs like [`CreateFileW`] itself have `HANDLE` arguments where a</span>
-        <span class="comment">// null handle indicates an absent value, which wouldn&#39;t work if null</span>
-        <span class="comment">// were a valid handle value, so it seems very unlikely that it could</span>
-        <span class="comment">// ever return null. But who knows?</span>
-        <span class="comment">//</span>
-        <span class="comment">// [`CreateFileW`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew</span>
-        <span class="kw">let</span> <span class="ident">owned_handle</span> <span class="op">=</span> <span class="ident">handle_or_invalid</span>.<span class="number">0</span>.<span class="ident">expect</span>(<span class="string">&quot;A `HandleOrInvalid` was null!&quot;</span>);
-        <span class="kw">if</span> <span class="ident">owned_handle</span>.<span class="ident">handle</span>.<span class="ident">as_ptr</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">INVALID_HANDLE_VALUE</span> {
+        <span class="kw">let</span> <span class="ident">owned_handle</span> <span class="op">=</span> <span class="ident">handle_or_invalid</span>.<span class="number">0</span>;
+        <span class="kw">if</span> <span class="ident">owned_handle</span>.<span class="ident">handle</span> <span class="op">=</span><span class="op">=</span> <span class="ident">INVALID_HANDLE_VALUE</span> {
             <span class="prelude-val">Err</span>(())
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="ident">owned_handle</span>)
@@ -788,7 +759,7 @@
 <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">BorrowedHandle</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawHandle</span> {
-        <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">as_ptr</span>()
+        <span class="self">self</span>.<span class="ident">handle</span>
     }
 }
 
@@ -812,7 +783,7 @@
 <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">OwnedHandle</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawHandle</span> {
-        <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">as_ptr</span>()
+        <span class="self">self</span>.<span class="ident">handle</span>
     }
 }
 
@@ -838,7 +809,7 @@
 <span class="kw">impl</span> <span class="ident">IntoRawHandle</span> <span class="kw">for</span> <span class="ident">OwnedHandle</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawHandle</span> {
-        <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handle</span>;
         <span class="ident">forget</span>(<span class="self">self</span>);
         <span class="ident">handle</span>
     }
@@ -880,9 +851,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">RawHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">handle</span>.<span class="ident">is_null</span>());
-        <span class="self">Self</span> {
-            <span class="ident">handle</span>: <span class="ident">NonNull::new_unchecked</span>(<span class="ident">handle</span>),
-        }
+        <span class="self">Self</span> { <span class="ident">handle</span> }
     }
 }
 
@@ -920,8 +889,7 @@
     <span class="doccomment">/// [here]: https://devblogs.microsoft.com/oldnewthing/20040302-00/?p=40443</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">RawHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="comment">// We require non-null here to catch errors earlier.</span>
-        <span class="self">Self</span>(<span class="prelude-val">Some</span>(<span class="ident">OwnedHandle::from_raw_handle</span>(<span class="ident">handle</span>)))
+        <span class="self">Self</span>(<span class="ident">OwnedHandle::from_raw_handle</span>(<span class="ident">handle</span>))
     }
 }
 
@@ -948,7 +916,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">winapi::um::handleapi::CloseHandle</span>(<span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">as_ptr</span>());
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">winapi::um::handleapi::CloseHandle</span>(<span class="self">self</span>.<span class="ident">handle</span>);
         }
     }
 }

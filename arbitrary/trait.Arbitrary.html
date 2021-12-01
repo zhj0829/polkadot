@@ -35,7 +35,7 @@ arbitrary = { version = &quot;1&quot;, features = [&quot;derive&quot;] }</code><
 <p>Implementing <code>Arbitrary</code> mostly involves nested calls to other <code>Arbitrary</code>
 arbitrary implementations for each of your <code>struct</code> or <code>enum</code>’s members. But
 sometimes you need some amount of raw data, or you need to generate a
-variably-sized collection type, or you something of that sort. The
+variably-sized collection type, or something of that sort. The
 <a href="struct.Unstructured.html" title="crate::Unstructured"><code>Unstructured</code></a> type helps you with these tasks.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">arbitrary</span>::{<span class="ident">Arbitrary</span>, <span class="prelude-ty">Result</span>, <span class="ident">Unstructured</span>};

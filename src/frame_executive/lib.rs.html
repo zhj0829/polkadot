@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;4bef50f&#x2F;frame&#x2F;executive&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../frame_executive/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;b6c1c1b&#x2F;frame&#x2F;executive&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../frame_executive/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1465,22 +1465,6 @@
 <span id="1465">1465</span>
 <span id="1466">1466</span>
 <span id="1467">1467</span>
-<span id="1468">1468</span>
-<span id="1469">1469</span>
-<span id="1470">1470</span>
-<span id="1471">1471</span>
-<span id="1472">1472</span>
-<span id="1473">1473</span>
-<span id="1474">1474</span>
-<span id="1475">1475</span>
-<span id="1476">1476</span>
-<span id="1477">1477</span>
-<span id="1478">1478</span>
-<span id="1479">1479</span>
-<span id="1480">1480</span>
-<span id="1481">1481</span>
-<span id="1482">1482</span>
-<span id="1483">1483</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2017-2021 Parity Technologies (UK) Ltd.</span>
@@ -1542,7 +1526,7 @@
 <span class="doccomment">//! # type Context = frame_system::ChainContext&lt;Runtime&gt;;</span>
 <span class="doccomment">//! # pub type Block = generic::Block&lt;Header, UncheckedExtrinsic&gt;;</span>
 <span class="doccomment">//! # pub type Balances = u64;</span>
-<span class="doccomment">//! # pub type AllPallets = u64;</span>
+<span class="doccomment">//! # pub type AllPalletsWithSystem = u64;</span>
 <span class="doccomment">//! # pub enum Runtime {};</span>
 <span class="doccomment">//! # use sp_runtime::transaction_validity::{</span>
 <span class="doccomment">//! #    TransactionValidity, UnknownTransaction, TransactionSource,</span>
@@ -1556,7 +1540,7 @@
 <span class="doccomment">//! #     }</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! /// Executive: handles dispatch to the various modules.</span>
-<span class="doccomment">//! pub type Executive = executive::Executive&lt;Runtime, Block, Context, Runtime, AllPallets&gt;;</span>
+<span class="doccomment">//! pub type Executive = executive::Executive&lt;Runtime, Block, Context, Runtime, AllPalletsWithSystem&gt;;</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ### Custom `OnRuntimeUpgrade` logic</span>
@@ -1573,7 +1557,7 @@
 <span class="doccomment">//! # type Context = frame_system::ChainContext&lt;Runtime&gt;;</span>
 <span class="doccomment">//! # pub type Block = generic::Block&lt;Header, UncheckedExtrinsic&gt;;</span>
 <span class="doccomment">//! # pub type Balances = u64;</span>
-<span class="doccomment">//! # pub type AllPallets = u64;</span>
+<span class="doccomment">//! # pub type AllPalletsWithSystem = u64;</span>
 <span class="doccomment">//! # pub enum Runtime {};</span>
 <span class="doccomment">//! # use sp_runtime::transaction_validity::{</span>
 <span class="doccomment">//! #    TransactionValidity, UnknownTransaction, TransactionSource,</span>
@@ -1594,7 +1578,7 @@
 <span class="doccomment">//!     }</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! pub type Executive = executive::Executive&lt;Runtime, Block, Context, Runtime, AllPallets, CustomOnRuntimeUpgrade&gt;;</span>
+<span class="doccomment">//! pub type Executive = executive::Executive&lt;Runtime, Block, Context, Runtime, AllPalletsWithSystem, CustomOnRuntimeUpgrade&gt;;</span>
 <span class="doccomment">//! ```</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
@@ -1630,11 +1614,26 @@
 <span class="doccomment">/// - `Block`: The block type of the runtime</span>
 <span class="doccomment">/// - `Context`: The context that is used when checking an extrinsic.</span>
 <span class="doccomment">/// - `UnsignedValidator`: The unsigned transaction validator of the runtime.</span>
-<span class="doccomment">/// - `AllPallets`: Tuple that contains all modules. Will be used to call e.g. `on_initialize`.</span>
+<span class="doccomment">/// - `AllPalletsWithSystem`: Tuple that contains all pallets including frame system pallet. Will be</span>
+<span class="doccomment">///   used to call hooks e.g. `on_initialize`.</span>
 <span class="doccomment">/// - `OnRuntimeUpgrade`: Custom logic that should be called after a runtime upgrade. Modules are</span>
-<span class="doccomment">///   already called by `AllPallets`. It will be called before all modules will be called.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Executive</span><span class="op">&lt;</span><span class="ident">System</span>, <span class="ident">Block</span>, <span class="ident">Context</span>, <span class="ident">UnsignedValidator</span>, <span class="ident">AllPallets</span>, <span class="ident">OnRuntimeUpgrade</span> <span class="op">=</span> ()<span class="op">&gt;</span>(
-	<span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="ident">System</span>, <span class="ident">Block</span>, <span class="ident">Context</span>, <span class="ident">UnsignedValidator</span>, <span class="ident">AllPallets</span>, <span class="ident">OnRuntimeUpgrade</span>)<span class="op">&gt;</span>,
+<span class="doccomment">///   already called by `AllPalletsWithSystem`. It will be called before all modules will be called.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Executive</span><span class="op">&lt;</span>
+	<span class="ident">System</span>,
+	<span class="ident">Block</span>,
+	<span class="ident">Context</span>,
+	<span class="ident">UnsignedValidator</span>,
+	<span class="ident">AllPalletsWithSystem</span>,
+	<span class="ident">OnRuntimeUpgrade</span> <span class="op">=</span> (),
+<span class="op">&gt;</span>(
+	<span class="ident">PhantomData</span><span class="op">&lt;</span>(
+		<span class="ident">System</span>,
+		<span class="ident">Block</span>,
+		<span class="ident">Context</span>,
+		<span class="ident">UnsignedValidator</span>,
+		<span class="ident">AllPalletsWithSystem</span>,
+		<span class="ident">OnRuntimeUpgrade</span>,
+	)<span class="op">&gt;</span>,
 );
 
 <span class="kw">impl</span><span class="op">&lt;</span>
@@ -1642,14 +1641,14 @@
 		<span class="ident">Block</span>: <span class="ident">traits::Block</span><span class="op">&lt;</span><span class="ident">Header</span> <span class="op">=</span> <span class="ident">System::Header</span>, <span class="ident">Hash</span> <span class="op">=</span> <span class="ident">System::Hash</span><span class="op">&gt;</span>,
 		<span class="ident">Context</span>: <span class="ident">Default</span>,
 		<span class="ident">UnsignedValidator</span>,
-		<span class="ident">AllPallets</span>: <span class="ident">OnRuntimeUpgrade</span>
+		<span class="ident">AllPalletsWithSystem</span>: <span class="ident">OnRuntimeUpgrade</span>
 			<span class="op">+</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">OnIdle</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">OnFinalize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">OffchainWorker</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>,
 		<span class="ident">COnRuntimeUpgrade</span>: <span class="ident">OnRuntimeUpgrade</span>,
 	<span class="op">&gt;</span> <span class="ident">ExecuteBlock</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>
-	<span class="kw">for</span> <span class="ident">Executive</span><span class="op">&lt;</span><span class="ident">System</span>, <span class="ident">Block</span>, <span class="ident">Context</span>, <span class="ident">UnsignedValidator</span>, <span class="ident">AllPallets</span>, <span class="ident">COnRuntimeUpgrade</span><span class="op">&gt;</span>
+	<span class="kw">for</span> <span class="ident">Executive</span><span class="op">&lt;</span><span class="ident">System</span>, <span class="ident">Block</span>, <span class="ident">Context</span>, <span class="ident">UnsignedValidator</span>, <span class="ident">AllPalletsWithSystem</span>, <span class="ident">COnRuntimeUpgrade</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Block::Extrinsic</span>: <span class="ident">Checkable</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Codec</span>,
 	<span class="ident">CheckedOf</span><span class="op">&lt;</span><span class="ident">Block::Extrinsic</span>, <span class="ident">Context</span><span class="op">&gt;</span>: <span class="ident">Applyable</span> <span class="op">+</span> <span class="ident">GetDispatchInfo</span>,
@@ -1664,7 +1663,7 @@
 			<span class="ident">Block</span>,
 			<span class="ident">Context</span>,
 			<span class="ident">UnsignedValidator</span>,
-			<span class="ident">AllPallets</span>,
+			<span class="ident">AllPalletsWithSystem</span>,
 			<span class="ident">COnRuntimeUpgrade</span>,
 		<span class="op">&gt;</span><span class="ident">::execute_block</span>(<span class="ident">block</span>);
 	}
@@ -1675,13 +1674,13 @@
 		<span class="ident">Block</span>: <span class="ident">traits::Block</span><span class="op">&lt;</span><span class="ident">Header</span> <span class="op">=</span> <span class="ident">System::Header</span>, <span class="ident">Hash</span> <span class="op">=</span> <span class="ident">System::Hash</span><span class="op">&gt;</span>,
 		<span class="ident">Context</span>: <span class="ident">Default</span>,
 		<span class="ident">UnsignedValidator</span>,
-		<span class="ident">AllPallets</span>: <span class="ident">OnRuntimeUpgrade</span>
+		<span class="ident">AllPalletsWithSystem</span>: <span class="ident">OnRuntimeUpgrade</span>
 			<span class="op">+</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">OnIdle</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">OnFinalize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>
 			<span class="op">+</span> <span class="ident">OffchainWorker</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span>,
 		<span class="ident">COnRuntimeUpgrade</span>: <span class="ident">OnRuntimeUpgrade</span>,
-	<span class="op">&gt;</span> <span class="ident">Executive</span><span class="op">&lt;</span><span class="ident">System</span>, <span class="ident">Block</span>, <span class="ident">Context</span>, <span class="ident">UnsignedValidator</span>, <span class="ident">AllPallets</span>, <span class="ident">COnRuntimeUpgrade</span><span class="op">&gt;</span>
+	<span class="op">&gt;</span> <span class="ident">Executive</span><span class="op">&lt;</span><span class="ident">System</span>, <span class="ident">Block</span>, <span class="ident">Context</span>, <span class="ident">UnsignedValidator</span>, <span class="ident">AllPalletsWithSystem</span>, <span class="ident">COnRuntimeUpgrade</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Block::Extrinsic</span>: <span class="ident">Checkable</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Codec</span>,
 	<span class="ident">CheckedOf</span><span class="op">&lt;</span><span class="ident">Block::Extrinsic</span>, <span class="ident">Context</span><span class="op">&gt;</span>: <span class="ident">Applyable</span> <span class="op">+</span> <span class="ident">GetDispatchInfo</span>,
@@ -1692,14 +1691,7 @@
 {
 	<span class="doccomment">/// Execute all `OnRuntimeUpgrade` of this runtime, and return the aggregate weight.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">execute_on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">frame_support::weights::Weight</span> {
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span> <span class="op">=</span> <span class="number">0</span>;
-		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(<span class="ident">COnRuntimeUpgrade::on_runtime_upgrade</span>());
-		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(
-			<span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::on_runtime_upgrade</span>(),
-		);
-		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(<span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::on_runtime_upgrade</span>());
-
-		<span class="ident">weight</span>
+		<span class="op">&lt;</span>(<span class="ident">COnRuntimeUpgrade</span>, <span class="ident">AllPalletsWithSystem</span>) <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::on_runtime_upgrade</span>()
 	}
 
 	<span class="doccomment">/// Execute given block, but don&#39;t do any of the `final_checks`.</span>
@@ -1738,19 +1730,10 @@
 	<span class="doccomment">/// This should only be used for testing.</span>
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>)]</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">frame_support::weights::Weight</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
-		<span class="op">&lt;</span>
-			(<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span>, <span class="ident">COnRuntimeUpgrade</span>, <span class="ident">AllPallets</span>)
-			<span class="kw">as</span>
-			<span class="ident">OnRuntimeUpgrade</span>
-		<span class="op">&gt;</span><span class="ident">::pre_upgrade</span>().<span class="ident">unwrap</span>();
-
+		<span class="op">&lt;</span>(<span class="ident">COnRuntimeUpgrade</span>, <span class="ident">AllPalletsWithSystem</span>) <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::pre_upgrade</span>().<span class="ident">unwrap</span>();
 		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::execute_on_runtime_upgrade</span>();
 
-		<span class="op">&lt;</span>
-			(<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span>, <span class="ident">COnRuntimeUpgrade</span>, <span class="ident">AllPallets</span>)
-			<span class="kw">as</span>
-			<span class="ident">OnRuntimeUpgrade</span>
-		<span class="op">&gt;</span><span class="ident">::post_upgrade</span>().<span class="ident">unwrap</span>();
+		<span class="op">&lt;</span>(<span class="ident">COnRuntimeUpgrade</span>, <span class="ident">AllPalletsWithSystem</span>) <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::post_upgrade</span>().<span class="ident">unwrap</span>();
 
 		<span class="prelude-val">Ok</span>(<span class="ident">weight</span>)
 	}
@@ -1788,12 +1771,9 @@
 			<span class="ident">digest</span>,
 			<span class="ident">frame_system::InitKind::Full</span>,
 		);
-		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(<span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span>
+		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(<span class="op">&lt;</span><span class="ident">AllPalletsWithSystem</span> <span class="kw">as</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span>
 			<span class="ident">System::BlockNumber</span>,
 		<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="kw-2">*</span><span class="ident">block_number</span>));
-		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(
-			<span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="kw-2">*</span><span class="ident">block_number</span>),
-		);
 		<span class="ident">weight</span> <span class="op">=</span> <span class="ident">weight</span>.<span class="ident">saturating_add</span>(
 			<span class="op">&lt;</span><span class="ident">System::BlockWeights</span> <span class="kw">as</span> <span class="ident">frame_support::traits::Get</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>().<span class="ident">base_block</span>,
 		);
@@ -1898,30 +1878,20 @@
 	<span class="kw">fn</span> <span class="ident">idle_and_finalize_hook</span>(<span class="ident">block_number</span>: <span class="ident">NumberFor</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>) {
 		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::block_weight</span>();
 		<span class="kw">let</span> <span class="ident">max_weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">System::BlockWeights</span> <span class="kw">as</span> <span class="ident">frame_support::traits::Get</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>().<span class="ident">max_block</span>;
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining_weight</span> <span class="op">=</span> <span class="ident">max_weight</span>.<span class="ident">saturating_sub</span>(<span class="ident">weight</span>.<span class="ident">total</span>());
+		<span class="kw">let</span> <span class="ident">remaining_weight</span> <span class="op">=</span> <span class="ident">max_weight</span>.<span class="ident">saturating_sub</span>(<span class="ident">weight</span>.<span class="ident">total</span>());
 
 		<span class="kw">if</span> <span class="ident">remaining_weight</span> <span class="op">&gt;</span> <span class="number">0</span> {
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">used_weight</span> <span class="op">=</span>
-				<span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">OnIdle</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_idle</span>(
-					<span class="ident">block_number</span>,
-					<span class="ident">remaining_weight</span>,
-				);
-			<span class="ident">remaining_weight</span> <span class="op">=</span> <span class="ident">remaining_weight</span>.<span class="ident">saturating_sub</span>(<span class="ident">used_weight</span>);
-			<span class="ident">used_weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OnIdle</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_idle</span>(
+			<span class="kw">let</span> <span class="ident">used_weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">AllPalletsWithSystem</span> <span class="kw">as</span> <span class="ident">OnIdle</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_idle</span>(
 				<span class="ident">block_number</span>,
 				<span class="ident">remaining_weight</span>,
-			)
-			.<span class="ident">saturating_add</span>(<span class="ident">used_weight</span>);
+			);
 			<span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::register_extra_weight_unchecked</span>(
 				<span class="ident">used_weight</span>,
 				<span class="ident">DispatchClass::Mandatory</span>,
 			);
 		}
 
-		<span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">OnFinalize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_finalize</span>(
-			<span class="ident">block_number</span>,
-		);
-		<span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OnFinalize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_finalize</span>(<span class="ident">block_number</span>);
+		<span class="op">&lt;</span><span class="ident">AllPalletsWithSystem</span> <span class="kw">as</span> <span class="ident">OnFinalize</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_finalize</span>(<span class="ident">block_number</span>);
 	}
 
 	<span class="doccomment">/// Apply extrinsic outside of the block execution function.</span>
@@ -2050,7 +2020,9 @@
 		<span class="comment">// as well.</span>
 		<span class="ident">frame_system::BlockHash</span>::<span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="ident">header</span>.<span class="ident">number</span>(), <span class="ident">header</span>.<span class="ident">hash</span>());
 
-		<span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OffchainWorker</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::offchain_worker</span>(<span class="kw-2">*</span><span class="ident">header</span>.<span class="ident">number</span>())
+		<span class="op">&lt;</span><span class="ident">AllPalletsWithSystem</span> <span class="kw">as</span> <span class="ident">OffchainWorker</span><span class="op">&lt;</span><span class="ident">System::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::offchain_worker</span>(
+			<span class="kw-2">*</span><span class="ident">header</span>.<span class="ident">number</span>(),
+		)
 	}
 }
 
@@ -2332,7 +2304,7 @@
 		<span class="ident">Block</span><span class="op">&lt;</span><span class="ident">TestXt</span><span class="op">&gt;</span>,
 		<span class="ident">ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 		<span class="ident">Runtime</span>,
-		<span class="ident">AllPallets</span>,
+		<span class="ident">AllPalletsWithSystem</span>,
 		<span class="ident">CustomOnRuntimeUpgrade</span>,
 	<span class="op">&gt;</span>;
 
@@ -2843,23 +2815,19 @@
 			));
 
 			<span class="comment">// All weights that show up in the `initialize_block_impl`</span>
-			<span class="kw">let</span> <span class="ident">frame_system_upgrade_weight</span> <span class="op">=</span> <span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::on_runtime_upgrade</span>();
 			<span class="kw">let</span> <span class="ident">custom_runtime_upgrade_weight</span> <span class="op">=</span> <span class="ident">CustomOnRuntimeUpgrade::on_runtime_upgrade</span>();
-			<span class="kw">let</span> <span class="ident">runtime_upgrade_weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::on_runtime_upgrade</span>();
-			<span class="kw">let</span> <span class="ident">frame_system_on_initialize_weight</span> <span class="op">=</span>
-				<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">block_number</span>);
+			<span class="kw">let</span> <span class="ident">runtime_upgrade_weight</span> <span class="op">=</span>
+				<span class="op">&lt;</span><span class="ident">AllPalletsWithSystem</span> <span class="kw">as</span> <span class="ident">OnRuntimeUpgrade</span><span class="op">&gt;</span><span class="ident">::on_runtime_upgrade</span>();
 			<span class="kw">let</span> <span class="ident">on_initialize_weight</span> <span class="op">=</span>
-				<span class="op">&lt;</span><span class="ident">AllPallets</span> <span class="kw">as</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">block_number</span>);
+				<span class="op">&lt;</span><span class="ident">AllPalletsWithSystem</span> <span class="kw">as</span> <span class="ident">OnInitialize</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::on_initialize</span>(<span class="ident">block_number</span>);
 			<span class="kw">let</span> <span class="ident">base_block_weight</span> <span class="op">=</span>
 				<span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::BlockWeights::get</span>().<span class="ident">base_block</span>;
 
 			<span class="comment">// Weights are recorded correctly</span>
 			<span class="macro">assert_eq!</span>(
 				<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::block_weight</span>().<span class="ident">total</span>(),
-				<span class="ident">frame_system_upgrade_weight</span> <span class="op">+</span>
-					<span class="ident">custom_runtime_upgrade_weight</span> <span class="op">+</span>
+				<span class="ident">custom_runtime_upgrade_weight</span> <span class="op">+</span>
 					<span class="ident">runtime_upgrade_weight</span> <span class="op">+</span>
-					<span class="ident">frame_system_on_initialize_weight</span> <span class="op">+</span>
 					<span class="ident">on_initialize_weight</span> <span class="op">+</span> <span class="ident">base_block_weight</span>,
 			);
 		});

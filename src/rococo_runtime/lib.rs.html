@@ -1679,6 +1679,8 @@
 <span id="1679">1679</span>
 <span id="1680">1680</span>
 <span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1838,7 +1840,7 @@
 	<span class="ident">Block</span>,
 	<span class="ident">frame_system::ChainContext</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>,
 	<span class="ident">Runtime</span>,
-	<span class="ident">AllPallets</span>,
+	<span class="ident">AllPalletsWithSystem</span>,
 	(<span class="ident">SessionHistoricalModulePrefixMigration</span>,),
 <span class="op">&gt;</span>;
 <span class="doccomment">/// The payload being signed in transactions.</span>
@@ -1885,7 +1887,7 @@
 	{
 		<span class="ident">System</span>: <span class="ident">frame_system</span>,
 
-		<span class="comment">// Must be before session.</span>
+		<span class="comment">// Babe must be before session.</span>
 		<span class="ident">Babe</span>: <span class="ident">pallet_babe</span>,
 
 		<span class="ident">Timestamp</span>: <span class="ident">pallet_timestamp</span>,
@@ -1894,6 +1896,8 @@
 		<span class="ident">TransactionPayment</span>: <span class="ident">pallet_transaction_payment</span>,
 
 		<span class="comment">// Consensus support.</span>
+		<span class="comment">// Authorship must be before session in order to note author in the correct session for</span>
+		<span class="comment">// im-online.</span>
 		<span class="ident">Authorship</span>: <span class="ident">pallet_authorship</span>,
 		<span class="ident">Offences</span>: <span class="ident">pallet_offences</span>,
 		<span class="ident">Historical</span>: <span class="ident">session_historical</span>,

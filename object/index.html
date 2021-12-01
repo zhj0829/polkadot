@@ -3,7 +3,7 @@
 across platforms. It supports reading object files and executable files,
 and writing object files and some executable files.</p>
 <h2 id="raw-struct-definitions" class="section-header"><a href="#raw-struct-definitions">Raw struct definitions</a></h2>
-<p>Raw structs are defined for: <a href="elf/index.html">ELF</a>, <a href="macho/index.html">Mach-O</a>, <a href="pe/index.html">PE/COFF</a>, [archive].
+<p>Raw structs are defined for: <a href="elf/index.html">ELF</a>, <a href="macho/index.html">Mach-O</a>, <a href="pe/index.html">PE/COFF</a>, <a href="archive/index.html" title="archive">archive</a>.
 Types and traits for zerocopy support are defined in <a href="pod/index.html" title="pod">pod</a> and <a href="endian/index.html" title="endian">endian</a>.</p>
 <h2 id="unified-read-api" class="section-header"><a href="#unified-read-api">Unified read API</a></h2>
 <p>The <a href="read/trait.Object.html" title="read::Object">read::Object</a> trait defines the unified interace. This trait is implemented
@@ -36,7 +36,8 @@ between 32-bit and 64-bit versions of the file format.</p>
 }</code></pre></div>
 </div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
 <div class="item-table"><div class="item-left import-item"><code>pub use <a class="mod" href="endian/index.html" title="mod object::endian">endian</a>::*;</code></div><div class="item-right docblock-short"></div><div class="item-left import-item"><code>pub use <a class="mod" href="pod/index.html" title="mod object::pod">pod</a>::*;</code></div><div class="item-right docblock-short"></div><div class="item-left import-item"><code>pub use <a class="mod" href="read/index.html" title="mod object::read">read</a>::*;</code></div><div class="item-right docblock-short"></div></div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="mod" href="elf/index.html" title="object::elf mod">elf</a></div><div class="item-right docblock-short"><p>ELF definitions.</p>
+<div class="item-table"><div class="item-left module-item"><a class="mod" href="archive/index.html" title="object::archive mod">archive</a></div><div class="item-right docblock-short"><p>Archive definitions.</p>
+</div><div class="item-left module-item"><a class="mod" href="elf/index.html" title="object::elf mod">elf</a></div><div class="item-right docblock-short"><p>ELF definitions.</p>
 </div><div class="item-left module-item"><a class="mod" href="endian/index.html" title="object::endian mod">endian</a></div><div class="item-right docblock-short"><p>Types for compile-time and run-time endianness.</p>
 </div><div class="item-left module-item"><a class="mod" href="macho/index.html" title="object::macho mod">macho</a></div><div class="item-right docblock-short"><p>Mach-O definitions.</p>
 </div><div class="item-left module-item"><a class="mod" href="pe/index.html" title="object::pe mod">pe</a></div><div class="item-right docblock-short"><p>PE/COFF definitions.</p>

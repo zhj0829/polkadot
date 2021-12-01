@@ -47,14 +47,14 @@ create <a href="https://doc.rust-lang.org/nightly/nomicon/unbounded-lifetimes.ht
 <p>On versions of rust &gt;= 1.46, the <code>from_repr</code> function is marked <code>const</code>.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">strum_macros::FromRepr</span>;
- 
+
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">FromRepr</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u8</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Number</span> {
     <span class="ident">One</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="ident">Three</span> <span class="op">=</span> <span class="number">3</span>,
 }
- 
+
 <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">number_from_repr</span>(<span class="ident">d</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Number</span><span class="op">&gt;</span> {
     <span class="ident">Number::from_repr</span>(<span class="ident">d</span>)
 }

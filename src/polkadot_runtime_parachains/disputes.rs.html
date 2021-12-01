@@ -4632,8 +4632,8 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mock</span>::{
-		<span class="ident">new_test_ext</span>, <span class="ident">AccountId</span>, <span class="ident">AllPallets</span>, <span class="ident">Initializer</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">System</span>, <span class="ident">Test</span>,
-		<span class="ident">PUNISH_VALIDATORS_AGAINST</span>, <span class="ident">PUNISH_VALIDATORS_FOR</span>, <span class="ident">PUNISH_VALIDATORS_INCONCLUSIVE</span>,
+		<span class="ident">new_test_ext</span>, <span class="ident">AccountId</span>, <span class="ident">AllPalletsWithSystem</span>, <span class="ident">Initializer</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">System</span>,
+		<span class="ident">Test</span>, <span class="ident">PUNISH_VALIDATORS_AGAINST</span>, <span class="ident">PUNISH_VALIDATORS_FOR</span>, <span class="ident">PUNISH_VALIDATORS_INCONCLUSIVE</span>,
 		<span class="ident">REWARD_VALIDATORS</span>,
 	};
 	<span class="kw">use</span> <span class="ident">frame_support</span>::{
@@ -4664,12 +4664,12 @@
 				<span class="comment">// circumvent requirement to have bitfields and headers in block for testing purposes</span>
 				<span class="ident"><span class="kw">crate</span>::paras_inherent::Included</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::set</span>(<span class="prelude-val">Some</span>(()));
 
-				<span class="ident">AllPallets::on_finalize</span>(<span class="ident">b</span>);
+				<span class="ident">AllPalletsWithSystem::on_finalize</span>(<span class="ident">b</span>);
 				<span class="ident">System::finalize</span>();
 			}
 
 			<span class="ident">System::initialize</span>(<span class="kw-2">&amp;</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>), <span class="kw-2">&amp;</span><span class="ident">Default::default</span>(), <span class="kw-2">&amp;</span><span class="ident">Default::default</span>(), <span class="ident">InitKind::Full</span>);
-			<span class="ident">AllPallets::on_initialize</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>);
+			<span class="ident">AllPalletsWithSystem::on_initialize</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>);
 
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">new_session</span>) <span class="op">=</span> <span class="ident">new_session</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>) {
 				<span class="ident">Initializer::test_trigger_on_new_session</span>(
