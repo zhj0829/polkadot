@@ -2086,14 +2086,6 @@
 <span id="2086">2086</span>
 <span id="2087">2087</span>
 <span id="2088">2088</span>
-<span id="2089">2089</span>
-<span id="2090">2090</span>
-<span id="2091">2091</span>
-<span id="2092">2092</span>
-<span id="2093">2093</span>
-<span id="2094">2094</span>
-<span id="2095">2095</span>
-<span id="2096">2096</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2146,13 +2138,13 @@
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">match_type</span>, <span class="ident">parameter_types</span>,
 	<span class="ident">traits</span>::{
-		<span class="ident">Contains</span>, <span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>, <span class="ident">KeyOwnerProofSystem</span>, <span class="ident">LockIdentifier</span>, <span class="ident">Nothing</span>,
-		<span class="ident">OnRuntimeUpgrade</span>, <span class="ident">PrivilegeCmp</span>,
+		<span class="ident">Contains</span>, <span class="ident">EnsureOneOf</span>, <span class="ident">Everything</span>, <span class="ident">InstanceFilter</span>, <span class="ident">KeyOwnerProofSystem</span>, <span class="ident">LockIdentifier</span>,
+		<span class="ident">Nothing</span>, <span class="ident">OnRuntimeUpgrade</span>, <span class="ident">PrivilegeCmp</span>,
 	},
 	<span class="ident">weights::Weight</span>,
 	<span class="ident">PalletId</span>, <span class="ident">RuntimeDebug</span>,
 };
-<span class="kw">use</span> <span class="ident">frame_system</span>::{<span class="ident">EnsureOneOf</span>, <span class="ident">EnsureRoot</span>};
+<span class="kw">use</span> <span class="ident">frame_system::EnsureRoot</span>;
 <span class="kw">use</span> <span class="ident">pallet_grandpa</span>::{<span class="ident">fg_primitives</span>, <span class="ident">AuthorityId</span> <span class="kw">as</span> <span class="ident">GrandpaId</span>};
 <span class="kw">use</span> <span class="ident">pallet_im_online::sr25519::AuthorityId</span> <span class="kw">as</span> <span class="ident">ImOnlineId</span>;
 <span class="kw">use</span> <span class="ident">pallet_mmr_primitives</span> <span class="kw">as</span> <span class="ident">mmr</span>;
@@ -2246,7 +2238,6 @@
 }
 
 <span class="kw">type</span> <span class="ident">MoreThanHalfCouncil</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
 	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">pallet_collective::EnsureProportionMoreThan</span><span class="op">&lt;</span><span class="ident">_1</span>, <span class="ident">_2</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>;
@@ -2289,7 +2280,6 @@
 }
 
 <span class="kw">type</span> <span class="ident">ScheduleOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
 	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_1</span>, <span class="ident">_2</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>;
@@ -2524,7 +2514,6 @@
 	<span class="op">&gt;</span>;
 	<span class="kw">type</span> <span class="ident">BenchmarkingConfig</span> <span class="op">=</span> <span class="ident">runtime_common::elections::BenchmarkConfig</span>;
 	<span class="kw">type</span> <span class="ident">ForceOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-		<span class="ident">AccountId</span>,
 		<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 		<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_2</span>, <span class="ident">_3</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 	<span class="op">&gt;</span>;
@@ -2617,7 +2606,6 @@
 }
 
 <span class="kw">type</span> <span class="ident">SlashCancelOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
 	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_1</span>, <span class="ident">_2</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>;
@@ -2698,7 +2686,6 @@
 	<span class="kw">type</span> <span class="ident">FastTrackVotingPeriod</span> <span class="op">=</span> <span class="ident">FastTrackVotingPeriod</span>;
 	<span class="comment">// To cancel a proposal which has been passed, 2/3 of the council must agree to it.</span>
 	<span class="kw">type</span> <span class="ident">CancellationOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-		<span class="ident">AccountId</span>,
 		<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 		<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_2</span>, <span class="ident">_3</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 	<span class="op">&gt;</span>;
@@ -2706,7 +2693,6 @@
 	<span class="comment">// To cancel a proposal before it has been passed, the technical committee must be unanimous or</span>
 	<span class="comment">// Root must agree.</span>
 	<span class="kw">type</span> <span class="ident">CancelProposalOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-		<span class="ident">AccountId</span>,
 		<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 		<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_1</span>, <span class="ident">_1</span>, <span class="ident">AccountId</span>, <span class="ident">TechnicalCollective</span><span class="op">&gt;</span>,
 	<span class="op">&gt;</span>;
@@ -2832,7 +2818,6 @@
 }
 
 <span class="kw">type</span> <span class="ident">ApproveOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
 	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_3</span>, <span class="ident">_5</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>;
@@ -3374,7 +3359,6 @@
 }
 
 <span class="kw">type</span> <span class="ident">AuctionInitiate</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
-	<span class="ident">AccountId</span>,
 	<span class="ident">EnsureRoot</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">pallet_collective::EnsureProportionAtLeast</span><span class="op">&lt;</span><span class="ident">_2</span>, <span class="ident">_3</span>, <span class="ident">AccountId</span>, <span class="ident">CouncilCollective</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span>;
