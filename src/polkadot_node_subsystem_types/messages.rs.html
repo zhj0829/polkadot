@@ -863,6 +863,38 @@
 <span id="863">863</span>
 <span id="864">864</span>
 <span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -958,6 +990,26 @@
 <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Validation failed with {0:?}&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ValidationFailed</span>(<span class="kw">pub</span> <span class="ident">String</span>);
 
+<span class="doccomment">/// The outcome of the candidate-validation&#39;s PVF pre-check request.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PreCheckOutcome</span> {
+	<span class="doccomment">/// The PVF has been compiled successfully within the given constraints.</span>
+	<span class="ident">Valid</span>,
+	<span class="doccomment">/// The PVF could not be compiled. This variant is used when the candidate-validation subsystem</span>
+	<span class="doccomment">/// can be sure that the PVF is invalid. To give a couple of examples: a PVF that cannot be</span>
+	<span class="doccomment">/// decompressed or that does not represent a structurally valid WebAssembly file.</span>
+	<span class="ident">Invalid</span>,
+	<span class="doccomment">/// This variant is used when the PVF cannot be compiled but for other reasons that are not</span>
+	<span class="doccomment">/// included into [`PreCheckOutcome::Invalid`]. This variant can indicate that the PVF in</span>
+	<span class="doccomment">/// question is invalid, however it is not necessary that PVF that received this judgement</span>
+	<span class="doccomment">/// is invalid.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// For example, if during compilation the preparation worker was killed we cannot be sure why</span>
+	<span class="doccomment">/// it happened: because the PVF was malicious made the worker to use too much memory or its</span>
+	<span class="doccomment">/// because the host machine is under severe memory pressure and it decided to kill the worker.</span>
+	<span class="ident">Failed</span>,
+}
+
 <span class="doccomment">/// Messages received by the Validation subsystem.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Validation Requests</span>
@@ -1002,6 +1054,17 @@
 		<span class="ident">Duration</span>,
 		<span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidationResult</span>, <span class="ident">ValidationFailed</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	),
+	<span class="doccomment">/// Try to compile the given validation code and send back</span>
+	<span class="doccomment">/// the outcome.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// The validation code is specified by the hash and will be queried from the runtime API at the</span>
+	<span class="doccomment">/// given relay-parent.</span>
+	<span class="ident">PreCheck</span>(
+		<span class="comment">// Relay-parent</span>
+		<span class="ident">Hash</span>,
+		<span class="ident">ValidationCodeHash</span>,
+		<span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PreCheckOutcome</span><span class="op">&gt;</span>,
+	),
 }
 
 <span class="kw">impl</span> <span class="ident">CandidateValidationMessage</span> {
@@ -1010,6 +1073,7 @@
 		<span class="kw">match</span> <span class="self">self</span> {
 			<span class="ident"><span class="self">Self</span>::ValidateFromChainState</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
 			<span class="ident"><span class="self">Self</span>::ValidateFromExhaustive</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+			<span class="ident"><span class="self">Self</span>::PreCheck</span>(<span class="ident">relay_parent</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">relay_parent</span>),
 		}
 	}
 }
