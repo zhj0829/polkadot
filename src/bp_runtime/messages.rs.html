@@ -80,7 +80,7 @@
 <span class="doccomment">/// Where message dispatch fee is paid?</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DispatchFeePayment</span> {
-	<span class="doccomment">/// The dispacth fee is paid at the source chain.</span>
+	<span class="doccomment">/// The dispatch fee is paid at the source chain.</span>
 	<span class="ident">AtSourceChain</span>,
 	<span class="doccomment">/// The dispatch fee is paid at the target chain.</span>
 	<span class="doccomment">///</span>
@@ -108,8 +108,8 @@
 	<span class="doccomment">/// 2) if message has not been dispatched at all.</span>
 	<span class="kw">pub</span> <span class="ident">unspent_weight</span>: <span class="ident">Weight</span>,
 	<span class="doccomment">/// Whether the message dispatch fee has been paid during dispatch. This will be true if your</span>
-	<span class="doccomment">/// configuration supports pay-dispatch-fee-at-target-chain option and message sender has enabled</span>
-	<span class="doccomment">/// this option.</span>
+	<span class="doccomment">/// configuration supports pay-dispatch-fee-at-target-chain option and message sender has</span>
+	<span class="doccomment">/// enabled this option.</span>
 	<span class="kw">pub</span> <span class="ident">dispatch_fee_paid_during_dispatch</span>: <span class="ident">bool</span>,
 }
 </code></pre></div>

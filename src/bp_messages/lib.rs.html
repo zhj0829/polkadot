@@ -389,6 +389,20 @@
 <span id="389">389</span>
 <span id="390">390</span>
 <span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -467,7 +481,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">MessageNonce</span> <span class="op">=</span> <span class="ident">u64</span>;
 
 <span class="doccomment">/// Message id as a tuple.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">MessageId</span> <span class="op">=</span> (<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>);
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BridgeMessageId</span> <span class="op">=</span> (<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>);
 
 <span class="doccomment">/// Opaque message payload. We only decode this payload when it is dispatched.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">MessagePayload</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>;
@@ -502,22 +516,23 @@
 <span class="doccomment">/// Inbound lane data.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span> {
-	<span class="doccomment">/// Identifiers of relayers and messages that they have delivered to this lane (ordered by message nonce).</span>
+	<span class="doccomment">/// Identifiers of relayers and messages that they have delivered to this lane (ordered by</span>
+	<span class="doccomment">/// message nonce).</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// This serves as a helper storage item, to allow the source chain to easily pay rewards</span>
-	<span class="doccomment">/// to the relayers who succesfuly delivered messages to the target chain (inbound lane).</span>
+	<span class="doccomment">/// to the relayers who successfully delivered messages to the target chain (inbound lane).</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// It is guaranteed to have at most N entries, where N is configured at the module level.</span>
 	<span class="doccomment">/// If there are N entries in this vec, then:</span>
-	<span class="doccomment">/// 1) all incoming messages are rejected if they&#39;re missing corresponding `proof-of(outbound-lane.state)`;</span>
-	<span class="doccomment">/// 2) all incoming messages are rejected if `proof-of(outbound-lane.state).last_delivered_nonce` is</span>
-	<span class="doccomment">///    equal to `self.last_confirmed_nonce`.</span>
-	<span class="doccomment">/// Given what is said above, all nonces in this queue are in range:</span>
-	<span class="doccomment">/// `(self.last_confirmed_nonce; self.last_delivered_nonce()]`.</span>
+	<span class="doccomment">/// 1) all incoming messages are rejected if they&#39;re missing corresponding</span>
+	<span class="doccomment">/// `proof-of(outbound-lane.state)`; 2) all incoming messages are rejected if</span>
+	<span class="doccomment">/// `proof-of(outbound-lane.state).last_delivered_nonce` is    equal to</span>
+	<span class="doccomment">/// `self.last_confirmed_nonce`. Given what is said above, all nonces in this queue are in</span>
+	<span class="doccomment">/// range: `(self.last_confirmed_nonce; self.last_delivered_nonce()]`.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// When a relayer sends a single message, both of MessageNonces are the same.</span>
-	<span class="doccomment">/// When relayer sends messages in a batch, the first arg is the lowest nonce, second arg the highest nonce.</span>
-	<span class="doccomment">/// Multiple dispatches from the same relayer are allowed.</span>
+	<span class="doccomment">/// When relayer sends messages in a batch, the first arg is the lowest nonce, second arg the</span>
+	<span class="doccomment">/// highest nonce. Multiple dispatches from the same relayer are allowed.</span>
 	<span class="kw">pub</span> <span class="ident">relayers</span>: <span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">UnrewardedRelayer</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// Nonce of the last message that</span>
@@ -533,24 +548,26 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span> {
 	<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="ident">InboundLaneData</span> {
-			<span class="ident">relayers</span>: <span class="ident">VecDeque::new</span>(),
-			<span class="ident">last_confirmed_nonce</span>: <span class="number">0</span>,
-		}
+		<span class="ident">InboundLaneData</span> { <span class="ident">relayers</span>: <span class="ident">VecDeque::new</span>(), <span class="ident">last_confirmed_nonce</span>: <span class="number">0</span> }
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span> <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span> {
-	<span class="doccomment">/// Returns approximate size of the struct, given number of entries in the `relayers` set and</span>
+	<span class="doccomment">/// Returns approximate size of the struct, given a number of entries in the `relayers` set and</span>
 	<span class="doccomment">/// size of each entry.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Returns `None` if size overflows `u32` limits.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encoded_size_hint</span>(<span class="ident">relayer_id_encoded_size</span>: <span class="ident">u32</span>, <span class="ident">relayers_entries</span>: <span class="ident">u32</span>, <span class="ident">messages_count</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encoded_size_hint</span>(
+		<span class="ident">relayer_id_encoded_size</span>: <span class="ident">u32</span>,
+		<span class="ident">relayers_entries</span>: <span class="ident">u32</span>,
+		<span class="ident">messages_count</span>: <span class="ident">u32</span>,
+	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">message_nonce_size</span> <span class="op">=</span> <span class="number">8</span>;
 		<span class="kw">let</span> <span class="ident">relayers_entry_size</span> <span class="op">=</span> <span class="ident">relayer_id_encoded_size</span>.<span class="ident">checked_add</span>(<span class="number">2</span> <span class="op">*</span> <span class="ident">message_nonce_size</span>)<span class="question-mark">?</span>;
 		<span class="kw">let</span> <span class="ident">relayers_size</span> <span class="op">=</span> <span class="ident">relayers_entries</span>.<span class="ident">checked_mul</span>(<span class="ident">relayers_entry_size</span>)<span class="question-mark">?</span>;
 		<span class="kw">let</span> <span class="ident">dispatch_results_per_byte</span> <span class="op">=</span> <span class="number">8</span>;
-		<span class="kw">let</span> <span class="ident">dispatch_result_size</span> <span class="op">=</span> <span class="ident">sp_std::cmp::max</span>(<span class="ident">relayers_entries</span>, <span class="ident">messages_count</span> <span class="op">/</span> <span class="ident">dispatch_results_per_byte</span>);
+		<span class="kw">let</span> <span class="ident">dispatch_result_size</span> <span class="op">=</span>
+			<span class="ident">sp_std::cmp::max</span>(<span class="ident">relayers_entries</span>, <span class="ident">messages_count</span> <span class="op">/</span> <span class="ident">dispatch_results_per_byte</span>);
 		<span class="ident">relayers_size</span>
 			.<span class="ident">checked_add</span>(<span class="ident">message_nonce_size</span>)
 			.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">result</span><span class="op">|</span> <span class="ident">result</span>.<span class="ident">checked_add</span>(<span class="ident">dispatch_result_size</span>))
@@ -585,8 +602,8 @@
 
 <span class="doccomment">/// Unrewarded relayer entry stored in the inbound lane data.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This struct represents a continuous range of messages that have been delivered by the same relayer</span>
-<span class="doccomment">/// and whose confirmations are still pending.</span>
+<span class="doccomment">/// This struct represents a continuous range of messages that have been delivered by the same</span>
+<span class="doccomment">/// relayer and whose confirmations are still pending.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnrewardedRelayer</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Identifier of the relayer.</span>
@@ -609,12 +626,22 @@
 }
 
 <span class="kw">impl</span> <span class="ident">DeliveredMessages</span> {
-	<span class="doccomment">/// Create new `DeliveredMessages` struct that confirms delivery of single nonce with given dispatch result.</span>
+	<span class="doccomment">/// Create new `DeliveredMessages` struct that confirms delivery of single nonce with given</span>
+	<span class="doccomment">/// dispatch result.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">nonce</span>: <span class="ident">MessageNonce</span>, <span class="ident">dispatch_result</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
 		<span class="ident">DeliveredMessages</span> {
 			<span class="ident">begin</span>: <span class="ident">nonce</span>,
 			<span class="ident">end</span>: <span class="ident">nonce</span>,
 			<span class="ident">dispatch_results</span>: <span class="macro">bitvec!</span>[<span class="ident">Msb0</span>, <span class="ident">u8</span>; <span class="kw">if</span> <span class="ident">dispatch_result</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> }],
+		}
+	}
+
+	<span class="doccomment">/// Return total count of delivered messages.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">end</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">begin</span> {
+			<span class="self">self</span>.<span class="ident">end</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">begin</span> <span class="op">+</span> <span class="number">1</span>
+		} <span class="kw">else</span> {
+			<span class="number">0</span>
 		}
 	}
 
@@ -660,19 +687,20 @@
 <span class="doccomment">/// Outbound lane data.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OutboundLaneData</span> {
-	<span class="doccomment">/// Nonce of oldest message that we haven&#39;t yet pruned. May point to not-yet-generated message if</span>
-	<span class="doccomment">/// all sent messages are already pruned.</span>
+	<span class="doccomment">/// Nonce of the oldest message that we haven&#39;t yet pruned. May point to not-yet-generated</span>
+	<span class="doccomment">/// message if all sent messages are already pruned.</span>
 	<span class="kw">pub</span> <span class="ident">oldest_unpruned_nonce</span>: <span class="ident">MessageNonce</span>,
-	<span class="doccomment">/// Nonce of latest message, received by bridged chain.</span>
+	<span class="doccomment">/// Nonce of the latest message, received by bridged chain.</span>
 	<span class="kw">pub</span> <span class="ident">latest_received_nonce</span>: <span class="ident">MessageNonce</span>,
-	<span class="doccomment">/// Nonce of latest message, generated by us.</span>
+	<span class="doccomment">/// Nonce of the latest message, generated by us.</span>
 	<span class="kw">pub</span> <span class="ident">latest_generated_nonce</span>: <span class="ident">MessageNonce</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">OutboundLaneData</span> {
 	<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
 		<span class="ident">OutboundLaneData</span> {
-			<span class="comment">// it is 1 because we&#39;re pruning everything in [oldest_unpruned_nonce; latest_received_nonce]</span>
+			<span class="comment">// it is 1 because we&#39;re pruning everything in [oldest_unpruned_nonce;</span>
+			<span class="comment">// latest_received_nonce]</span>
 			<span class="ident">oldest_unpruned_nonce</span>: <span class="number">1</span>,
 			<span class="ident">latest_received_nonce</span>: <span class="number">0</span>,
 			<span class="ident">latest_generated_nonce</span>: <span class="number">0</span>,
@@ -683,7 +711,9 @@
 <span class="doccomment">/// Returns total number of messages in the `InboundLaneData::relayers` vector.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Returns `None` if there are more messages that `MessageNonce` may fit (i.e. `MessageNonce + 1`).</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_unrewarded_messages</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span>(<span class="ident">relayers</span>: <span class="kw-2">&amp;</span><span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">UnrewardedRelayer</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageNonce</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_unrewarded_messages</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span>(
+	<span class="ident">relayers</span>: <span class="kw-2">&amp;</span><span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">UnrewardedRelayer</span><span class="op">&lt;</span><span class="ident">RelayerId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageNonce</span><span class="op">&gt;</span> {
 	<span class="kw">match</span> (<span class="ident">relayers</span>.<span class="ident">front</span>(), <span class="ident">relayers</span>.<span class="ident">back</span>()) {
 		(<span class="prelude-val">Some</span>(<span class="ident">front</span>), <span class="prelude-val">Some</span>(<span class="ident">back</span>)) <span class="op">=</span><span class="op">&gt;</span> {
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="op">=</span> <span class="ident">back</span>.<span class="ident">messages</span>.<span class="ident">end</span>.<span class="ident">checked_sub</span>(<span class="ident">front</span>.<span class="ident">messages</span>.<span class="ident">begin</span>) {
@@ -691,7 +721,7 @@
 			} <span class="kw">else</span> {
 				<span class="prelude-val">Some</span>(<span class="number">0</span>)
 			}
-		}
+		},
 		<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="number">0</span>),
 	}
 }
@@ -705,10 +735,7 @@
 		<span class="macro">assert_eq!</span>(
 			<span class="ident">total_unrewarded_messages</span>(
 				<span class="kw-2">&amp;</span><span class="macro">vec!</span>[
-					<span class="ident">UnrewardedRelayer</span> {
-						<span class="ident">relayer</span>: <span class="number">1</span>,
-						<span class="ident">messages</span>: <span class="ident">DeliveredMessages::new</span>(<span class="number">0</span>, <span class="bool-val">true</span>)
-					},
+					<span class="ident">UnrewardedRelayer</span> { <span class="ident">relayer</span>: <span class="number">1</span>, <span class="ident">messages</span>: <span class="ident">DeliveredMessages::new</span>(<span class="number">0</span>, <span class="bool-val">true</span>) },
 					<span class="ident">UnrewardedRelayer</span> {
 						<span class="ident">relayer</span>: <span class="number">2</span>,
 						<span class="ident">messages</span>: <span class="ident">DeliveredMessages::new</span>(<span class="ident">MessageNonce::MAX</span>, <span class="bool-val">true</span>)
@@ -732,7 +759,11 @@
 			(<span class="number">13u8</span>, <span class="number">128u8</span>),
 		];
 		<span class="kw">for</span> (<span class="ident">relayer_entries</span>, <span class="ident">messages_count</span>) <span class="kw">in</span> <span class="ident">test_cases</span> {
-			<span class="kw">let</span> <span class="ident">expected_size</span> <span class="op">=</span> <span class="ident">InboundLaneData</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::encoded_size_hint</span>(<span class="number">1</span>, <span class="ident">relayer_entries</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">messages_count</span> <span class="kw">as</span> <span class="kw">_</span>);
+			<span class="kw">let</span> <span class="ident">expected_size</span> <span class="op">=</span> <span class="ident">InboundLaneData</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::encoded_size_hint</span>(
+				<span class="number">1</span>,
+				<span class="ident">relayer_entries</span> <span class="kw">as</span> <span class="kw">_</span>,
+				<span class="ident">messages_count</span> <span class="kw">as</span> <span class="kw">_</span>,
+			);
 			<span class="kw">let</span> <span class="ident">actual_size</span> <span class="op">=</span> <span class="ident">InboundLaneData</span> {
 				<span class="ident">relayers</span>: (<span class="number">1u8</span>..<span class="op">=</span><span class="ident">relayer_entries</span>)
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
@@ -766,11 +797,8 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">message_dispatch_result_works</span>() {
-		<span class="kw">let</span> <span class="ident">delivered_messages</span> <span class="op">=</span> <span class="ident">DeliveredMessages</span> {
-			<span class="ident">begin</span>: <span class="number">100</span>,
-			<span class="ident">end</span>: <span class="number">150</span>,
-			<span class="ident">dispatch_results</span>: <span class="macro">bitvec!</span>[<span class="ident">Msb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; <span class="number">151</span>],
-		};
+		<span class="kw">let</span> <span class="ident">delivered_messages</span> <span class="op">=</span>
+			<span class="ident">DeliveredMessages</span> { <span class="ident">begin</span>: <span class="number">100</span>, <span class="ident">end</span>: <span class="number">150</span>, <span class="ident">dispatch_results</span>: <span class="macro">bitvec!</span>[<span class="ident">Msb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; <span class="number">151</span>] };
 
 		<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">delivered_messages</span>.<span class="ident">contains_message</span>(<span class="number">99</span>));
 		<span class="macro">assert!</span>(<span class="ident">delivered_messages</span>.<span class="ident">contains_message</span>(<span class="number">100</span>));

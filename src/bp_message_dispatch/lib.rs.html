@@ -135,6 +135,11 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -172,7 +177,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SpecVersion</span> <span class="op">=</span> <span class="ident">u32</span>;
 
 <span class="doccomment">/// A generic trait to dispatch arbitrary messages delivered over the bridge.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">MessageId</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">BridgeMessageId</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// A type of the message to be dispatched.</span>
 	<span class="kw">type</span> <span class="ident">Message</span>: <span class="ident">codec::Decode</span>;
 
@@ -198,7 +203,7 @@
 	<span class="kw">fn</span> <span class="ident">dispatch</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">AccountId</span>, <span class="ident">Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
 		<span class="ident">source_chain</span>: <span class="ident">ChainId</span>,
 		<span class="ident">target_chain</span>: <span class="ident">ChainId</span>,
-		<span class="ident">id</span>: <span class="ident">MessageId</span>,
+		<span class="ident">id</span>: <span class="ident">BridgeMessageId</span>,
 		<span class="ident">message</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Message</span>, ()<span class="op">&gt;</span>,
 		<span class="ident">pay_dispatch_fee</span>: <span class="ident">P</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageDispatchResult</span>;
@@ -215,7 +220,7 @@
 	<span class="doccomment">/// from a derived account.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// The derived account represents the source Root account on the target chain. This is useful</span>
-	<span class="doccomment">/// if the target chain needs some way of knowing that a call came from a priviledged origin on</span>
+	<span class="doccomment">/// if the target chain needs some way of knowing that a call came from a privileged origin on</span>
 	<span class="doccomment">/// the source chain (maybe to allow a configuration change for example).</span>
 	<span class="ident">SourceRoot</span>,
 
@@ -250,7 +255,12 @@
 
 <span class="doccomment">/// Message payload type used by dispatch module.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">RuntimeDebug</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MessagePayload</span><span class="op">&lt;</span><span class="ident">SourceChainAccountId</span>, <span class="ident">TargetChainAccountPublic</span>, <span class="ident">TargetChainSignature</span>, <span class="ident">Call</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MessagePayload</span><span class="op">&lt;</span>
+	<span class="ident">SourceChainAccountId</span>,
+	<span class="ident">TargetChainAccountPublic</span>,
+	<span class="ident">TargetChainSignature</span>,
+	<span class="ident">Call</span>,
+<span class="op">&gt;</span> {
 	<span class="doccomment">/// Runtime specification version. We only dispatch messages that have the same</span>
 	<span class="doccomment">/// runtime version. Otherwise we risk to misinterpret encoded calls.</span>
 	<span class="kw">pub</span> <span class="ident">spec_version</span>: <span class="ident">SpecVersion</span>,

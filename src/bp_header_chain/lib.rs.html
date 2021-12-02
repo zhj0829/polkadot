@@ -131,7 +131,6 @@
 <span id="131">131</span>
 <span id="132">132</span>
 <span id="133">133</span>
-<span id="134">134</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -154,24 +153,21 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Codec</span>, <span class="ident">Decode</span>, <span class="ident">Encode</span>, <span class="ident">EncodeLike</span>};
-<span class="kw">use</span> <span class="ident">core::clone::Clone</span>;
-<span class="kw">use</span> <span class="ident">core::cmp::Eq</span>;
-<span class="kw">use</span> <span class="ident">core::default::Default</span>;
-<span class="kw">use</span> <span class="ident">core::fmt::Debug</span>;
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">clone::Clone</span>, <span class="ident">cmp::Eq</span>, <span class="ident">default::Default</span>, <span class="ident">fmt::Debug</span>};
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">sp_finality_grandpa</span>::{<span class="ident">AuthorityList</span>, <span class="ident">ConsensusLog</span>, <span class="ident">SetId</span>, <span class="ident">GRANDPA_ENGINE_ID</span>};
-<span class="kw">use</span> <span class="ident">sp_runtime::RuntimeDebug</span>;
-<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">generic::OpaqueDigestItemId</span>, <span class="ident">traits::Header</span> <span class="kw">as</span> <span class="ident">HeaderT</span>};
+<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">generic::OpaqueDigestItemId</span>, <span class="ident">traits::Header</span> <span class="kw">as</span> <span class="ident">HeaderT</span>, <span class="ident">RuntimeDebug</span>};
+<span class="kw">use</span> <span class="ident">sp_std::boxed::Box</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">justification</span>;
 
 <span class="doccomment">/// A type that can be used as a parameter in a dispatchable function.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When using `decl_module` all arguments for call functions must implement this trait.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Parameter</span>: <span class="ident">Codec</span> <span class="op">+</span> <span class="ident">EncodeLike</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Debug</span> {}
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Parameter</span> <span class="kw">for</span> <span class="ident">T</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Codec</span> <span class="op">+</span> <span class="ident">EncodeLike</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Debug</span> {}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Parameter</span>: <span class="ident">Codec</span> <span class="op">+</span> <span class="ident">EncodeLike</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">TypeInfo</span> {}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Parameter</span> <span class="kw">for</span> <span class="ident">T</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Codec</span> <span class="op">+</span> <span class="ident">EncodeLike</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">TypeInfo</span> {}
 
 <span class="doccomment">/// A GRANDPA Authority List and ID.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>, <span class="ident">TypeInfo</span>)]</span>
@@ -197,7 +193,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InitializationData</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The header from which we should start syncing.</span>
-	<span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">H</span>,
+	<span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The initial authorities of the pallet.</span>
 	<span class="kw">pub</span> <span class="ident">authority_list</span>: <span class="ident">AuthorityList</span>,
 	<span class="doccomment">/// The ID of the initial authority set.</span>
@@ -216,7 +212,9 @@
 	<span class="doccomment">/// Verify that transaction is a part of given block.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Returns Some(transaction) if proof is valid and None otherwise.</span>
-	<span class="kw">fn</span> <span class="ident">verify_transaction_inclusion_proof</span>(<span class="ident">proof</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::TransactionInclusionProof</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Transaction</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">verify_transaction_inclusion_proof</span>(
+		<span class="ident">proof</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::TransactionInclusionProof</span>,
+	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Transaction</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// A trait for pallets which want to keep track of finalized headers from a bridged chain.</span>

@@ -218,6 +218,13 @@
 <span id="218">218</span>
 <span id="219">219</span>
 <span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -245,8 +252,10 @@
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 <span class="kw">use</span> <span class="ident">sp_finality_grandpa</span>::{<span class="ident">AuthorityId</span>, <span class="ident">AuthoritySignature</span>, <span class="ident">SetId</span>};
 <span class="kw">use</span> <span class="ident">sp_runtime::traits::Header</span> <span class="kw">as</span> <span class="ident">HeaderT</span>;
-<span class="kw">use</span> <span class="ident">sp_std::collections</span>::{<span class="ident">btree_map::BTreeMap</span>, <span class="ident">btree_set::BTreeSet</span>};
-<span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">sp_std</span>::{
+	<span class="ident">collections</span>::{<span class="ident">btree_map::BTreeMap</span>, <span class="ident">btree_set::BTreeSet</span>},
+	<span class="ident">prelude</span>::<span class="kw-2">*</span>,
+};
 
 <span class="doccomment">/// A GRANDPA Justification is a proof that a given header was finalized</span>
 <span class="doccomment">/// at a certain height and with a certain set of authorities.</span>
@@ -258,7 +267,8 @@
 	<span class="doccomment">/// The round (voting period) this justification is valid for.</span>
 	<span class="kw">pub</span> <span class="ident">round</span>: <span class="ident">u64</span>,
 	<span class="doccomment">/// The set of votes for the chain which is to be finalized.</span>
-	<span class="kw">pub</span> <span class="ident">commit</span>: <span class="ident">finality_grandpa::Commit</span><span class="op">&lt;</span><span class="ident">Header::Hash</span>, <span class="ident">Header::Number</span>, <span class="ident">AuthoritySignature</span>, <span class="ident">AuthorityId</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">commit</span>:
+		<span class="ident">finality_grandpa::Commit</span><span class="op">&lt;</span><span class="ident">Header::Hash</span>, <span class="ident">Header::Number</span>, <span class="ident">AuthoritySignature</span>, <span class="ident">AuthorityId</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// A proof that the chain of blocks in the commit are related to each other.</span>
 	<span class="kw">pub</span> <span class="ident">votes_ancestries</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span>,
 }
@@ -278,7 +288,8 @@
 	<span class="ident">InvalidJustificationTarget</span>,
 	<span class="doccomment">/// The authority has provided an invalid signature.</span>
 	<span class="ident">InvalidAuthoritySignature</span>,
-	<span class="doccomment">/// The justification contains pre-commit for header that is not a descendant of the commit header.</span>
+	<span class="doccomment">/// The justification contains precommit for header that is not a descendant of the commit</span>
+	<span class="doccomment">/// header.</span>
 	<span class="ident">PrecommitIsNotCommitDescendant</span>,
 	<span class="doccomment">/// The cumulative weight of all votes in the justification is not enough to justify commit</span>
 	<span class="doccomment">/// header finalization.</span>
@@ -308,7 +319,7 @@
 {
 	<span class="comment">// ensure that it is justification for the expected header</span>
 	<span class="kw">if</span> (<span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_hash</span>, <span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_number</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">finalized_target</span> {
-		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidJustificationTarget</span>);
+		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidJustificationTarget</span>)
 	}
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chain</span> <span class="op">=</span> <span class="ident">AncestryChain::new</span>(<span class="kw-2">&amp;</span><span class="ident">justification</span>.<span class="ident">votes_ancestries</span>);
@@ -320,30 +331,32 @@
 		<span class="kw">let</span> <span class="ident">authority_info</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">authorities_set</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">signed</span>.<span class="ident">id</span>) {
 			<span class="prelude-val">Some</span>(<span class="ident">authority_info</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">authority_info</span>,
 			<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-				<span class="comment">// just ignore precommit from unknown authority as `finality_grandpa::import_precommit` does</span>
-				<span class="kw">continue</span>;
-			}
+				<span class="comment">// just ignore precommit from unknown authority as</span>
+				<span class="comment">// `finality_grandpa::import_precommit` does</span>
+				<span class="kw">continue</span>
+			},
 		};
 
 		<span class="comment">// check if authority has already voted in the same round.</span>
 		<span class="comment">//</span>
 		<span class="comment">// there&#39;s a lot of code in `validate_commit` and `import_precommit` functions inside</span>
-		<span class="comment">// `finality-grandpa` crate (mostly related to reporing equivocations). But the only thing that we</span>
-		<span class="comment">// care about is that only first vote from the authority is accepted</span>
+		<span class="comment">// `finality-grandpa` crate (mostly related to reporing equivocations). But the only thing</span>
+		<span class="comment">// that we care about is that only first vote from the authority is accepted</span>
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">votes</span>.<span class="ident">insert</span>(<span class="ident">signed</span>.<span class="ident">id</span>.<span class="ident">clone</span>()) {
-			<span class="kw">continue</span>;
+			<span class="kw">continue</span>
 		}
 
 		<span class="comment">// everything below this line can&#39;t just `continue`, because state is already altered</span>
 
 		<span class="comment">// all precommits must be for block higher than the target</span>
 		<span class="kw">if</span> <span class="ident">signed</span>.<span class="ident">precommit</span>.<span class="ident">target_number</span> <span class="op">&lt;</span> <span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_number</span> {
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::PrecommitIsNotCommitDescendant</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::PrecommitIsNotCommitDescendant</span>)
 		}
-		<span class="comment">// all precommits must be for target block descendants</span>
-		<span class="ident">chain</span> <span class="op">=</span> <span class="ident">chain</span>.<span class="ident">ensure_descendant</span>(<span class="kw-2">&amp;</span><span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_hash</span>, <span class="kw-2">&amp;</span><span class="ident">signed</span>.<span class="ident">precommit</span>.<span class="ident">target_hash</span>)<span class="question-mark">?</span>;
-		<span class="comment">// since we know now that the precommit target is the descendant of the justification target,</span>
-		<span class="comment">// we may increase &#39;weight&#39; of the justification target</span>
+		<span class="comment">// all precommits must be for target block descendents</span>
+		<span class="ident">chain</span> <span class="op">=</span> <span class="ident">chain</span>
+			.<span class="ident">ensure_descendant</span>(<span class="kw-2">&amp;</span><span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_hash</span>, <span class="kw-2">&amp;</span><span class="ident">signed</span>.<span class="ident">precommit</span>.<span class="ident">target_hash</span>)<span class="question-mark">?</span>;
+		<span class="comment">// since we know now that the precommit target is the descendant of the justification</span>
+		<span class="comment">// target, we may increase &#39;weight&#39; of the justification target</span>
 		<span class="comment">//</span>
 		<span class="comment">// there&#39;s a lot of code in the `VoteGraph::insert` method inside `finality-grandpa` crate,</span>
 		<span class="comment">// but in the end it is only used to find GHOST, which we don&#39;t care about. The only thing</span>
@@ -365,13 +378,13 @@
 			<span class="ident">authorities_set_id</span>,
 			<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">signature_buffer</span>,
 		) {
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidAuthoritySignature</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidAuthoritySignature</span>)
 		}
 	}
 
 	<span class="comment">// check that there are no extra headers in the justification</span>
 	<span class="kw">if</span> <span class="op">!</span><span class="ident">chain</span>.<span class="ident">unvisited</span>.<span class="ident">is_empty</span>() {
-		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::ExtraHeadersInVotesAncestries</span>);
+		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::ExtraHeadersInVotesAncestries</span>)
 	}
 
 	<span class="comment">// check that the cumulative weight of validators voted for the justification target (or one</span>
@@ -389,7 +402,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AncestryChain</span><span class="op">&lt;</span><span class="ident">Header</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Header hash =&gt; parent header hash mapping.</span>
 	<span class="kw">pub</span> <span class="ident">parents</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">Header::Hash</span>, <span class="ident">Header::Hash</span><span class="op">&gt;</span>,
-	<span class="doccomment">/// Hashes of headers that weren&#39;t visited by `is_ancestor` method.</span>
+	<span class="doccomment">/// Hashes of headers that were not visited by `is_ancestor` method.</span>
 	<span class="kw">pub</span> <span class="ident">unvisited</span>: <span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="ident">Header::Hash</span><span class="op">&gt;</span>,
 }
 
@@ -407,7 +420,8 @@
 		<span class="ident">AncestryChain</span> { <span class="ident">parents</span>, <span class="ident">unvisited</span> }
 	}
 
-	<span class="doccomment">/// Returns `Err(_)` if `precommit_target` is a descendant of the `commit_target` block and `Ok(_)` otherwise.</span>
+	<span class="doccomment">/// Returns `Err(_)` if `precommit_target` is a descendant of the `commit_target` block and</span>
+	<span class="doccomment">/// `Ok(_)` otherwise.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ensure_descendant</span>(
 		<span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">commit_target</span>: <span class="kw-2">&amp;</span><span class="ident">Header::Hash</span>,
@@ -416,22 +430,22 @@
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_hash</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">precommit_target</span>;
 		<span class="kw">loop</span> {
 			<span class="kw">if</span> <span class="ident">current_hash</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">commit_target</span> {
-				<span class="kw">break</span>;
+				<span class="kw">break</span>
 			}
 
 			<span class="kw">let</span> <span class="ident">is_visited_before</span> <span class="op">=</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">unvisited</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">current_hash</span>);
 			<span class="ident">current_hash</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">current_hash</span>) {
 				<span class="prelude-val">Some</span>(<span class="ident">parent_hash</span>) <span class="op">=</span><span class="op">&gt;</span> {
 					<span class="kw">if</span> <span class="ident">is_visited_before</span> {
-						<span class="comment">// `Some(parent_hash)` means that the `current_hash` is in the `parents` container</span>
-						<span class="comment">// `is_visited_before` means that it has been visited before in some of previous calls</span>
-						<span class="comment">// =&gt; since we assume that previous call has finished with `true`, this also will</span>
-						<span class="comment">//    be finished with `true`</span>
-						<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="self">self</span>);
+						<span class="comment">// `Some(parent_hash)` means that the `current_hash` is in the `parents`</span>
+						<span class="comment">// container `is_visited_before` means that it has been visited before in</span>
+						<span class="comment">// some of previous calls =&gt; since we assume that previous call has finished</span>
+						<span class="comment">// with `true`, this also will    be finished with `true`</span>
+						<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="self">self</span>)
 					}
 
 					<span class="kw-2">*</span><span class="ident">parent_hash</span>
-				}
+				},
 				<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::PrecommitIsNotCommitDescendant</span>),
 			};
 		}

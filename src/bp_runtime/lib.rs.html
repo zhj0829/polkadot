@@ -138,6 +138,143 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -159,11 +296,16 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
-<span class="kw">use</span> <span class="ident">sp_core::hash::H256</span>;
+<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">RuntimeDebug</span>, <span class="ident">StorageHasher</span>};
+<span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">hash::H256</span>, <span class="ident">storage::StorageKey</span>};
 <span class="kw">use</span> <span class="ident">sp_io::hashing::blake2_256</span>;
-<span class="kw">use</span> <span class="ident">sp_std::convert::TryFrom</span>;
+<span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">vec::Vec</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">chain</span>::{<span class="ident">BlockNumberOf</span>, <span class="ident">Chain</span>, <span class="ident">HashOf</span>, <span class="ident">HasherOf</span>, <span class="ident">HeaderOf</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">chain</span>::{
+	<span class="ident">AccountIdOf</span>, <span class="ident">AccountPublicOf</span>, <span class="ident">BalanceOf</span>, <span class="ident">BlockNumberOf</span>, <span class="ident">Chain</span>, <span class="ident">HashOf</span>, <span class="ident">HasherOf</span>, <span class="ident">HeaderOf</span>,
+	<span class="ident">IndexOf</span>, <span class="ident">SignatureOf</span>, <span class="ident">TransactionEraOf</span>,
+};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">frame_support::storage::storage_prefix</span> <span class="kw">as</span> <span class="ident">storage_value_final_key</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">storage_proof</span>::{<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StorageProofError</span>, <span class="ident">StorageProofChecker</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
@@ -204,19 +346,24 @@
 <span class="doccomment">/// A unique prefix for entropy when generating a cross-chain account ID for the Root account.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROOT_ACCOUNT_DERIVATION_PREFIX</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;pallet-bridge/account-derivation/root&quot;</span>;
 
+<span class="doccomment">/// Generic header Id.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">RuntimeDebug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HeaderId</span><span class="op">&lt;</span><span class="ident">Hash</span>, <span class="ident">Number</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Number</span>, <span class="kw">pub</span> <span class="ident">Hash</span>);
+
 <span class="doccomment">/// Unique identifier of the chain.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// In addition to its main function (identifying the chain), this type may also be used to</span>
 <span class="doccomment">/// identify module instance. We have a bunch of pallets that may be used in different bridges. E.g.</span>
-<span class="doccomment">/// messages pallet may be deployed twice in the same runtime to bridge ThisChain with Chain1 and Chain2.</span>
-<span class="doccomment">/// Sometimes we need to be able to identify deployed instance dynamically. This type may be used for that.</span>
+<span class="doccomment">/// messages pallet may be deployed twice in the same runtime to bridge ThisChain with Chain1 and</span>
+<span class="doccomment">/// Chain2. Sometimes we need to be able to identify deployed instance dynamically. This type may be</span>
+<span class="doccomment">/// used for that.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ChainId</span> <span class="op">=</span> [<span class="ident">u8</span>; <span class="number">4</span>];
 
 <span class="doccomment">/// Type of accounts on the source chain.</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SourceAccount</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// An account that belongs to Root (privileged origin).</span>
 	<span class="ident">Root</span>,
-	<span class="doccomment">/// A non-priviledged account.</span>
+	<span class="doccomment">/// A non-privileged account.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// The embedded account ID may or may not have a private key depending on the &quot;owner&quot; of the</span>
 	<span class="doccomment">/// account (private key, pallet, proxy, etc.).</span>
@@ -239,8 +386,10 @@
 	<span class="ident">AccountId</span>: <span class="ident">Encode</span>,
 {
 	<span class="kw">match</span> <span class="ident">id</span> {
-		<span class="ident">SourceAccount::Root</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">ROOT_ACCOUNT_DERIVATION_PREFIX</span>, <span class="ident">bridge_id</span>).<span class="ident">using_encoded</span>(<span class="ident">blake2_256</span>),
-		<span class="ident">SourceAccount::Account</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">ACCOUNT_DERIVATION_PREFIX</span>, <span class="ident">bridge_id</span>, <span class="ident">id</span>).<span class="ident">using_encoded</span>(<span class="ident">blake2_256</span>),
+		<span class="ident">SourceAccount::Root</span> <span class="op">=</span><span class="op">&gt;</span>
+			(<span class="ident">ROOT_ACCOUNT_DERIVATION_PREFIX</span>, <span class="ident">bridge_id</span>).<span class="ident">using_encoded</span>(<span class="ident">blake2_256</span>),
+		<span class="ident">SourceAccount::Account</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span>
+			(<span class="ident">ACCOUNT_DERIVATION_PREFIX</span>, <span class="ident">bridge_id</span>, <span class="ident">id</span>).<span class="ident">using_encoded</span>(<span class="ident">blake2_256</span>),
 	}
 	.<span class="ident">into</span>()
 }
@@ -249,8 +398,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This account is used to collect fees for relayers that are passing messages across the bridge.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The account ID can be the same across different instances of `pallet-bridge-messages` if the same</span>
-<span class="doccomment">/// `bridge_id` is used.</span>
+<span class="doccomment">/// The account ID can be the same across different instances of `pallet-bridge-messages` if the</span>
+<span class="doccomment">/// same `bridge_id` is used.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_relayer_fund_account_id</span>(<span class="ident">bridge_id</span>: <span class="ident">ChainId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">H256</span> {
 	(<span class="string">&quot;relayer-fund-account&quot;</span>, <span class="ident">bridge_id</span>).<span class="ident">using_encoded</span>(<span class="ident">blake2_256</span>).<span class="ident">into</span>()
 }
@@ -262,6 +411,12 @@
 	<span class="doccomment">/// This function should be lightweight. The result should not necessary be absolutely</span>
 	<span class="doccomment">/// accurate.</span>
 	<span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
+}
+
+<span class="kw">impl</span> <span class="ident">Size</span> <span class="kw">for</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+	<span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+		<span class="self">self</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="kw">_</span>
+	}
 }
 
 <span class="kw">impl</span> <span class="ident">Size</span> <span class="kw">for</span> () {
@@ -276,6 +431,125 @@
 <span class="kw">impl</span> <span class="ident">Size</span> <span class="kw">for</span> <span class="ident">PreComputedSize</span> {
 	<span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
 		<span class="ident">u32::try_from</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="ident">unwrap_or</span>(<span class="ident">u32::MAX</span>)
+	}
+}
+
+<span class="doccomment">/// Era of specific transaction.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">RuntimeDebug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TransactionEra</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>, <span class="ident">BlockHash</span><span class="op">&gt;</span> {
+	<span class="doccomment">/// Transaction is immortal.</span>
+	<span class="ident">Immortal</span>,
+	<span class="doccomment">/// Transaction is valid for a given number of blocks, starting from given block.</span>
+	<span class="ident">Mortal</span>(<span class="ident">HeaderId</span><span class="op">&lt;</span><span class="ident">BlockHash</span>, <span class="ident">BlockNumber</span><span class="op">&gt;</span>, <span class="ident">u32</span>),
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>, <span class="ident">BlockHash</span>: <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">TransactionEra</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>, <span class="ident">BlockHash</span><span class="op">&gt;</span> {
+	<span class="doccomment">/// Prepare transaction era, based on mortality period and current best block number.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+		<span class="ident">best_block_id</span>: <span class="ident">HeaderId</span><span class="op">&lt;</span><span class="ident">BlockHash</span>, <span class="ident">BlockNumber</span><span class="op">&gt;</span>,
+		<span class="ident">mortality_period</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+	) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="ident">mortality_period</span>
+			.<span class="ident">map</span>(<span class="op">|</span><span class="ident">mortality_period</span><span class="op">|</span> <span class="ident">TransactionEra::Mortal</span>(<span class="ident">best_block_id</span>, <span class="ident">mortality_period</span>))
+			.<span class="ident">unwrap_or</span>(<span class="ident">TransactionEra::Immortal</span>)
+	}
+
+	<span class="doccomment">/// Create new immortal transaction era.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">immortal</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="ident">TransactionEra::Immortal</span>
+	}
+
+	<span class="doccomment">/// Returns era that is used by FRAME-based runtimes.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frame_era</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_runtime::generic::Era</span> {
+		<span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+			<span class="ident">TransactionEra::Immortal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sp_runtime::generic::Era::immortal</span>(),
+			<span class="ident">TransactionEra::Mortal</span>(<span class="ident">header_id</span>, <span class="ident">period</span>) <span class="op">=</span><span class="op">&gt;</span>
+				<span class="ident">sp_runtime::generic::Era::mortal</span>(<span class="ident">period</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">header_id</span>.<span class="number">0</span>.<span class="ident">into</span>()),
+		}
+	}
+
+	<span class="doccomment">/// Returns header hash that needs to be included in the signature payload.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed_payload</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">genesis_hash</span>: <span class="ident">BlockHash</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlockHash</span> {
+		<span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
+			<span class="ident">TransactionEra::Immortal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">genesis_hash</span>,
+			<span class="ident">TransactionEra::Mortal</span>(<span class="ident">header_id</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">header_id</span>.<span class="number">1</span>,
+		}
+	}
+}
+
+<span class="doccomment">/// This is a copy of the</span>
+<span class="doccomment">/// `frame_support::storage::generator::StorageMap::storage_map_final_key` for `Blake2_128Concat`</span>
+<span class="doccomment">/// maps.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// We&#39;re using it because to call `storage_map_final_key` directly, we need access to the runtime</span>
+<span class="doccomment">/// and pallet instance, which (sometimes) is impossible.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">storage_map_final_key_blake2_128concat</span>(
+	<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+	<span class="ident">map_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+	<span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="ident">storage_map_final_key_identity</span>(
+		<span class="ident">pallet_prefix</span>,
+		<span class="ident">map_name</span>,
+		<span class="kw-2">&amp;</span><span class="ident">frame_support::Blake2_128Concat::hash</span>(<span class="ident">key</span>),
+	)
+}
+
+<span class="doccomment">///</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">storage_map_final_key_twox64_concat</span>(
+	<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+	<span class="ident">map_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+	<span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="ident">storage_map_final_key_identity</span>(<span class="ident">pallet_prefix</span>, <span class="ident">map_name</span>, <span class="kw-2">&amp;</span><span class="ident">frame_support::Twox64Concat::hash</span>(<span class="ident">key</span>))
+}
+
+<span class="doccomment">/// This is a copy of the</span>
+<span class="doccomment">/// `frame_support::storage::generator::StorageMap::storage_map_final_key` for `Identity` maps.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// We&#39;re using it because to call `storage_map_final_key` directly, we need access to the runtime</span>
+<span class="doccomment">/// and pallet instance, which (sometimes) is impossible.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">storage_map_final_key_identity</span>(
+	<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+	<span class="ident">map_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+	<span class="ident">key_hashed</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="kw">let</span> <span class="ident">pallet_prefix_hashed</span> <span class="op">=</span> <span class="ident">frame_support::Twox128::hash</span>(<span class="ident">pallet_prefix</span>.<span class="ident">as_bytes</span>());
+	<span class="kw">let</span> <span class="ident">storage_prefix_hashed</span> <span class="op">=</span> <span class="ident">frame_support::Twox128::hash</span>(<span class="ident">map_name</span>.<span class="ident">as_bytes</span>());
+
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">final_key</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(
+		<span class="ident">pallet_prefix_hashed</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">storage_prefix_hashed</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">key_hashed</span>.<span class="ident">len</span>(),
+	);
+
+	<span class="ident">final_key</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">pallet_prefix_hashed</span>[..]);
+	<span class="ident">final_key</span>.<span class="ident">extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">storage_prefix_hashed</span>[..]);
+	<span class="ident">final_key</span>.<span class="ident">extend_from_slice</span>(<span class="ident">key_hashed</span>.<span class="ident">as_ref</span>());
+
+	<span class="ident">StorageKey</span>(<span class="ident">final_key</span>)
+}
+
+<span class="doccomment">/// This is how a storage key of storage parameter (`parameter_types! { storage Param: bool = false;</span>
+<span class="doccomment">/// }`) is computed.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Copied from `frame_support::parameter_types` macro</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">storage_parameter_key</span>(<span class="ident">parameter_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="number">1</span> <span class="op">+</span> <span class="ident">parameter_name</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>);
+	<span class="ident">buffer</span>.<span class="ident">push</span>(<span class="string">b&#39;:&#39;</span>);
+	<span class="ident">buffer</span>.<span class="ident">extend_from_slice</span>(<span class="ident">parameter_name</span>.<span class="ident">as_bytes</span>());
+	<span class="ident">buffer</span>.<span class="ident">push</span>(<span class="string">b&#39;:&#39;</span>);
+	<span class="ident">StorageKey</span>(<span class="ident">sp_io::hashing::twox_128</span>(<span class="kw-2">&amp;</span><span class="ident">buffer</span>).<span class="ident">to_vec</span>())
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">storage_parameter_key_works</span>() {
+		<span class="macro">assert_eq!</span>(
+			<span class="ident">storage_parameter_key</span>(<span class="string">&quot;MillauToRialtoConversionRate&quot;</span>),
+			<span class="ident">StorageKey</span>(<span class="macro">hex_literal::hex!</span>(<span class="string">&quot;58942375551bb0af1682f72786b59d04&quot;</span>).<span class="ident">to_vec</span>()),
+		);
 	}
 }
 </code></pre></div>

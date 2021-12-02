@@ -153,6 +153,26 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -176,7 +196,9 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::unnecessary_mut_passed</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">bp_messages</span>::{<span class="ident">LaneId</span>, <span class="ident">MessageDetails</span>, <span class="ident">MessageNonce</span>, <span class="ident">UnrewardedRelayersState</span>};
-<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{<span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>, <span class="ident">WeightToFeePolynomial</span>};
+<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{
+	<span class="ident">Weight</span>, <span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>, <span class="ident">WeightToFeePolynomial</span>,
+};
 <span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">sp_version::RuntimeVersion</span>;
 
@@ -185,8 +207,8 @@
 <span class="doccomment">/// Rococo Chain</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Rococo</span> <span class="op">=</span> <span class="ident">PolkadotLike</span>;
 
-<span class="doccomment">/// The target length of a session (how often authorities change) on Westend measured in of number of</span>
-<span class="doccomment">/// blocks.</span>
+<span class="doccomment">/// The target length of a session (how often authorities change) on Westend measured in of number</span>
+<span class="doccomment">/// of blocks.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note that since this is a target sessions may change before/after this time depending on network</span>
 <span class="doccomment">/// conditions.</span>
@@ -227,27 +249,45 @@
 	<span class="ident">AccountIdConverter::convert</span>(<span class="ident">encoded_id</span>)
 }
 
+<span class="doccomment">/// Name of the With-Wococo messages pallet instance in the Rococo runtime.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WITH_WOCOCO_MESSAGES_PALLET_NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;BridgeWococoMessages&quot;</span>;
+
 <span class="doccomment">/// Name of the `RococoFinalityApi::best_finalized` runtime method.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BEST_FINALIZED_ROCOCO_HEADER_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;RococoFinalityApi_best_finalized&quot;</span>;
 <span class="doccomment">/// Name of the `RococoFinalityApi::is_known_header` runtime method.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IS_KNOWN_ROCOCO_HEADER_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;RococoFinalityApi_is_known_header&quot;</span>;
 
-<span class="doccomment">/// Name of the `ToRococoOutboundLaneApi::estimate_message_delivery_and_dispatch_fee` runtime method.</span>
+<span class="doccomment">/// Name of the `ToRococoOutboundLaneApi::estimate_message_delivery_and_dispatch_fee` runtime</span>
+<span class="doccomment">/// method.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TO_ROCOCO_ESTIMATE_MESSAGE_FEE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
 	<span class="string">&quot;ToRococoOutboundLaneApi_estimate_message_delivery_and_dispatch_fee&quot;</span>;
 <span class="doccomment">/// Name of the `ToRococoOutboundLaneApi::message_details` runtime method.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TO_ROCOCO_MESSAGE_DETAILS_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;ToRococoOutboundLaneApi_message_details&quot;</span>;
 <span class="doccomment">/// Name of the `ToRococoOutboundLaneApi::latest_generated_nonce` runtime method.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TO_ROCOCO_LATEST_GENERATED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;ToRococoOutboundLaneApi_latest_generated_nonce&quot;</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TO_ROCOCO_LATEST_GENERATED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+	<span class="string">&quot;ToRococoOutboundLaneApi_latest_generated_nonce&quot;</span>;
 <span class="doccomment">/// Name of the `ToRococoOutboundLaneApi::latest_received_nonce` runtime method.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TO_ROCOCO_LATEST_RECEIVED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;ToRococoOutboundLaneApi_latest_received_nonce&quot;</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TO_ROCOCO_LATEST_RECEIVED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+	<span class="string">&quot;ToRococoOutboundLaneApi_latest_received_nonce&quot;</span>;
 
 <span class="doccomment">/// Name of the `FromRococoInboundLaneApi::latest_received_nonce` runtime method.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FROM_ROCOCO_LATEST_RECEIVED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;FromRococoInboundLaneApi_latest_received_nonce&quot;</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FROM_ROCOCO_LATEST_RECEIVED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+	<span class="string">&quot;FromRococoInboundLaneApi_latest_received_nonce&quot;</span>;
 <span class="doccomment">/// Name of the `FromRococoInboundLaneApi::latest_onfirmed_nonce` runtime method.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FROM_ROCOCO_LATEST_CONFIRMED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;FromRococoInboundLaneApi_latest_confirmed_nonce&quot;</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FROM_ROCOCO_LATEST_CONFIRMED_NONCE_METHOD</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+	<span class="string">&quot;FromRococoInboundLaneApi_latest_confirmed_nonce&quot;</span>;
 <span class="doccomment">/// Name of the `FromRococoInboundLaneApi::unrewarded_relayers_state` runtime method.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FROM_ROCOCO_UNREWARDED_RELAYERS_STATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;FromRococoInboundLaneApi_unrewarded_relayers_state&quot;</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FROM_ROCOCO_UNREWARDED_RELAYERS_STATE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span>
+	<span class="string">&quot;FromRococoInboundLaneApi_unrewarded_relayers_state&quot;</span>;
+
+<span class="doccomment">/// Weight of pay-dispatch-fee operation for inbound messages at Rococo chain.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This value corresponds to the result of</span>
+<span class="doccomment">/// `pallet_bridge_messages::WeightInfoExt::pay_inbound_dispatch_fee_overhead()` call for your</span>
+<span class="doccomment">/// chain. Don&#39;t put too much reserve there, because it is used to **decrease**</span>
+<span class="doccomment">/// `DEFAULT_MESSAGE_DELIVERY_TX_WEIGHT` cost. So putting large reserve would make delivery</span>
+<span class="doccomment">/// transactions cheaper.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PAY_INBOUND_DISPATCH_FEE_WEIGHT</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">600_000_000</span>;
 
 <span class="macro">sp_api::decl_runtime_apis!</span> {
 	<span class="doccomment">/// API for querying information about the finalized Rococo headers.</span>

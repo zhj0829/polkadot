@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["DAYS",""],["HOURS",""],["MILLISECS_PER_BLOCK",""],["MINUTES",""],["SLOT_DURATION",""]]});

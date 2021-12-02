@@ -211,30 +211,6 @@
 <span id="211">211</span>
 <span id="212">212</span>
 <span id="213">213</span>
-<span id="214">214</span>
-<span id="215">215</span>
-<span id="216">216</span>
-<span id="217">217</span>
-<span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
-<span id="224">224</span>
-<span id="225">225</span>
-<span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -258,8 +234,7 @@
 <span class="kw">use</span> <span class="ident">bp_header_chain::justification::GrandpaJustification</span>;
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">sp_application_crypto::TryFrom</span>;
-<span class="kw">use</span> <span class="ident">sp_finality_grandpa</span>::{<span class="ident">AuthorityId</span>, <span class="ident">AuthorityWeight</span>};
-<span class="kw">use</span> <span class="ident">sp_finality_grandpa</span>::{<span class="ident">AuthoritySignature</span>, <span class="ident">SetId</span>};
+<span class="kw">use</span> <span class="ident">sp_finality_grandpa</span>::{<span class="ident">AuthorityId</span>, <span class="ident">AuthoritySignature</span>, <span class="ident">AuthorityWeight</span>, <span class="ident">SetId</span>};
 <span class="kw">use</span> <span class="ident">sp_runtime::traits</span>::{<span class="ident">Header</span> <span class="kw">as</span> <span class="ident">HeaderT</span>, <span class="ident">One</span>, <span class="ident">Zero</span>};
 <span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
 
@@ -286,7 +261,7 @@
 	<span class="kw">pub</span> <span class="ident">authorities</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Account</span>, <span class="ident">AuthorityWeight</span>)<span class="op">&gt;</span>,
 	<span class="doccomment">/// The total number of precommit ancestors in the `votes_ancestries` field our justification.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// These may be distributed among many different forks.</span>
+	<span class="doccomment">/// These may be distributed among many forks.</span>
 	<span class="kw">pub</span> <span class="ident">ancestors</span>: <span class="ident">u32</span>,
 	<span class="doccomment">/// The number of forks.</span>
 	<span class="doccomment">///</span>
@@ -309,10 +284,7 @@
 
 <span class="doccomment">/// Make a valid GRANDPA justification with sensible defaults</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_default_justification</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span>(<span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GrandpaJustification</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">JustificationGeneratorParams</span>::<span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-		<span class="ident">header</span>: <span class="ident">header</span>.<span class="ident">clone</span>(),
-		..<span class="ident">Default::default</span>()
-	};
+	<span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">JustificationGeneratorParams</span>::<span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> { <span class="ident">header</span>: <span class="ident">header</span>.<span class="ident">clone</span>(), ..<span class="ident">Default::default</span>() };
 
 	<span class="ident">make_justification_for_header</span>(<span class="ident">params</span>)
 }
@@ -326,15 +298,11 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note: This needs at least three authorities or else the verifier will complain about</span>
 <span class="doccomment">/// being given an invalid commit.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_justification_for_header</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span>(<span class="ident">params</span>: <span class="ident">JustificationGeneratorParams</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GrandpaJustification</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">JustificationGeneratorParams</span> {
-		<span class="ident">header</span>,
-		<span class="ident">round</span>,
-		<span class="ident">set_id</span>,
-		<span class="ident">authorities</span>,
-		<span class="kw-2">mut</span> <span class="ident">ancestors</span>,
-		<span class="ident">forks</span>,
-	} <span class="op">=</span> <span class="ident">params</span>;
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_justification_for_header</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span>(
+	<span class="ident">params</span>: <span class="ident">JustificationGeneratorParams</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GrandpaJustification</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
+	<span class="kw">let</span> <span class="ident">JustificationGeneratorParams</span> { <span class="ident">header</span>, <span class="ident">round</span>, <span class="ident">set_id</span>, <span class="ident">authorities</span>, <span class="kw-2">mut</span> <span class="ident">ancestors</span>, <span class="ident">forks</span> } <span class="op">=</span>
+		<span class="ident">params</span>;
 	<span class="kw">let</span> (<span class="ident">target_hash</span>, <span class="ident">target_number</span>) <span class="op">=</span> (<span class="ident">header</span>.<span class="ident">hash</span>(), <span class="kw-2">*</span><span class="ident">header</span>.<span class="ident">number</span>());
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">votes_ancestries</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">precommits</span> <span class="op">=</span> <span class="macro">vec!</span>[];
@@ -381,11 +349,7 @@
 
 	<span class="ident">GrandpaJustification</span> {
 		<span class="ident">round</span>,
-		<span class="ident">commit</span>: <span class="ident">finality_grandpa::Commit</span> {
-			<span class="ident">target_hash</span>,
-			<span class="ident">target_number</span>,
-			<span class="ident">precommits</span>,
-		},
+		<span class="ident">commit</span>: <span class="ident">finality_grandpa::Commit</span> { <span class="ident">target_hash</span>, <span class="ident">target_number</span>, <span class="ident">precommits</span> },
 		<span class="ident">votes_ancestries</span>,
 	}
 }
@@ -402,10 +366,7 @@
 
 		<span class="comment">// Modifying the digest so headers at the same height but in different forks have different</span>
 		<span class="comment">// hashes</span>
-		<span class="ident">header</span>
-			.<span class="ident">digest_mut</span>()
-			.<span class="ident">logs</span>
-			.<span class="ident">push</span>(<span class="ident">sp_runtime::DigestItem::Other</span>(<span class="ident">fork_id</span>.<span class="ident">encode</span>()));
+		<span class="ident">header</span>.<span class="ident">digest_mut</span>().<span class="ident">logs</span>.<span class="ident">push</span>(<span class="ident">sp_runtime::DigestItem::Other</span>(<span class="ident">fork_id</span>.<span class="ident">encode</span>()));
 
 		<span class="ident">headers</span>.<span class="ident">push</span>(<span class="ident">header</span>);
 	}
@@ -420,29 +381,26 @@
 	<span class="ident">round</span>: <span class="ident">u64</span>,
 	<span class="ident">set_id</span>: <span class="ident">SetId</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">finality_grandpa::SignedPrecommit</span><span class="op">&lt;</span><span class="ident">H::Hash</span>, <span class="ident">H::Number</span>, <span class="ident">AuthoritySignature</span>, <span class="ident">AuthorityId</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">precommit</span> <span class="op">=</span> <span class="ident">finality_grandpa::Precommit</span> {
-		<span class="ident">target_hash</span>: <span class="ident">target</span>.<span class="number">0</span>,
-		<span class="ident">target_number</span>: <span class="ident">target</span>.<span class="number">1</span>,
-	};
+	<span class="kw">let</span> <span class="ident">precommit</span> <span class="op">=</span> <span class="ident">finality_grandpa::Precommit</span> { <span class="ident">target_hash</span>: <span class="ident">target</span>.<span class="number">0</span>, <span class="ident">target_number</span>: <span class="ident">target</span>.<span class="number">1</span> };
 
-	<span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span>
-		<span class="ident">sp_finality_grandpa::localized_payload</span>(<span class="ident">round</span>, <span class="ident">set_id</span>, <span class="kw-2">&amp;</span><span class="ident">finality_grandpa::Message::Precommit</span>(<span class="ident">precommit</span>.<span class="ident">clone</span>()));
+	<span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">sp_finality_grandpa::localized_payload</span>(
+		<span class="ident">round</span>,
+		<span class="ident">set_id</span>,
+		<span class="kw-2">&amp;</span><span class="ident">finality_grandpa::Message::Precommit</span>(<span class="ident">precommit</span>.<span class="ident">clone</span>()),
+	);
 
 	<span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">signer</span>.<span class="ident">sign</span>(<span class="kw-2">&amp;</span><span class="ident">encoded</span>);
 	<span class="kw">let</span> <span class="ident">raw_signature</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">signature</span>.<span class="ident">to_bytes</span>().<span class="ident">into</span>();
 
-	<span class="comment">// Need to wrap our signature and id types that they match what our `SignedPrecommit` is expecting</span>
+	<span class="comment">// Need to wrap our signature and id types that they match what our `SignedPrecommit` is</span>
+	<span class="comment">// expecting</span>
 	<span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">AuthoritySignature::try_from</span>(<span class="ident">raw_signature</span>).<span class="ident">expect</span>(
 		<span class="string">&quot;We know our Keypair is good,
 		so our signature must also be good.&quot;</span>,
 	);
 	<span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">signer</span>).<span class="ident">into</span>();
 
-	<span class="ident">finality_grandpa::SignedPrecommit</span> {
-		<span class="ident">precommit</span>,
-		<span class="ident">signature</span>,
-		<span class="ident">id</span>,
-	}
+	<span class="ident">finality_grandpa::SignedPrecommit</span> { <span class="ident">precommit</span>, <span class="ident">signature</span>, <span class="ident">id</span> }
 }
 
 <span class="doccomment">/// Get a header for testing.</span>
@@ -450,13 +408,7 @@
 <span class="doccomment">/// The correct parent hash will be used if given a non-zero header.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_header</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span>(<span class="ident">number</span>: <span class="ident">H::Number</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">H</span> {
 	<span class="kw">let</span> <span class="ident">default</span> <span class="op">=</span> <span class="op">|</span><span class="ident">num</span><span class="op">|</span> {
-		<span class="ident">H::new</span>(
-			<span class="ident">num</span>,
-			<span class="ident">Default::default</span>(),
-			<span class="ident">Default::default</span>(),
-			<span class="ident">Default::default</span>(),
-			<span class="ident">Default::default</span>(),
-		)
+		<span class="ident">H::new</span>(<span class="ident">num</span>, <span class="ident">Default::default</span>(), <span class="ident">Default::default</span>(), <span class="ident">Default::default</span>(), <span class="ident">Default::default</span>())
 	};
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header</span> <span class="op">=</span> <span class="ident">default</span>(<span class="ident">number</span>);

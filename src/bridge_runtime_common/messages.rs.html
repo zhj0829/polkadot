@@ -1516,6 +1516,64 @@
 <span id="1516">1516</span>
 <span id="1517">1517</span>
 <span id="1518">1518</span>
+<span id="1519">1519</span>
+<span id="1520">1520</span>
+<span id="1521">1521</span>
+<span id="1522">1522</span>
+<span id="1523">1523</span>
+<span id="1524">1524</span>
+<span id="1525">1525</span>
+<span id="1526">1526</span>
+<span id="1527">1527</span>
+<span id="1528">1528</span>
+<span id="1529">1529</span>
+<span id="1530">1530</span>
+<span id="1531">1531</span>
+<span id="1532">1532</span>
+<span id="1533">1533</span>
+<span id="1534">1534</span>
+<span id="1535">1535</span>
+<span id="1536">1536</span>
+<span id="1537">1537</span>
+<span id="1538">1538</span>
+<span id="1539">1539</span>
+<span id="1540">1540</span>
+<span id="1541">1541</span>
+<span id="1542">1542</span>
+<span id="1543">1543</span>
+<span id="1544">1544</span>
+<span id="1545">1545</span>
+<span id="1546">1546</span>
+<span id="1547">1547</span>
+<span id="1548">1548</span>
+<span id="1549">1549</span>
+<span id="1550">1550</span>
+<span id="1551">1551</span>
+<span id="1552">1552</span>
+<span id="1553">1553</span>
+<span id="1554">1554</span>
+<span id="1555">1555</span>
+<span id="1556">1556</span>
+<span id="1557">1557</span>
+<span id="1558">1558</span>
+<span id="1559">1559</span>
+<span id="1560">1560</span>
+<span id="1561">1561</span>
+<span id="1562">1562</span>
+<span id="1563">1563</span>
+<span id="1564">1564</span>
+<span id="1565">1565</span>
+<span id="1566">1566</span>
+<span id="1567">1567</span>
+<span id="1568">1568</span>
+<span id="1569">1569</span>
+<span id="1570">1570</span>
+<span id="1571">1571</span>
+<span id="1572">1572</span>
+<span id="1573">1573</span>
+<span id="1574">1574</span>
+<span id="1575">1575</span>
+<span id="1576">1576</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -1550,17 +1608,20 @@
 };
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
-	<span class="ident">traits</span>::{<span class="ident">Currency</span>, <span class="ident">ExistenceRequirement</span>, <span class="ident">Instance</span>},
+	<span class="ident">traits</span>::{<span class="ident">Currency</span>, <span class="ident">ExistenceRequirement</span>},
 	<span class="ident">weights</span>::{<span class="ident">Weight</span>, <span class="ident">WeightToFeePolynomial</span>},
 	<span class="ident">RuntimeDebug</span>,
 };
 <span class="kw">use</span> <span class="ident">hash_db::Hasher</span>;
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
-	<span class="ident">traits</span>::{<span class="ident">AtLeast32BitUnsigned</span>, <span class="ident">CheckedAdd</span>, <span class="ident">CheckedDiv</span>, <span class="ident">CheckedMul</span>},
+	<span class="ident">traits</span>::{<span class="ident">AtLeast32BitUnsigned</span>, <span class="ident">CheckedAdd</span>, <span class="ident">CheckedDiv</span>, <span class="ident">CheckedMul</span>, <span class="ident">Saturating</span>, <span class="ident">Zero</span>},
 	<span class="ident">FixedPointNumber</span>, <span class="ident">FixedPointOperand</span>, <span class="ident">FixedU128</span>,
 };
-<span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">cmp::PartialOrd</span>, <span class="ident">convert::TryFrom</span>, <span class="ident">fmt::Debug</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::RangeInclusive</span>, <span class="ident">vec::Vec</span>};
+<span class="kw">use</span> <span class="ident">sp_std</span>::{
+	<span class="ident">cmp::PartialOrd</span>, <span class="ident">convert::TryFrom</span>, <span class="ident">fmt::Debug</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::RangeInclusive</span>,
+	<span class="ident">vec::Vec</span>,
+};
 <span class="kw">use</span> <span class="ident">sp_trie::StorageProof</span>;
 
 <span class="doccomment">/// Bidirectional message bridge.</span>
@@ -1572,16 +1633,20 @@
 	<span class="kw">const</span> <span class="ident">THIS_CHAIN_ID</span>: <span class="ident">ChainId</span>;
 	<span class="doccomment">/// Identifier of the Bridged chain.</span>
 	<span class="kw">const</span> <span class="ident">BRIDGED_CHAIN_ID</span>: <span class="ident">ChainId</span>;
+	<span class="doccomment">/// Name of the paired messages pallet instance at the Bridged chain.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// Should be the name that is used in the `construct_runtime!()` macro.</span>
+	<span class="kw">const</span> <span class="ident">BRIDGED_MESSAGES_PALLET_NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 
 	<span class="doccomment">/// This chain in context of message bridge.</span>
 	<span class="kw">type</span> <span class="ident">ThisChain</span>: <span class="ident">ThisChainWithMessages</span>;
 	<span class="doccomment">/// Bridged chain in context of message bridge.</span>
 	<span class="kw">type</span> <span class="ident">BridgedChain</span>: <span class="ident">BridgedChainWithMessages</span>;
-	<span class="doccomment">/// Instance of the `pallet-bridge-messages` pallet at the Bridged chain.</span>
-	<span class="kw">type</span> <span class="ident">BridgedMessagesInstance</span>: <span class="ident">Instance</span>;
 
 	<span class="doccomment">/// Convert Bridged chain balance into This chain balance.</span>
-	<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(<span class="ident">bridged_balance</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(
+		<span class="ident">bridged_balance</span>: <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Chain that has `pallet-bridge-messages` and `dispatch` modules.</span>
@@ -1591,16 +1656,23 @@
 	<span class="doccomment">/// Accound id on the chain.</span>
 	<span class="kw">type</span> <span class="ident">AccountId</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span>;
 	<span class="doccomment">/// Public key of the chain account that may be used to verify signatures.</span>
-	<span class="kw">type</span> <span class="ident">Signer</span>: <span class="ident">Decode</span>;
+	<span class="kw">type</span> <span class="ident">Signer</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span>;
 	<span class="doccomment">/// Signature type used on the chain.</span>
-	<span class="kw">type</span> <span class="ident">Signature</span>: <span class="ident">Decode</span>;
+	<span class="kw">type</span> <span class="ident">Signature</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span>;
 	<span class="doccomment">/// Type of weight that is used on the chain. This would almost always be a regular</span>
 	<span class="doccomment">/// `frame_support::weight::Weight`. But since the meaning of weight on different chains</span>
 	<span class="doccomment">/// may be different, the `WeightOf&lt;&gt;` construct is used to avoid confusion between</span>
 	<span class="doccomment">/// different weights.</span>
 	<span class="kw">type</span> <span class="ident">Weight</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">frame_support::weights::Weight</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">PartialOrd</span>;
 	<span class="doccomment">/// Type of balances that is used on the chain.</span>
-	<span class="kw">type</span> <span class="ident">Balance</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span> <span class="op">+</span> <span class="ident">CheckedAdd</span> <span class="op">+</span> <span class="ident">CheckedDiv</span> <span class="op">+</span> <span class="ident">CheckedMul</span> <span class="op">+</span> <span class="ident">PartialOrd</span> <span class="op">+</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Copy</span>;
+	<span class="kw">type</span> <span class="ident">Balance</span>: <span class="ident">Encode</span>
+		<span class="op">+</span> <span class="ident">Decode</span>
+		<span class="op">+</span> <span class="ident">CheckedAdd</span>
+		<span class="op">+</span> <span class="ident">CheckedDiv</span>
+		<span class="op">+</span> <span class="ident">CheckedMul</span>
+		<span class="op">+</span> <span class="ident">PartialOrd</span>
+		<span class="op">+</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>
+		<span class="op">+</span> <span class="ident">Copy</span>;
 }
 
 <span class="doccomment">/// Message related transaction parameters estimation.</span>
@@ -1655,30 +1727,40 @@
 		<span class="ident">message_dispatch_weight</span>: <span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-	<span class="doccomment">/// Returns minimal transaction fee that must be paid for given transaction at the Bridged chain.</span>
+	<span class="doccomment">/// Returns minimal transaction fee that must be paid for given transaction at the Bridged</span>
+	<span class="doccomment">/// chain.</span>
 	<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">MessageBridge</span><span class="op">&gt;</span><span class="ident">::ThisChain</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">MessageBridge</span><span class="op">&gt;</span><span class="ident">::BridgedChain</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Hash</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::AccountId</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">SignerOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Signer</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">SignatureOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Signature</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">WeightOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Weight</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Balance</span>;
-
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">CallOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ThisChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Call</span>;
+<span class="doccomment">/// This chain in context of message bridge.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">MessageBridge</span><span class="op">&gt;</span><span class="ident">::ThisChain</span>;
+<span class="doccomment">/// Bridged chain in context of message bridge.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">MessageBridge</span><span class="op">&gt;</span><span class="ident">::BridgedChain</span>;
+<span class="doccomment">/// Hash used on the chain.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Hash</span>;
+<span class="doccomment">/// Account id used on the chain.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::AccountId</span>;
+<span class="doccomment">/// Public key of the chain account that may be used to verify signature.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SignerOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Signer</span>;
+<span class="doccomment">/// Signature type used on the chain.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SignatureOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Signature</span>;
+<span class="doccomment">/// Type of weight that used on the chain.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WeightOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Weight</span>;
+<span class="doccomment">/// Type of balances that is used on the chain.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Balance</span>;
+<span class="doccomment">/// Type of call that is used on this chain.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CallOf</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">C</span> <span class="kw">as</span> <span class="ident">ThisChainWithMessages</span><span class="op">&gt;</span><span class="ident">::Call</span>;
 
 <span class="doccomment">/// Raw storage proof type (just raw trie nodes).</span>
 <span class="kw">type</span> <span class="ident">RawStorageProof</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Compute fee of transaction at runtime where regular transaction payment pallet is being used.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The value of `multiplier` parameter is the expected value of `pallet_transaction_payment::NextFeeMultiplier`</span>
-<span class="doccomment">/// at the moment when transaction is submitted. If you&#39;re charging this payment in advance (and that&#39;s what</span>
-<span class="doccomment">/// happens with delivery and confirmation transaction in this crate), then there&#39;s a chance that the actual</span>
-<span class="doccomment">/// fee will be larger than what is paid in advance. So the value must be chosen carefully.</span>
+<span class="doccomment">/// The value of `multiplier` parameter is the expected value of</span>
+<span class="doccomment">/// `pallet_transaction_payment::NextFeeMultiplier` at the moment when transaction is submitted. If</span>
+<span class="doccomment">/// you&#39;re charging this payment in advance (and that&#39;s what happens with delivery and confirmation</span>
+<span class="doccomment">/// transaction in this crate), then there&#39;s a chance that the actual fee will be larger than what</span>
+<span class="doccomment">/// is paid in advance. So the value must be chosen carefully.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">transaction_payment</span><span class="op">&lt;</span><span class="ident">Balance</span>: <span class="ident">AtLeast32BitUnsigned</span> <span class="op">+</span> <span class="ident">FixedPointOperand</span><span class="op">&gt;</span>(
 	<span class="ident">base_extrinsic_weight</span>: <span class="ident">Weight</span>,
 	<span class="ident">per_byte_fee</span>: <span class="ident">Balance</span>,
@@ -1741,7 +1823,8 @@
 	}
 
 	<span class="doccomment">/// &#39;Parsed&#39; message delivery proof - inbound lane id and its state.</span>
-	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParsedMessagesDeliveryProofFromBridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> (<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>);
+	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParsedMessagesDeliveryProofFromBridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span>
+		(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
 	<span class="doccomment">/// Message verifier that is doing all basic checks.</span>
 	<span class="doccomment">///</span>
@@ -1753,19 +1836,30 @@
 	<span class="doccomment">/// Following checks are made:</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// - message is rejected if its lane is currently blocked;</span>
-	<span class="doccomment">/// - message is rejected if there are too many pending (undelivered) messages at the outbound lane;</span>
-	<span class="doccomment">/// - check that the sender has rights to dispatch the call on target chain using provided dispatch origin;</span>
+	<span class="doccomment">/// - message is rejected if there are too many pending (undelivered) messages at the outbound</span>
+	<span class="doccomment">///   lane;</span>
+	<span class="doccomment">/// - check that the sender has rights to dispatch the call on target chain using provided</span>
+	<span class="doccomment">///   dispatch origin;</span>
 	<span class="doccomment">/// - check that the sender has paid enough funds for both message delivery and dispatch.</span>
 	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">RuntimeDebug</span>)]</span>
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FromThisChainMessageVerifier</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>);
 
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">OUTBOUND_LANE_DISABLED</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;The outbound message lane is disabled.&quot;</span>;
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">TOO_MANY_PENDING_MESSAGES</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Too many pending messages at the lane.&quot;</span>;
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">BAD_ORIGIN</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Unable to match the source origin to expected target origin.&quot;</span>;
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">TOO_LOW_FEE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Provided fee is below minimal threshold required by the lane.&quot;</span>;
+	<span class="doccomment">/// The error message returned from LaneMessageVerifier when outbound lane is disabled.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">OUTBOUND_LANE_DISABLED</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;The outbound message lane is disabled.&quot;</span>;
+	<span class="doccomment">/// The error message returned from LaneMessageVerifier when too many pending messages at the</span>
+	<span class="doccomment">/// lane.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TOO_MANY_PENDING_MESSAGES</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Too many pending messages at the lane.&quot;</span>;
+	<span class="doccomment">/// The error message returned from LaneMessageVerifier when call origin is mismatch.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BAD_ORIGIN</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Unable to match the source origin to expected target origin.&quot;</span>;
+	<span class="doccomment">/// The error message returned from LaneMessageVerifier when the message fee is too low.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TOO_LOW_FEE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Provided fee is below minimal threshold required by the lane.&quot;</span>;
 
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="ident">LaneMessageVerifier</span><span class="op">&lt;</span><span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
-		<span class="kw">for</span> <span class="ident">FromThisChainMessageVerifier</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
+	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
+		<span class="ident">LaneMessageVerifier</span><span class="op">&lt;</span>
+			<span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+			<span class="ident">FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
+			<span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FromThisChainMessageVerifier</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">B</span>: <span class="ident">MessageBridge</span>,
 		<span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">PartialEq</span> <span class="op">+</span> <span class="ident">Clone</span>,
@@ -1781,7 +1875,7 @@
 		) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 			<span class="comment">// reject message if lane is blocked</span>
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">ThisChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::is_outbound_lane_enabled</span>(<span class="ident">lane</span>) {
-				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">OUTBOUND_LANE_DISABLED</span>);
+				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">OUTBOUND_LANE_DISABLED</span>)
 			}
 
 			<span class="comment">// reject message if there are too many pending messages at this lane</span>
@@ -1790,19 +1884,20 @@
 				.<span class="ident">latest_generated_nonce</span>
 				.<span class="ident">saturating_sub</span>(<span class="ident">lane_outbound_data</span>.<span class="ident">latest_received_nonce</span>);
 			<span class="kw">if</span> <span class="ident">pending_messages</span> <span class="op">&gt;</span> <span class="ident">max_pending_messages</span> {
-				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TOO_MANY_PENDING_MESSAGES</span>);
+				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TOO_MANY_PENDING_MESSAGES</span>)
 			}
 
 			<span class="comment">// Do the dispatch-specific check. We assume that the target chain uses</span>
 			<span class="comment">// `Dispatch`, so we verify the message accordingly.</span>
-			<span class="ident">pallet_bridge_dispatch::verify_message_origin</span>(<span class="ident">submitter</span>, <span class="ident">payload</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">BAD_ORIGIN</span>)<span class="question-mark">?</span>;
+			<span class="ident">pallet_bridge_dispatch::verify_message_origin</span>(<span class="ident">submitter</span>, <span class="ident">payload</span>)
+				.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">BAD_ORIGIN</span>)<span class="question-mark">?</span>;
 
 			<span class="kw">let</span> <span class="ident">minimal_fee_in_this_tokens</span> <span class="op">=</span>
 				<span class="ident">estimate_message_dispatch_and_delivery_fee</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">payload</span>, <span class="ident">B::RELAYER_FEE_PERCENT</span>)<span class="question-mark">?</span>;
 
 			<span class="comment">// compare with actual fee paid</span>
 			<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">delivery_and_dispatch_fee</span> <span class="op">&lt;</span> <span class="ident">minimal_fee_in_this_tokens</span> {
-				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TOO_LOW_FEE</span>);
+				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TOO_LOW_FEE</span>)
 			}
 
 			<span class="prelude-val">Ok</span>(())
@@ -1824,13 +1919,13 @@
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">weight_limits</span> <span class="op">=</span> <span class="ident">BridgedChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::message_weight_limits</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">call</span>);
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">weight_limits</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">weight</span>.<span class="ident">into</span>()) {
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Incorrect message weight declared&quot;</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Incorrect message weight declared&quot;</span>)
 		}
 
 		<span class="comment">// The maximal size of extrinsic at Substrate-based chain depends on the</span>
-		<span class="comment">// `frame_system::Config::MaximumBlockLength` and `frame_system::Config::AvailableBlockRatio`</span>
-		<span class="comment">// constants. This check is here to be sure that the lane won&#39;t stuck because message is too</span>
-		<span class="comment">// large to fit into delivery transaction.</span>
+		<span class="comment">// `frame_system::Config::MaximumBlockLength` and</span>
+		<span class="comment">// `frame_system::Config::AvailableBlockRatio` constants. This check is here to be sure that</span>
+		<span class="comment">// the lane won&#39;t stuck because message is too large to fit into delivery transaction.</span>
 		<span class="comment">//</span>
 		<span class="comment">// **IMPORTANT NOTE**: the delivery transaction contains storage proof of the message, not</span>
 		<span class="comment">// the message itself. The proof is always larger than the message. But unless chain state</span>
@@ -1838,16 +1933,17 @@
 		<span class="comment">// transaction also contains signatures and signed extensions. Because of this, we reserve</span>
 		<span class="comment">// 1/3 of the the maximal extrinsic weight for this data.</span>
 		<span class="kw">if</span> <span class="ident">payload</span>.<span class="ident">call</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">maximal_message_size</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">usize</span> {
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;The message is too large to be sent over the lane&quot;</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;The message is too large to be sent over the lane&quot;</span>)
 		}
 
 		<span class="prelude-val">Ok</span>(())
 	}
 
-	<span class="doccomment">/// Estimate delivery and dispatch fee that must be paid for delivering a message to the Bridged chain.</span>
+	<span class="doccomment">/// Estimate delivery and dispatch fee that must be paid for delivering a message to the Bridged</span>
+	<span class="doccomment">/// chain.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// The fee is paid in This chain Balance, but we use Bridged chain balance to avoid additional conversions.</span>
-	<span class="doccomment">/// Returns `None` if overflow has happened.</span>
+	<span class="doccomment">/// The fee is paid in This chain Balance, but we use Bridged chain balance to avoid additional</span>
+	<span class="doccomment">/// conversions. Returns `None` if overflow has happened.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">estimate_message_dispatch_and_delivery_fee</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MessageBridge</span><span class="op">&gt;</span>(
 		<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 		<span class="ident">relayer_fee_percent</span>: <span class="ident">u32</span>,
@@ -1856,25 +1952,23 @@
 		<span class="comment">//</span>
 		<span class="comment">// if we&#39;re going to pay dispatch fee at the target chain, then we don&#39;t include weight</span>
 		<span class="comment">// of the message dispatch in the delivery transaction cost</span>
-		<span class="kw">let</span> <span class="ident">pay_dispatch_fee_at_target_chain</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">dispatch_fee_payment</span> <span class="op">=</span><span class="op">=</span> <span class="ident">DispatchFeePayment::AtTargetChain</span>;
+		<span class="kw">let</span> <span class="ident">pay_dispatch_fee_at_target_chain</span> <span class="op">=</span>
+			<span class="ident">payload</span>.<span class="ident">dispatch_fee_payment</span> <span class="op">=</span><span class="op">=</span> <span class="ident">DispatchFeePayment::AtTargetChain</span>;
 		<span class="kw">let</span> <span class="ident">delivery_transaction</span> <span class="op">=</span> <span class="ident">BridgedChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::estimate_delivery_transaction</span>(
-			<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">call</span>,
+			<span class="kw-2">&amp;</span><span class="ident">payload</span>.<span class="ident">encode</span>(),
 			<span class="ident">pay_dispatch_fee_at_target_chain</span>,
-			<span class="kw">if</span> <span class="ident">pay_dispatch_fee_at_target_chain</span> {
-				<span class="number">0</span>.<span class="ident">into</span>()
-			} <span class="kw">else</span> {
-				<span class="ident">payload</span>.<span class="ident">weight</span>.<span class="ident">into</span>()
-			},
+			<span class="kw">if</span> <span class="ident">pay_dispatch_fee_at_target_chain</span> { <span class="number">0</span>.<span class="ident">into</span>() } <span class="kw">else</span> { <span class="ident">payload</span>.<span class="ident">weight</span>.<span class="ident">into</span>() },
 		);
 		<span class="kw">let</span> <span class="ident">delivery_transaction_fee</span> <span class="op">=</span> <span class="ident">BridgedChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::transaction_payment</span>(<span class="ident">delivery_transaction</span>);
 
 		<span class="comment">// the fee (in This tokens) of all transactions that are made on This chain</span>
 		<span class="kw">let</span> <span class="ident">confirmation_transaction</span> <span class="op">=</span> <span class="ident">ThisChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::estimate_delivery_confirmation_transaction</span>();
-		<span class="kw">let</span> <span class="ident">confirmation_transaction_fee</span> <span class="op">=</span> <span class="ident">ThisChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::transaction_payment</span>(<span class="ident">confirmation_transaction</span>);
+		<span class="kw">let</span> <span class="ident">confirmation_transaction_fee</span> <span class="op">=</span>
+			<span class="ident">ThisChain</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="ident">::transaction_payment</span>(<span class="ident">confirmation_transaction</span>);
 
 		<span class="comment">// minimal fee (in This tokens) is a sum of all required fees</span>
-		<span class="kw">let</span> <span class="ident">minimal_fee</span> <span class="op">=</span>
-			<span class="ident">B::bridged_balance_to_this_balance</span>(<span class="ident">delivery_transaction_fee</span>).<span class="ident">checked_add</span>(<span class="kw-2">&amp;</span><span class="ident">confirmation_transaction_fee</span>);
+		<span class="kw">let</span> <span class="ident">minimal_fee</span> <span class="op">=</span> <span class="ident">B::bridged_balance_to_this_balance</span>(<span class="ident">delivery_transaction_fee</span>)
+			.<span class="ident">checked_add</span>(<span class="kw-2">&amp;</span><span class="ident">confirmation_transaction_fee</span>);
 
 		<span class="comment">// before returning, add extra fee that is paid to the relayer (relayer interest)</span>
 		<span class="ident">minimal_fee</span>
@@ -1895,14 +1989,14 @@
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ParsedMessagesDeliveryProofFromBridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">ThisRuntime</span>: <span class="ident">pallet_bridge_grandpa::Config</span><span class="op">&lt;</span><span class="ident">GrandpaInstance</span><span class="op">&gt;</span>,
-		<span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-			<span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bp_runtime::HashOf</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">ThisRuntime</span> <span class="kw">as</span> <span class="ident">pallet_bridge_grandpa::Config</span><span class="op">&lt;</span><span class="ident">GrandpaInstance</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::BridgedChain</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">Into</span><span class="op">&lt;</span>
+			<span class="ident">bp_runtime::HashOf</span><span class="op">&lt;</span>
+				<span class="op">&lt;</span><span class="ident">ThisRuntime</span> <span class="kw">as</span> <span class="ident">pallet_bridge_grandpa::Config</span><span class="op">&lt;</span><span class="ident">GrandpaInstance</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::BridgedChain</span>,
+			<span class="op">&gt;</span>,
+		<span class="op">&gt;</span>,
 	{
-		<span class="kw">let</span> <span class="ident">FromBridgedChainMessagesDeliveryProof</span> {
-			<span class="ident">bridged_header_hash</span>,
-			<span class="ident">storage_proof</span>,
-			<span class="ident">lane</span>,
-		} <span class="op">=</span> <span class="ident">proof</span>;
+		<span class="kw">let</span> <span class="ident">FromBridgedChainMessagesDeliveryProof</span> { <span class="ident">bridged_header_hash</span>, <span class="ident">storage_proof</span>, <span class="ident">lane</span> } <span class="op">=</span>
+			<span class="ident">proof</span>;
 		<span class="ident">pallet_bridge_grandpa::Pallet</span>::<span class="op">&lt;</span><span class="ident">ThisRuntime</span>, <span class="ident">GrandpaInstance</span><span class="op">&gt;</span><span class="ident">::parse_finalized_storage_proof</span>(
 			<span class="ident">bridged_header_hash</span>.<span class="ident">into</span>(),
 			<span class="ident">StorageProof::new</span>(<span class="ident">storage_proof</span>),
@@ -1910,7 +2004,7 @@
 				<span class="comment">// Messages delivery proof is just proof of single storage key read =&gt; any error</span>
 				<span class="comment">// is fatal.</span>
 				<span class="kw">let</span> <span class="ident">storage_inbound_lane_data_key</span> <span class="op">=</span>
-					<span class="ident">pallet_bridge_messages::storage_keys::inbound_lane_data_key</span>::<span class="op">&lt;</span><span class="ident">B::BridgedMessagesInstance</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>);
+					<span class="ident">pallet_bridge_messages::storage_keys::inbound_lane_data_key</span>(<span class="ident">B::BRIDGED_MESSAGES_PALLET_NAME</span>, <span class="kw-2">&amp;</span><span class="ident">lane</span>);
 				<span class="kw">let</span> <span class="ident">raw_inbound_lane_data</span> <span class="op">=</span> <span class="ident">storage</span>
 					.<span class="ident">read_value</span>(<span class="ident">storage_inbound_lane_data_key</span>.<span class="number">0</span>.<span class="ident">as_ref</span>())
 					.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="string">&quot;Failed to read inbound lane state from storage proof&quot;</span>)<span class="question-mark">?</span>
@@ -1987,14 +2081,13 @@
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DecodedCall</span><span class="op">&gt;</span> <span class="ident">FromBridgedChainEncodedMessageCall</span><span class="op">&lt;</span><span class="ident">DecodedCall</span><span class="op">&gt;</span> {
 		<span class="doccomment">/// Create encoded call.</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">encoded_call</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-			<span class="ident">FromBridgedChainEncodedMessageCall</span> {
-				<span class="ident">encoded_call</span>,
-				<span class="ident">_marker</span>: <span class="ident">PhantomData::default</span>(),
-			}
+			<span class="ident">FromBridgedChainEncodedMessageCall</span> { <span class="ident">encoded_call</span>, <span class="ident">_marker</span>: <span class="ident">PhantomData::default</span>() }
 		}
 	}
 
-	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DecodedCall</span>: <span class="ident">Decode</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FromBridgedChainEncodedMessageCall</span><span class="op">&lt;</span><span class="ident">DecodedCall</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DecodedCall</span>, ()<span class="op">&gt;</span> {
+	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DecodedCall</span>: <span class="ident">Decode</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FromBridgedChainEncodedMessageCall</span><span class="op">&lt;</span><span class="ident">DecodedCall</span><span class="op">&gt;</span><span class="op">&gt;</span>
+		<span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DecodedCall</span>, ()<span class="op">&gt;</span>
+	{
 		<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">encoded_call</span>: <span class="ident">FromBridgedChainEncodedMessageCall</span><span class="op">&lt;</span><span class="ident">DecodedCall</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
 			<span class="ident">DecodedCall::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">encoded_call</span>.<span class="ident">encoded_call</span>[..]).<span class="ident">map_err</span>(<span class="ident">drop</span>)
 		}
@@ -2010,20 +2103,24 @@
 		<span class="ident">MessageDispatch</span><span class="op">&lt;</span><span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
 		<span class="kw">for</span> <span class="ident">FromBridgedChainMessageDispatch</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">ThisRuntime</span>, <span class="ident">ThisCurrency</span>, <span class="ident">ThisDispatchInstance</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
-		<span class="ident">ThisDispatchInstance</span>: <span class="ident">frame_support::traits::Instance</span>,
-		<span class="ident">ThisRuntime</span>: <span class="ident">pallet_bridge_dispatch::Config</span><span class="op">&lt;</span><span class="ident">ThisDispatchInstance</span>, <span class="ident">MessageId</span> <span class="op">=</span> (<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>)<span class="op">&gt;</span>
-			<span class="op">+</span> <span class="ident">pallet_transaction_payment::Config</span>,
+		<span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">Saturating</span> <span class="op">+</span> <span class="ident">FixedPointOperand</span>,
+		<span class="ident">ThisDispatchInstance</span>: <span class="lifetime">&#39;static</span>,
+		<span class="ident">ThisRuntime</span>: <span class="ident">pallet_bridge_dispatch::Config</span><span class="op">&lt;</span>
+				<span class="ident">ThisDispatchInstance</span>,
+				<span class="ident">BridgeMessageId</span> <span class="op">=</span> (<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>),
+			<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">pallet_transaction_payment::Config</span>,
 		<span class="op">&lt;</span><span class="ident">ThisRuntime</span> <span class="kw">as</span> <span class="ident">pallet_transaction_payment::Config</span><span class="op">&gt;</span><span class="ident">::OnChargeTransaction</span>:
-			<span class="ident">pallet_transaction_payment::OnChargeTransaction</span><span class="op">&lt;</span><span class="ident">ThisRuntime</span>, <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+			<span class="ident">pallet_transaction_payment::OnChargeTransaction</span><span class="op">&lt;</span>
+				<span class="ident">ThisRuntime</span>,
+				<span class="ident">Balance</span> <span class="op">=</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+			<span class="op">&gt;</span>,
 		<span class="ident">ThisCurrency</span>: <span class="ident">Currency</span><span class="op">&lt;</span><span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-		<span class="op">&lt;</span><span class="ident">ThisRuntime</span> <span class="kw">as</span> <span class="ident">pallet_bridge_dispatch::Config</span><span class="op">&lt;</span><span class="ident">ThisDispatchInstance</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Event</span>: <span class="ident">From</span><span class="op">&lt;</span>
-			<span class="ident">pallet_bridge_dispatch::RawEvent</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>), <span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">ThisDispatchInstance</span><span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
-		<span class="ident">pallet_bridge_dispatch::Pallet</span><span class="op">&lt;</span><span class="ident">ThisRuntime</span>, <span class="ident">ThisDispatchInstance</span><span class="op">&gt;</span>: <span class="ident">bp_message_dispatch::MessageDispatch</span><span class="op">&lt;</span>
-			<span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-			(<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>),
-			<span class="ident">Message</span> <span class="op">=</span> <span class="ident">FromBridgedChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-		<span class="op">&gt;</span>,
+		<span class="ident">pallet_bridge_dispatch::Pallet</span><span class="op">&lt;</span><span class="ident">ThisRuntime</span>, <span class="ident">ThisDispatchInstance</span><span class="op">&gt;</span>:
+			<span class="ident">bp_message_dispatch::MessageDispatch</span><span class="op">&lt;</span>
+				<span class="ident">AccountIdOf</span><span class="op">&lt;</span><span class="ident">ThisChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+				(<span class="ident">LaneId</span>, <span class="ident">MessageNonce</span>),
+				<span class="ident">Message</span> <span class="op">=</span> <span class="ident">FromBridgedChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
+			<span class="op">&gt;</span>,
 	{
 		<span class="kw">type</span> <span class="ident">DispatchPayload</span> <span class="op">=</span> <span class="ident">FromBridgedChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>;
 
@@ -2044,13 +2141,22 @@
 				<span class="ident">message_id</span>,
 				<span class="ident">message</span>.<span class="ident">data</span>.<span class="ident">payload</span>.<span class="ident">map_err</span>(<span class="ident">drop</span>),
 				<span class="op">|</span><span class="ident">dispatch_origin</span>, <span class="ident">dispatch_weight</span><span class="op">|</span> {
-					<span class="ident">ThisCurrency::transfer</span>(
-						<span class="ident">dispatch_origin</span>,
-						<span class="ident">relayer_account</span>,
-						<span class="ident">ThisRuntime::WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">dispatch_weight</span>),
-						<span class="ident">ExistenceRequirement::AllowDeath</span>,
-					)
-					.<span class="ident">map_err</span>(<span class="ident">drop</span>)
+					<span class="kw">let</span> <span class="ident">unadjusted_weight_fee</span> <span class="op">=</span> <span class="ident">ThisRuntime::WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">dispatch_weight</span>);
+					<span class="kw">let</span> <span class="ident">fee_multiplier</span> <span class="op">=</span>
+						<span class="ident">pallet_transaction_payment::Pallet</span>::<span class="op">&lt;</span><span class="ident">ThisRuntime</span><span class="op">&gt;</span><span class="ident">::next_fee_multiplier</span>();
+					<span class="kw">let</span> <span class="ident">adjusted_weight_fee</span> <span class="op">=</span>
+						<span class="ident">fee_multiplier</span>.<span class="ident">saturating_mul_int</span>(<span class="ident">unadjusted_weight_fee</span>);
+					<span class="kw">if</span> <span class="op">!</span><span class="ident">adjusted_weight_fee</span>.<span class="ident">is_zero</span>() {
+						<span class="ident">ThisCurrency::transfer</span>(
+							<span class="ident">dispatch_origin</span>,
+							<span class="ident">relayer_account</span>,
+							<span class="ident">adjusted_weight_fee</span>,
+							<span class="ident">ExistenceRequirement::AllowDeath</span>,
+						)
+						.<span class="ident">map_err</span>(<span class="ident">drop</span>)
+					} <span class="kw">else</span> {
+						<span class="prelude-val">Ok</span>(())
+					}
 				},
 			)
 		}
@@ -2077,9 +2183,11 @@
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">ThisRuntime</span>: <span class="ident">pallet_bridge_grandpa::Config</span><span class="op">&lt;</span><span class="ident">GrandpaInstance</span><span class="op">&gt;</span>,
-		<span class="ident">ThisRuntime</span>: <span class="ident">pallet_bridge_messages::Config</span><span class="op">&lt;</span><span class="ident">B::BridgedMessagesInstance</span><span class="op">&gt;</span>,
-		<span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>:
-			<span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bp_runtime::HashOf</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">ThisRuntime</span> <span class="kw">as</span> <span class="ident">pallet_bridge_grandpa::Config</span><span class="op">&lt;</span><span class="ident">GrandpaInstance</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::BridgedChain</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		<span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">Into</span><span class="op">&lt;</span>
+			<span class="ident">bp_runtime::HashOf</span><span class="op">&lt;</span>
+				<span class="op">&lt;</span><span class="ident">ThisRuntime</span> <span class="kw">as</span> <span class="ident">pallet_bridge_grandpa::Config</span><span class="op">&lt;</span><span class="ident">GrandpaInstance</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::BridgedChain</span>,
+			<span class="op">&gt;</span>,
+		<span class="op">&gt;</span>,
 	{
 		<span class="ident">verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">B</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 			<span class="ident">proof</span>,
@@ -2114,12 +2222,13 @@
 		<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">MessageProofError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
 			<span class="kw">match</span> <span class="ident">err</span> {
 				<span class="ident">MessageProofError::Empty</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Messages proof is empty&quot;</span>,
-				<span class="ident">MessageProofError::MessagesCountMismatch</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Declared messages count doesn&#39;t match actual value&quot;</span>,
+				<span class="ident">MessageProofError::MessagesCountMismatch</span> <span class="op">=</span><span class="op">&gt;</span>
+					<span class="string">&quot;Declared messages count doesn&#39;t match actual value&quot;</span>,
 				<span class="ident">MessageProofError::MissingRequiredMessage</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Message is missing from the proof&quot;</span>,
-				<span class="ident">MessageProofError::FailedToDecodeMessage</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Failed to decode message from the proof&quot;</span>,
-				<span class="ident">MessageProofError::FailedToDecodeOutboundLaneState</span> <span class="op">=</span><span class="op">&gt;</span> {
-					<span class="string">&quot;Failed to decode outbound lane data from the proof&quot;</span>
-				}
+				<span class="ident">MessageProofError::FailedToDecodeMessage</span> <span class="op">=</span><span class="op">&gt;</span>
+					<span class="string">&quot;Failed to decode message from the proof&quot;</span>,
+				<span class="ident">MessageProofError::FailedToDecodeOutboundLaneState</span> <span class="op">=</span><span class="op">&gt;</span>
+					<span class="string">&quot;Failed to decode outbound lane data from the proof&quot;</span>,
 				<span class="ident">MessageProofError::Custom</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">err</span>,
 			}
 		}
@@ -2142,14 +2251,16 @@
 	{
 		<span class="kw">fn</span> <span class="ident">read_raw_outbound_lane_data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">lane_id</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="kw">let</span> <span class="ident">storage_outbound_lane_data_key</span> <span class="op">=</span>
-				<span class="ident">pallet_bridge_messages::storage_keys::outbound_lane_data_key</span>::<span class="op">&lt;</span><span class="ident">B::BridgedMessagesInstance</span><span class="op">&gt;</span>(<span class="ident">lane_id</span>);
-			<span class="self">self</span>.<span class="ident">storage</span>
-				.<span class="ident">read_value</span>(<span class="ident">storage_outbound_lane_data_key</span>.<span class="number">0</span>.<span class="ident">as_ref</span>())
-				.<span class="ident">ok</span>()<span class="question-mark">?</span>
+				<span class="ident">pallet_bridge_messages::storage_keys::outbound_lane_data_key</span>(
+					<span class="ident">B::BRIDGED_MESSAGES_PALLET_NAME</span>,
+					<span class="ident">lane_id</span>,
+				);
+			<span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">read_value</span>(<span class="ident">storage_outbound_lane_data_key</span>.<span class="number">0</span>.<span class="ident">as_ref</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>
 		}
 
 		<span class="kw">fn</span> <span class="ident">read_raw_message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message_key</span>: <span class="kw-2">&amp;</span><span class="ident">MessageKey</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-			<span class="kw">let</span> <span class="ident">storage_message_key</span> <span class="op">=</span> <span class="ident">pallet_bridge_messages::storage_keys::message_key</span>::<span class="op">&lt;</span><span class="ident">B::BridgedMessagesInstance</span><span class="op">&gt;</span>(
+			<span class="kw">let</span> <span class="ident">storage_message_key</span> <span class="op">=</span> <span class="ident">pallet_bridge_messages::storage_keys::message_key</span>(
+				<span class="ident">B::BRIDGED_MESSAGES_PALLET_NAME</span>,
 				<span class="kw-2">&amp;</span><span class="ident">message_key</span>.<span class="ident">lane_id</span>,
 				<span class="ident">message_key</span>.<span class="ident">nonce</span>,
 			);
@@ -2164,7 +2275,8 @@
 		<span class="ident">build_parser</span>: <span class="ident">BuildParser</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">MessageProofError</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
-		<span class="ident">BuildParser</span>: <span class="ident">FnOnce</span>(<span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">RawStorageProof</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Parser</span>, <span class="ident">MessageProofError</span><span class="op">&gt;</span>,
+		<span class="ident">BuildParser</span>:
+			<span class="ident">FnOnce</span>(<span class="ident">HashOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">RawStorageProof</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Parser</span>, <span class="ident">MessageProofError</span><span class="op">&gt;</span>,
 		<span class="ident">Parser</span>: <span class="ident">MessageProofParser</span>,
 	{
 		<span class="kw">let</span> <span class="ident">FromBridgedChainMessagesProof</span> {
@@ -2176,18 +2288,19 @@
 		} <span class="op">=</span> <span class="ident">proof</span>;
 
 		<span class="comment">// receiving proofs where end &lt; begin is ok (if proof includes outbound lane state)</span>
-		<span class="kw">let</span> <span class="ident">messages_in_the_proof</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">nonces_difference</span>) <span class="op">=</span> <span class="ident">nonces_end</span>.<span class="ident">checked_sub</span>(<span class="ident">nonces_start</span>) {
-			<span class="comment">// let&#39;s check that the user (relayer) has passed correct `messages_count`</span>
-			<span class="comment">// (this bounds maximal capacity of messages vec below)</span>
-			<span class="kw">let</span> <span class="ident">messages_in_the_proof</span> <span class="op">=</span> <span class="ident">nonces_difference</span>.<span class="ident">saturating_add</span>(<span class="number">1</span>);
-			<span class="kw">if</span> <span class="ident">messages_in_the_proof</span> <span class="op">!</span><span class="op">=</span> <span class="ident">MessageNonce::from</span>(<span class="ident">messages_count</span>) {
-				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MessageProofError::MessagesCountMismatch</span>);
-			}
+		<span class="kw">let</span> <span class="ident">messages_in_the_proof</span> <span class="op">=</span>
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">nonces_difference</span>) <span class="op">=</span> <span class="ident">nonces_end</span>.<span class="ident">checked_sub</span>(<span class="ident">nonces_start</span>) {
+				<span class="comment">// let&#39;s check that the user (relayer) has passed correct `messages_count`</span>
+				<span class="comment">// (this bounds maximal capacity of messages vec below)</span>
+				<span class="kw">let</span> <span class="ident">messages_in_the_proof</span> <span class="op">=</span> <span class="ident">nonces_difference</span>.<span class="ident">saturating_add</span>(<span class="number">1</span>);
+				<span class="kw">if</span> <span class="ident">messages_in_the_proof</span> <span class="op">!</span><span class="op">=</span> <span class="ident">MessageNonce::from</span>(<span class="ident">messages_count</span>) {
+					<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MessageProofError::MessagesCountMismatch</span>)
+				}
 
-			<span class="ident">messages_in_the_proof</span>
-		} <span class="kw">else</span> {
-			<span class="number">0</span>
-		};
+				<span class="ident">messages_in_the_proof</span>
+			} <span class="kw">else</span> {
+				<span class="number">0</span>
+			};
 
 		<span class="kw">let</span> <span class="ident">parser</span> <span class="op">=</span> <span class="ident">build_parser</span>(<span class="ident">bridged_header_hash</span>, <span class="ident">storage_proof</span>)<span class="question-mark">?</span>;
 
@@ -2201,20 +2314,15 @@
 			<span class="kw">let</span> <span class="ident">raw_message_data</span> <span class="op">=</span> <span class="ident">parser</span>
 				.<span class="ident">read_raw_message</span>(<span class="kw-2">&amp;</span><span class="ident">message_key</span>)
 				.<span class="ident">ok_or</span>(<span class="ident">MessageProofError::MissingRequiredMessage</span>)<span class="question-mark">?</span>;
-			<span class="kw">let</span> <span class="ident">message_data</span> <span class="op">=</span> <span class="ident">MessageData</span>::<span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">raw_message_data</span>[..])
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">MessageProofError::FailedToDecodeMessage</span>)<span class="question-mark">?</span>;
-			<span class="ident">messages</span>.<span class="ident">push</span>(<span class="ident">Message</span> {
-				<span class="ident">key</span>: <span class="ident">message_key</span>,
-				<span class="ident">data</span>: <span class="ident">message_data</span>,
-			});
+			<span class="kw">let</span> <span class="ident">message_data</span> <span class="op">=</span>
+				<span class="ident">MessageData</span>::<span class="op">&lt;</span><span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="ident">BridgedChain</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">raw_message_data</span>[..])
+					.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">MessageProofError::FailedToDecodeMessage</span>)<span class="question-mark">?</span>;
+			<span class="ident">messages</span>.<span class="ident">push</span>(<span class="ident">Message</span> { <span class="ident">key</span>: <span class="ident">message_key</span>, <span class="ident">data</span>: <span class="ident">message_data</span> });
 		}
 
 		<span class="comment">// Now let&#39;s check if proof contains outbound lane state proof. It is optional, so we</span>
 		<span class="comment">// simply ignore `read_value` errors and missing value.</span>
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proved_lane_messages</span> <span class="op">=</span> <span class="ident">ProvedLaneMessages</span> {
-			<span class="ident">lane_state</span>: <span class="prelude-val">None</span>,
-			<span class="ident">messages</span>,
-		};
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proved_lane_messages</span> <span class="op">=</span> <span class="ident">ProvedLaneMessages</span> { <span class="ident">lane_state</span>: <span class="prelude-val">None</span>, <span class="ident">messages</span> };
 		<span class="kw">let</span> <span class="ident">raw_outbound_lane_data</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">read_raw_outbound_lane_data</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>);
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">raw_outbound_lane_data</span>) <span class="op">=</span> <span class="ident">raw_outbound_lane_data</span> {
 			<span class="ident">proved_lane_messages</span>.<span class="ident">lane_state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(
@@ -2225,7 +2333,7 @@
 
 		<span class="comment">// Now we may actually check if the proof is empty or not.</span>
 		<span class="kw">if</span> <span class="ident">proved_lane_messages</span>.<span class="ident">lane_state</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">proved_lane_messages</span>.<span class="ident">messages</span>.<span class="ident">is_empty</span>() {
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MessageProofError::Empty</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MessageProofError::Empty</span>)
 		}
 
 		<span class="comment">// We only support single lane messages in this schema</span>
@@ -2251,7 +2359,8 @@
 	<span class="kw">const</span> <span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">2048</span>;
 	<span class="kw">const</span> <span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_SIZE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1024</span>;
 
-	<span class="doccomment">/// Bridge that is deployed on ThisChain and allows sending/receiving messages to/from BridgedChain;</span>
+	<span class="doccomment">/// Bridge that is deployed on ThisChain and allows sending/receiving messages to/from</span>
+	<span class="doccomment">/// BridgedChain;</span>
 	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 	<span class="kw">struct</span> <span class="ident">OnThisChainBridge</span>;
 
@@ -2259,17 +2368,20 @@
 		<span class="kw">const</span> <span class="ident">RELAYER_FEE_PERCENT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">10</span>;
 		<span class="kw">const</span> <span class="ident">THIS_CHAIN_ID</span>: <span class="ident">ChainId</span> <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;this&quot;</span>;
 		<span class="kw">const</span> <span class="ident">BRIDGED_CHAIN_ID</span>: <span class="ident">ChainId</span> <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;brdg&quot;</span>;
+		<span class="kw">const</span> <span class="ident">BRIDGED_MESSAGES_PALLET_NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>;
 
 		<span class="kw">type</span> <span class="ident">ThisChain</span> <span class="op">=</span> <span class="ident">ThisChain</span>;
 		<span class="kw">type</span> <span class="ident">BridgedChain</span> <span class="op">=</span> <span class="ident">BridgedChain</span>;
-		<span class="kw">type</span> <span class="ident">BridgedMessagesInstance</span> <span class="op">=</span> <span class="ident">pallet_bridge_messages::DefaultInstance</span>;
 
-		<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(<span class="ident">bridged_balance</span>: <span class="ident">BridgedChainBalance</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ThisChainBalance</span> {
+		<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(
+			<span class="ident">bridged_balance</span>: <span class="ident">BridgedChainBalance</span>,
+		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ThisChainBalance</span> {
 			<span class="ident">ThisChainBalance</span>(<span class="ident">bridged_balance</span>.<span class="number">0</span> <span class="op">*</span> <span class="ident">BRIDGED_CHAIN_TO_THIS_CHAIN_BALANCE_RATE</span> <span class="kw">as</span> <span class="ident">u32</span>)
 		}
 	}
 
-	<span class="doccomment">/// Bridge that is deployed on BridgedChain and allows sending/receiving messages to/from ThisChain;</span>
+	<span class="doccomment">/// Bridge that is deployed on BridgedChain and allows sending/receiving messages to/from</span>
+	<span class="doccomment">/// ThisChain;</span>
 	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 	<span class="kw">struct</span> <span class="ident">OnBridgedChainBridge</span>;
 
@@ -2277,10 +2389,10 @@
 		<span class="kw">const</span> <span class="ident">RELAYER_FEE_PERCENT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">20</span>;
 		<span class="kw">const</span> <span class="ident">THIS_CHAIN_ID</span>: <span class="ident">ChainId</span> <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;brdg&quot;</span>;
 		<span class="kw">const</span> <span class="ident">BRIDGED_CHAIN_ID</span>: <span class="ident">ChainId</span> <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;this&quot;</span>;
+		<span class="kw">const</span> <span class="ident">BRIDGED_MESSAGES_PALLET_NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>;
 
 		<span class="kw">type</span> <span class="ident">ThisChain</span> <span class="op">=</span> <span class="ident">BridgedChain</span>;
 		<span class="kw">type</span> <span class="ident">BridgedChain</span> <span class="op">=</span> <span class="ident">ThisChain</span>;
-		<span class="kw">type</span> <span class="ident">BridgedMessagesInstance</span> <span class="op">=</span> <span class="ident">pallet_bridge_messages::DefaultInstance</span>;
 
 		<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(<span class="ident">_this_balance</span>: <span class="ident">ThisChainBalance</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BridgedChainBalance</span> {
 			<span class="macro">unreachable!</span>()
@@ -2404,7 +2516,9 @@
 		}
 
 		<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-			<span class="ident">ThisChainBalance</span>(<span class="ident">transaction</span>.<span class="ident">dispatch_weight</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="ident">THIS_CHAIN_WEIGHT_TO_BALANCE_RATE</span> <span class="kw">as</span> <span class="ident">u32</span>)
+			<span class="ident">ThisChainBalance</span>(
+				<span class="ident">transaction</span>.<span class="ident">dispatch_weight</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="ident">THIS_CHAIN_WEIGHT_TO_BALANCE_RATE</span> <span class="kw">as</span> <span class="ident">u32</span>,
+			)
 		}
 	}
 
@@ -2425,7 +2539,9 @@
 			<span class="macro">unreachable!</span>()
 		}
 
-		<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">_transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">transaction_payment</span>(
+			<span class="ident">_transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
 			<span class="macro">unreachable!</span>()
 		}
 	}
@@ -2456,7 +2572,9 @@
 			<span class="macro">unreachable!</span>()
 		}
 
-		<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">_transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">transaction_payment</span>(
+			<span class="ident">_transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
 			<span class="macro">unreachable!</span>()
 		}
 	}
@@ -2467,7 +2585,8 @@
 		}
 
 		<span class="kw">fn</span> <span class="ident">message_weight_limits</span>(<span class="ident">message_payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RangeInclusive</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Weight</span><span class="op">&gt;</span> {
-			<span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">std::cmp::min</span>(<span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>, <span class="ident">message_payload</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">Weight</span>);
+			<span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span>
+				<span class="ident">std::cmp::min</span>(<span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>, <span class="ident">message_payload</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">Weight</span>);
 			<span class="ident">begin</span>..<span class="op">=</span><span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>
 		}
 
@@ -2483,7 +2602,9 @@
 		}
 
 		<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">WeightOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BalanceOf</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-			<span class="ident">BridgedChainBalance</span>(<span class="ident">transaction</span>.<span class="ident">dispatch_weight</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="ident">BRIDGED_CHAIN_WEIGHT_TO_BALANCE_RATE</span> <span class="kw">as</span> <span class="ident">u32</span>)
+			<span class="ident">BridgedChainBalance</span>(
+				<span class="ident">transaction</span>.<span class="ident">dispatch_weight</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="ident">BRIDGED_CHAIN_WEIGHT_TO_BALANCE_RATE</span> <span class="kw">as</span> <span class="ident">u32</span>,
+			)
 		}
 	}
 
@@ -2494,19 +2615,22 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">message_from_bridged_chain_is_decoded</span>() {
 		<span class="comment">// the message is encoded on the bridged chain</span>
-		<span class="kw">let</span> <span class="ident">message_on_bridged_chain</span> <span class="op">=</span> <span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnBridgedChainBridge</span><span class="op">&gt;</span> {
-			<span class="ident">spec_version</span>: <span class="number">1</span>,
-			<span class="ident">weight</span>: <span class="number">100</span>,
-			<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
-			<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtTargetChain</span>,
-			<span class="ident">call</span>: <span class="ident">ThisChainCall::Transfer</span>.<span class="ident">encode</span>(),
-		}
-		.<span class="ident">encode</span>();
+		<span class="kw">let</span> <span class="ident">message_on_bridged_chain</span> <span class="op">=</span>
+			<span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnBridgedChainBridge</span><span class="op">&gt;</span> {
+				<span class="ident">spec_version</span>: <span class="number">1</span>,
+				<span class="ident">weight</span>: <span class="number">100</span>,
+				<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
+				<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtTargetChain</span>,
+				<span class="ident">call</span>: <span class="ident">ThisChainCall::Transfer</span>.<span class="ident">encode</span>(),
+			}
+			.<span class="ident">encode</span>();
 
 		<span class="comment">// and sent to this chain where it is decoded</span>
 		<span class="kw">let</span> <span class="ident">message_on_this_chain</span> <span class="op">=</span>
-			<span class="ident">target::FromBridgedChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">message_on_bridged_chain</span>[..])
-				.<span class="ident">unwrap</span>();
+			<span class="ident">target::FromBridgedChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::decode</span>(
+				<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">message_on_bridged_chain</span>[..],
+			)
+			.<span class="ident">unwrap</span>();
 		<span class="macro">assert_eq!</span>(
 			<span class="ident">message_on_this_chain</span>,
 			<span class="ident">target::FromBridgedChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
@@ -2525,7 +2649,8 @@
 	<span class="kw">const</span> <span class="ident">TEST_LANE_ID</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span> <span class="op">=</span> <span class="string">b&quot;test&quot;</span>;
 	<span class="kw">const</span> <span class="ident">MAXIMAL_PENDING_MESSAGES_AT_TEST_LANE</span>: <span class="ident">MessageNonce</span> <span class="op">=</span> <span class="number">32</span>;
 
-	<span class="kw">fn</span> <span class="ident">regular_outbound_message_payload</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">source::FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">regular_outbound_message_payload</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">source::FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>
+	{
 		<span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
 			<span class="ident">spec_version</span>: <span class="number">1</span>,
 			<span class="ident">weight</span>: <span class="number">100</span>,
@@ -2554,11 +2679,14 @@
 		<span class="comment">// let&#39;s check if estimation is less than hardcoded, if dispatch is paid at target chain</span>
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">payload_with_pay_on_target</span> <span class="op">=</span> <span class="ident">regular_outbound_message_payload</span>();
 		<span class="ident">payload_with_pay_on_target</span>.<span class="ident">dispatch_fee_payment</span> <span class="op">=</span> <span class="ident">DispatchFeePayment::AtTargetChain</span>;
-		<span class="kw">let</span> <span class="ident">fee_at_source</span> <span class="op">=</span> <span class="ident">source::estimate_message_dispatch_and_delivery_fee</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(
-			<span class="kw-2">&amp;</span><span class="ident">payload_with_pay_on_target</span>,
-			<span class="ident">OnThisChainBridge::RELAYER_FEE_PERCENT</span>,
-		)
-		.<span class="ident">expect</span>(<span class="string">&quot;estimate_message_dispatch_and_delivery_fee failed for pay-at-target-chain message&quot;</span>);
+		<span class="kw">let</span> <span class="ident">fee_at_source</span> <span class="op">=</span>
+			<span class="ident">source::estimate_message_dispatch_and_delivery_fee</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(
+				<span class="kw-2">&amp;</span><span class="ident">payload_with_pay_on_target</span>,
+				<span class="ident">OnThisChainBridge::RELAYER_FEE_PERCENT</span>,
+			)
+			.<span class="ident">expect</span>(
+				<span class="string">&quot;estimate_message_dispatch_and_delivery_fee failed for pay-at-target-chain message&quot;</span>,
+			);
 		<span class="macro">assert!</span>(
 			<span class="ident">fee_at_source</span> <span class="op">&lt;</span> <span class="ident">EXPECTED_MINIMAL_FEE</span>.<span class="ident">into</span>(),
 			<span class="string">&quot;Computed fee {:?} without prepaid dispatch must be less than the fee with prepaid dispatch {}&quot;</span>,
@@ -2577,16 +2705,14 @@
 			),
 			<span class="prelude-val">Err</span>(<span class="ident">source::TOO_LOW_FEE</span>)
 		);
-		<span class="macro">assert!</span>(
-			<span class="ident">source::FromThisChainMessageVerifier</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::verify_message</span>(
-				<span class="kw-2">&amp;</span><span class="ident">Sender::Root</span>,
-				<span class="kw-2">&amp;</span><span class="ident">ThisChainBalance</span>(<span class="number">1_000_000</span>),
-				<span class="ident">TEST_LANE_ID</span>,
-				<span class="kw-2">&amp;</span><span class="ident">test_lane_outbound_data</span>(),
-				<span class="kw-2">&amp;</span><span class="ident">payload</span>,
-			)
-			.<span class="ident">is_ok</span>(),
-		);
+		<span class="macro">assert!</span>(<span class="ident">source::FromThisChainMessageVerifier</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::verify_message</span>(
+			<span class="kw-2">&amp;</span><span class="ident">Sender::Root</span>,
+			<span class="kw-2">&amp;</span><span class="ident">ThisChainBalance</span>(<span class="number">1_000_000</span>),
+			<span class="ident">TEST_LANE_ID</span>,
+			<span class="kw-2">&amp;</span><span class="ident">test_lane_outbound_data</span>(),
+			<span class="kw-2">&amp;</span><span class="ident">payload</span>,
+		)
+		.<span class="ident">is_ok</span>(),);
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
@@ -2621,16 +2747,14 @@
 			),
 			<span class="prelude-val">Err</span>(<span class="ident">source::BAD_ORIGIN</span>)
 		);
-		<span class="macro">assert!</span>(
-			<span class="ident">source::FromThisChainMessageVerifier</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::verify_message</span>(
-				<span class="kw-2">&amp;</span><span class="ident">Sender::Root</span>,
-				<span class="kw-2">&amp;</span><span class="ident">ThisChainBalance</span>(<span class="number">1_000_000</span>),
-				<span class="ident">TEST_LANE_ID</span>,
-				<span class="kw-2">&amp;</span><span class="ident">test_lane_outbound_data</span>(),
-				<span class="kw-2">&amp;</span><span class="ident">payload</span>,
-			)
-			.<span class="ident">is_ok</span>(),
-		);
+		<span class="macro">assert!</span>(<span class="ident">source::FromThisChainMessageVerifier</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::verify_message</span>(
+			<span class="kw-2">&amp;</span><span class="ident">Sender::Root</span>,
+			<span class="kw-2">&amp;</span><span class="ident">ThisChainBalance</span>(<span class="number">1_000_000</span>),
+			<span class="ident">TEST_LANE_ID</span>,
+			<span class="kw-2">&amp;</span><span class="ident">test_lane_outbound_data</span>(),
+			<span class="kw-2">&amp;</span><span class="ident">payload</span>,
+		)
+		.<span class="ident">is_ok</span>(),);
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
@@ -2655,16 +2779,14 @@
 			),
 			<span class="prelude-val">Err</span>(<span class="ident">source::BAD_ORIGIN</span>)
 		);
-		<span class="macro">assert!</span>(
-			<span class="ident">source::FromThisChainMessageVerifier</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::verify_message</span>(
-				<span class="kw-2">&amp;</span><span class="ident">Sender::Signed</span>(<span class="ident">ThisChainAccountId</span>(<span class="number">1</span>)),
-				<span class="kw-2">&amp;</span><span class="ident">ThisChainBalance</span>(<span class="number">1_000_000</span>),
-				<span class="ident">TEST_LANE_ID</span>,
-				<span class="kw-2">&amp;</span><span class="ident">test_lane_outbound_data</span>(),
-				<span class="kw-2">&amp;</span><span class="ident">payload</span>,
-			)
-			.<span class="ident">is_ok</span>(),
-		);
+		<span class="macro">assert!</span>(<span class="ident">source::FromThisChainMessageVerifier</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span><span class="ident">::verify_message</span>(
+			<span class="kw-2">&amp;</span><span class="ident">Sender::Signed</span>(<span class="ident">ThisChainAccountId</span>(<span class="number">1</span>)),
+			<span class="kw-2">&amp;</span><span class="ident">ThisChainBalance</span>(<span class="number">1_000_000</span>),
+			<span class="ident">TEST_LANE_ID</span>,
+			<span class="kw-2">&amp;</span><span class="ident">test_lane_outbound_data</span>(),
+			<span class="kw-2">&amp;</span><span class="ident">payload</span>,
+		)
+		.<span class="ident">is_ok</span>(),);
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
@@ -2701,64 +2823,58 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">verify_chain_message_rejects_message_with_too_small_declared_weight</span>() {
-		<span class="macro">assert!</span>(
-			<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span>
-				<span class="ident">OnThisChainBridge</span>,
-			<span class="op">&gt;</span> {
+		<span class="macro">assert!</span>(<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(
+			<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
 				<span class="ident">spec_version</span>: <span class="number">1</span>,
 				<span class="ident">weight</span>: <span class="number">5</span>,
 				<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
 				<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtSourceChain</span>,
 				<span class="ident">call</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>],
-			},)
-			.<span class="ident">is_err</span>()
-		);
+			},
+		)
+		.<span class="ident">is_err</span>());
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">verify_chain_message_rejects_message_with_too_large_declared_weight</span>() {
-		<span class="macro">assert!</span>(
-			<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span>
-				<span class="ident">OnThisChainBridge</span>,
-			<span class="op">&gt;</span> {
+		<span class="macro">assert!</span>(<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(
+			<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
 				<span class="ident">spec_version</span>: <span class="number">1</span>,
 				<span class="ident">weight</span>: <span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span> <span class="op">+</span> <span class="number">1</span>,
 				<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
 				<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtSourceChain</span>,
 				<span class="ident">call</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>],
-			},)
-			.<span class="ident">is_err</span>()
-		);
+			},
+		)
+		.<span class="ident">is_err</span>());
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">verify_chain_message_rejects_message_too_large_message</span>() {
-		<span class="macro">assert!</span>(
-			<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span>
-				<span class="ident">OnThisChainBridge</span>,
-			<span class="op">&gt;</span> {
+		<span class="macro">assert!</span>(<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(
+			<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
 				<span class="ident">spec_version</span>: <span class="number">1</span>,
 				<span class="ident">weight</span>: <span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>,
 				<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
 				<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtSourceChain</span>,
 				<span class="ident">call</span>: <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">source::maximal_message_size</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="number">1</span>],
-			},)
-			.<span class="ident">is_err</span>()
-		);
+			},
+		)
+		.<span class="ident">is_err</span>());
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">verify_chain_message_accepts_maximal_message</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span>
-				<span class="ident">OnThisChainBridge</span>,
-			<span class="op">&gt;</span> {
-				<span class="ident">spec_version</span>: <span class="number">1</span>,
-				<span class="ident">weight</span>: <span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>,
-				<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
-				<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtSourceChain</span>,
-				<span class="ident">call</span>: <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">source::maximal_message_size</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="kw">_</span>],
-			},),
+			<span class="ident">source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>(
+				<span class="kw-2">&amp;</span><span class="ident">source::FromThisChainMessagePayload</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span> {
+					<span class="ident">spec_version</span>: <span class="number">1</span>,
+					<span class="ident">weight</span>: <span class="ident">BRIDGED_CHAIN_MAX_EXTRINSIC_WEIGHT</span>,
+					<span class="ident">origin</span>: <span class="ident">bp_message_dispatch::CallOrigin::SourceRoot</span>,
+					<span class="ident">dispatch_fee_payment</span>: <span class="ident">DispatchFeePayment::AtSourceChain</span>,
+					<span class="ident">call</span>: <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">source::maximal_message_size</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="kw">_</span>],
+				},
+			),
 			<span class="prelude-val">Ok</span>(()),
 		);
 	}
@@ -2850,13 +2966,15 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">message_proof_is_rejected_if_required_message_is_missing</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">messages_proof</span>(<span class="number">10</span>), <span class="number">10</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(
-				<span class="ident">TestMessageProofParser</span> {
+			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">messages_proof</span>(<span class="number">10</span>),
+				<span class="number">10</span>,
+				<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">TestMessageProofParser</span> {
 					<span class="ident">failing</span>: <span class="bool-val">false</span>,
 					<span class="ident">messages</span>: <span class="number">1</span>..<span class="op">=</span><span class="number">5</span>,
 					<span class="ident">outbound_lane_data</span>: <span class="prelude-val">None</span>,
-				}
-			),),
+				}),
+			),
 			<span class="prelude-val">Err</span>(<span class="ident">target::MessageProofError::MissingRequiredMessage</span>),
 		);
 	}
@@ -2864,13 +2982,15 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">message_proof_is_rejected_if_message_decode_fails</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">messages_proof</span>(<span class="number">10</span>), <span class="number">10</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(
-				<span class="ident">TestMessageProofParser</span> {
+			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">messages_proof</span>(<span class="number">10</span>),
+				<span class="number">10</span>,
+				<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">TestMessageProofParser</span> {
 					<span class="ident">failing</span>: <span class="bool-val">true</span>,
 					<span class="ident">messages</span>: <span class="number">1</span>..<span class="op">=</span><span class="number">10</span>,
 					<span class="ident">outbound_lane_data</span>: <span class="prelude-val">None</span>,
-				}
-			),),
+				}),
+			),
 			<span class="prelude-val">Err</span>(<span class="ident">target::MessageProofError::FailedToDecodeMessage</span>),
 		);
 	}
@@ -2878,8 +2998,10 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">message_proof_is_rejected_if_outbound_lane_state_decode_fails</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">messages_proof</span>(<span class="number">0</span>), <span class="number">0</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(
-				<span class="ident">TestMessageProofParser</span> {
+			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">messages_proof</span>(<span class="number">0</span>),
+				<span class="number">0</span>,
+				<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">TestMessageProofParser</span> {
 					<span class="ident">failing</span>: <span class="bool-val">true</span>,
 					<span class="ident">messages</span>: <span class="ident">no_messages_range</span>(),
 					<span class="ident">outbound_lane_data</span>: <span class="prelude-val">Some</span>(<span class="ident">OutboundLaneData</span> {
@@ -2887,8 +3009,8 @@
 						<span class="ident">latest_received_nonce</span>: <span class="number">1</span>,
 						<span class="ident">latest_generated_nonce</span>: <span class="number">1</span>,
 					}),
-				}
-			),),
+				}),
+			),
 			<span class="prelude-val">Err</span>(<span class="ident">target::MessageProofError::FailedToDecodeOutboundLaneState</span>),
 		);
 	}
@@ -2896,13 +3018,15 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">message_proof_is_rejected_if_it_is_empty</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">messages_proof</span>(<span class="number">0</span>), <span class="number">0</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(
-				<span class="ident">TestMessageProofParser</span> {
+			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">messages_proof</span>(<span class="number">0</span>),
+				<span class="number">0</span>,
+				<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">TestMessageProofParser</span> {
 					<span class="ident">failing</span>: <span class="bool-val">false</span>,
 					<span class="ident">messages</span>: <span class="ident">no_messages_range</span>(),
 					<span class="ident">outbound_lane_data</span>: <span class="prelude-val">None</span>,
-				}
-			),),
+				}),
+			),
 			<span class="prelude-val">Err</span>(<span class="ident">target::MessageProofError::Empty</span>),
 		);
 	}
@@ -2910,8 +3034,10 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">non_empty_message_proof_without_messages_is_accepted</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">messages_proof</span>(<span class="number">0</span>), <span class="number">0</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(
-				<span class="ident">TestMessageProofParser</span> {
+			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">messages_proof</span>(<span class="number">0</span>),
+				<span class="number">0</span>,
+				<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">TestMessageProofParser</span> {
 					<span class="ident">failing</span>: <span class="bool-val">false</span>,
 					<span class="ident">messages</span>: <span class="ident">no_messages_range</span>(),
 					<span class="ident">outbound_lane_data</span>: <span class="prelude-val">Some</span>(<span class="ident">OutboundLaneData</span> {
@@ -2919,8 +3045,8 @@
 						<span class="ident">latest_received_nonce</span>: <span class="number">1</span>,
 						<span class="ident">latest_generated_nonce</span>: <span class="number">1</span>,
 					}),
-				}
-			),),
+				}),
+			),
 			<span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[(
 				<span class="ident">Default::default</span>(),
 				<span class="ident">ProvedLaneMessages</span> {
@@ -2940,8 +3066,10 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">non_empty_message_proof_is_accepted</span>() {
 		<span class="macro">assert_eq!</span>(
-			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">messages_proof</span>(<span class="number">1</span>), <span class="number">1</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(
-				<span class="ident">TestMessageProofParser</span> {
+			<span class="ident">target::verify_messages_proof_with_parser</span>::<span class="op">&lt;</span><span class="ident">OnThisChainBridge</span>, <span class="kw">_</span>, <span class="kw">_</span><span class="op">&gt;</span>(
+				<span class="ident">messages_proof</span>(<span class="number">1</span>),
+				<span class="number">1</span>,
+				<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">TestMessageProofParser</span> {
 					<span class="ident">failing</span>: <span class="bool-val">false</span>,
 					<span class="ident">messages</span>: <span class="number">1</span>..<span class="op">=</span><span class="number">1</span>,
 					<span class="ident">outbound_lane_data</span>: <span class="prelude-val">Some</span>(<span class="ident">OutboundLaneData</span> {
@@ -2949,8 +3077,8 @@
 						<span class="ident">latest_received_nonce</span>: <span class="number">1</span>,
 						<span class="ident">latest_generated_nonce</span>: <span class="number">1</span>,
 					}),
-				}
-			),),
+				}),
+			),
 			<span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[(
 				<span class="ident">Default::default</span>(),
 				<span class="ident">ProvedLaneMessages</span> {
@@ -2960,14 +3088,8 @@
 						<span class="ident">latest_generated_nonce</span>: <span class="number">1</span>,
 					}),
 					<span class="ident">messages</span>: <span class="macro">vec!</span>[<span class="ident">Message</span> {
-						<span class="ident">key</span>: <span class="ident">MessageKey</span> {
-							<span class="ident">lane_id</span>: <span class="ident">Default::default</span>(),
-							<span class="ident">nonce</span>: <span class="number">1</span>
-						},
-						<span class="ident">data</span>: <span class="ident">MessageData</span> {
-							<span class="ident">payload</span>: <span class="number">1u64</span>.<span class="ident">encode</span>(),
-							<span class="ident">fee</span>: <span class="ident">BridgedChainBalance</span>(<span class="number">0</span>)
-						},
+						<span class="ident">key</span>: <span class="ident">MessageKey</span> { <span class="ident">lane_id</span>: <span class="ident">Default::default</span>(), <span class="ident">nonce</span>: <span class="number">1</span> },
+						<span class="ident">data</span>: <span class="ident">MessageData</span> { <span class="ident">payload</span>: <span class="number">1u64</span>.<span class="ident">encode</span>(), <span class="ident">fee</span>: <span class="ident">BridgedChainBalance</span>(<span class="number">0</span>) },
 					}],
 				},
 			)]
@@ -3006,10 +3128,7 @@
 				<span class="number">10</span>,
 				<span class="ident">FixedU128::zero</span>(),
 				<span class="op">|</span><span class="ident">weight</span><span class="op">|</span> <span class="ident">weight</span>,
-				<span class="ident">MessageTransaction</span> {
-					<span class="ident">size</span>: <span class="number">50</span>,
-					<span class="ident">dispatch_weight</span>: <span class="number">777</span>
-				},
+				<span class="ident">MessageTransaction</span> { <span class="ident">size</span>: <span class="number">50</span>, <span class="ident">dispatch_weight</span>: <span class="number">777</span> },
 			),
 			<span class="number">100</span> <span class="op">+</span> <span class="number">50</span> <span class="op">*</span> <span class="number">10</span>,
 		);
@@ -3025,10 +3144,7 @@
 				<span class="number">10</span>,
 				<span class="ident">FixedU128::one</span>(),
 				<span class="op">|</span><span class="ident">weight</span><span class="op">|</span> <span class="ident">weight</span>,
-				<span class="ident">MessageTransaction</span> {
-					<span class="ident">size</span>: <span class="number">50</span>,
-					<span class="ident">dispatch_weight</span>: <span class="number">777</span>
-				},
+				<span class="ident">MessageTransaction</span> { <span class="ident">size</span>: <span class="number">50</span>, <span class="ident">dispatch_weight</span>: <span class="number">777</span> },
 			),
 			<span class="number">100</span> <span class="op">+</span> <span class="number">50</span> <span class="op">*</span> <span class="number">10</span> <span class="op">+</span> <span class="number">777</span>,
 		);
