@@ -106,6 +106,8 @@
 <span id="106">106</span>
 <span id="107">107</span>
 <span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -127,12 +129,13 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
-<span class="kw">use</span> <span class="ident">frame_benchmarking::account</span>;
+<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">account</span>, <span class="ident">BenchmarkError</span>};
 <span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">xcm_executor</span>::{<span class="ident">traits::Convert</span>, <span class="ident">Assets</span>};
+<span class="kw">use</span> <span class="ident">xcm_executor::traits::Convert</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fungible</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">generic</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">mock</span>;
@@ -150,7 +153,10 @@
 
 	<span class="doccomment">/// Does any necessary setup to create a valid destination for XCM messages.</span>
 	<span class="doccomment">/// Returns that destination&#39;s multi-location to be used in benchmarks.</span>
-	<span class="kw">fn</span> <span class="ident">valid_destination</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">sp_runtime::DispatchError</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">valid_destination</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
+
+	<span class="doccomment">/// Worst case scenario for a holding account in this runtime.</span>
+	<span class="kw">fn</span> <span class="ident">worst_case_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiAssets</span>;
 }
 
 <span class="kw">const</span> <span class="ident">SEED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
@@ -164,12 +170,10 @@
 <span class="doccomment">/// The call type of executor&#39;s config. Should eventually resolve to the same overarching call type.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">XcmCallOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::XcmConfig</span> <span class="kw">as</span> <span class="ident">xcm_executor::Config</span><span class="op">&gt;</span><span class="ident">::Call</span>;
 
-<span class="doccomment">/// The worst case number of assets in the holding.</span>
-<span class="kw">const</span> <span class="ident">HOLDING_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">99</span>;
-<span class="kw">const</span> <span class="ident">HOLDING_NON_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">99</span>;
-
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">worst_case_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Assets</span> {
-	<span class="kw">let</span> <span class="ident">fungibles_amount</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span>; <span class="comment">// TODO probably update</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mock_worst_case_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiAssets</span> {
+	<span class="kw">const</span> <span class="ident">HOLDING_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">99</span>;
+	<span class="kw">const</span> <span class="ident">HOLDING_NON_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">99</span>;
+	<span class="kw">let</span> <span class="ident">fungibles_amount</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span>;
 	(<span class="number">0</span>..<span class="ident">HOLDING_FUNGIBLES</span>)
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
 			<span class="ident">MultiAsset</span> {

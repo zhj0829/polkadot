@@ -1652,6 +1652,39 @@
 <span id="1652">1652</span>
 <span id="1653">1653</span>
 <span id="1654">1654</span>
+<span id="1655">1655</span>
+<span id="1656">1656</span>
+<span id="1657">1657</span>
+<span id="1658">1658</span>
+<span id="1659">1659</span>
+<span id="1660">1660</span>
+<span id="1661">1661</span>
+<span id="1662">1662</span>
+<span id="1663">1663</span>
+<span id="1664">1664</span>
+<span id="1665">1665</span>
+<span id="1666">1666</span>
+<span id="1667">1667</span>
+<span id="1668">1668</span>
+<span id="1669">1669</span>
+<span id="1670">1670</span>
+<span id="1671">1671</span>
+<span id="1672">1672</span>
+<span id="1673">1673</span>
+<span id="1674">1674</span>
+<span id="1675">1675</span>
+<span id="1676">1676</span>
+<span id="1677">1677</span>
+<span id="1678">1678</span>
+<span id="1679">1679</span>
+<span id="1680">1680</span>
+<span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
+<span id="1684">1684</span>
+<span id="1685">1685</span>
+<span id="1686">1686</span>
+<span id="1687">1687</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -3151,6 +3184,7 @@
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
 
 			<span class="kw">type</span> <span class="ident">XcmBalances</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::fungible::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+			<span class="kw">type</span> <span class="ident">XcmGeneric</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::generic::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkList</span><span class="op">&gt;</span><span class="ident">::new</span>();
 
@@ -3187,6 +3221,7 @@
 			<span class="comment">// XCM Benchmarks</span>
 			<span class="comment">// NOTE: Make sure you point to the individual modules below.</span>
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_xcm_benchmarks::fungible</span>, <span class="ident">XcmBalances</span>);
+			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">pallet_xcm_benchmarks::generic</span>, <span class="ident">XcmGeneric</span>);
 
 			<span class="kw">let</span> <span class="ident">storage_info</span> <span class="op">=</span> <span class="ident">AllPalletsWithSystem::storage_info</span>();
 
@@ -3199,7 +3234,7 @@
 			<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_benchmarking::BenchmarkBatch</span><span class="op">&gt;</span>,
 			<span class="ident">sp_runtime::RuntimeString</span>,
 		<span class="op">&gt;</span> {
-			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkBatch</span>, <span class="ident">add_benchmark</span>, <span class="ident">TrackedStorageKey</span>};
+			<span class="kw">use</span> <span class="ident">frame_benchmarking</span>::{<span class="ident">Benchmarking</span>, <span class="ident">BenchmarkBatch</span>, <span class="ident">add_benchmark</span>, <span class="ident">TrackedStorageKey</span>, <span class="ident">BenchmarkError</span>};
 			<span class="comment">// Trying to add benchmarks directly to some pallets caused cyclic dependency issues.</span>
 			<span class="comment">// To get around that, we separated the benchmarks into its own crate.</span>
 			<span class="kw">use</span> <span class="ident">pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
@@ -3215,8 +3250,15 @@
 			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 				<span class="kw">type</span> <span class="ident">XcmConfig</span> <span class="op">=</span> <span class="ident">XcmConfig</span>;
 				<span class="kw">type</span> <span class="ident">AccountIdConverter</span> <span class="op">=</span> <span class="ident">LocationConverter</span>;
-				<span class="kw">fn</span> <span class="ident">valid_destination</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">sp_runtime::DispatchError</span><span class="op">&gt;</span> {
+				<span class="kw">fn</span> <span class="ident">valid_destination</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
 					<span class="prelude-val">Ok</span>(<span class="ident">Westmint::get</span>())
+				}
+				<span class="kw">fn</span> <span class="ident">worst_case_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiAssets</span> {
+					<span class="comment">// Westend only knows about WND.</span>
+					<span class="macro">vec!</span>[<span class="ident">MultiAsset</span>{
+						<span class="ident">id</span>: <span class="ident">Concrete</span>(<span class="ident">WndLocation::get</span>()),
+						<span class="ident">fun</span>: <span class="ident">Fungible</span>(<span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">UNITS</span>),
+					}].<span class="ident">into</span>()
 				}
 			}
 
@@ -3241,7 +3283,31 @@
 				}
 			}
 
+			<span class="kw">impl</span> <span class="ident">pallet_xcm_benchmarks::generic::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+				<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+
+				<span class="kw">fn</span> <span class="ident">worst_case_response</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">u64</span>, <span class="ident">Response</span>) {
+					(<span class="number">0u64</span>, <span class="ident">Response::Version</span>(<span class="ident">Default::default</span>()))
+				}
+
+				<span class="kw">fn</span> <span class="ident">transact_origin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">Westmint::get</span>())
+				}
+
+				<span class="kw">fn</span> <span class="ident">subscribe_origin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">Westmint::get</span>())
+				}
+
+				<span class="kw">fn</span> <span class="ident">claimable_asset</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiLocation</span>, <span class="ident">MultiAssets</span>), <span class="ident">BenchmarkError</span><span class="op">&gt;</span> {
+					<span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">Westmint::get</span>();
+					<span class="kw">let</span> <span class="ident">assets</span>: <span class="ident">MultiAssets</span> <span class="op">=</span> (<span class="ident">Concrete</span>(<span class="ident">WndLocation::get</span>()), <span class="number">1_000</span> <span class="op">*</span> <span class="ident">UNITS</span>).<span class="ident">into</span>();
+					<span class="kw">let</span> <span class="ident">ticket</span> <span class="op">=</span> <span class="ident">MultiLocation</span> { <span class="ident">parents</span>: <span class="number">0</span>, <span class="ident">interior</span>: <span class="ident">Here</span> };
+					<span class="prelude-val">Ok</span>((<span class="ident">origin</span>, <span class="ident">ticket</span>, <span class="ident">assets</span>))
+				}
+			}
+
 			<span class="kw">type</span> <span class="ident">XcmBalances</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::fungible::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+			<span class="kw">type</span> <span class="ident">XcmGeneric</span> <span class="op">=</span> <span class="ident">pallet_xcm_benchmarks::generic::Pallet</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
 			<span class="kw">let</span> <span class="ident">whitelist</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TrackedStorageKey</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
 				<span class="comment">// Block Number</span>
@@ -3300,8 +3366,8 @@
 			<span class="comment">// XCM Benchmarks</span>
 			<span class="comment">// NOTE: Make sure you point to the individual modules below.</span>
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_xcm_benchmarks::fungible</span>, <span class="ident">XcmBalances</span>);
+			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">pallet_xcm_benchmarks::generic</span>, <span class="ident">XcmGeneric</span>);
 
-			<span class="kw">if</span> <span class="ident">batches</span>.<span class="ident">is_empty</span>() { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Benchmark not found for this pallet.&quot;</span>.<span class="ident">into</span>()) }
 			<span class="prelude-val">Ok</span>(<span class="ident">batches</span>)
 		}
 	}
