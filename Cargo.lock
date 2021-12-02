@@ -90,15 +90,6 @@ checksum = "fbf688625d06217d5b1bb0ea9d9c44a1635fd0ee3534466388d18203174f4d11"
 
 [[package]]
 name = "ansi_term"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ee49baf6cb617b853aa8d93bf420db2383fab46d314482ca2803b40d5fde979b"
-dependencies = [
- "winapi",
-]
-
-[[package]]
-name = "ansi_term"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d52a9bb7ec0cf484c551830a7ce27bd20d67eac647e1befb56b0be4ee39a55d2"
@@ -162,10 +153,11 @@ checksum = "9d6e24d2cce90c53b948c46271bfb053e4bdc2db9b5d3f65e20f8cf28a1b7fc3"
 
 [[package]]
 name = "assert_cmd"
-version = "1.0.2"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3dc1679af9a1ab4bea16f228b05d18f8363f8327b1fa8db00d2760cfafc6b61e"
+checksum = "e996dc7940838b7ef1096b882e29ec30a3149a3a443cdc8dba19ed382eca1fe2"
 dependencies = [
+ "bstr",
  "doc-comment",
  "predicates",
  "predicates-core",
@@ -448,7 +440,7 @@ dependencies = [
 [[package]]
 name = "beefy-gadget"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "beefy-primitives",
  "fnv",
@@ -462,11 +454,11 @@ dependencies = [
  "sc-network-gossip",
  "sc-utils",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-arithmetic",
  "sp-blockchain",
- "sp-core",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "substrate-prometheus-endpoint",
  "thiserror",
@@ -476,7 +468,7 @@ dependencies = [
 [[package]]
 name = "beefy-gadget-rpc"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "beefy-gadget",
  "beefy-primitives",
@@ -486,27 +478,27 @@ dependencies = [
  "parity-scale-codec",
  "sc-rpc",
  "serde",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "beefy-merkle-tree"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 
 [[package]]
 name = "beefy-primitives"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-api",
- "sp-application-crypto",
- "sp-core",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -705,10 +697,10 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -719,7 +711,7 @@ dependencies = [
  "frame-support",
  "parity-scale-codec",
  "scale-info",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -734,7 +726,7 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -749,9 +741,9 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
 ]
 
@@ -764,9 +756,9 @@ dependencies = [
  "frame-support",
  "frame-system",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -781,7 +773,7 @@ dependencies = [
  "smallvec",
  "sp-api",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
 ]
 
@@ -794,12 +786,12 @@ dependencies = [
  "num-traits",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
- "sp-std",
- "sp-trie",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -810,10 +802,10 @@ dependencies = [
  "ed25519-dalek",
  "finality-grandpa",
  "parity-scale-codec",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -827,7 +819,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-api",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -846,11 +838,11 @@ dependencies = [
  "pallet-transaction-payment",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
- "sp-std",
- "sp-trie",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -861,11 +853,13 @@ checksum = "771fe0050b883fcc3ea2359b1a96bcfbc090b7116eae7c3c512c7a083fdf23d3"
 
 [[package]]
 name = "bstr"
-version = "0.2.13"
+version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31accafdb70df7871592c058eca3985b71104e15ac32f64706022c58867da931"
+checksum = "ba3569f383e8f1598449f1a423e72e99569137b47740b1da11ef19af3d5c3223"
 dependencies = [
+ "lazy_static",
  "memchr",
+ "regex-automata",
 ]
 
 [[package]]
@@ -1066,11 +1060,11 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "2.33.3"
+version = "2.34.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002"
+checksum = "a0610544180c38b88101fecf2dd634b174a62eef6946f84dfc6a7127512b381c"
 dependencies = [
- "ansi_term 0.11.0",
+ "ansi_term",
  "atty",
  "bitflags",
  "strsim",
@@ -1454,14 +1448,14 @@ dependencies = [
 
 [[package]]
 name = "derive_more"
-version = "0.99.16"
+version = "0.99.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40eebddd2156ce1bb37b20bbe5151340a31828b1f2d22ba4141f3531710e38df"
+checksum = "4fb810d30a7c1953f91334de7244731fc3f3c10d7fe163338a35b9f640960321"
 dependencies = [
  "convert_case",
  "proc-macro2",
  "quote",
- "rustc_version 0.3.3",
+ "rustc_version 0.4.0",
  "syn",
 ]
 
@@ -1472,10 +1466,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0e25ea47919b1560c4e3b7fe0aaab9becf5b84a10325ddf7db0f0ba5e1026499"
 
 [[package]]
-name = "difference"
-version = "2.0.0"
+name = "difflib"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "524cbf6897b527295dff137cec09ecf3a05f4fddffd7dfcd1585403449e74198"
+checksum = "6184e33543162437515c2e2b48714794e37845ec9851711914eec9d308f6ebe8"
 
 [[package]]
 name = "digest"
@@ -1889,7 +1883,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 [[package]]
 name = "fork-tree"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
 ]
@@ -1907,7 +1901,7 @@ dependencies = [
 [[package]]
 name = "frame-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -1917,17 +1911,17 @@ dependencies = [
  "paste",
  "scale-info",
  "sp-api",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-runtime-interface",
- "sp-std",
- "sp-storage",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "frame-benchmarking-cli"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "Inflector",
  "chrono",
@@ -1942,18 +1936,18 @@ dependencies = [
  "sc-executor",
  "sc-service",
  "serde",
- "sp-core",
- "sp-externalities",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
 ]
 
 [[package]]
 name = "frame-election-provider-support"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -1961,23 +1955,23 @@ dependencies = [
  "scale-info",
  "sp-arithmetic",
  "sp-npos-elections",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "frame-executive"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
- "sp-tracing",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -1995,7 +1989,7 @@ dependencies = [
 [[package]]
 name = "frame-support"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "bitflags",
  "frame-metadata",
@@ -2009,22 +2003,22 @@ dependencies = [
  "serde",
  "smallvec",
  "sp-arithmetic",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-core-hashing-proc-macro",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-staking",
- "sp-state-machine",
- "sp-std",
- "sp-tracing",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tt-call",
 ]
 
 [[package]]
 name = "frame-support-procedural"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "Inflector",
  "frame-support-procedural-tools",
@@ -2036,7 +2030,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural-tools"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support-procedural-tools-derive",
  "proc-macro-crate",
@@ -2048,7 +2042,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural-tools-derive"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2058,7 +2052,7 @@ dependencies = [
 [[package]]
 name = "frame-support-test"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-support-test-pallet",
@@ -2069,11 +2063,11 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-arithmetic",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
- "sp-std",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "trybuild",
 ]
@@ -2081,7 +2075,7 @@ dependencies = [
 [[package]]
 name = "frame-support-test-pallet"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -2092,39 +2086,39 @@ dependencies = [
 [[package]]
 name = "frame-system"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "log",
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
 ]
 
 [[package]]
 name = "frame-system-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "frame-system-rpc-runtime-api"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "sp-api",
@@ -2133,12 +2127,12 @@ dependencies = [
 [[package]]
 name = "frame-try-runtime"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "sp-api",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -2329,7 +2323,7 @@ checksum = "8f5f3913fa0bfe7ee1fd8248b6b9f42a5af4b9d65ec2dd2c3c26132b950ecfc2"
 [[package]]
 name = "generate-bags"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "chrono",
  "frame-election-provider-support",
@@ -2338,7 +2332,7 @@ dependencies = [
  "git2",
  "num-format",
  "pallet-staking",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
 ]
 
@@ -3100,18 +3094,18 @@ dependencies = [
  "sp-authority-discovery",
  "sp-block-builder",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "sp-npos-elections",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "static_assertions",
  "substrate-wasm-builder",
@@ -3975,9 +3969,9 @@ dependencies = [
 
 [[package]]
 name = "memoffset"
-version = "0.6.1"
+version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "157b4208e3059a8f9e78d559edc658e13df41410cb3ae03979c83130067fdd87"
+checksum = "59accc507f1338036a0477ef61afdae33cde60840f4dfe481319ce3ad116ddf9"
 dependencies = [
  "autocfg",
 ]
@@ -4225,14 +4219,15 @@ dependencies = [
 
 [[package]]
 name = "nix"
-version = "0.20.0"
+version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa9b4819da1bc61c0ea48b63b7bc8604064dd43013e7cc325df098d49cd7c18a"
+checksum = "f305c2c2e4c39a82f7bf0bf65fb557f9070ce06781d4f2454295cc34b1c43188"
 dependencies = [
  "bitflags",
  "cc",
  "cfg-if 1.0.0",
  "libc",
+ "memoffset 0.6.4",
 ]
 
 [[package]]
@@ -4454,7 +4449,7 @@ checksum = "13370dae44474229701bb69b90b4f4dca6404cb0357a2d50d635f1171dc3aa7b"
 [[package]]
 name = "pallet-assets"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4462,29 +4457,29 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-authority-discovery"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
  "pallet-session",
  "parity-scale-codec",
  "scale-info",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-authority-discovery",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-authorship"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4493,13 +4488,13 @@ dependencies = [
  "scale-info",
  "sp-authorship",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-babe"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4510,20 +4505,20 @@ dependencies = [
  "pallet-timestamp",
  "parity-scale-codec",
  "scale-info",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-consensus-babe",
  "sp-consensus-vrf",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-bags-list"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-election-provider-support",
@@ -4533,17 +4528,17 @@ dependencies = [
  "pallet-balances",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
- "sp-tracing",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-bags-list-remote-tests"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "clap",
  "frame-election-provider-support",
@@ -4553,11 +4548,11 @@ dependencies = [
  "pallet-bags-list",
  "pallet-staking",
  "remote-externalities",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
- "sp-storage",
- "sp-tracing",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
  "tokio",
 ]
@@ -4565,7 +4560,7 @@ dependencies = [
 [[package]]
 name = "pallet-balances"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4574,13 +4569,13 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-beefy"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "beefy-primitives",
  "frame-support",
@@ -4590,13 +4585,13 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-beefy-mmr"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "beefy-merkle-tree",
  "beefy-primitives",
@@ -4612,16 +4607,16 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-bounties"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4630,10 +4625,10 @@ dependencies = [
  "pallet-treasury",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -4648,10 +4643,10 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -4671,10 +4666,10 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-finality-grandpa",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
- "sp-trie",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -4697,16 +4692,16 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-collective"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4714,16 +4709,16 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-democracy"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4731,15 +4726,15 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-election-provider-multi-phase"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-election-provider-support",
@@ -4750,11 +4745,11 @@ dependencies = [
  "rand 0.7.3",
  "scale-info",
  "sp-arithmetic",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-npos-elections",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "static_assertions",
  "strum 0.22.0",
  "strum_macros 0.22.0",
@@ -4763,7 +4758,7 @@ dependencies = [
 [[package]]
 name = "pallet-elections-phragmen"
 version = "5.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4771,17 +4766,17 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-npos-elections",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-gilt"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4790,13 +4785,13 @@ dependencies = [
  "scale-info",
  "sp-arithmetic",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-grandpa"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4806,20 +4801,20 @@ dependencies = [
  "pallet-session",
  "parity-scale-codec",
  "scale-info",
- "sp-application-crypto",
- "sp-core",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-identity"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "enumflags2",
  "frame-benchmarking",
@@ -4827,15 +4822,15 @@ dependencies = [
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-im-online"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4844,35 +4839,35 @@ dependencies = [
  "pallet-authorship",
  "parity-scale-codec",
  "scale-info",
- "sp-application-crypto",
- "sp-core",
- "sp-io",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-indices"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-membership"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4880,16 +4875,16 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-mmr"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "ckb-merkle-mountain-range",
  "frame-benchmarking",
@@ -4898,16 +4893,16 @@ dependencies = [
  "pallet-mmr-primitives",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-mmr-primitives"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4915,15 +4910,15 @@ dependencies = [
  "parity-scale-codec",
  "serde",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-mmr-rpc"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "jsonrpsee",
  "pallet-mmr-primitives",
@@ -4932,43 +4927,43 @@ dependencies = [
  "serde_json",
  "sp-api",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "pallet-multisig"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-nicks"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-offences"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4979,13 +4974,13 @@ dependencies = [
  "serde",
  "sp-runtime",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-offences-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-election-provider-support",
@@ -5002,42 +4997,42 @@ dependencies = [
  "scale-info",
  "sp-runtime",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-proxy"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-recovery"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-scheduler"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5045,15 +5040,15 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5062,19 +5057,19 @@ dependencies = [
  "pallet-timestamp",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
- "sp-trie",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-session-benchmarking"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5084,13 +5079,13 @@ dependencies = [
  "rand 0.7.3",
  "sp-runtime",
  "sp-session",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-society"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5098,13 +5093,13 @@ dependencies = [
  "rand_chacha 0.2.2",
  "scale-info",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-staking"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-election-provider-support",
@@ -5117,17 +5112,17 @@ dependencies = [
  "rand_chacha 0.2.2",
  "scale-info",
  "serde",
- "sp-application-crypto",
- "sp-io",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-staking-reward-curve"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -5138,7 +5133,7 @@ dependencies = [
 [[package]]
 name = "pallet-staking-reward-fn"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "log",
  "sp-arithmetic",
@@ -5147,21 +5142,21 @@ dependencies = [
 [[package]]
 name = "pallet-sudo"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-timestamp"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5170,16 +5165,16 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-timestamp",
 ]
 
 [[package]]
 name = "pallet-tips"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5189,16 +5184,16 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-transaction-payment"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -5206,16 +5201,16 @@ dependencies = [
  "scale-info",
  "serde",
  "smallvec",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-transaction-payment-rpc"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "anyhow",
  "jsonrpsee",
@@ -5223,7 +5218,7 @@ dependencies = [
  "parity-scale-codec",
  "sp-api",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-rpc",
  "sp-runtime",
 ]
@@ -5231,7 +5226,7 @@ dependencies = [
 [[package]]
 name = "pallet-transaction-payment-rpc-runtime-api"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "pallet-transaction-payment",
  "parity-scale-codec",
@@ -5242,7 +5237,7 @@ dependencies = [
 [[package]]
 name = "pallet-treasury"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5253,29 +5248,29 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-utility"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "pallet-vesting"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -5284,7 +5279,7 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -5300,10 +5295,10 @@ dependencies = [
  "polkadot-runtime-parachains",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-builder",
  "xcm-executor",
@@ -5324,11 +5319,11 @@ dependencies = [
  "polkadot-primitives",
  "polkadot-runtime-common",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
- "sp-tracing",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-builder",
  "xcm-executor",
@@ -5650,7 +5645,7 @@ dependencies = [
  "polkadot-primitives",
  "rand_core 0.5.1",
  "schnorrkel",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tracing",
 ]
 
@@ -5669,9 +5664,9 @@ dependencies = [
  "polkadot-node-subsystem-test-helpers",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
- "sp-application-crypto",
- "sp-core",
- "sp-keystore",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tracing",
 ]
 
@@ -5694,10 +5689,10 @@ dependencies = [
  "polkadot-primitives",
  "rand 0.8.4",
  "sc-network",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
- "sp-tracing",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -5722,8 +5717,8 @@ dependencies = [
  "polkadot-primitives",
  "rand 0.8.4",
  "sc-network",
- "sp-application-crypto",
- "sp-core",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "thiserror",
  "tracing",
@@ -5740,8 +5735,8 @@ dependencies = [
  "polkadot-service",
  "sc-cli",
  "sc-service",
- "sp-core",
- "sp-trie",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
  "substrate-build-script-utils",
  "thiserror",
@@ -5775,7 +5770,7 @@ dependencies = [
  "sp-offchain",
  "sp-runtime",
  "sp-session",
- "sp-storage",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
  "westend-runtime",
 ]
@@ -5799,9 +5794,9 @@ dependencies = [
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
  "sc-network",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "thiserror",
  "tracing",
@@ -5814,9 +5809,9 @@ dependencies = [
  "parity-scale-codec",
  "parity-util-mem",
  "scale-info",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -5840,10 +5835,10 @@ dependencies = [
  "polkadot-primitives",
  "sc-keystore",
  "sc-network",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
- "sp-tracing",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -5856,8 +5851,8 @@ dependencies = [
  "polkadot-node-primitives",
  "polkadot-primitives",
  "reed-solomon-novelpoly",
- "sp-core",
- "sp-trie",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
 ]
 
@@ -5878,12 +5873,12 @@ dependencies = [
  "rand 0.8.4",
  "rand_chacha 0.3.1",
  "sc-network",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
- "sp-tracing",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tracing",
 ]
 
@@ -5905,7 +5900,7 @@ dependencies = [
  "polkadot-primitives",
  "sc-network",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "tracing",
 ]
@@ -5922,7 +5917,7 @@ dependencies = [
  "polkadot-node-subsystem-test-helpers",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-maybe-compressed-blob",
  "thiserror",
  "tracing",
@@ -5953,13 +5948,13 @@ dependencies = [
  "rand_core 0.5.1",
  "sc-keystore",
  "schnorrkel",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-consensus",
  "sp-consensus-babe",
  "sp-consensus-slots",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "tracing",
 ]
@@ -5985,7 +5980,7 @@ dependencies = [
  "polkadot-node-subsystem-util",
  "polkadot-overseer",
  "polkadot-primitives",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "thiserror",
  "tracing",
@@ -6006,11 +6001,11 @@ dependencies = [
  "polkadot-primitives",
  "polkadot-statement-table",
  "sc-keystore",
- "sp-application-crypto",
- "sp-core",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
- "sp-tracing",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -6024,7 +6019,7 @@ dependencies = [
  "polkadot-node-subsystem-test-helpers",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
  "wasm-timer",
@@ -6045,7 +6040,7 @@ dependencies = [
  "polkadot-node-subsystem-util",
  "polkadot-parachain",
  "polkadot-primitives",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "sp-maybe-compressed-blob",
  "tracing",
@@ -6066,7 +6061,7 @@ dependencies = [
  "sc-client-api",
  "sc-consensus-babe",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tracing",
 ]
 
@@ -6086,7 +6081,7 @@ dependencies = [
  "polkadot-node-subsystem-test-helpers",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -6108,9 +6103,9 @@ dependencies = [
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
  "sc-keystore",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -6142,6 +6137,8 @@ dependencies = [
  "polkadot-node-subsystem-test-helpers",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "thiserror",
  "tracing",
 ]
@@ -6168,12 +6165,12 @@ dependencies = [
  "sc-executor-common",
  "sc-executor-wasmtime",
  "slotmap",
- "sp-core",
- "sp-externalities",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-maybe-compressed-blob",
- "sp-tracing",
- "sp-wasm-interface",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tempfile",
  "test-parachain-adder",
  "test-parachain-halt",
@@ -6195,7 +6192,7 @@ dependencies = [
  "sp-api",
  "sp-authority-discovery",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tracing",
 ]
 
@@ -6212,7 +6209,7 @@ dependencies = [
  "polkadot-node-primitives",
  "polkadot-primitives",
  "sc-network",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
 ]
 
@@ -6255,11 +6252,11 @@ dependencies = [
  "polkadot-primitives",
  "schnorrkel",
  "serde",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-consensus-babe",
  "sp-consensus-vrf",
- "sp-core",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-maybe-compressed-blob",
  "thiserror",
  "zstd",
@@ -6286,10 +6283,10 @@ dependencies = [
  "polkadot-overseer",
  "polkadot-primitives",
  "sc-keystore",
- "sp-application-crypto",
- "sp-core",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -6335,9 +6332,9 @@ dependencies = [
  "polkadot-overseer",
  "polkadot-primitives",
  "rand 0.8.4",
- "sp-application-crypto",
- "sp-core",
- "sp-keystore",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -6362,7 +6359,7 @@ dependencies = [
  "polkadot-primitives",
  "sc-client-api",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tracing",
 ]
 
@@ -6405,9 +6402,9 @@ dependencies = [
  "polkadot-core-primitives",
  "scale-info",
  "serde",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -6424,18 +6421,18 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-arithmetic",
  "sp-authority-discovery",
  "sp-consensus-slots",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
- "sp-keystore",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-staking",
- "sp-std",
- "sp-trie",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
 ]
 
@@ -6464,7 +6461,7 @@ dependencies = [
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "substrate-frame-rpc-system",
 ]
@@ -6534,18 +6531,18 @@ dependencies = [
  "sp-authority-discovery",
  "sp-block-builder",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "sp-npos-elections",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "static_assertions",
  "substrate-wasm-builder",
@@ -6593,15 +6590,15 @@ dependencies = [
  "serde_json",
  "slot-range-helper",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
- "sp-keystore",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-npos-elections",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "static_assertions",
  "xcm",
 ]
@@ -6637,15 +6634,15 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-executor",
 ]
@@ -6733,19 +6730,19 @@ dependencies = [
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
  "sp-inherents",
- "sp-io",
- "sp-keystore",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
- "sp-state-machine",
- "sp-storage",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-timestamp",
  "sp-transaction-pool",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "substrate-prometheus-endpoint",
  "thiserror",
  "tracing",
@@ -6801,7 +6798,7 @@ dependencies = [
  "polkadot-simnet",
  "sc-client-api",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
@@ -6824,12 +6821,12 @@ dependencies = [
  "polkadot-primitives",
  "sc-keystore",
  "sc-network",
- "sp-application-crypto",
- "sp-core",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-staking",
- "sp-tracing",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
 ]
@@ -6840,7 +6837,7 @@ version = "0.9.13"
 dependencies = [
  "parity-scale-codec",
  "polkadot-primitives",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -6860,11 +6857,11 @@ dependencies = [
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
  "sp-keyring",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-timestamp",
  "substrate-test-client",
 ]
@@ -6890,8 +6887,8 @@ dependencies = [
  "polkadot-node-subsystem-types",
  "polkadot-node-subsystem-util",
  "polkadot-primitives",
- "sp-core",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
  "tracing",
 ]
@@ -6942,17 +6939,17 @@ dependencies = [
  "sp-authority-discovery",
  "sp-block-builder",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "substrate-wasm-builder",
  "tiny-keccak",
@@ -7003,12 +7000,12 @@ dependencies = [
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
  "sp-inherents",
  "sp-keyring",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "substrate-test-client",
  "substrate-test-utils",
  "tempfile",
@@ -7023,7 +7020,7 @@ dependencies = [
  "generate-bags",
  "kusama-runtime",
  "polkadot-runtime",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
  "westend-runtime",
 ]
@@ -7072,11 +7069,12 @@ checksum = "237a5ed80e274dbc66f86bd59c1e25edc039660be53194b5fe0a482e0f2612ea"
 
 [[package]]
 name = "predicates"
-version = "1.0.4"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "347a1b6f0b21e636bc9872fb60b83b8e185f6f5516298b8238699f7f9a531030"
+checksum = "95e5a7689e456ab905c22c2b48225bb921aba7c8dfa58440d68ba13f6222a715"
 dependencies = [
- "difference",
+ "difflib",
+ "itertools",
  "predicates-core",
 ]
 
@@ -7102,7 +7100,7 @@ version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ec0cfe1b2403f172ba0f234e500906ee0a3e493fb81092dac23ebefe129301cc"
 dependencies = [
- "ansi_term 0.12.1",
+ "ansi_term",
  "ctor",
  "diff",
  "output_vt100",
@@ -7558,8 +7556,8 @@ dependencies = [
  "log",
  "pallet-bags-list-remote-tests",
  "polkadot-runtime",
- "sp-core",
- "sp-tracing",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "structopt",
  "tokio",
  "westend-runtime",
@@ -7568,7 +7566,7 @@ dependencies = [
 [[package]]
 name = "remote-externalities"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "env_logger 0.9.0",
  "jsonrpsee",
@@ -7576,8 +7574,8 @@ dependencies = [
  "parity-scale-codec",
  "serde",
  "serde_json",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-version",
 ]
@@ -7699,14 +7697,14 @@ dependencies = [
  "sp-authority-discovery",
  "sp-block-builder",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
  "sp-version",
  "substrate-wasm-builder",
@@ -7889,18 +7887,18 @@ dependencies = [
 [[package]]
 name = "sc-allocator"
 version = "4.1.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "log",
- "sp-core",
- "sp-wasm-interface",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
 ]
 
 [[package]]
 name = "sc-authority-discovery"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -7918,8 +7916,8 @@ dependencies = [
  "sp-api",
  "sp-authority-discovery",
  "sp-blockchain",
- "sp-core",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "substrate-prometheus-endpoint",
 ]
@@ -7927,7 +7925,7 @@ dependencies = [
 [[package]]
 name = "sc-basic-authorship"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "futures-timer 3.0.2",
@@ -7941,7 +7939,7 @@ dependencies = [
  "sp-api",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
  "sp-runtime",
  "substrate-prometheus-endpoint",
@@ -7950,23 +7948,23 @@ dependencies = [
 [[package]]
 name = "sc-block-builder"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "sc-client-api",
  "sp-api",
  "sp-block-builder",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sc-chain-spec"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "impl-trait-for-tuples",
  "memmap2 0.5.0",
@@ -7976,14 +7974,14 @@ dependencies = [
  "sc-telemetry",
  "serde",
  "serde_json",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "sc-chain-spec-derive"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -7994,7 +7992,7 @@ dependencies = [
 [[package]]
 name = "sc-cli"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "chrono",
  "fdlimit",
@@ -8017,10 +8015,10 @@ dependencies = [
  "serde",
  "serde_json",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
- "sp-panic-handler",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-panic-handler 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-version",
  "structopt",
@@ -8032,7 +8030,7 @@ dependencies = [
 [[package]]
 name = "sc-client-api"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "fnv",
  "futures 0.3.17",
@@ -8046,21 +8044,21 @@ dependencies = [
  "sp-api",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-database",
- "sp-externalities",
- "sp-keystore",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
- "sp-storage",
- "sp-trie",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "substrate-prometheus-endpoint",
 ]
 
 [[package]]
 name = "sc-client-db"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "hash-db",
  "kvdb",
@@ -8075,17 +8073,17 @@ dependencies = [
  "sc-state-db",
  "sp-arithmetic",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-database",
  "sp-runtime",
- "sp-state-machine",
- "sp-trie",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sc-consensus"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "futures 0.3.17",
@@ -8099,9 +8097,9 @@ dependencies = [
  "sp-api",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "substrate-prometheus-endpoint",
  "thiserror",
 ]
@@ -8109,7 +8107,7 @@ dependencies = [
 [[package]]
 name = "sc-consensus-babe"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -8133,17 +8131,17 @@ dependencies = [
  "schnorrkel",
  "serde",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-block-builder",
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
  "sp-consensus-slots",
  "sp-consensus-vrf",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
- "sp-keystore",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-version",
  "substrate-prometheus-endpoint",
@@ -8152,7 +8150,7 @@ dependencies = [
 [[package]]
 name = "sc-consensus-babe-rpc"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "derive_more",
  "futures 0.3.17",
@@ -8162,19 +8160,19 @@ dependencies = [
  "sc-rpc-api",
  "serde",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
- "sp-core",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "sc-consensus-epochs"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "fork-tree",
  "parity-scale-codec",
@@ -8187,7 +8185,7 @@ dependencies = [
 [[package]]
 name = "sc-consensus-manual-seal"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "assert_matches",
  "async-trait",
@@ -8208,9 +8206,9 @@ dependencies = [
  "sp-consensus",
  "sp-consensus-babe",
  "sp-consensus-slots",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-timestamp",
  "substrate-prometheus-endpoint",
@@ -8219,7 +8217,7 @@ dependencies = [
 [[package]]
 name = "sc-consensus-slots"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "futures 0.3.17",
@@ -8234,10 +8232,10 @@ dependencies = [
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-slots",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-timestamp",
  "thiserror",
 ]
@@ -8245,7 +8243,7 @@ dependencies = [
 [[package]]
 name = "sc-consensus-uncles"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "sc-client-api",
  "sp-authorship",
@@ -8256,7 +8254,7 @@ dependencies = [
 [[package]]
 name = "sc-executor"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "lazy_static",
  "libsecp256k1",
@@ -8267,33 +8265,33 @@ dependencies = [
  "sc-executor-wasmi",
  "sc-executor-wasmtime",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-core-hashing-proc-macro",
- "sp-externalities",
- "sp-io",
- "sp-panic-handler",
- "sp-runtime-interface",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-panic-handler 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-tasks",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
- "sp-wasm-interface",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "wasmi",
 ]
 
 [[package]]
 name = "sc-executor-common"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "derive_more",
  "environmental",
  "parity-scale-codec",
  "pwasm-utils",
  "sc-allocator",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-maybe-compressed-blob",
  "sp-serializer",
- "sp-wasm-interface",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "wasmi",
 ]
@@ -8301,23 +8299,23 @@ dependencies = [
 [[package]]
 name = "sc-executor-wasmi"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "log",
  "parity-scale-codec",
  "sc-allocator",
  "sc-executor-common",
  "scoped-tls",
- "sp-core",
- "sp-runtime-interface",
- "sp-wasm-interface",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "wasmi",
 ]
 
 [[package]]
 name = "sc-executor-wasmtime"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "cfg-if 1.0.0",
  "libc",
@@ -8326,16 +8324,16 @@ dependencies = [
  "parity-wasm 0.42.2",
  "sc-allocator",
  "sc-executor-common",
- "sp-core",
- "sp-runtime-interface",
- "sp-wasm-interface",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "wasmtime",
 ]
 
 [[package]]
 name = "sc-finality-grandpa"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -8358,13 +8356,13 @@ dependencies = [
  "sc-utils",
  "serde_json",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-arithmetic",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "substrate-prometheus-endpoint",
 ]
@@ -8372,7 +8370,7 @@ dependencies = [
 [[package]]
 name = "sc-finality-grandpa-rpc"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "derive_more",
  "finality-grandpa",
@@ -8386,16 +8384,16 @@ dependencies = [
  "serde",
  "serde_json",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "sc-informant"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
- "ansi_term 0.12.1",
+ "ansi_term",
  "futures 0.3.17",
  "futures-timer 3.0.2",
  "log",
@@ -8410,22 +8408,22 @@ dependencies = [
 [[package]]
 name = "sc-keystore"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "derive_more",
  "hex",
  "parking_lot",
  "serde_json",
- "sp-application-crypto",
- "sp-core",
- "sp-keystore",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sc-network"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-std",
  "async-trait",
@@ -8463,7 +8461,7 @@ dependencies = [
  "sp-arithmetic",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
  "sp-runtime",
  "substrate-prometheus-endpoint",
@@ -8476,7 +8474,7 @@ dependencies = [
 [[package]]
 name = "sc-network-gossip"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "futures-timer 3.0.2",
@@ -8492,7 +8490,7 @@ dependencies = [
 [[package]]
 name = "sc-offchain"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "bytes 1.0.1",
  "fnv",
@@ -8510,7 +8508,7 @@ dependencies = [
  "sc-network",
  "sc-utils",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-offchain",
  "sp-runtime",
  "threadpool",
@@ -8520,7 +8518,7 @@ dependencies = [
 [[package]]
 name = "sc-peerset"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "libp2p",
@@ -8533,7 +8531,7 @@ dependencies = [
 [[package]]
 name = "sc-proposer-metrics"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "log",
  "substrate-prometheus-endpoint",
@@ -8542,7 +8540,7 @@ dependencies = [
 [[package]]
 name = "sc-rpc"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8561,8 +8559,8 @@ dependencies = [
  "serde_json",
  "sp-api",
  "sp-blockchain",
- "sp-core",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-offchain",
  "sp-rpc",
  "sp-runtime",
@@ -8573,7 +8571,7 @@ dependencies = [
 [[package]]
 name = "sc-rpc-api"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "anyhow",
  "futures 0.3.17",
@@ -8584,10 +8582,10 @@ dependencies = [
  "sc-transaction-pool-api",
  "serde",
  "serde_json",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-rpc",
  "sp-runtime",
- "sp-tracing",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "thiserror",
  "tracing",
@@ -8596,7 +8594,7 @@ dependencies = [
 [[package]]
 name = "sc-rpc-server"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "anyhow",
  "jsonrpsee",
@@ -8609,7 +8607,7 @@ dependencies = [
 [[package]]
 name = "sc-service"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "directories",
@@ -8644,22 +8642,22 @@ dependencies = [
  "serde",
  "serde_json",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-block-builder",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
- "sp-externalities",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-session",
- "sp-state-machine",
- "sp-storage",
- "sp-tracing",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
  "sp-transaction-storage-proof",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "substrate-prometheus-endpoint",
  "tempfile",
@@ -8672,7 +8670,7 @@ dependencies = [
 [[package]]
 name = "sc-state-db"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "log",
  "parity-scale-codec",
@@ -8680,13 +8678,13 @@ dependencies = [
  "parity-util-mem-derive",
  "parking_lot",
  "sc-client-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sc-sync-state-rpc"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "anyhow",
  "jsonrpsee",
@@ -8707,7 +8705,7 @@ dependencies = [
 [[package]]
 name = "sc-telemetry"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "chrono",
  "futures 0.3.17",
@@ -8725,9 +8723,9 @@ dependencies = [
 [[package]]
 name = "sc-tracing"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
- "ansi_term 0.12.1",
+ "ansi_term",
  "atty",
  "chrono",
  "lazy_static",
@@ -8743,10 +8741,10 @@ dependencies = [
  "serde",
  "sp-api",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-rpc",
  "sp-runtime",
- "sp-tracing",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
  "tracing",
  "tracing-log",
@@ -8756,7 +8754,7 @@ dependencies = [
 [[package]]
 name = "sc-tracing-proc-macro"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -8767,7 +8765,7 @@ dependencies = [
 [[package]]
 name = "sc-transaction-pool"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "intervalier",
@@ -8783,9 +8781,9 @@ dependencies = [
  "serde",
  "sp-api",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-tracing",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
  "substrate-prometheus-endpoint",
  "thiserror",
@@ -8794,7 +8792,7 @@ dependencies = [
 [[package]]
 name = "sc-transaction-pool-api"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "derive_more",
  "futures 0.3.17",
@@ -8808,7 +8806,7 @@ dependencies = [
 [[package]]
 name = "sc-utils"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "futures-timer 3.0.2",
@@ -9013,9 +9011,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.71"
+version = "1.0.72"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "063bf466a64011ac24040a49009724ee60a57da1b437617ceb32e53ad61bfb19"
+checksum = "d0ffa0837f2dfa6fb90868c2b5468cad482e175f7dad97e7421951e663f2b527"
 dependencies = [
  "itoa",
  "ryu",
@@ -9151,7 +9149,7 @@ dependencies = [
  "parity-scale-codec",
  "paste",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
@@ -9234,16 +9232,16 @@ dependencies = [
 [[package]]
 name = "sp-api"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "hash-db",
  "log",
  "parity-scale-codec",
  "sp-api-proc-macro",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
- "sp-std",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "thiserror",
 ]
@@ -9251,7 +9249,7 @@ dependencies = [
 [[package]]
 name = "sp-api-proc-macro"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "blake2-rfc",
  "proc-macro-crate",
@@ -9263,72 +9261,85 @@ dependencies = [
 [[package]]
 name = "sp-application-crypto"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-core",
- "sp-io",
- "sp-std",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+]
+
+[[package]]
+name = "sp-application-crypto"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
 ]
 
 [[package]]
 name = "sp-arithmetic"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "integer-sqrt",
  "num-traits",
  "parity-scale-codec",
  "scale-info",
  "serde",
- "sp-debug-derive",
- "sp-std",
+ "sp-debug-derive 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "static_assertions",
 ]
 
 [[package]]
 name = "sp-authority-discovery"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-authorship"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "parity-scale-codec",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-block-builder"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "sp-api",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-blockchain"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "log",
@@ -9339,25 +9350,25 @@ dependencies = [
  "sp-consensus",
  "sp-database",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
 ]
 
 [[package]]
 name = "sp-consensus"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "futures 0.3.17",
  "futures-timer 3.0.2",
  "log",
  "parity-scale-codec",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
  "sp-runtime",
- "sp-state-machine",
- "sp-std",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "thiserror",
 ]
@@ -9365,7 +9376,7 @@ dependencies = [
 [[package]]
 name = "sp-consensus-babe"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "merlin",
@@ -9373,22 +9384,22 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-api",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-consensus",
  "sp-consensus-slots",
  "sp-consensus-vrf",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-timestamp",
 ]
 
 [[package]]
 name = "sp-consensus-slots"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
@@ -9400,19 +9411,19 @@ dependencies = [
 [[package]]
 name = "sp-consensus-vrf"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "schnorrkel",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-core"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "base58",
  "bitflags",
@@ -9441,12 +9452,60 @@ dependencies = [
  "secrecy",
  "serde",
  "sha2 0.9.8",
- "sp-core-hashing",
- "sp-debug-derive",
- "sp-externalities",
- "sp-runtime-interface",
- "sp-std",
- "sp-storage",
+ "sp-core-hashing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-debug-derive 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "ss58-registry",
+ "substrate-bip39",
+ "thiserror",
+ "tiny-bip39",
+ "tiny-keccak",
+ "twox-hash",
+ "wasmi",
+ "zeroize",
+]
+
+[[package]]
+name = "sp-core"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "base58",
+ "bitflags",
+ "blake2-rfc",
+ "byteorder",
+ "dyn-clonable",
+ "ed25519-dalek",
+ "futures 0.3.17",
+ "hash-db",
+ "hash256-std-hasher",
+ "hex",
+ "impl-serde",
+ "lazy_static",
+ "libsecp256k1",
+ "log",
+ "merlin",
+ "num-traits",
+ "parity-scale-codec",
+ "parity-util-mem",
+ "parking_lot",
+ "primitive-types",
+ "rand 0.7.3",
+ "regex",
+ "scale-info",
+ "schnorrkel",
+ "secrecy",
+ "serde",
+ "sha2 0.9.8",
+ "sp-core-hashing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-debug-derive 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "ss58-registry",
  "substrate-bip39",
  "thiserror",
@@ -9460,12 +9519,25 @@ dependencies = [
 [[package]]
 name = "sp-core-hashing"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "blake2-rfc",
  "byteorder",
  "sha2 0.9.8",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "tiny-keccak",
+ "twox-hash",
+]
+
+[[package]]
+name = "sp-core-hashing"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "blake2-rfc",
+ "byteorder",
+ "sha2 0.9.8",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "tiny-keccak",
  "twox-hash",
 ]
@@ -9473,18 +9545,18 @@ dependencies = [
 [[package]]
 name = "sp-core-hashing-proc-macro"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro2",
  "quote",
- "sp-core-hashing",
+ "sp-core-hashing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "syn",
 ]
 
 [[package]]
 name = "sp-database"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "kvdb",
  "parking_lot",
@@ -9493,7 +9565,17 @@ dependencies = [
 [[package]]
 name = "sp-debug-derive"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "sp-debug-derive"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -9503,18 +9585,29 @@ dependencies = [
 [[package]]
 name = "sp-externalities"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "environmental",
  "parity-scale-codec",
- "sp-std",
- "sp-storage",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+]
+
+[[package]]
+name = "sp-externalities"
+version = "0.10.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "environmental",
+ "parity-scale-codec",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
 ]
 
 [[package]]
 name = "sp-finality-grandpa"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "finality-grandpa",
  "log",
@@ -9522,31 +9615,31 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-api",
- "sp-application-crypto",
- "sp-core",
- "sp-keystore",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-inherents"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "impl-trait-for-tuples",
  "parity-scale-codec",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
 ]
 
 [[package]]
 name = "sp-io"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "hash-db",
@@ -9554,15 +9647,39 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "parking_lot",
- "sp-core",
- "sp-externalities",
- "sp-keystore",
- "sp-runtime-interface",
- "sp-state-machine",
- "sp-std",
- "sp-tracing",
- "sp-trie",
- "sp-wasm-interface",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "tracing",
+ "tracing-core",
+]
+
+[[package]]
+name = "sp-io"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "futures 0.3.17",
+ "hash-db",
+ "libsecp256k1",
+ "log",
+ "parity-scale-codec",
+ "parking_lot",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "tracing",
  "tracing-core",
 ]
@@ -9570,10 +9687,10 @@ dependencies = [
 [[package]]
 name = "sp-keyring"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "lazy_static",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "strum 0.22.0",
 ]
@@ -9581,7 +9698,7 @@ dependencies = [
 [[package]]
 name = "sp-keystore"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -9591,14 +9708,31 @@ dependencies = [
  "parking_lot",
  "schnorrkel",
  "serde",
- "sp-core",
- "sp-externalities",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+]
+
+[[package]]
+name = "sp-keystore"
+version = "0.10.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "async-trait",
+ "derive_more",
+ "futures 0.3.17",
+ "merlin",
+ "parity-scale-codec",
+ "parking_lot",
+ "schnorrkel",
+ "serde",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
 ]
 
 [[package]]
 name = "sp-maybe-compressed-blob"
 version = "4.1.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "zstd",
 ]
@@ -9606,22 +9740,22 @@ dependencies = [
 [[package]]
 name = "sp-npos-elections"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde",
  "sp-arithmetic",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-npos-elections-solution-type",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-npos-elections-solution-type"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -9632,17 +9766,27 @@ dependencies = [
 [[package]]
 name = "sp-offchain"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "sp-panic-handler"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
+dependencies = [
+ "backtrace",
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
+name = "sp-panic-handler"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
 dependencies = [
  "backtrace",
  "lazy_static",
@@ -9652,17 +9796,17 @@ dependencies = [
 [[package]]
 name = "sp-rpc"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "rustc-hash",
  "serde",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-runtime"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "either",
  "hash256-std-hasher",
@@ -9674,34 +9818,63 @@ dependencies = [
  "rand 0.7.3",
  "scale-info",
  "serde",
- "sp-application-crypto",
+ "sp-application-crypto 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-arithmetic",
- "sp-core",
- "sp-io",
- "sp-std",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-runtime-interface"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "impl-trait-for-tuples",
  "parity-scale-codec",
  "primitive-types",
- "sp-externalities",
- "sp-runtime-interface-proc-macro",
- "sp-std",
- "sp-storage",
- "sp-tracing",
- "sp-wasm-interface",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface-proc-macro 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "static_assertions",
+]
+
+[[package]]
+name = "sp-runtime-interface"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "impl-trait-for-tuples",
+ "parity-scale-codec",
+ "primitive-types",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-runtime-interface-proc-macro 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-storage 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "static_assertions",
 ]
 
 [[package]]
 name = "sp-runtime-interface-proc-macro"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
+dependencies = [
+ "Inflector",
+ "proc-macro-crate",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "sp-runtime-interface-proc-macro"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
 dependencies = [
  "Inflector",
  "proc-macro-crate",
@@ -9713,7 +9886,7 @@ dependencies = [
 [[package]]
 name = "sp-serializer"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "serde",
  "serde_json",
@@ -9722,32 +9895,32 @@ dependencies = [
 [[package]]
 name = "sp-session"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-api",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-staking"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-state-machine"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "hash-db",
  "log",
@@ -9756,11 +9929,34 @@ dependencies = [
  "parking_lot",
  "rand 0.7.3",
  "smallvec",
- "sp-core",
- "sp-externalities",
- "sp-panic-handler",
- "sp-std",
- "sp-trie",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-panic-handler 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "thiserror",
+ "tracing",
+ "trie-db",
+ "trie-root",
+]
+
+[[package]]
+name = "sp-state-machine"
+version = "0.10.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "hash-db",
+ "log",
+ "num-traits",
+ "parity-scale-codec",
+ "parking_lot",
+ "rand 0.7.3",
+ "smallvec",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-panic-handler 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "thiserror",
  "tracing",
  "trie-db",
@@ -9770,38 +9966,56 @@ dependencies = [
 [[package]]
 name = "sp-std"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
+
+[[package]]
+name = "sp-std"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
 
 [[package]]
 name = "sp-storage"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "impl-serde",
  "parity-scale-codec",
  "ref-cast",
  "serde",
- "sp-debug-derive",
- "sp-std",
+ "sp-debug-derive 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+]
+
+[[package]]
+name = "sp-storage"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "impl-serde",
+ "parity-scale-codec",
+ "ref-cast",
+ "serde",
+ "sp-debug-derive 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
 ]
 
 [[package]]
 name = "sp-tasks"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "log",
- "sp-core",
- "sp-externalities",
- "sp-io",
- "sp-runtime-interface",
- "sp-std",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-timestamp"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "futures-timer 3.0.2",
@@ -9810,17 +10024,29 @@ dependencies = [
  "sp-api",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "thiserror",
 ]
 
 [[package]]
 name = "sp-tracing"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "tracing",
+ "tracing-core",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "sp-tracing"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "parity-scale-codec",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "tracing",
  "tracing-core",
  "tracing-subscriber",
@@ -9829,7 +10055,7 @@ dependencies = [
 [[package]]
 name = "sp-transaction-pool"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "sp-api",
  "sp-runtime",
@@ -9838,30 +10064,45 @@ dependencies = [
 [[package]]
 name = "sp-transaction-storage-proof"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "log",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
  "sp-runtime",
- "sp-std",
- "sp-trie",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "sp-trie"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "hash-db",
  "memory-db",
  "parity-scale-codec",
  "scale-info",
- "sp-core",
- "sp-std",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "trie-db",
+ "trie-root",
+]
+
+[[package]]
+name = "sp-trie"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "hash-db",
+ "memory-db",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "trie-db",
  "trie-root",
 ]
@@ -9869,7 +10110,7 @@ dependencies = [
 [[package]]
 name = "sp-version"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "impl-serde",
  "parity-scale-codec",
@@ -9877,7 +10118,7 @@ dependencies = [
  "scale-info",
  "serde",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version-proc-macro",
  "thiserror",
 ]
@@ -9885,7 +10126,7 @@ dependencies = [
 [[package]]
 name = "sp-version-proc-macro"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "parity-scale-codec",
  "proc-macro2",
@@ -9896,11 +10137,22 @@ dependencies = [
 [[package]]
 name = "sp-wasm-interface"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "impl-trait-for-tuples",
  "parity-scale-codec",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "wasmi",
+]
+
+[[package]]
+name = "sp-wasm-interface"
+version = "4.0.0-dev"
+source = "git+https://github.com/paritytech/substrate?branch=master#3904d77ad2499ab36b242e52fbe23d5cd8773ad9"
+dependencies = [
+ "impl-trait-for-tuples",
+ "parity-scale-codec",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=master)",
  "wasmi",
 ]
 
@@ -9954,8 +10206,8 @@ dependencies = [
  "sc-transaction-pool-api",
  "serde",
  "serde_json",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-npos-elections",
  "sp-runtime",
  "sp-version",
@@ -10107,7 +10359,7 @@ dependencies = [
 [[package]]
 name = "substrate-build-script-utils"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "platforms",
 ]
@@ -10115,7 +10367,7 @@ dependencies = [
 [[package]]
 name = "substrate-frame-rpc-system"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -10131,14 +10383,14 @@ dependencies = [
  "sp-api",
  "sp-block-builder",
  "sp-blockchain",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
 ]
 
 [[package]]
 name = "substrate-prometheus-endpoint"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-std",
  "derive_more",
@@ -10152,7 +10404,7 @@ dependencies = [
 [[package]]
 name = "substrate-test-client"
 version = "2.0.1"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "async-trait",
  "futures 0.3.17",
@@ -10168,17 +10420,17 @@ dependencies = [
  "serde_json",
  "sp-blockchain",
  "sp-consensus",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
- "sp-keystore",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
 ]
 
 [[package]]
 name = "substrate-test-utils"
 version = "4.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "futures 0.3.17",
  "substrate-test-utils-derive",
@@ -10188,7 +10440,7 @@ dependencies = [
 [[package]]
 name = "substrate-test-utils-derive"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -10199,9 +10451,9 @@ dependencies = [
 [[package]]
 name = "substrate-wasm-builder"
 version = "5.0.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
- "ansi_term 0.12.1",
+ "ansi_term",
  "build-helper",
  "cargo_metadata",
  "sp-maybe-compressed-blob",
@@ -10219,9 +10471,9 @@ checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
 
 [[package]]
 name = "syn"
-version = "1.0.81"
+version = "1.0.82"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f2afee18b8beb5a596ecb4a2dce128c719b4ba399d34126b9e4396e3f9860966"
+checksum = "8daf5dd0bb60cbd4137b1b587d2fc0ae729bc07cf01cd70b36a1ed5ade3b9d59"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -10282,8 +10534,8 @@ dependencies = [
  "dlmalloc",
  "parity-scale-codec",
  "polkadot-parachain",
- "sp-io",
- "sp-std",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "substrate-wasm-builder",
  "tiny-keccak",
 ]
@@ -10306,7 +10558,7 @@ dependencies = [
  "polkadot-test-service",
  "sc-cli",
  "sc-service",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "structopt",
  "substrate-test-utils",
@@ -10326,7 +10578,7 @@ name = "test-parachains"
 version = "0.9.13"
 dependencies = [
  "parity-scale-codec",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "test-parachain-adder",
  "test-parachain-halt",
  "tiny-keccak",
@@ -10335,7 +10587,7 @@ dependencies = [
 [[package]]
 name = "test-runner"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "frame-system",
  "futures 0.3.17",
@@ -10362,18 +10614,18 @@ dependencies = [
  "sp-blockchain",
  "sp-consensus",
  "sp-consensus-babe",
- "sp-core",
- "sp-externalities",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-finality-grandpa",
  "sp-inherents",
  "sp-keyring",
  "sp-offchain",
  "sp-runtime",
- "sp-runtime-interface",
+ "sp-runtime-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-session",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
- "sp-wasm-interface",
+ "sp-wasm-interface 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "tokio",
 ]
 
@@ -10680,7 +10932,7 @@ version = "0.2.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0e0d2eaa99c3c2e41547cfa109e910a68ea03823cccad4a0525dcbc9b01e8c71"
 dependencies = [
- "ansi_term 0.12.1",
+ "ansi_term",
  "chrono",
  "lazy_static",
  "matchers",
@@ -10777,7 +11029,7 @@ checksum = "e604eb7b43c06650e854be16a2a03155743d3752dd1c943f6829e26b7a36e382"
 [[package]]
 name = "try-runtime-cli"
 version = "0.10.0-dev"
-source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#bd5ceae8bc747a4696417e2cc89901d14c5295be"
+source = "git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2#3e96b8ec9c863422889245e73516551cc56127c5"
 dependencies = [
  "jsonrpsee",
  "log",
@@ -10788,12 +11040,12 @@ dependencies = [
  "sc-executor",
  "sc-service",
  "serde",
- "sp-core",
- "sp-externalities",
- "sp-io",
- "sp-keystore",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-externalities 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-keystore 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-state-machine",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "structopt",
 ]
@@ -11302,7 +11554,7 @@ dependencies = [
  "libc",
  "log",
  "mach",
- "memoffset 0.6.1",
+ "memoffset 0.6.4",
  "more-asserts",
  "rand 0.8.4",
  "region",
@@ -11448,18 +11700,18 @@ dependencies = [
  "sp-authority-discovery",
  "sp-block-builder",
  "sp-consensus-babe",
- "sp-core",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-inherents",
- "sp-io",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-keyring",
  "sp-npos-elections",
  "sp-offchain",
  "sp-runtime",
  "sp-session",
  "sp-staking",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-transaction-pool",
- "sp-trie",
+ "sp-trie 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-version",
  "substrate-wasm-builder",
  "tiny-keccak",
@@ -11568,10 +11820,10 @@ dependencies = [
  "polkadot-runtime-parachains",
  "scale-info",
  "sp-arithmetic",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-executor",
 ]
@@ -11586,10 +11838,10 @@ dependencies = [
  "log",
  "parity-scale-codec",
  "sp-arithmetic",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
 ]
 
@@ -11607,8 +11859,8 @@ dependencies = [
  "sp-consensus",
  "sp-keyring",
  "sp-runtime",
- "sp-state-machine",
- "sp-tracing",
+ "sp-state-machine 0.10.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-tracing 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-executor",
 ]
@@ -11632,8 +11884,8 @@ dependencies = [
  "polkadot-core-primitives",
  "polkadot-parachain",
  "polkadot-runtime-parachains",
- "sp-io",
- "sp-std",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-executor",
 ]
@@ -11651,10 +11903,10 @@ dependencies = [
  "polkadot-parachain",
  "polkadot-runtime-parachains",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-builder",
  "xcm-executor",
@@ -11675,10 +11927,10 @@ dependencies = [
  "polkadot-parachain",
  "polkadot-runtime-parachains",
  "scale-info",
- "sp-core",
- "sp-io",
+ "sp-core 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
+ "sp-io 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "sp-runtime",
- "sp-std",
+ "sp-std 4.0.0-dev (git+https://github.com/paritytech/substrate?branch=dp-jsonrpsee-integration-2)",
  "xcm",
  "xcm-builder",
  "xcm-executor",
