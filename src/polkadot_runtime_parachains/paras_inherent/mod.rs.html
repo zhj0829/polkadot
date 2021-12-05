@@ -1023,6 +1023,23 @@
 <span id="1023">1023</span>
 <span id="1024">1024</span>
 <span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1052,7 +1069,7 @@
 	<span class="ident">inclusion</span>::{<span class="ident">CandidateCheckContext</span>, <span class="ident">FullCheck</span>},
 	<span class="ident">initializer</span>,
 	<span class="ident">scheduler</span>::{<span class="self">self</span>, <span class="ident">CoreAssignment</span>, <span class="ident">FreedReason</span>},
-	<span class="ident">shared</span>, <span class="ident">ump</span>,
+	<span class="ident">shared</span>, <span class="ident">ump</span>, <span class="ident">ParaId</span>,
 };
 <span class="kw">use</span> <span class="ident">bitvec::prelude::BitVec</span>;
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
@@ -1915,6 +1932,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// `candidate_has_concluded_invalid_dispute` must return `true` if the candidate</span>
 <span class="doccomment">/// is disputed, false otherwise</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The returned `Vec` is sorted according to the occupied core index.</span>
 <span class="kw">fn</span> <span class="ident">sanitize_backed_candidates</span><span class="op">&lt;</span>
 	<span class="ident">T</span>: <span class="ident"><span class="kw">crate</span>::inclusion::Config</span>,
 	<span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
@@ -1925,20 +1944,35 @@
 	<span class="ident">scheduled</span>: <span class="kw-2">&amp;</span>[<span class="ident">CoreAssignment</span>],
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="comment">// Remove any candidates that were concluded invalid.</span>
+	<span class="comment">// This does not assume sorting.</span>
 	<span class="ident">backed_candidates</span>.<span class="ident">indexed_retain</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">idx</span>, <span class="ident">backed_candidate</span><span class="op">|</span> {
 		<span class="op">!</span><span class="ident">candidate_has_concluded_invalid_dispute_or_is_invalid</span>(<span class="ident">idx</span>, <span class="ident">backed_candidate</span>)
 	});
 
+	<span class="kw">let</span> <span class="ident">scheduled_paras_to_core_idx</span> <span class="op">=</span> <span class="ident">scheduled</span>
+		.<span class="ident">into_iter</span>()
+		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">core_assignment</span><span class="op">|</span> (<span class="ident">core_assignment</span>.<span class="ident">para_id</span>, <span class="ident">core_assignment</span>.<span class="ident">core</span>))
+		.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">ParaId</span>, <span class="ident">CoreIndex</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+
 	<span class="comment">// Assure the backed candidate&#39;s `ParaId`&#39;s core is free.</span>
 	<span class="comment">// This holds under the assumption that `Scheduler::schedule` is called _before_.</span>
 	<span class="comment">// Also checks the candidate references the correct relay parent.</span>
-	<span class="kw">let</span> <span class="ident">scheduled_paras_set</span> <span class="op">=</span> <span class="ident">scheduled</span>
-		.<span class="ident">into_iter</span>()
-		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">core_assignment</span><span class="op">|</span> <span class="ident">core_assignment</span>.<span class="ident">para_id</span>)
-		.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+
 	<span class="ident">backed_candidates</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">backed_candidate</span><span class="op">|</span> {
 		<span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>();
-		<span class="ident">desc</span>.<span class="ident">relay_parent</span> <span class="op">=</span><span class="op">=</span> <span class="ident">relay_parent</span> <span class="op">&amp;&amp;</span> <span class="ident">scheduled_paras_set</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">desc</span>.<span class="ident">para_id</span>)
+		<span class="ident">desc</span>.<span class="ident">relay_parent</span> <span class="op">=</span><span class="op">=</span> <span class="ident">relay_parent</span> <span class="op">&amp;&amp;</span>
+			<span class="ident">scheduled_paras_to_core_idx</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">desc</span>.<span class="ident">para_id</span>).<span class="ident">is_some</span>()
+	});
+
+	<span class="comment">// Sort the `Vec` last, once there is a guarantee that these</span>
+	<span class="comment">// `BackedCandidates` references the expected relay chain parent,</span>
+	<span class="comment">// but more importantly are scheduled for a free core.</span>
+	<span class="comment">// This both avoids extra work for obviously invalid candidates,</span>
+	<span class="comment">// but also allows this to be done in place.</span>
+	<span class="ident">backed_candidates</span>.<span class="ident">sort_by</span>(<span class="op">|</span><span class="ident">x</span>, <span class="ident">y</span><span class="op">|</span> {
+		<span class="comment">// Never panics, since we filtered all panic arguments out in the previous `fn retain`.</span>
+		<span class="ident">scheduled_paras_to_core_idx</span>[<span class="kw-2">&amp;</span><span class="ident">x</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span>]
+			.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">scheduled_paras_to_core_idx</span>[<span class="kw-2">&amp;</span><span class="ident">y</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span>])
 	});
 
 	<span class="ident">backed_candidates</span>
