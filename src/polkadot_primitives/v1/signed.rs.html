@@ -474,7 +474,7 @@
 	}
 }
 
-<span class="comment">// We can&#39;t bound this on `Payload: Into&lt;RealPayload&gt;` beacuse that conversion consumes</span>
+<span class="comment">// We can&#39;t bound this on `Payload: Into&lt;RealPayload&gt;` because that conversion consumes</span>
 <span class="comment">// the payload, and we don&#39;t want that. We can&#39;t bound it on `Payload: AsRef&lt;RealPayload&gt;`</span>
 <span class="comment">// because there&#39;s no blanket impl of `AsRef&lt;T&gt; for T`. In the end, we just invent our</span>
 <span class="comment">// own trait which does what we need: EncodeAs.</span>
@@ -538,7 +538,7 @@
 	}
 
 	<span class="kw">fn</span> <span class="ident">payload_data</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Encode</span><span class="op">&gt;</span>(<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>, <span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="ident">SigningContext</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-		<span class="comment">// equivalent to (real_payload, context).encode()</span>
+		<span class="comment">// equivalent to (`real_payload`, context).encode()</span>
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">payload</span>.<span class="ident">encode_as</span>();
 		<span class="ident">out</span>.<span class="ident">extend</span>(<span class="ident">context</span>.<span class="ident">encode</span>());
 		<span class="ident">out</span>

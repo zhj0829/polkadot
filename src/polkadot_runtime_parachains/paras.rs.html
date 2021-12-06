@@ -2405,7 +2405,7 @@
 			<span class="comment">// no-op prune.</span>
 			<span class="self">self</span>.<span class="ident">upgrade_times</span>.<span class="ident">drain</span>(<span class="self">self</span>.<span class="ident">upgrade_times</span>.<span class="ident">len</span>()..)
 		} <span class="kw">else</span> {
-			<span class="comment">// if we are actually pruning something, update the last_pruned member.</span>
+			<span class="comment">// if we are actually pruning something, update the `last_pruned` member.</span>
 			<span class="self">self</span>.<span class="ident">last_pruned</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">upgrade_times</span>[<span class="ident">to_prune</span> <span class="op">-</span> <span class="number">1</span>].<span class="ident">activated_at</span>);
 			<span class="self">self</span>.<span class="ident">upgrade_times</span>.<span class="ident">drain</span>(..<span class="ident">to_prune</span>)
 		};

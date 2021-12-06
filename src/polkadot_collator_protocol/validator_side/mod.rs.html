@@ -2473,7 +2473,7 @@
 			<span class="ident">state</span>.<span class="ident">metrics</span>.<span class="ident">note_collator_peer_count</span>(<span class="ident">state</span>.<span class="ident">peer_data</span>.<span class="ident">len</span>());
 		},
 		<span class="ident">NewGossipTopology</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
-			<span class="comment">// impossibru!</span>
+			<span class="comment">// impossible!</span>
 		},
 		<span class="ident">PeerViewChange</span>(<span class="ident">peer_id</span>, <span class="ident">view</span>) <span class="op">=</span><span class="op">&gt;</span> {
 			<span class="ident">handle_peer_view_change</span>(<span class="ident">state</span>, <span class="ident">peer_id</span>, <span class="ident">view</span>).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -2718,7 +2718,7 @@
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">CollatorProtocolMessage</span><span class="op">&gt;</span>,
 {
 	<span class="comment">// If no prior collation for this relay parent has been seconded, then</span>
-	<span class="comment">// memoize the collation_event for that relay_parent, such that we may</span>
+	<span class="comment">// memorize the `collation_event` for that `relay_parent`, such that we may</span>
 	<span class="comment">// notify the collator of their successful second backing</span>
 	<span class="kw">let</span> <span class="ident">relay_parent</span> <span class="op">=</span> <span class="ident">collation_event</span>.<span class="number">1</span>.<span class="ident">relay_parent</span>;
 
@@ -2856,7 +2856,7 @@
 					<span class="string">&quot;Fetching collation failed due to network error&quot;</span>
 				);
 				<span class="comment">// A minor decrease in reputation for any network failure seems</span>
-				<span class="comment">// sensible. In theory this could be exploited, by DoSing this node,</span>
+				<span class="comment">// sensible. In theory this could be exploited, by Dosing this node,</span>
 				<span class="comment">// which would result in reduced reputation for proper nodes, but the</span>
 				<span class="comment">// same can happen for penalties on timeouts, which we also have.</span>
 				<span class="ident">CollationFetchResult::Error</span>(<span class="ident">COST_NETWORK_ERROR</span>)
@@ -2870,7 +2870,7 @@
 					<span class="string">&quot;Request timed out&quot;</span>
 				);
 				<span class="comment">// A minor decrease in reputation for any network failure seems</span>
-				<span class="comment">// sensible. In theory this could be exploited, by DoSing this node,</span>
+				<span class="comment">// sensible. In theory this could be exploited, by Dosing this node,</span>
 				<span class="comment">// which would result in reduced reputation for proper nodes, but the</span>
 				<span class="comment">// same can happen for penalties on timeouts, which we also have.</span>
 				<span class="ident">CollationFetchResult::Error</span>(<span class="ident">COST_REQUEST_TIMED_OUT</span>)

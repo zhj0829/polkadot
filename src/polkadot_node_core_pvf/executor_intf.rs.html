@@ -357,7 +357,7 @@
 	<span class="comment">// Besides `heap_pages` linear memory requests an initial number of pages. Those pages are</span>
 	<span class="comment">// typically used for placing the so-called shadow stack and the data section.</span>
 	<span class="comment">//</span>
-	<span class="comment">// By default, rustc (or lld specifically) allocates 1 MiB for the shadow stack. That is, 16</span>
+	<span class="comment">// By default, rustc (or `lld` specifically) allocates 1 MiB for the shadow stack. That is, 16</span>
 	<span class="comment">// wasm pages.</span>
 	<span class="comment">//</span>
 	<span class="comment">// Data section for runtimes are typically rather small and can fit in a single digit number of</span>
@@ -374,7 +374,7 @@
 	<span class="ident">cache_path</span>: <span class="prelude-val">None</span>,
 	<span class="ident">semantics</span>: <span class="ident">Semantics</span> {
 		<span class="ident">fast_instance_reuse</span>: <span class="bool-val">false</span>,
-		<span class="comment">// Enable determinstic stack limit to pin down the exact number of items the wasmtime stack</span>
+		<span class="comment">// Enable deterministic stack limit to pin down the exact number of items the wasmtime stack</span>
 		<span class="comment">// can contain before it traps with stack overflow.</span>
 		<span class="comment">//</span>
 		<span class="comment">// Here is how the values below were chosen.</span>
@@ -383,7 +383,7 @@
 		<span class="comment">// (see the docs about the field and the instrumentation algorithm) is 8 bytes, 1 MiB can</span>
 		<span class="comment">// fit 2x 65536 logical items.</span>
 		<span class="comment">//</span>
-		<span class="comment">// Since reaching the native stack limit is undesirable, we halven the logical item limit and</span>
+		<span class="comment">// Since reaching the native stack limit is undesirable, we halve the logical item limit and</span>
 		<span class="comment">// also increase the native 256x. This hopefully should preclude wasm code from reaching</span>
 		<span class="comment">// the stack limit set by the wasmtime.</span>
 		<span class="ident">deterministic_stack_limit</span>: <span class="prelude-val">Some</span>(<span class="ident">DeterministicStackLimit</span> {

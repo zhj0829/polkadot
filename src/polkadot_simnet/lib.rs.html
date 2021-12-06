@@ -607,7 +607,7 @@
 			})<span class="question-mark">?</span>
 	};
 
-	<span class="comment">// submit external_propose call through council collective</span>
+	<span class="comment">// submit `external_propose` call through council collective</span>
 	{
 		<span class="kw">let</span> <span class="ident">external_propose</span> <span class="op">=</span> <span class="ident">DemocracyCall::external_propose_majority</span> {
 			<span class="ident">proposal_hash</span>: <span class="ident">proposal_hash</span>.<span class="ident">clone</span>().<span class="ident">into</span>(),
@@ -835,7 +835,7 @@
 	<span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
 	<span class="kw">let</span> <span class="ident">tokio_runtime</span> <span class="op">=</span> <span class="ident">build_runtime</span>()<span class="question-mark">?</span>;
-	<span class="comment">// parse cli args</span>
+	<span class="comment">// parse CLI args</span>
 	<span class="kw">let</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">polkadot_cli::Cli</span> <span class="kw">as</span> <span class="ident">StructOpt</span><span class="op">&gt;</span><span class="ident">::from_args</span>();
 	<span class="comment">// set up logging</span>
 	<span class="kw">let</span> <span class="ident">filters</span> <span class="op">=</span> <span class="ident">cmd</span>.<span class="ident">run</span>.<span class="ident">base</span>.<span class="ident">log_filters</span>()<span class="question-mark">?</span>;

@@ -3975,7 +3975,7 @@
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Test</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency::free_balance</span>(<span class="kw-2">&amp;</span><span class="ident">para_a</span>.<span class="ident">into_account</span>()), <span class="number">80</span>);
 
 			<span class="comment">// Then deregister one parachain, but don&#39;t wait two sessions until it takes effect.</span>
-			<span class="comment">// Instead, para_b will confirm the request, which will take place the same time</span>
+			<span class="comment">// Instead, `para_b` will confirm the request, which will take place the same time</span>
 			<span class="comment">// the offboarding should happen.</span>
 			<span class="ident">deregister_parachain</span>(<span class="ident">para_a</span>);
 			<span class="ident">run_to_block</span>(<span class="number">9</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">9</span>]));
@@ -3984,7 +3984,7 @@
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
 			<span class="ident">run_to_block</span>(<span class="number">10</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">10</span>]));
 
-			<span class="comment">// The outcome we expect is para_b should receive the refund.</span>
+			<span class="comment">// The outcome we expect is `para_b` should receive the refund.</span>
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Test</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency::free_balance</span>(<span class="kw-2">&amp;</span><span class="ident">para_b</span>.<span class="ident">into_account</span>()), <span class="number">110</span>);
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
 			<span class="ident">assert_storage_consistency_exhaustive</span>();

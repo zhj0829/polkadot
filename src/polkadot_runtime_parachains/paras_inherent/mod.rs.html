@@ -1184,7 +1184,7 @@
 	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="kw">fn</span> <span class="ident">on_initialize</span>(<span class="kw">_</span>: <span class="ident">T::BlockNumber</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
-			<span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>) <span class="comment">// in on_finalize.</span>
+			<span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>) <span class="comment">// in `on_finalize`.</span>
 		}
 
 		<span class="kw">fn</span> <span class="ident">on_finalize</span>(<span class="kw">_</span>: <span class="ident">T::BlockNumber</span>) {
@@ -1989,7 +1989,7 @@
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">vrf_random</span>) <span class="op">=</span> <span class="ident">vrf_random</span> {
 		<span class="ident">entropy</span>.<span class="ident">as_mut</span>().<span class="ident">copy_from_slice</span>(<span class="ident">vrf_random</span>.<span class="ident">as_ref</span>());
 	} <span class="kw">else</span> {
-		<span class="comment">// in case there is no vrf randomness present, we utilize the relay parent</span>
+		<span class="comment">// in case there is no VRF randomness present, we utilize the relay parent</span>
 		<span class="comment">// as seed, it&#39;s better than a static value.</span>
 		<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;CurrentBlockRandomness did not provide entropy&quot;</span>);
 		<span class="ident">entropy</span>.<span class="ident">as_mut</span>().<span class="ident">copy_from_slice</span>(<span class="ident">parent_hash</span>.<span class="ident">as_ref</span>());

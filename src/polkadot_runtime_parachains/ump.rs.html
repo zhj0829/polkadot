@@ -1817,7 +1817,7 @@
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">queue</span>.<span class="ident">is_empty</span>());
 		}
 
-		<span class="comment">// actually count the counts and sizes in queues and compare them to the bookkeeped version.</span>
+		<span class="comment">// actually count the counts and sizes in queues and compare them to the bookkept version.</span>
 		<span class="kw">for</span> (<span class="ident">para</span>, <span class="ident">queue</span>) <span class="kw">in</span> <span class="op">&lt;</span><span class="ident">Ump</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::RelayDispatchQueues::iter</span>() {
 			<span class="kw">let</span> (<span class="ident">expected_count</span>, <span class="ident">expected_size</span>) <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Ump</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::RelayDispatchQueueSize::get</span>(<span class="ident">para</span>);
 			<span class="kw">let</span> (<span class="ident">actual_count</span>, <span class="ident">actual_size</span>) <span class="op">=</span>
@@ -1977,7 +1977,7 @@
 		)
 		.<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="comment">// We want to test here an edge case, where we remove the queue with the highest</span>
-			<span class="comment">// para id (i.e. last in the needs_dispatch order).</span>
+			<span class="comment">// para id (i.e. last in the `needs_dispatch` order).</span>
 			<span class="comment">//</span>
 			<span class="comment">// If the last entry was removed we should proceed execution, assuming we still have</span>
 			<span class="comment">// weight available.</span>

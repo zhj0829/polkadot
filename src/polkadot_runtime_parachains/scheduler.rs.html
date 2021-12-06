@@ -2739,7 +2739,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">availability_cores</span> <span class="op">=</span> <span class="ident">AvailabilityCores</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>();
 		<span class="ident">Scheduled</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">scheduled</span><span class="op">|</span> {
-			<span class="comment">// The constraints on the function require that now_occupied is a sorted subset of the</span>
+			<span class="comment">// The constraints on the function require that `now_occupied` is a sorted subset of the</span>
 			<span class="comment">// `scheduled` cores, which are also sorted.</span>
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">occupied_iter</span> <span class="op">=</span> <span class="ident">now_occupied</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">peekable</span>();
@@ -3189,7 +3189,7 @@
 				<span class="ident">schedule_blank_para</span>(<span class="ident">thread_c</span>, <span class="bool-val">false</span>);
 			}
 
-			<span class="comment">// set up a queue as if n_cores was 4 and with some with many retries.</span>
+			<span class="comment">// set up a queue as if `n_cores` was 4 and with some with many retries.</span>
 			<span class="ident">ParathreadQueue</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::put</span>({
 				<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">queue</span> <span class="op">=</span> <span class="ident">ParathreadClaimQueue::default</span>();
 
