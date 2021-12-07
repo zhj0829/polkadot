@@ -1050,15 +1050,6 @@
 <span id="1050">1050</span>
 <span id="1051">1051</span>
 <span id="1052">1052</span>
-<span id="1053">1053</span>
-<span id="1054">1054</span>
-<span id="1055">1055</span>
-<span id="1056">1056</span>
-<span id="1057">1057</span>
-<span id="1058">1058</span>
-<span id="1059">1059</span>
-<span id="1060">1060</span>
-<span id="1061">1061</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1103,7 +1094,7 @@
 };
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
 	<span class="ident">AuthorityDiscoveryId</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CollatorPair</span>, <span class="ident">CoreIndex</span>, <span class="ident">CoreState</span>,
-	<span class="ident">GroupIndex</span>, <span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>,
+	<span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_subsystem</span>::{
 	<span class="ident">jaeger</span>,
@@ -1209,20 +1200,23 @@
 	}
 }
 
-<span class="doccomment">/// The group of validators that is assigned to our para at a given point of time.</span>
+<span class="doccomment">/// Info about validators we are currently connected to.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This structure is responsible for keeping track of which validators belong to a certain group for a para. It also</span>
-<span class="doccomment">/// stores a mapping from [`PeerId`] to [`ValidatorId`] as we learn about it over the lifetime of this object. Besides</span>
-<span class="doccomment">/// that it also keeps track to which validators we advertised our collation.</span>
+<span class="doccomment">/// It keeps track to which validators we advertised our collation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">struct</span> <span class="ident">ValidatorGroup</span> {
-	<span class="doccomment">/// All [`AuthorityDiscoveryId`]&#39;s that are assigned to us in this group.</span>
-	<span class="ident">discovery_ids</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// All [`ValidatorId`]&#39;s of the current group to that we advertised our collation.</span>
 	<span class="ident">advertised_to</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">ValidatorGroup</span> {
+	<span class="doccomment">/// Create a new `ValidatorGroup`</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// without any advertisements.</span>
+	<span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="self">Self</span> { <span class="ident">advertised_to</span>: <span class="ident">HashSet::new</span>() }
+	}
+
 	<span class="doccomment">/// Returns `true` if we should advertise our collation to the given peer.</span>
 	<span class="kw">fn</span> <span class="ident">should_advertise_to</span>(
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -1246,12 +1240,6 @@
 				<span class="self">self</span>.<span class="ident">advertised_to</span>.<span class="ident">insert</span>(<span class="ident">a</span>.<span class="ident">clone</span>());
 			});
 		}
-	}
-}
-
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ValidatorGroup</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">discovery_ids</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="self">Self</span> { <span class="ident">discovery_ids</span>, <span class="ident">advertised_to</span>: <span class="ident">HashSet::new</span>() }
 	}
 }
 
@@ -1467,13 +1455,10 @@
 		<span class="string">&quot;Accepted collation, connecting to validators.&quot;</span>
 	);
 
-	<span class="kw">let</span> <span class="ident">validator_group</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span>
-		<span class="ident">current_validators</span>.<span class="ident">validators</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">Clone::clone</span>).<span class="ident">collect</span>();
-
 	<span class="comment">// Issue a discovery request for the validators of the current group:</span>
 	<span class="ident">connect_to_validators</span>(<span class="ident">ctx</span>, <span class="ident">current_validators</span>.<span class="ident">validators</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>()).<span class="kw">await</span>;
 
-	<span class="ident">state</span>.<span class="ident">our_validators_groups</span>.<span class="ident">insert</span>(<span class="ident">relay_parent</span>, <span class="ident">validator_group</span>.<span class="ident">into</span>());
+	<span class="ident">state</span>.<span class="ident">our_validators_groups</span>.<span class="ident">insert</span>(<span class="ident">relay_parent</span>, <span class="ident">ValidatorGroup::new</span>());
 
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">result_sender</span>) <span class="op">=</span> <span class="ident">result_sender</span> {
 		<span class="ident">state</span>.<span class="ident">collation_result_senders</span>.<span class="ident">insert</span>(<span class="ident">receipt</span>.<span class="ident">hash</span>(), <span class="ident">result_sender</span>);
@@ -1519,8 +1504,6 @@
 <span class="doccomment">/// Validators of a particular group index.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">struct</span> <span class="ident">GroupValidators</span> {
-	<span class="doccomment">/// The group those validators belong to.</span>
-	<span class="ident">group</span>: <span class="ident">GroupIndex</span>,
 	<span class="doccomment">/// The validators of above group (their discovery keys).</span>
 	<span class="ident">validators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span>,
 }
@@ -1559,8 +1542,7 @@
 	<span class="kw">let</span> <span class="ident">current_validators</span> <span class="op">=</span>
 		<span class="ident">current_validators</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">validators</span>[<span class="ident">i</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">clone</span>()).<span class="ident">collect</span>();
 
-	<span class="kw">let</span> <span class="ident">current_validators</span> <span class="op">=</span>
-		<span class="ident">GroupValidators</span> { <span class="ident">group</span>: <span class="ident">current_group_index</span>, <span class="ident">validators</span>: <span class="ident">current_validators</span> };
+	<span class="kw">let</span> <span class="ident">current_validators</span> <span class="op">=</span> <span class="ident">GroupValidators</span> { <span class="ident">validators</span>: <span class="ident">current_validators</span> };
 
 	<span class="prelude-val">Ok</span>(<span class="ident">current_validators</span>)
 }
