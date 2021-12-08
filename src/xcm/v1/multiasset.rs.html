@@ -565,6 +565,8 @@
 <span id="565">565</span>
 <span id="566">566</span>
 <span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -868,8 +870,10 @@
 						(
 							<span class="ident">MultiAsset</span> { <span class="ident">fun</span>: <span class="ident">Fungibility::Fungible</span>(<span class="ident">a_amount</span>), <span class="ident">id</span>: <span class="ident">a_id</span> },
 							<span class="ident">MultiAsset</span> { <span class="ident">fun</span>: <span class="ident">Fungibility::Fungible</span>(<span class="ident">b_amount</span>), <span class="ident">id</span>: <span class="ident">b_id</span> },
-						) <span class="kw">if</span> <span class="ident">a_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b_id</span> <span class="op">=</span><span class="op">&gt;</span>
-							<span class="ident">MultiAsset</span> { <span class="ident">id</span>: <span class="ident">a_id</span>, <span class="ident">fun</span>: <span class="ident">Fungibility::Fungible</span>(<span class="ident">a_amount</span> <span class="op">+</span> <span class="ident">b_amount</span>) },
+						) <span class="kw">if</span> <span class="ident">a_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b_id</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MultiAsset</span> {
+							<span class="ident">id</span>: <span class="ident">a_id</span>,
+							<span class="ident">fun</span>: <span class="ident">Fungibility::Fungible</span>(<span class="ident">a_amount</span>.<span class="ident">saturating_add</span>(<span class="ident">b_amount</span>)),
+						},
 						(
 							<span class="ident">MultiAsset</span> { <span class="ident">fun</span>: <span class="ident">Fungibility::NonFungible</span>(<span class="ident">a_instance</span>), <span class="ident">id</span>: <span class="ident">a_id</span> },
 							<span class="ident">MultiAsset</span> { <span class="ident">fun</span>: <span class="ident">Fungibility::NonFungible</span>(<span class="ident">b_instance</span>), <span class="ident">id</span>: <span class="ident">b_id</span> },
