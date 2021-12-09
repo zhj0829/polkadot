@@ -480,6 +480,15 @@
 <span id="480">480</span>
 <span id="481">481</span>
 <span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -503,20 +512,8 @@
 <span class="kw">use</span> <span class="ident">service</span>::{<span class="self">self</span>, <span class="ident">IdentifyVariant</span>};
 <span class="kw">use</span> <span class="ident">sp_core::crypto::Ss58AddressFormatRegistry</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
-	<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-	<span class="ident">PolkadotService</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">service::Error</span>),
-
-	<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-	<span class="ident">SubstrateCli</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">sc_cli::Error</span>),
-
-	<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
-	<span class="ident">SubstrateService</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">sc_service::Error</span>),
-
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Other: {0}&quot;</span>)]</span>
-	<span class="ident">Other</span>(<span class="ident">String</span>),
-}
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::Error</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_performance_test::PerfCheckError</span>;
 
 <span class="kw">impl</span> <span class="ident">std::convert::From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
 	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -694,6 +691,20 @@
 		<span class="prelude-val">Ok</span>(())
 	} <span class="kw">else</span> {
 		<span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, <span class="ident">DEV_ONLY_ERROR_PATTERN</span>, <span class="ident">spec</span>.<span class="ident">id</span>()))
+	}
+}
+
+<span class="doccomment">/// Runs performance checks.</span>
+<span class="doccomment">/// Should only be used in release build since the check would take too much time otherwise.</span>
+<span class="kw">fn</span> <span class="ident">host_perf_check</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">build_type</span> <span class="op">=</span> <span class="string">&quot;release&quot;</span>))]</span>
+	{
+		<span class="prelude-val">Err</span>(<span class="ident">PerfCheckError::WrongBuildType</span>.<span class="ident">into</span>())
+	}
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">build_type</span> <span class="op">=</span> <span class="string">&quot;release&quot;</span>)]</span>
+	{
+		<span class="ident"><span class="kw">crate</span>::host_perf_check::host_perf_check</span>()<span class="question-mark">?</span>;
+		<span class="prelude-val">Ok</span>(())
 	}
 }
 
@@ -896,6 +907,13 @@
 			}
 			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>))]</span>
 			<span class="macro">panic!</span>(<span class="string">&quot;No runtime feature (polkadot, kusama, westend, rococo) is enabled&quot;</span>)
+		},
+		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::HostPerfCheck</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">sc_cli::LoggerBuilder::new</span>(<span class="string">&quot;&quot;</span>);
+			<span class="ident">builder</span>.<span class="ident">with_colors</span>(<span class="bool-val">true</span>);
+			<span class="ident">builder</span>.<span class="ident">init</span>()<span class="question-mark">?</span>;
+
+			<span class="ident">host_perf_check</span>()
 		},
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::Key</span>(<span class="ident">cmd</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">cmd</span>.<span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="ident">cli</span>)<span class="question-mark">?</span>),
 		<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>)]</span>
