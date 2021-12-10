@@ -1134,7 +1134,7 @@
 		<span class="kw">match</span> <span class="ident">key</span> {
 			<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
 				<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;No assignment key&quot;</span>);
-				<span class="kw">return</span> <span class="ident">Default::default</span>()
+				<span class="kw">return</span> <span class="ident">HashMap::new</span>()
 			},
 			<span class="prelude-val">Some</span>(<span class="ident">k</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">k</span>,
 		}
@@ -1190,7 +1190,7 @@
 	<span class="ident">assignments</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">CoreIndex</span>, <span class="ident">OurAssignment</span><span class="op">&gt;</span>,
 ) {
 	<span class="kw">for</span> <span class="ident">rvm_sample</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">config</span>.<span class="ident">relay_vrf_modulo_samples</span> {
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">core</span> <span class="op">=</span> <span class="ident">Default::default</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">core</span> <span class="op">=</span> <span class="ident">CoreIndex::default</span>();
 
 		<span class="kw">let</span> <span class="ident">maybe_assignment</span> <span class="op">=</span> {
 			<span class="comment">// Extra scope to ensure borrowing instead of moving core</span>

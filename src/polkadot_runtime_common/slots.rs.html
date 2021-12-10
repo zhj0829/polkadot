@@ -1126,6 +1126,7 @@
 <span id="1126">1126</span>
 <span id="1127">1127</span>
 <span id="1128">1128</span>
+<span id="1129">1129</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1625,6 +1626,7 @@
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
 	<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">mock::TestRegistrar</span>, <span class="ident">slots</span>};
+	<span class="kw">use</span> <span class="ident">::test_helpers</span>::{<span class="ident">dummy_head_data</span>, <span class="ident">dummy_validation_code</span>};
 	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">assert_noop</span>, <span class="ident">assert_ok</span>, <span class="ident">parameter_types</span>};
 	<span class="kw">use</span> <span class="ident">frame_system::EnsureRoot</span>;
 	<span class="kw">use</span> <span class="ident">pallet_balances</span>;
@@ -1756,8 +1758,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="macro">assert_ok!</span>(<span class="ident">Slots::lease_out</span>(<span class="number">1</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>));
@@ -1787,8 +1789,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="macro">assert_ok!</span>(<span class="ident">Slots::lease_out</span>(<span class="number">1</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="number">1</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">1</span>));
@@ -1830,8 +1832,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="macro">assert!</span>(<span class="ident">Slots::lease_out</span>(<span class="number">1</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="number">1</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">1</span>).<span class="ident">is_ok</span>());
@@ -1880,8 +1882,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="macro">assert!</span>(<span class="ident">Slots::lease_out</span>(<span class="number">1</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>).<span class="ident">is_ok</span>());
@@ -1915,8 +1917,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="macro">assert!</span>(<span class="ident">Slots::lease_out</span>(<span class="number">1</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="number">1</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">1</span>).<span class="ident">is_ok</span>());
@@ -1958,8 +1960,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="kw">let</span> <span class="ident">max_num</span> <span class="op">=</span> <span class="number">5u32</span>;
@@ -1994,14 +1996,14 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">2</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="ident">run_to_block</span>(<span class="number">20</span>);
@@ -2025,20 +2027,20 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">2</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">3</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 
 			<span class="comment">// We will directly manipulate leases to emulate some kind of failure in the system.</span>

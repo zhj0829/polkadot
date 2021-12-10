@@ -2114,6 +2114,7 @@
 <span id="2114">2114</span>
 <span id="2115">2115</span>
 <span id="2116">2116</span>
+<span id="2117">2117</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2944,6 +2945,7 @@
 		<span class="ident">mock::TestRegistrar</span>,
 		<span class="ident">traits</span>::{<span class="ident">AuctionStatus</span>, <span class="ident">OnSwap</span>},
 	};
+	<span class="kw">use</span> <span class="ident">::test_helpers</span>::{<span class="ident">dummy_head_data</span>, <span class="ident">dummy_validation_code</span>};
 	<span class="kw">use</span> <span class="ident">sp_keystore</span>::{<span class="ident">testing::KeyStore</span>, <span class="ident">KeystoreExt</span>};
 	<span class="kw">use</span> <span class="ident">sp_runtime</span>::{
 		<span class="ident">testing::Header</span>,
@@ -3193,8 +3195,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1</span>,
 				<span class="ident">para</span>,
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 			<span class="kw">return</span> <span class="ident">para</span>
 		}
@@ -3336,8 +3338,8 @@
 			<span class="macro">assert_ok!</span>(<span class="ident">TestRegistrar</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::register</span>(
 				<span class="number">1337</span>,
 				<span class="ident">ParaId::from</span>(<span class="number">1234</span>),
-				<span class="ident">Default::default</span>(),
-				<span class="ident">Default::default</span>()
+				<span class="ident">dummy_head_data</span>(),
+				<span class="ident">dummy_validation_code</span>()
 			));
 			<span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">BalancesError</span>::<span class="op">&lt;</span><span class="ident">Test</span>, <span class="kw">_</span><span class="op">&gt;</span><span class="ident">::InsufficientBalance</span>;
 			<span class="macro">assert_noop!</span>(

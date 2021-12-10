@@ -465,6 +465,7 @@
 <span id="465">465</span>
 <span id="466">466</span>
 <span id="467">467</span>
+<span id="468">468</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -806,7 +807,8 @@
 		<span class="ident">new_test_ext</span>, <span class="ident">Configuration</span>, <span class="ident">Dmp</span>, <span class="ident">Initializer</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">Paras</span>, <span class="ident">SessionInfo</span>,
 		<span class="ident">System</span>,
 	};
-	<span class="kw">use</span> <span class="ident">primitives::v1::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
+	<span class="kw">use</span> <span class="ident">primitives::v1</span>::{<span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>};
+	<span class="kw">use</span> <span class="ident">test_helpers::dummy_validation_code</span>;
 
 	<span class="kw">use</span> <span class="ident">frame_support</span>::{
 		<span class="ident">assert_ok</span>,
@@ -893,8 +895,8 @@
 
 		<span class="kw">let</span> <span class="ident">mock_genesis</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::paras::ParaGenesisArgs</span> {
 			<span class="ident">parachain</span>: <span class="bool-val">true</span>,
-			<span class="ident">genesis_head</span>: <span class="ident">Default::default</span>(),
-			<span class="ident">validation_code</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">genesis_head</span>: <span class="ident">HeadData</span>(<span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]),
+			<span class="ident">validation_code</span>: <span class="ident">dummy_validation_code</span>(),
 		};
 
 		<span class="ident">new_test_ext</span>(<span class="ident">MockGenesisConfig</span> {

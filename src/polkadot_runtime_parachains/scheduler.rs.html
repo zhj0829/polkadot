@@ -2204,6 +2204,12 @@
 <span id="2204">2204</span>
 <span id="2205">2205</span>
 <span id="2206">2206</span>
+<span id="2207">2207</span>
+<span id="2208">2208</span>
+<span id="2209">2209</span>
+<span id="2210">2210</span>
+<span id="2211">2211</span>
+<span id="2212">2212</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2255,7 +2261,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// A queued parathread entry, pre-assigned to a core.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Default</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">QueuedParathread</span> {
 	<span class="ident">claim</span>: <span class="ident">ParathreadEntry</span>,
@@ -2263,7 +2269,7 @@
 }
 
 <span class="doccomment">/// The queue of all parathread claims.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Default</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParathreadClaimQueue</span> {
 	<span class="ident">queue</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">QueuedParathread</span><span class="op">&gt;</span>,
@@ -2292,6 +2298,12 @@
 	<span class="kw">fn</span> <span class="ident">get_next_on_core</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">core_offset</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ParathreadEntry</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">queued</span><span class="op">|</span> <span class="ident">queued</span>.<span class="ident">core_offset</span> <span class="op">=</span><span class="op">=</span> <span class="ident">core_offset</span>);
 		<span class="ident">pos</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">queue</span>[<span class="ident">i</span>].<span class="ident">claim</span>)
+	}
+}
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ParathreadClaimQueue</span> {
+	<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="self">Self</span> { <span class="ident">queue</span>: <span class="macro">vec!</span>[], <span class="ident">next_core_offset</span>: <span class="number">0</span> }
 	}
 }
 

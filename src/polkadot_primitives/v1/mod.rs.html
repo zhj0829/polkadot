@@ -1485,7 +1485,6 @@
 <span id="1485">1485</span>
 <span id="1486">1486</span>
 <span id="1487">1487</span>
-<span id="1488">1488</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1815,7 +1814,7 @@
 }
 
 <span class="doccomment">/// A unique descriptor of the candidate receipt.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>, <span class="ident">Default</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Hash</span>, <span class="ident">MallocSizeOf</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CandidateDescriptor</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The ID of the para this is a candidate for.</span>
@@ -1858,7 +1857,7 @@
 
 <span class="doccomment">/// A candidate-receipt.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">MallocSizeOf</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">MallocSizeOf</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The descriptor of the candidate.</span>
 	<span class="kw">pub</span> <span class="ident">descriptor</span>: <span class="ident">CandidateDescriptor</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>,
@@ -1883,7 +1882,7 @@
 
 <span class="doccomment">/// All data pertaining to the execution of a para candidate.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FullCandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span>, <span class="ident">N</span> <span class="op">=</span> <span class="ident">BlockNumber</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The inner candidate receipt.</span>
 	<span class="kw">pub</span> <span class="ident">inner</span>: <span class="ident">CandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>,
@@ -1895,7 +1894,7 @@
 }
 
 <span class="doccomment">/// A candidate-receipt with commitments directly included.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>, <span class="ident">Default</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Hash</span>, <span class="ident">MallocSizeOf</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommittedCandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The descriptor of the candidate.</span>
@@ -1997,8 +1996,8 @@
 }
 
 <span class="doccomment">/// Commitments made in a `CandidateReceipt`. Many of these are outputs of validation.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>, <span class="ident">Default</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Hash</span>, <span class="ident">MallocSizeOf</span>))]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Hash</span>, <span class="ident">MallocSizeOf</span>, <span class="ident">Default</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CandidateCommitments</span><span class="op">&lt;</span><span class="ident">N</span> <span class="op">=</span> <span class="ident">BlockNumber</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Messages destined to be interpreted by the Relay chain itself.</span>
 	<span class="kw">pub</span> <span class="ident">upward_messages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">UpwardMessage</span><span class="op">&gt;</span>,
@@ -2048,7 +2047,6 @@
 
 <span class="doccomment">/// A backed (or backable, depending on context) candidate.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Default</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The candidate referred to.</span>
 	<span class="kw">pub</span> <span class="ident">candidate</span>: <span class="ident">CommittedCandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span>,
@@ -2157,12 +2155,12 @@
 }
 
 <span class="doccomment">/// A claim on authoring the next block for a given parathread.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Default</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParathreadClaim</span>(<span class="kw">pub</span> <span class="ident">Id</span>, <span class="kw">pub</span> <span class="ident">CollatorId</span>);
 
 <span class="doccomment">/// An entry tracking a claim to ensure it does not pass the maximum number of retries.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Default</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParathreadEntry</span> {
 	<span class="doccomment">/// The claim.</span>
@@ -2307,7 +2305,7 @@
 
 <span class="doccomment">/// Information about a core which is currently occupied.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">MallocSizeOf</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">MallocSizeOf</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ScheduledCore</span> {
 	<span class="doccomment">/// The ID of a para scheduled.</span>
 	<span class="kw">pub</span> <span class="ident">para_id</span>: <span class="ident">Id</span>,
@@ -2387,7 +2385,7 @@
 
 <span class="doccomment">/// Information about validator sets of a session.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">MallocSizeOf</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">MallocSizeOf</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionInfo</span> {
 	<span class="doccomment">/// Validators in canonical ordering.</span>
 	<span class="doccomment">///</span>
@@ -2437,7 +2435,7 @@
 
 <span class="doccomment">/// Scraped runtime backing votes and resolved disputes.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">MallocSizeOf</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">MallocSizeOf</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ScrapedOnChainVotes</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The session in which the block was included.</span>
 	<span class="kw">pub</span> <span class="ident">session</span>: <span class="ident">SessionIndex</span>,

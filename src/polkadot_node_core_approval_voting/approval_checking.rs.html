@@ -1381,7 +1381,6 @@
 <span id="1381">1381</span>
 <span id="1382">1382</span>
 <span id="1383">1383</span>
-<span id="1384">1384</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1841,25 +1840,24 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-
-	<span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">bitvec</span>, <span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>};
+	<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">approval_db</span>, <span class="ident">BTreeMap</span>};
+	<span class="kw">use</span> <span class="ident">::test_helpers</span>::{<span class="ident">dummy_candidate_receipt</span>, <span class="ident">dummy_hash</span>};
+	<span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">bitvec</span>, <span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>, <span class="ident">vec::BitVec</span>};
 	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::GroupIndex</span>;
-
-	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::approval_db</span>;
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">pending_is_not_approved</span>() {
 		<span class="kw">let</span> <span class="ident">candidate</span> <span class="op">=</span> <span class="ident">approval_db::v1::CandidateEntry</span> {
-			<span class="ident">candidate</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
-			<span class="ident">block_assignments</span>: <span class="ident">Default::default</span>(),
-			<span class="ident">approvals</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
+			<span class="ident">approvals</span>: <span class="ident">BitVec::default</span>(),
 		}
 		.<span class="ident">into</span>();
 
 		<span class="kw">let</span> <span class="ident">approval_entry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">assignments</span>: <span class="ident">BitVec::default</span>(),
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -1883,9 +1881,9 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">exact_takes_only_assignments_up_to</span>() {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">candidate</span>: <span class="ident">CandidateEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::CandidateEntry</span> {
-			<span class="ident">candidate</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
-			<span class="ident">block_assignments</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
 			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>],
 		}
 		.<span class="ident">into</span>();
@@ -1955,9 +1953,9 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">one_honest_node_always_approves</span>() {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">candidate</span>: <span class="ident">CandidateEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::CandidateEntry</span> {
-			<span class="ident">candidate</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
-			<span class="ident">block_assignments</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
 			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>],
 		}
 		.<span class="ident">into</span>();
@@ -2415,9 +2413,9 @@
 		<span class="kw">let</span> <span class="ident">needed_approvals</span> <span class="op">=</span> <span class="number">3</span>;
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">candidate</span>: <span class="ident">CandidateEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::CandidateEntry</span> {
-			<span class="ident">candidate</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
-			<span class="ident">block_assignments</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
 			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">3</span>],
 		}
 		.<span class="ident">into</span>();
