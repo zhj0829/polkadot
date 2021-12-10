@@ -986,7 +986,7 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">collations_generated_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_collations_generated_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_collations_generated_total&quot;</span>,
 					<span class="string">&quot;Number of collations generated.&quot;</span>
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -994,7 +994,7 @@
 			<span class="ident">new_activations_overall</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_collation_generation_new_activations&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_collation_generation_new_activations&quot;</span>,
 						<span class="string">&quot;Time spent within fn handle_new_activations&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,
@@ -1003,7 +1003,7 @@
 			<span class="ident">new_activations_per_relay_parent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_collation_generation_per_relay_parent&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_collation_generation_per_relay_parent&quot;</span>,
 						<span class="string">&quot;Time spent handling a particular relay parent within fn handle_new_activations&quot;</span>
 					)
 				)<span class="question-mark">?</span>,
@@ -1012,7 +1012,7 @@
 			<span class="ident">new_activations_per_availability_core</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_collation_generation_per_availability_core&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_collation_generation_per_availability_core&quot;</span>,
 						<span class="string">&quot;Time spent handling a particular availability core for a relay parent in fn handle_new_activations&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,

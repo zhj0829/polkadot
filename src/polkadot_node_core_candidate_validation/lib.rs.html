@@ -1466,7 +1466,7 @@
 			<span class="ident">validation_requests</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_validation_requests_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_validation_requests_total&quot;</span>,
 						<span class="string">&quot;Number of validation requests served.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;validity&quot;</span>],
@@ -1475,21 +1475,21 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">validate_from_chain_state</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_candidate_validation_validate_from_chain_state&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_validation_validate_from_chain_state&quot;</span>,
 					<span class="string">&quot;Time spent within `candidate_validation::validate_from_chain_state`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">validate_from_exhaustive</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_candidate_validation_validate_from_exhaustive&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_validation_validate_from_exhaustive&quot;</span>,
 					<span class="string">&quot;Time spent within `candidate_validation::validate_from_exhaustive`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">validate_candidate_exhaustive</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_candidate_validation_validate_candidate_exhaustive&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_validation_validate_candidate_exhaustive&quot;</span>,
 					<span class="string">&quot;Time spent within `candidate_validation::validate_candidate_exhaustive`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

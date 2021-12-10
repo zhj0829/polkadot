@@ -3989,14 +3989,14 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">statements_distributed</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_statements_distributed_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_statements_distributed_total&quot;</span>,
 					<span class="string">&quot;Number of candidate validity statements distributed to other peers.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">sent_requests</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_statement_distribution_sent_requests_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_statement_distribution_sent_requests_total&quot;</span>,
 					<span class="string">&quot;Number of large statement fetching requests sent.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -4004,7 +4004,7 @@
 			<span class="ident">received_responses</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_statement_distribution_received_responses_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_statement_distribution_received_responses_total&quot;</span>,
 						<span class="string">&quot;Number of received responses for large statement data.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>],
@@ -4013,21 +4013,21 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">active_leaves_update</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_statement_distribution_active_leaves_update&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_statement_distribution_active_leaves_update&quot;</span>,
 					<span class="string">&quot;Time spent within `statement_distribution::active_leaves_update`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">share</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_statement_distribution_share&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_statement_distribution_share&quot;</span>,
 					<span class="string">&quot;Time spent within `statement_distribution::share`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">network_bridge_update_v1</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_statement_distribution_network_bridge_update_v1&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_statement_distribution_network_bridge_update_v1&quot;</span>,
 					<span class="string">&quot;Time spent within `statement_distribution::network_bridge_update_v1`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

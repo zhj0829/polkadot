@@ -336,21 +336,21 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">activated_heads_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_activated_heads_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_activated_heads_total&quot;</span>,
 					<span class="string">&quot;Number of activated heads.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">deactivated_heads_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_deactivated_heads_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_deactivated_heads_total&quot;</span>,
 					<span class="string">&quot;Number of deactivated heads.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">messages_relayed_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_messages_relayed_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_messages_relayed_total&quot;</span>,
 					<span class="string">&quot;Number of messages relayed by Overseer.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -358,7 +358,7 @@
 			<span class="ident">to_subsystem_bounded_sent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_subsystem_bounded_sent&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_subsystem_bounded_sent&quot;</span>,
 						<span class="string">&quot;Number of elements sent to subsystems&#39; bounded queues&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;subsystem_name&quot;</span>],
@@ -368,7 +368,7 @@
 			<span class="ident">to_subsystem_bounded_received</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_subsystem_bounded_received&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_subsystem_bounded_received&quot;</span>,
 						<span class="string">&quot;Number of elements received by subsystems&#39; bounded queues&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;subsystem_name&quot;</span>],
@@ -378,7 +378,7 @@
 			<span class="ident">to_subsystem_unbounded_sent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_subsystem_unbounded_sent&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_subsystem_unbounded_sent&quot;</span>,
 						<span class="string">&quot;Number of elements sent to subsystems&#39; unbounded queues&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;subsystem_name&quot;</span>],
@@ -388,7 +388,7 @@
 			<span class="ident">to_subsystem_unbounded_received</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_subsystem_unbounded_received&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_subsystem_unbounded_received&quot;</span>,
 						<span class="string">&quot;Number of elements received by subsystems&#39; unbounded queues&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;subsystem_name&quot;</span>],
@@ -398,7 +398,7 @@
 			<span class="ident">signals_sent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_overseer_signals_sent&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_overseer_signals_sent&quot;</span>,
 						<span class="string">&quot;Number of signals sent by overseer to subsystems&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;subsystem_name&quot;</span>],
@@ -408,7 +408,7 @@
 			<span class="ident">signals_received</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_overseer_signals_received&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_overseer_signals_received&quot;</span>,
 						<span class="string">&quot;Number of signals received by subsystems from overseer&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;subsystem_name&quot;</span>],
@@ -418,14 +418,14 @@
 
 			<span class="ident">memory_stats_allocated</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Gauge</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
-					<span class="string">&quot;memory_allocated&quot;</span>,
+					<span class="string">&quot;polkadot_memory_allocated&quot;</span>,
 					<span class="string">&quot;Total bytes allocated by the node&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">memory_stats_resident</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Gauge</span>::<span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span><span class="ident">::new</span>(
-					<span class="string">&quot;memory_resident&quot;</span>,
+					<span class="string">&quot;polkadot_memory_resident&quot;</span>,
 					<span class="string">&quot;Bytes allocated by the node, and held in RAM&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

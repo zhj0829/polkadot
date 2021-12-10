@@ -1280,17 +1280,6 @@
 <span id="1280">1280</span>
 <span id="1281">1281</span>
 <span id="1282">1282</span>
-<span id="1283">1283</span>
-<span id="1284">1284</span>
-<span id="1285">1285</span>
-<span id="1286">1286</span>
-<span id="1287">1287</span>
-<span id="1288">1288</span>
-<span id="1289">1289</span>
-<span id="1290">1290</span>
-<span id="1291">1291</span>
-<span id="1292">1292</span>
-<span id="1293">1293</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1565,15 +1554,6 @@
 	}
 }
 
-<span class="comment">// If we&#39;re using prometheus, use a registry with a prefix of `polkadot`.</span>
-<span class="kw">fn</span> <span class="ident">set_prometheus_registry</span>(<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Configuration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">PrometheusConfig</span> { <span class="ident">registry</span>, .. }) <span class="op">=</span> <span class="ident">config</span>.<span class="ident">prometheus_config</span>.<span class="ident">as_mut</span>() {
-		<span class="kw-2">*</span><span class="ident">registry</span> <span class="op">=</span> <span class="ident">Registry::new_custom</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;polkadot&quot;</span>.<span class="ident">into</span>()), <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
-	}
-
-	<span class="prelude-val">Ok</span>(())
-}
-
 <span class="doccomment">/// Initialize the `Jeager` collector. The destination must listen</span>
 <span class="doccomment">/// on the given address and port for `UDP` packets.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full-node&quot;</span>))]</span>
@@ -1637,8 +1617,6 @@
 		<span class="ident">RuntimeApiCollection</span><span class="op">&lt;</span><span class="ident">StateBackend</span> <span class="op">=</span> <span class="ident">sc_client_api::StateBackendFor</span><span class="op">&lt;</span><span class="ident">FullBackend</span>, <span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">ExecutorDispatch</span>: <span class="ident">NativeExecutionDispatch</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-	<span class="ident">set_prometheus_registry</span>(<span class="ident">config</span>)<span class="question-mark">?</span>;
-
 	<span class="kw">let</span> <span class="ident">telemetry</span> <span class="op">=</span> <span class="ident">config</span>
 		.<span class="ident">telemetry_endpoints</span>
 		.<span class="ident">clone</span>()

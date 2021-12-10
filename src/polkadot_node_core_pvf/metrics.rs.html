@@ -320,7 +320,7 @@
 			<span class="ident">worker_spawning</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;pvf_worker_spawning&quot;</span>,
+						<span class="string">&quot;polkadot_pvf_worker_spawning&quot;</span>,
 						<span class="string">&quot;The total number of workers began to spawn&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;flavor&quot;</span>],
@@ -330,7 +330,7 @@
 			<span class="ident">worker_spawned</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;pvf_worker_spawned&quot;</span>,
+						<span class="string">&quot;polkadot_pvf_worker_spawned&quot;</span>,
 						<span class="string">&quot;The total number of workers spawned successfully&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;flavor&quot;</span>],
@@ -340,7 +340,7 @@
 			<span class="ident">worker_retired</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;pvf_worker_retired&quot;</span>,
+						<span class="string">&quot;polkadot_pvf_worker_retired&quot;</span>,
 						<span class="string">&quot;The total number of workers retired, either killed by the host or died on duty&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;flavor&quot;</span>],
@@ -349,28 +349,28 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">prepare_enqueued</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;pvf_prepare_enqueued&quot;</span>,
+					<span class="string">&quot;polkadot_pvf_prepare_enqueued&quot;</span>,
 					<span class="string">&quot;The total number of jobs enqueued into the preparation pipeline&quot;</span>
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">prepare_concluded</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;pvf_prepare_concluded&quot;</span>,
+					<span class="string">&quot;polkadot_pvf_prepare_concluded&quot;</span>,
 					<span class="string">&quot;The total number of jobs concluded in the preparation pipeline&quot;</span>
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">execute_enqueued</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;pvf_execute_enqueued&quot;</span>,
+					<span class="string">&quot;polkadot_pvf_execute_enqueued&quot;</span>,
 					<span class="string">&quot;The total number of jobs enqueued into the execution pipeline&quot;</span>
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">execute_finished</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;pvf_execute_finished&quot;</span>,
+					<span class="string">&quot;polkadot_pvf_execute_finished&quot;</span>,
 					<span class="string">&quot;The total number of jobs done in the execution pipeline&quot;</span>
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -378,7 +378,7 @@
 			<span class="ident">preparation_time</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;pvf_preparation_time&quot;</span>,
+						<span class="string">&quot;polkadot_pvf_preparation_time&quot;</span>,
 						<span class="string">&quot;Time spent in preparing PVF artifacts in seconds&quot;</span>,
 					)
 					.<span class="ident">buckets</span>(<span class="macro">vec!</span>[
@@ -400,7 +400,7 @@
 			<span class="ident">execution_time</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;pvf_execution_time&quot;</span>,
+						<span class="string">&quot;polkadot_pvf_execution_time&quot;</span>,
 						<span class="string">&quot;Time spent in executing PVFs&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,

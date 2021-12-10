@@ -226,7 +226,7 @@
 			<span class="ident">inherent_data_requests</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_inherent_data_requests_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_inherent_data_requests_total&quot;</span>,
 						<span class="string">&quot;Number of InherentData requests served by provisioner.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>],
@@ -235,14 +235,14 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">request_inherent_data</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_provisioner_request_inherent_data_time&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_provisioner_request_inherent_data_time&quot;</span>,
 					<span class="string">&quot;Time spent within `provisioner::request_inherent_data`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">provisionable_data</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_provisioner_provisionable_data_time&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_provisioner_provisionable_data_time&quot;</span>,
 					<span class="string">&quot;Time spent within `provisioner::provisionable_data`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -250,7 +250,7 @@
 			<span class="ident">inherent_data_dispute_statements</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_inherent_data_dispute_statements&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_inherent_data_dispute_statements&quot;</span>,
 						<span class="string">&quot;Number of dispute statements passed to `create_inherent()`.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;validity&quot;</span>],
@@ -259,7 +259,7 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">inherent_data_dispute_statement_sets</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_inherent_data_dispute_statement_sets&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_inherent_data_dispute_statement_sets&quot;</span>,
 					<span class="string">&quot;Number of dispute statements sets passed to `create_inherent()`.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

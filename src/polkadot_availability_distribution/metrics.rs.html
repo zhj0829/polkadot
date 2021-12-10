@@ -244,7 +244,7 @@
 			<span class="ident">fetched_chunks</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">CounterVec::new</span>(
 					<span class="ident">Opts::new</span>(
-						<span class="string">&quot;parachain_fetched_chunks_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_fetched_chunks_total&quot;</span>,
 						<span class="string">&quot;Total number of fetched chunks.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>]
@@ -254,7 +254,7 @@
 			<span class="ident">served_chunks</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">CounterVec::new</span>(
 					<span class="ident">Opts::new</span>(
-						<span class="string">&quot;parachain_served_chunks_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_served_chunks_total&quot;</span>,
 						<span class="string">&quot;Total number of chunks served by this backer.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>]
@@ -264,7 +264,7 @@
 			<span class="ident">served_povs</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">CounterVec::new</span>(
 					<span class="ident">Opts::new</span>(
-						<span class="string">&quot;parachain_served_povs_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_served_povs_total&quot;</span>,
 						<span class="string">&quot;Total number of povs served by this backer.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>]
@@ -273,7 +273,7 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">retries</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">Counter::new</span>(
-					<span class="string">&quot;parachain_fetch_retries_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_fetch_retries_total&quot;</span>,
 					<span class="string">&quot;Number of times we did not succeed in fetching a chunk and needed to try more backers.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

@@ -205,7 +205,7 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">open</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::with_opts</span>(<span class="ident">prometheus::Opts::new</span>(
-					<span class="string">&quot;parachain_candidate_disputes_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_disputes_total&quot;</span>,
 					<span class="string">&quot;Total number of raised disputes.&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -213,7 +213,7 @@
 			<span class="ident">concluded</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_candidate_dispute_concluded&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_candidate_dispute_concluded&quot;</span>,
 						<span class="string">&quot;Concluded dispute votes, sorted by candidate is `valid` and `invalid`.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;validity&quot;</span>],
@@ -223,7 +223,7 @@
 			<span class="ident">votes</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_candidate_dispute_votes&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_candidate_dispute_votes&quot;</span>,
 						<span class="string">&quot;Accumulated dispute votes, sorted by candidate is `valid` and `invalid`.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;validity&quot;</span>],
@@ -233,7 +233,7 @@
 			<span class="ident">queued_participations</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_dispute_participations&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_dispute_participations&quot;</span>,
 						<span class="string">&quot;Total number of queued participations, grouped by priority and best-effort. (Not every queueing will necessarily lead to an actual participation because of duplicates.)&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;priority&quot;</span>],

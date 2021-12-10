@@ -1551,35 +1551,35 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">gossipped_own_availability_bitfields</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_gossipped_own_availabilty_bitfields_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_gossipped_own_availabilty_bitfields_total&quot;</span>,
 					<span class="string">&quot;Number of own availability bitfields sent to other peers.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">received_availability_bitfields</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_received_availabilty_bitfields_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_received_availabilty_bitfields_total&quot;</span>,
 					<span class="string">&quot;Number of valid availability bitfields received from other peers.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">active_leaves_update</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_bitfield_distribution_active_leaves_update&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_bitfield_distribution_active_leaves_update&quot;</span>,
 					<span class="string">&quot;Time spent within `bitfield_distribution::active_leaves_update`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">handle_bitfield_distribution</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_bitfield_distribution_handle_bitfield_distribution&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_bitfield_distribution_handle_bitfield_distribution&quot;</span>,
 					<span class="string">&quot;Time spent within `bitfield_distribution::handle_bitfield_distribution`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">handle_network_msg</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_bitfield_distribution_handle_network_msg&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_bitfield_distribution_handle_network_msg&quot;</span>,
 					<span class="string">&quot;Time spent within `bitfield_distribution::handle_network_msg`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

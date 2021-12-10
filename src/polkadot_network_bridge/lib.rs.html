@@ -1270,7 +1270,7 @@
 			<span class="ident">peer_count</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_peer_count&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_peer_count&quot;</span>,
 						<span class="string">&quot;The number of peers on a parachain-related peer-set&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1280,7 +1280,7 @@
 			<span class="ident">connected_events</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_peer_connect_events_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_peer_connect_events_total&quot;</span>,
 						<span class="string">&quot;The number of peer connect events on a parachain notifications protocol&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1290,7 +1290,7 @@
 			<span class="ident">disconnected_events</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_peer_disconnect_events_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_peer_disconnect_events_total&quot;</span>,
 						<span class="string">&quot;The number of peer disconnect events on a parachain notifications protocol&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1300,7 +1300,7 @@
 			<span class="ident">desired_peer_count</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::GaugeVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_desired_peer_count&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_desired_peer_count&quot;</span>,
 						<span class="string">&quot;The number of peers that the local node is expected to connect to on a parachain-related peer-set (either including or not including unresolvable authorities, depending on whether `ConnectToValidators` or `ConnectToValidatorsResolved` was used.)&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1310,7 +1310,7 @@
 			<span class="ident">notifications_received</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_notifications_received_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_notifications_received_total&quot;</span>,
 						<span class="string">&quot;The number of notifications received on a parachain protocol&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1320,7 +1320,7 @@
 			<span class="ident">notifications_sent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_notifications_sent_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_notifications_sent_total&quot;</span>,
 						<span class="string">&quot;The number of notifications sent on a parachain protocol&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1330,7 +1330,7 @@
 			<span class="ident">bytes_received</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_notification_bytes_received_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_notification_bytes_received_total&quot;</span>,
 						<span class="string">&quot;The number of bytes received on a parachain notification protocol&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]
@@ -1340,7 +1340,7 @@
 			<span class="ident">bytes_sent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_notification_bytes_sent_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_notification_bytes_sent_total&quot;</span>,
 						<span class="string">&quot;The number of bytes sent on a parachain notification protocol&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;protocol&quot;</span>]

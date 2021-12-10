@@ -246,56 +246,56 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">received_availability_chunks_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_received_availability_chunks_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_received_availability_chunks_total&quot;</span>,
 					<span class="string">&quot;Number of availability chunks received.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">pruning</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_pruning&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_pruning&quot;</span>,
 					<span class="string">&quot;Time spent within `av_store::prune_all`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">process_block_finalized</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_process_block_finalized&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_process_block_finalized&quot;</span>,
 					<span class="string">&quot;Time spent within `av_store::process_block_finalized`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">block_activated</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_block_activated&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_block_activated&quot;</span>,
 					<span class="string">&quot;Time spent within `av_store::process_block_activated`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">process_message</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_process_message&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_process_message&quot;</span>,
 					<span class="string">&quot;Time spent within `av_store::process_message`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">store_available_data</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_store_available_data&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_store_available_data&quot;</span>,
 					<span class="string">&quot;Time spent within `av_store::store_available_data`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">store_chunk</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_store_chunk&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_store_chunk&quot;</span>,
 					<span class="string">&quot;Time spent within `av_store::store_chunk`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">get_chunk</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_av_store_get_chunk&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_av_store_get_chunk&quot;</span>,
 					<span class="string">&quot;Time spent fetching requested chunks.`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

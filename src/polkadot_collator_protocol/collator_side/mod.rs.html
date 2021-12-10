@@ -1168,28 +1168,28 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">advertisements_made</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_collation_advertisements_made_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_collation_advertisements_made_total&quot;</span>,
 					<span class="string">&quot;A number of collation advertisements sent to validators.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">collations_send_requested</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_collations_sent_requested_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_collations_sent_requested_total&quot;</span>,
 					<span class="string">&quot;A number of collations requested to be sent to validators.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">collations_sent</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_collations_sent_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_collations_sent_total&quot;</span>,
 					<span class="string">&quot;A number of collations sent to validators.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">process_msg</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_collator_protocol_collator_process_msg&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_collator_protocol_collator_process_msg&quot;</span>,
 					<span class="string">&quot;Time spent within `collator_protocol_collator::process_msg`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

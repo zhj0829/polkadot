@@ -2771,35 +2771,35 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">signed_statements_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_candidate_backing_signed_statements_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_backing_signed_statements_total&quot;</span>,
 					<span class="string">&quot;Number of statements signed.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">candidates_seconded_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_candidate_backing_candidates_seconded_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_backing_candidates_seconded_total&quot;</span>,
 					<span class="string">&quot;Number of candidates seconded.&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">process_second</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_candidate_backing_process_second&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_backing_process_second&quot;</span>,
 					<span class="string">&quot;Time spent within `candidate_backing::process_second`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">process_statement</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_candidate_backing_process_statement&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_backing_process_statement&quot;</span>,
 					<span class="string">&quot;Time spent within `candidate_backing::process_statement`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">get_backed_candidates</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;parachain_candidate_backing_get_backed_candidates&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_candidate_backing_get_backed_candidates&quot;</span>,
 					<span class="string">&quot;Time spent within `candidate_backing::get_backed_candidates`&quot;</span>,
 				))<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

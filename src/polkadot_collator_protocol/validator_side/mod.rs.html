@@ -1614,7 +1614,7 @@
 			<span class="ident">collation_requests</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_collation_requests_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_collation_requests_total&quot;</span>,
 						<span class="string">&quot;Number of collations requested from Collators.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>],
@@ -1624,7 +1624,7 @@
 			<span class="ident">process_msg</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_collator_protocol_validator_process_msg&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_collator_protocol_validator_process_msg&quot;</span>,
 						<span class="string">&quot;Time spent within `collator_protocol_validator::process_msg`&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,
@@ -1633,7 +1633,7 @@
 			<span class="ident">handle_collation_request_result</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_collator_protocol_validator_handle_collation_request_result&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_collator_protocol_validator_handle_collation_request_result&quot;</span>,
 						<span class="string">&quot;Time spent within `collator_protocol_validator::handle_collation_request_result`&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,
@@ -1641,7 +1641,7 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">collator_peer_count</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Gauge::new</span>(
-					<span class="string">&quot;parachain_collator_peer_count&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_collator_peer_count&quot;</span>,
 					<span class="string">&quot;Amount of collator peers connected&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,

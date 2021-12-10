@@ -2775,7 +2775,7 @@
 		<span class="kw">let</span> <span class="ident">metrics</span> <span class="op">=</span> <span class="ident">MetricsInner</span> {
 			<span class="ident">imported_candidates_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_imported_candidates_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_imported_candidates_total&quot;</span>,
 					<span class="string">&quot;Number of candidates imported by the approval voting subsystem&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -2783,7 +2783,7 @@
 			<span class="ident">assignments_produced</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_assignments_produced&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_assignments_produced&quot;</span>,
 						<span class="string">&quot;Assignments and tranches produced by the approval voting subsystem&quot;</span>,
 					).<span class="ident">buckets</span>(<span class="macro">vec!</span>[<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">10.0</span>, <span class="number">15.0</span>, <span class="number">25.0</span>, <span class="number">40.0</span>, <span class="number">70.0</span>]),
 				)<span class="question-mark">?</span>,
@@ -2792,7 +2792,7 @@
 			<span class="ident">approvals_produced_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::CounterVec::new</span>(
 					<span class="ident">prometheus::Opts::new</span>(
-						<span class="string">&quot;parachain_approvals_produced_total&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_approvals_produced_total&quot;</span>,
 						<span class="string">&quot;Number of approvals produced by the approval voting subsystem&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;status&quot;</span>]
@@ -2801,14 +2801,14 @@
 			)<span class="question-mark">?</span>,
 			<span class="ident">no_shows_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_approvals_no_shows_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_approvals_no_shows_total&quot;</span>,
 					<span class="string">&quot;Number of assignments which became no-shows in the approval voting subsystem&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">wakeups_triggered_total</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Counter::new</span>(
-					<span class="string">&quot;parachain_approvals_wakeups_total&quot;</span>,
+					<span class="string">&quot;polkadot_parachain_approvals_wakeups_total&quot;</span>,
 					<span class="string">&quot;Number of times we woke up to process a candidate in the approval voting subsystem&quot;</span>,
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
@@ -2816,7 +2816,7 @@
 			<span class="ident">candidate_approval_time_ticks</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_approvals_candidate_approval_time_ticks&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_approvals_candidate_approval_time_ticks&quot;</span>,
 						<span class="string">&quot;Number of ticks (500ms) to approve candidates.&quot;</span>,
 					).<span class="ident">buckets</span>(<span class="macro">vec!</span>[<span class="number">6.0</span>, <span class="number">12.0</span>, <span class="number">18.0</span>, <span class="number">24.0</span>, <span class="number">30.0</span>, <span class="number">36.0</span>, <span class="number">72.0</span>, <span class="number">100.0</span>, <span class="number">144.0</span>]),
 				)<span class="question-mark">?</span>,
@@ -2825,7 +2825,7 @@
 			<span class="ident">block_approval_time_ticks</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_approvals_blockapproval_time_ticks&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_approvals_blockapproval_time_ticks&quot;</span>,
 						<span class="string">&quot;Number of ticks (500ms) to approve blocks.&quot;</span>,
 					).<span class="ident">buckets</span>(<span class="macro">vec!</span>[<span class="number">6.0</span>, <span class="number">12.0</span>, <span class="number">18.0</span>, <span class="number">24.0</span>, <span class="number">30.0</span>, <span class="number">36.0</span>, <span class="number">72.0</span>, <span class="number">100.0</span>, <span class="number">144.0</span>]),
 				)<span class="question-mark">?</span>,
@@ -2834,7 +2834,7 @@
 			<span class="ident">time_db_transaction</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_time_approval_db_transaction&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_time_approval_db_transaction&quot;</span>,
 						<span class="string">&quot;Time spent writing an approval db transaction.&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,
@@ -2843,7 +2843,7 @@
 			<span class="ident">time_recover_and_approve</span>: <span class="ident">prometheus::register</span>(
 				<span class="ident">prometheus::Histogram::with_opts</span>(
 					<span class="ident">prometheus::HistogramOpts::new</span>(
-						<span class="string">&quot;parachain_time_recover_and_approve&quot;</span>,
+						<span class="string">&quot;polkadot_parachain_time_recover_and_approve&quot;</span>,
 						<span class="string">&quot;Time spent recovering and approving data in approval voting&quot;</span>,
 					)
 				)<span class="question-mark">?</span>,
