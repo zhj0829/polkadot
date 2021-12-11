@@ -1898,21 +1898,21 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">kusama_runtime</span> <span class="kw">as</span> <span class="ident">kusama</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">kusama_runtime::constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">KSM</span>;
+<span class="kw">use</span> <span class="ident">kusama_runtime_constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">KSM</span>;
 <span class="kw">use</span> <span class="ident">pallet_im_online::sr25519::AuthorityId</span> <span class="kw">as</span> <span class="ident">ImOnlineId</span>;
 <span class="kw">use</span> <span class="ident">pallet_staking::Forcing</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">polkadot::constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">DOT</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">AccountId</span>, <span class="ident">AccountPublic</span>, <span class="ident">AssignmentId</span>, <span class="ident">ValidatorId</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">polkadot_runtime</span> <span class="kw">as</span> <span class="ident">polkadot</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident">polkadot_runtime_constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">DOT</span>;
 <span class="kw">use</span> <span class="ident">sp_authority_discovery::AuthorityId</span> <span class="kw">as</span> <span class="ident">AuthorityDiscoveryId</span>;
 <span class="kw">use</span> <span class="ident">sp_consensus_babe::AuthorityId</span> <span class="kw">as</span> <span class="ident">BabeId</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">rococo_runtime</span> <span class="kw">as</span> <span class="ident">rococo</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">rococo_runtime::constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">ROC</span>;
+<span class="kw">use</span> <span class="ident">rococo_runtime_constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">ROC</span>;
 <span class="kw">use</span> <span class="ident">sc_chain_spec</span>::{<span class="ident">ChainSpecExtension</span>, <span class="ident">ChainType</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">sr25519</span>, <span class="ident">Pair</span>, <span class="ident">Public</span>};
@@ -1921,7 +1921,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">westend_runtime</span> <span class="kw">as</span> <span class="ident">westend</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">westend_runtime::constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">WND</span>;
+<span class="kw">use</span> <span class="ident">westend_runtime_constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">WND</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
 <span class="kw">const</span> <span class="ident">POLKADOT_STAGING_TELEMETRY_URL</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;wss://telemetry.polkadot.io/submit/&quot;</span>;
@@ -2005,7 +2005,7 @@
 	<span class="kw">fn</span> <span class="ident">assimilate_storage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">storage</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sp_core::storage::Storage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="ident">sp_state_machine::BasicExternalities::execute_with_storage</span>(<span class="ident">storage</span>, <span class="op">|</span><span class="op">|</span> {
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">length</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">session_length_in_blocks</span>.<span class="ident">as_ref</span>() {
-				<span class="ident">rococo::constants::time::EpochDurationInBlocks::set</span>(<span class="ident">length</span>);
+				<span class="ident">rococo_runtime_constants::time::EpochDurationInBlocks::set</span>(<span class="ident">length</span>);
 			}
 		});
 		<span class="self">self</span>.<span class="ident">runtime_genesis_config</span>.<span class="ident">assimilate_storage</span>(<span class="ident">storage</span>)

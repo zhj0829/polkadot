@@ -1795,7 +1795,9 @@
 
 <span class="kw">use</span> <span class="ident">polkadot_parachain::primitives::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
 
-<span class="kw">use</span> <span class="ident">constants</span>::{<span class="ident">currency</span>::<span class="kw-2">*</span>, <span class="ident">fee</span>::<span class="kw-2">*</span>, <span class="ident">time</span>::<span class="kw-2">*</span>};
+<span class="doccomment">/// Constant values used within the runtime.</span>
+<span class="kw">use</span> <span class="ident">rococo_runtime_constants</span>::{<span class="ident">currency</span>::<span class="kw-2">*</span>, <span class="ident">fee</span>::<span class="kw-2">*</span>, <span class="ident">time</span>::<span class="kw-2">*</span>};
+
 <span class="kw">use</span> <span class="ident">frame_support::traits</span>::{<span class="ident">InstanceFilter</span>, <span class="ident">OnRuntimeUpgrade</span>};
 <span class="kw">use</span> <span class="ident">xcm::latest::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">xcm_builder</span>::{
@@ -1807,8 +1809,6 @@
 <span class="kw">use</span> <span class="ident">xcm_executor::XcmExecutor</span>;
 
 <span class="kw">mod</span> <span class="ident">bridge_messages</span>;
-<span class="doccomment">/// Constant values used within the runtime.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">constants</span>;
 <span class="kw">mod</span> <span class="ident">validator_manager</span>;
 <span class="kw">mod</span> <span class="ident">weights</span>;
 

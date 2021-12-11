@@ -497,6 +497,8 @@
 <span id="497">497</span>
 <span id="498">498</span>
 <span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -537,6 +539,8 @@
 	<span class="ident">RuntimeDebug</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::RangeInclusive</span>};
+
+<span class="kw">use</span> <span class="ident">rococo_runtime_constants::fee::WeightToFee</span>;
 
 <span class="doccomment">/// Maximal number of pending outbound messages.</span>
 <span class="kw">const</span> <span class="ident">MAXIMAL_PENDING_MESSAGES_AT_OUTBOUND_LANE</span>: <span class="ident">MessageNonce</span> <span class="op">=</span>
@@ -637,7 +641,7 @@
 				.<span class="ident">base_extrinsic</span>,
 			<span class="ident"><span class="kw">crate</span>::TransactionByteFee::get</span>(),
 			<span class="ident">pallet_transaction_payment::Pallet</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Runtime</span><span class="op">&gt;</span><span class="ident">::next_fee_multiplier</span>(),
-			<span class="op">|</span><span class="ident">weight</span><span class="op">|</span> <span class="ident"><span class="kw">crate</span>::constants::fee::WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">weight</span>),
+			<span class="op">|</span><span class="ident">weight</span><span class="op">|</span> <span class="ident">WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">weight</span>),
 			<span class="ident">transaction</span>,
 		)
 	}
@@ -694,7 +698,7 @@
 				.<span class="ident">base_extrinsic</span>,
 			<span class="ident"><span class="kw">crate</span>::TransactionByteFee::get</span>(),
 			<span class="ident">pallet_transaction_payment::Pallet</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Runtime</span><span class="op">&gt;</span><span class="ident">::next_fee_multiplier</span>(),
-			<span class="op">|</span><span class="ident">weight</span><span class="op">|</span> <span class="ident"><span class="kw">crate</span>::constants::fee::WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">weight</span>),
+			<span class="op">|</span><span class="ident">weight</span><span class="op">|</span> <span class="ident">WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">weight</span>),
 			<span class="ident">transaction</span>,
 		)
 	}
