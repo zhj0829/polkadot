@@ -421,6 +421,9 @@
 <span id="421">421</span>
 <span id="422">422</span>
 <span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -671,11 +674,12 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Address</span> <span class="op">=</span> <span class="ident">MultiAddress</span><span class="op">&lt;</span><span class="ident">AccountId</span>, ()<span class="op">&gt;</span>;
 
 <span class="doccomment">/// A type of the data encoded as part of the transaction.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SignedExtra</span> <span class="op">=</span> ((), (), (), <span class="ident">sp_runtime::generic::Era</span>, <span class="ident">Compact</span><span class="op">&lt;</span><span class="ident">Nonce</span><span class="op">&gt;</span>, (), <span class="ident">Compact</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SignedExtra</span> <span class="op">=</span>
+	((), (), (), (), <span class="ident">sp_runtime::generic::Era</span>, <span class="ident">Compact</span><span class="op">&lt;</span><span class="ident">Nonce</span><span class="op">&gt;</span>, (), <span class="ident">Compact</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span>);
 
 <span class="doccomment">/// Parameters which are part of the payload used to produce transaction signature,</span>
 <span class="doccomment">/// but don&#39;t end up in the transaction itself (i.e. inherent part of the runtime).</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AdditionalSigned</span> <span class="op">=</span> (<span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">Hash</span>, <span class="ident">Hash</span>, (), (), ());
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AdditionalSigned</span> <span class="op">=</span> ((), <span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">Hash</span>, <span class="ident">Hash</span>, (), (), ());
 
 <span class="doccomment">/// A simplified version of signed extensions meant for producing signed transactions</span>
 <span class="doccomment">/// and signed payload in the client code.</span>
@@ -710,6 +714,7 @@
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
 		<span class="self">Self</span> {
 			<span class="ident">encode_payload</span>: (
+				(),              <span class="comment">// non-zero sender</span>
 				(),              <span class="comment">// spec version</span>
 				(),              <span class="comment">// tx version</span>
 				(),              <span class="comment">// genesis</span>
@@ -719,6 +724,7 @@
 				<span class="ident">tip</span>.<span class="ident">into</span>(),      <span class="comment">// transaction payment / tip (compact encoding)</span>
 			),
 			<span class="ident">additional_signed</span>: (
+				(),
 				<span class="ident">version</span>.<span class="ident">spec_version</span>,
 				<span class="ident">version</span>.<span class="ident">transaction_version</span>,
 				<span class="ident">genesis_hash</span>,
@@ -735,12 +741,12 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&gt;</span> <span class="ident">SignedExtensions</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Return signer nonce, used to craft transaction.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nonce</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Nonce</span> {
-		<span class="self">self</span>.<span class="ident">encode_payload</span>.<span class="number">4</span>.<span class="ident">into</span>()
+		<span class="self">self</span>.<span class="ident">encode_payload</span>.<span class="number">5</span>.<span class="ident">into</span>()
 	}
 
 	<span class="doccomment">/// Return transaction tip.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tip</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Balance</span> {
-		<span class="self">self</span>.<span class="ident">encode_payload</span>.<span class="number">6</span>.<span class="ident">into</span>()
+		<span class="self">self</span>.<span class="ident">encode_payload</span>.<span class="number">7</span>.<span class="ident">into</span>()
 	}
 }
 
