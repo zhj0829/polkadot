@@ -72,11 +72,6 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -131,11 +126,6 @@
 	}
 	<span class="kw">fn</span> <span class="ident">set_heap_pages</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
 		(<span class="number">1_670_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
-	}
-	<span class="kw">fn</span> <span class="ident">set_changes_trie_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
-		(<span class="number">9_897_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
-			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
-			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="kw">fn</span> <span class="ident">set_storage</span>(<span class="ident">i</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
