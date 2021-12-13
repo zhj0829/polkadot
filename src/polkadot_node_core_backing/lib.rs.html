@@ -1460,7 +1460,7 @@
 		<span class="ident">DisputeCoordinatorMessage</span>, <span class="ident">ImportStatementsResult</span>, <span class="ident">ProvisionableData</span>, <span class="ident">ProvisionerMessage</span>,
 		<span class="ident">RuntimeApiRequest</span>, <span class="ident">StatementDistributionMessage</span>, <span class="ident">ValidationFailed</span>,
 	},
-	<span class="ident">overseer</span>, <span class="ident">PerLeafSpan</span>, <span class="ident">Stage</span>, <span class="ident">SubsystemSender</span>,
+	<span class="ident">overseer</span>, <span class="ident">ActivatedLeaf</span>, <span class="ident">PerLeafSpan</span>, <span class="ident">Stage</span>, <span class="ident">SubsystemSender</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_keystore::SyncCryptoStorePtr</span>;
 <span class="kw">use</span> <span class="ident">statement_table</span>::{
@@ -2587,13 +2587,13 @@
 	<span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;candidate-backing-job&quot;</span>;
 
 	<span class="kw">fn</span> <span class="ident">run</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">SubsystemSender</span><span class="op">&gt;</span>(
-		<span class="ident">parent</span>: <span class="ident">Hash</span>,
-		<span class="ident">span</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">jaeger::Span</span><span class="op">&gt;</span>,
+		<span class="ident">leaf</span>: <span class="ident">ActivatedLeaf</span>,
 		<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
 		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 		<span class="ident">rx_to</span>: <span class="ident">mpsc::Receiver</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::ToJob</span><span class="op">&gt;</span>,
 		<span class="kw-2">mut</span> <span class="ident">sender</span>: <span class="ident">JobSender</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+		<span class="kw">let</span> <span class="ident">parent</span> <span class="op">=</span> <span class="ident">leaf</span>.<span class="ident">hash</span>;
 		<span class="kw">async</span> <span class="kw">move</span> {
 			<span class="macro">macro_rules!</span> <span class="ident">try_runtime_api</span> {
 				(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>: <span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -2615,7 +2615,7 @@
 				}
 			}
 
-			<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">PerLeafSpan::new</span>(<span class="ident">span</span>, <span class="string">&quot;backing&quot;</span>);
+			<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">PerLeafSpan::new</span>(<span class="ident">leaf</span>.<span class="ident">span</span>, <span class="string">&quot;backing&quot;</span>);
 			<span class="kw">let</span> <span class="ident">_span</span> <span class="op">=</span> <span class="ident">span</span>.<span class="ident">child</span>(<span class="string">&quot;runtime-apis&quot;</span>);
 
 			<span class="kw">let</span> (<span class="ident">validators</span>, <span class="ident">groups</span>, <span class="ident">session_index</span>, <span class="ident">cores</span>) <span class="op">=</span> <span class="macro">futures::try_join!</span>(
