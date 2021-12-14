@@ -1164,6 +1164,8 @@
 <span id="1164">1164</span>
 <span id="1165">1165</span>
 <span id="1166">1166</span>
+<span id="1167">1167</span>
+<span id="1168">1168</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1340,7 +1342,7 @@
 
 	<span class="comment">// The account that will be used to payout participants of the DOT purchase process.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
-	<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">PaymentAccount</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">T::AccountId</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
+	<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">PaymentAccount</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">T::AccountId</span>, <span class="ident">OptionQuery</span><span class="op">&gt;</span>;
 
 	<span class="comment">// The statement purchasers will need to sign to participate.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
@@ -1456,12 +1458,14 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// We reverify all assumptions about the state of an account, and complete the process.</span>
 		<span class="doccomment">///</span>
-		<span class="doccomment">/// Origin must match the configured `PaymentAccount`.</span>
+		<span class="doccomment">/// Origin must match the configured `PaymentAccount` (if it is not configured then this</span>
+		<span class="doccomment">/// will always fail with `BadOrigin`).</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">4</span>, <span class="number">2</span>))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">payout</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">who</span>: <span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
 			<span class="comment">// Payments must be made directly by the `PaymentAccount`.</span>
 			<span class="kw">let</span> <span class="ident">payment_account</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="macro">ensure!</span>(<span class="ident">payment_account</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PaymentAccount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>(), <span class="ident">DispatchError::BadOrigin</span>);
+			<span class="kw">let</span> <span class="ident">test_against</span> <span class="op">=</span> <span class="ident">PaymentAccount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>().<span class="ident">ok_or</span>(<span class="ident">DispatchError::BadOrigin</span>)<span class="question-mark">?</span>;
+			<span class="macro">ensure!</span>(<span class="ident">payment_account</span> <span class="op">=</span><span class="op">=</span> <span class="ident">test_against</span>, <span class="ident">DispatchError::BadOrigin</span>);
 
 			<span class="comment">// Account should not have a vesting schedule.</span>
 			<span class="macro">ensure!</span>(
@@ -1529,7 +1533,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_payment_account</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">who</span>: <span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
 			<span class="ident">T::ConfigurationOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Possibly this is worse than having the caller account be the payment account?</span>
-			<span class="ident">PaymentAccount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::set</span>(<span class="ident">who</span>.<span class="ident">clone</span>());
+			<span class="ident">PaymentAccount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">who</span>.<span class="ident">clone</span>());
 			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::PaymentAccountSet</span>(<span class="ident">who</span>));
 			<span class="prelude-val">Ok</span>(())
 		}
@@ -1878,7 +1882,7 @@
 				<span class="ident">Origin::signed</span>(<span class="ident">configuration_origin</span>()),
 				<span class="ident">payment_account</span>.<span class="ident">clone</span>()
 			));
-			<span class="macro">assert_eq!</span>(<span class="ident">PaymentAccount</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::get</span>(), <span class="ident">payment_account</span>);
+			<span class="macro">assert_eq!</span>(<span class="ident">PaymentAccount</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::get</span>(), <span class="prelude-val">Some</span>(<span class="ident">payment_account</span>));
 		});
 	}
 

@@ -4326,8 +4326,8 @@
 <span class="kw">mod</span> <span class="ident">test_fees</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 	<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{<span class="ident">GetDispatchInfo</span>, <span class="ident">WeightToFeePolynomial</span>};
+	<span class="kw">use</span> <span class="ident">keyring::Sr25519Keyring::Charlie</span>;
 	<span class="kw">use</span> <span class="ident">pallet_transaction_payment::Multiplier</span>;
-	<span class="kw">use</span> <span class="ident">parity_scale_codec::Encode</span>;
 	<span class="kw">use</span> <span class="ident">separator::Separatable</span>;
 	<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">assert_eq_error_rate</span>, <span class="ident">FixedPointNumber</span>};
 
@@ -4367,7 +4367,7 @@
 	<span class="kw">fn</span> <span class="ident">transfer_cost_min_multiplier</span>() {
 		<span class="kw">let</span> <span class="ident">min_multiplier</span> <span class="op">=</span> <span class="ident">runtime_common::MinimumMultiplier::get</span>();
 		<span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span> <span class="ident">pallet_balances::Call</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::transfer_keep_alive</span> {
-			<span class="ident">dest</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">dest</span>: <span class="ident">Charlie</span>.<span class="ident">to_account_id</span>().<span class="ident">into</span>(),
 			<span class="ident">value</span>: <span class="ident">Default::default</span>(),
 		};
 		<span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">call</span>.<span class="ident">get_dispatch_info</span>();

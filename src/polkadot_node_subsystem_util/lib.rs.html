@@ -834,7 +834,7 @@
 	<span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_application_crypto::AppKey</span>;
-<span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">traits::SpawnNamed</span>, <span class="ident">Public</span>};
+<span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">traits::SpawnNamed</span>, <span class="ident">ByteArray</span>};
 <span class="kw">use</span> <span class="ident">sp_keystore</span>::{<span class="ident">CryptoStore</span>, <span class="ident">Error</span> <span class="kw">as</span> <span class="ident">KeystoreError</span>, <span class="ident">SyncCryptoStorePtr</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
 	<span class="ident">collections</span>::{<span class="ident">hash_map::Entry</span>, <span class="ident">HashMap</span>},

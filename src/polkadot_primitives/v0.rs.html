@@ -1259,7 +1259,7 @@
 
 <span class="doccomment">/// All data pertaining to the execution of a parachain candidate.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span>, <span class="ident">N</span> <span class="op">=</span> <span class="ident">BlockNumber</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The ID of the parachain this is a candidate for.</span>
 	<span class="kw">pub</span> <span class="ident">parachain_index</span>: <span class="ident">Id</span>,
@@ -1358,7 +1358,7 @@
 <span class="doccomment">/// When submitting to the relay-chain, this data should be omitted as it can</span>
 <span class="doccomment">/// be re-generated from relay-chain state.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AbridgedCandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The ID of the parachain this is a candidate for.</span>
 	<span class="kw">pub</span> <span class="ident">parachain_index</span>: <span class="ident">Id</span>,
@@ -1493,7 +1493,7 @@
 
 <span class="doccomment">/// A unique descriptor of the candidate receipt, in a lightweight format.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CandidateDescriptor</span><span class="op">&lt;</span><span class="ident">H</span> <span class="op">=</span> <span class="ident">Hash</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// The ID of the para this is a candidate for.</span>
 	<span class="kw">pub</span> <span class="ident">para_id</span>: <span class="ident">Id</span>,
@@ -1513,7 +1513,7 @@
 
 <span class="doccomment">/// A collation sent by a collator.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">derive</span>(<span class="ident">Debug</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CollationInfo</span> {
 	<span class="doccomment">/// The ID of the parachain this is a candidate for.</span>
 	<span class="kw">pub</span> <span class="ident">parachain_index</span>: <span class="ident">Id</span>,

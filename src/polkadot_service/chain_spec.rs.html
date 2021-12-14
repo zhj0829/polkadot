@@ -2418,7 +2418,7 @@
 		<span class="ident">im_online</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">authority_discovery</span>: <span class="ident">westend::AuthorityDiscoveryConfig</span> { <span class="ident">keys</span>: <span class="macro">vec!</span>[] },
 		<span class="ident">vesting</span>: <span class="ident">westend::VestingConfig</span> { <span class="ident">vesting</span>: <span class="macro">vec!</span>[] },
-		<span class="ident">sudo</span>: <span class="ident">westend::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">endowed_accounts</span>[<span class="number">0</span>].<span class="ident">clone</span>() },
+		<span class="ident">sudo</span>: <span class="ident">westend::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">endowed_accounts</span>[<span class="number">0</span>].<span class="ident">clone</span>()) },
 		<span class="ident">hrmp</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">configuration</span>: <span class="ident">westend::ConfigurationConfig</span> {
 			<span class="ident">config</span>: <span class="ident">default_parachains_host_configuration</span>(),
@@ -2911,7 +2911,7 @@
 		<span class="ident">collective</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">membership</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">authority_discovery</span>: <span class="ident">rococo_runtime::AuthorityDiscoveryConfig</span> { <span class="ident">keys</span>: <span class="macro">vec!</span>[] },
-		<span class="ident">sudo</span>: <span class="ident">rococo_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">endowed_accounts</span>[<span class="number">0</span>].<span class="ident">clone</span>() },
+		<span class="ident">sudo</span>: <span class="ident">rococo_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">endowed_accounts</span>[<span class="number">0</span>].<span class="ident">clone</span>()) },
 		<span class="ident">paras</span>: <span class="ident">rococo_runtime::ParasConfig</span> { <span class="ident">paras</span>: <span class="macro">vec!</span>[] },
 		<span class="ident">hrmp</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">configuration</span>: <span class="ident">rococo_runtime::ConfigurationConfig</span> {
@@ -3347,7 +3347,7 @@
 		<span class="ident">im_online</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">authority_discovery</span>: <span class="ident">westend::AuthorityDiscoveryConfig</span> { <span class="ident">keys</span>: <span class="macro">vec!</span>[] },
 		<span class="ident">vesting</span>: <span class="ident">westend::VestingConfig</span> { <span class="ident">vesting</span>: <span class="macro">vec!</span>[] },
-		<span class="ident">sudo</span>: <span class="ident">westend::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">sudo</span>: <span class="ident">westend::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>) },
 		<span class="ident">hrmp</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">configuration</span>: <span class="ident">westend::ConfigurationConfig</span> {
 			<span class="ident">config</span>: <span class="ident">default_parachains_host_configuration</span>(),
@@ -3418,7 +3418,7 @@
 		<span class="ident">collective</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">membership</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">authority_discovery</span>: <span class="ident">rococo_runtime::AuthorityDiscoveryConfig</span> { <span class="ident">keys</span>: <span class="macro">vec!</span>[] },
-		<span class="ident">sudo</span>: <span class="ident">rococo_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span>.<span class="ident">clone</span>() },
+		<span class="ident">sudo</span>: <span class="ident">rococo_runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>.<span class="ident">clone</span>()) },
 		<span class="ident">hrmp</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">configuration</span>: <span class="ident">rococo_runtime::ConfigurationConfig</span> {
 			<span class="ident">config</span>: <span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span> {

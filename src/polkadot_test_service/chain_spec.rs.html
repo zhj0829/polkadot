@@ -348,7 +348,7 @@
 		<span class="ident">authority_discovery</span>: <span class="ident">runtime::AuthorityDiscoveryConfig</span> { <span class="ident">keys</span>: <span class="macro">vec!</span>[] },
 		<span class="ident">claims</span>: <span class="ident">runtime::ClaimsConfig</span> { <span class="ident">claims</span>: <span class="macro">vec!</span>[], <span class="ident">vesting</span>: <span class="macro">vec!</span>[] },
 		<span class="ident">vesting</span>: <span class="ident">runtime::VestingConfig</span> { <span class="ident">vesting</span>: <span class="macro">vec!</span>[] },
-		<span class="ident">sudo</span>: <span class="ident">runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="ident">root_key</span> },
+		<span class="ident">sudo</span>: <span class="ident">runtime::SudoConfig</span> { <span class="ident">key</span>: <span class="prelude-val">Some</span>(<span class="ident">root_key</span>) },
 		<span class="ident">configuration</span>: <span class="ident">runtime::ConfigurationConfig</span> {
 			<span class="ident">config</span>: <span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span> {
 				<span class="ident">validation_upgrade_frequency</span>: <span class="number">10u32</span>,

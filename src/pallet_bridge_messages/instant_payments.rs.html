@@ -439,7 +439,7 @@
 	<span class="ident">relayer_fund_account</span>: <span class="kw-2">&amp;</span><span class="ident">AccountId</span>,
 	<span class="ident">confirmation_fee</span>: <span class="ident">Currency::Balance</span>,
 ) <span class="kw">where</span>
-	<span class="ident">AccountId</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
+	<span class="ident">AccountId</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">PartialEq</span>,
 	<span class="ident">Currency</span>: <span class="ident">CurrencyT</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 	<span class="ident">Currency::Balance</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
 {
