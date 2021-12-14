@@ -319,8 +319,6 @@
 <span id="319">319</span>
 <span id="320">320</span>
 <span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -345,7 +343,6 @@
 };
 <span class="kw">use</span> <span class="ident">sc_executor_wasmtime</span>::{<span class="ident">Config</span>, <span class="ident">DeterministicStackLimit</span>, <span class="ident">Semantics</span>};
 <span class="kw">use</span> <span class="ident">sp_core::storage</span>::{<span class="ident">ChildInfo</span>, <span class="ident">TrackedStorageKey</span>};
-<span class="kw">use</span> <span class="ident">sp_wasm_interface::HostFunctions</span> <span class="kw">as</span> <span class="kw">_</span>;
 <span class="kw">use</span> <span class="ident">std::any</span>::{<span class="ident">Any</span>, <span class="ident">TypeId</span>};
 
 <span class="kw">const</span> <span class="ident">CONFIG</span>: <span class="ident">Config</span> <span class="op">=</span> <span class="ident">Config</span> {
@@ -437,10 +434,9 @@
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ext</span> <span class="op">=</span> <span class="ident">ValidationExternalities</span>(<span class="ident">extensions</span>);
 
 	<span class="ident">sc_executor::with_externalities_safe</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ext</span>, <span class="op">|</span><span class="op">|</span> {
-		<span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">sc_executor_wasmtime::create_runtime_from_artifact</span>(
+		<span class="kw">let</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">sc_executor_wasmtime::create_runtime_from_artifact</span>::<span class="op">&lt;</span><span class="ident">HostFunctions</span><span class="op">&gt;</span>(
 			<span class="ident">compiled_artifact</span>,
 			<span class="ident">CONFIG</span>,
-			<span class="ident">HostFunctions::host_functions</span>(),
 		)<span class="question-mark">?</span>;
 		<span class="ident">runtime</span>.<span class="ident">new_instance</span>()<span class="question-mark">?</span>.<span class="ident">call</span>(<span class="ident">InvokeMethod::Export</span>(<span class="string">&quot;validate_block&quot;</span>), <span class="ident">params</span>)
 	})<span class="question-mark">?</span>
