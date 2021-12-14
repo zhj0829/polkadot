@@ -34,16 +34,6 @@
 <span id="34">34</span>
 <span id="35">35</span>
 <span id="36">36</span>
-<span id="37">37</span>
-<span id="38">38</span>
-<span id="39">39</span>
-<span id="40">40</span>
-<span id="41">41</span>
-<span id="42">42</span>
-<span id="43">43</span>
-<span id="44">44</span>
-<span id="45">45</span>
-<span id="46">46</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -63,11 +53,6 @@
 <span class="doccomment">/// A priority assigned to execution of a PVF.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Priority</span> {
-	<span class="doccomment">/// Jobs in this priority will be executed in the background, meaning that they will be only</span>
-	<span class="doccomment">/// given spare CPU time.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// This is mainly for cache warmings.</span>
-	<span class="ident">Background</span>,
 	<span class="doccomment">/// Normal priority for things that do not require immediate response, but still need to be</span>
 	<span class="doccomment">/// done pretty quick.</span>
 	<span class="doccomment">///</span>
@@ -83,11 +68,6 @@
 	<span class="doccomment">/// Returns `true` if `self` is `Crticial`</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_critical</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
 		<span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Priority::Critical</span>
-	}
-
-	<span class="doccomment">/// Returns `true` if `self` is `Background`</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_background</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-		<span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Priority::Background</span>
 	}
 }
 </code></pre></div>

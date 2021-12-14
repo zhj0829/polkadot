@@ -313,39 +313,6 @@
 <span id="313">313</span>
 <span id="314">314</span>
 <span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
-<span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
-<span id="335">335</span>
-<span id="336">336</span>
-<span id="337">337</span>
-<span id="338">338</span>
-<span id="339">339</span>
-<span id="340">340</span>
-<span id="341">341</span>
-<span id="342">342</span>
-<span id="343">343</span>
-<span id="344">344</span>
-<span id="345">345</span>
-<span id="346">346</span>
-<span id="347">347</span>
-<span id="348">348</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -379,9 +346,6 @@
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">sp_core::hexdisplay::HexDisplay</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">any::Any</span>, <span class="ident">panic</span>, <span class="ident">sync::Arc</span>, <span class="ident">time::Duration</span>};
-
-<span class="kw">const</span> <span class="ident">NICENESS_BACKGROUND</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">10</span>;
-<span class="kw">const</span> <span class="ident">NICENESS_FOREGROUND</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">0</span>;
 
 <span class="doccomment">/// The time period after which the preparation worker is considered unresponsive and will be killed.</span>
 <span class="comment">// NOTE: If you change this make sure to fix the buckets of `pvf_preparation_time` metric.</span>
@@ -420,21 +384,15 @@
 	<span class="ident">code</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">cache_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
 	<span class="ident">artifact_path</span>: <span class="ident">PathBuf</span>,
-	<span class="ident">background_priority</span>: <span class="ident">bool</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Outcome</span> {
 	<span class="kw">let</span> <span class="ident">IdleWorker</span> { <span class="kw-2">mut</span> <span class="ident">stream</span>, <span class="ident">pid</span> } <span class="op">=</span> <span class="ident">worker</span>;
 
 	<span class="macro">tracing::debug!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="ident">worker_pid</span> <span class="op">=</span> <span class="op">%</span><span class="ident">pid</span>,
-		<span class="op">%</span><span class="ident">background_priority</span>,
 		<span class="string">&quot;starting prepare for {}&quot;</span>,
 		<span class="ident">artifact_path</span>.<span class="ident">display</span>(),
 	);
-
-	<span class="kw">if</span> <span class="ident">background_priority</span> {
-		<span class="ident">renice</span>(<span class="ident">pid</span>, <span class="ident">NICENESS_BACKGROUND</span>);
-	}
 
 	<span class="ident">with_tmp_file</span>(<span class="ident">pid</span>, <span class="ident">cache_path</span>, <span class="op">|</span><span class="ident">tmp_file</span><span class="op">|</span> <span class="kw">async</span> <span class="kw">move</span> {
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">send_request</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stream</span>, <span class="ident">code</span>, <span class="kw-2">&amp;</span><span class="ident">tmp_file</span>).<span class="kw">await</span> {
@@ -520,10 +478,8 @@
 			};
 
 		<span class="kw">match</span> <span class="ident">selected</span> {
-			<span class="ident">Selected::Done</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> {
-				<span class="ident">renice</span>(<span class="ident">pid</span>, <span class="ident">NICENESS_FOREGROUND</span>);
-				<span class="ident">Outcome::Concluded</span> { <span class="ident">worker</span>: <span class="ident">IdleWorker</span> { <span class="ident">stream</span>, <span class="ident">pid</span> }, <span class="ident">result</span> }
-			},
+			<span class="ident">Selected::Done</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span>
+				<span class="ident">Outcome::Concluded</span> { <span class="ident">worker</span>: <span class="ident">IdleWorker</span> { <span class="ident">stream</span>, <span class="ident">pid</span> }, <span class="ident">result</span> },
 			<span class="ident">Selected::Deadline</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome::TimedOut</span>,
 			<span class="ident">Selected::IoErr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome::DidNotMakeIt</span>,
 		}
@@ -596,28 +552,6 @@
 		)
 	})<span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>((<span class="ident">code</span>, <span class="ident">tmp_file</span>))
-}
-
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bump_priority</span>(<span class="ident">handle</span>: <span class="kw-2">&amp;</span><span class="ident">WorkerHandle</span>) {
-	<span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="ident">handle</span>.<span class="ident">id</span>();
-	<span class="ident">renice</span>(<span class="ident">pid</span>, <span class="ident">NICENESS_FOREGROUND</span>);
-}
-
-<span class="kw">fn</span> <span class="ident">renice</span>(<span class="ident">pid</span>: <span class="ident">u32</span>, <span class="ident">niceness</span>: <span class="ident">i32</span>) {
-	<span class="macro">tracing::debug!</span>(
-		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-		<span class="ident">worker_pid</span> <span class="op">=</span> <span class="op">%</span><span class="ident">pid</span>,
-		<span class="string">&quot;changing niceness to {}&quot;</span>,
-		<span class="ident">niceness</span>,
-	);
-
-	<span class="comment">// Consider upstreaming this to the `nix` crate.</span>
-	<span class="kw">unsafe</span> {
-		<span class="kw">if</span> <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">libc::setpriority</span>(<span class="ident">libc::PRIO_PROCESS</span>, <span class="ident">pid</span>, <span class="ident">niceness</span>) {
-			<span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">std::io::Error::last_os_error</span>();
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;failed to set the priority: {:?}&quot;</span>, <span class="ident">err</span>);
-		}
-	}
 }
 
 <span class="doccomment">/// The entrypoint that the spawned prepare worker should start with. The `socket_path` specifies</span>
