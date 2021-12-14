@@ -150,6 +150,10 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -171,22 +175,26 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::JaegerError</span>;
 
 <span class="doccomment">/// A description of an error causing the runtime API request to be unservable.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RuntimeApiError</span>(<span class="ident">String</span>);
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RuntimeApiError</span> {
+	<span class="doccomment">/// The runtime API cannot be executed due to a</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;The runtime API &#39;{runtime_api_name}&#39; cannot be executed&quot;</span>)]</span>
+	<span class="ident">Execution</span> {
+		<span class="doccomment">/// The runtime API being called</span>
+		<span class="ident">runtime_api_name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+		<span class="doccomment">/// The wrapped error. Marked as source for tracking the error chain.</span>
+		<span class="attribute">#[<span class="ident">source</span>]</span>
+		<span class="ident">source</span>: <span class="ident">std::sync::Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
+	},
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RuntimeApiError</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-		<span class="ident">RuntimeApiError</span>(<span class="ident">s</span>)
-	}
+	<span class="doccomment">/// The runtime API request in question cannot be executed because the runtime at the requested</span>
+	<span class="doccomment">/// relay-parent is an old version.</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;The API is not supported by the runtime at the relay-parent&quot;</span>)]</span>
+	<span class="ident">NotSupported</span> {
+		<span class="doccomment">/// The runtime API being called</span>
+		<span class="ident">runtime_api_name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+	},
 }
-
-<span class="kw">impl</span> <span class="ident">core::fmt::Display</span> <span class="kw">for</span> <span class="ident">RuntimeApiError</span> {
-	<span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">core::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">core::fmt::Error</span><span class="op">&gt;</span> {
-		<span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
-	}
-}
-
-<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">RuntimeApiError</span> {}
 
 <span class="doccomment">/// A description of an error causing the chain API request to be unservable.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>

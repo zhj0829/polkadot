@@ -441,6 +441,68 @@
 <span id="441">441</span>
 <span id="442">442</span>
 <span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -778,12 +840,52 @@
 {
 	<span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">metrics</span>.<span class="ident">time_make_runtime_api_request</span>();
 
+	<span class="comment">// The version of the `ParachainHost` runtime API that we are absolutely sure is deployed widely</span>
+	<span class="comment">// on all supported networks: Rococo, Kusama, Polkadot and perhaps others like Versi.</span>
+	<span class="comment">//</span>
+	<span class="comment">// This version is used for eliding unnecessary runtime API calls. It is safer to keep the lower</span>
+	<span class="comment">// version.</span>
+	<span class="kw">const</span> <span class="ident">WIDELY_DEPLOYED_API_VERSION</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span>;
+
 	<span class="macro">macro_rules!</span> <span class="ident">query</span> {
-		(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">req_variant</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">api_name</span>:<span class="ident">ident</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">param</span>:<span class="ident">expr</span>),<span class="kw-2">*</span>), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sender</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
+		(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">req_variant</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">api_name</span>:<span class="ident">ident</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">param</span>:<span class="ident">expr</span>),<span class="kw-2">*</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">version</span>:<span class="ident">literal</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sender</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
 			<span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sender</span>;
 			<span class="kw">let</span> <span class="ident">api</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">runtime_api</span>();
-			<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">api</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">api_name</span>(<span class="kw-2">&amp;</span><span class="ident">BlockId::Hash</span>(<span class="ident">relay_parent</span>) $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">param</span>.<span class="ident">clone</span>() )<span class="kw-2">*</span>)
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RuntimeApiError::from</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>)));
+
+			<span class="kw">let</span> <span class="ident">runtime_version</span> <span class="op">=</span> <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">version</span> <span class="op">&gt;</span> <span class="ident">WIDELY_DEPLOYED_API_VERSION</span> {
+				<span class="kw">use</span> <span class="ident">sp_api::ApiExt</span>;
+				<span class="ident">api</span>.<span class="ident">api_version</span>::<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ParachainHost</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">BlockId::Hash</span>(<span class="ident">relay_parent</span>))
+					.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+						<span class="macro">tracing::warn!</span>(
+							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+							<span class="string">&quot;cannot query the runtime API version: {}&quot;</span>,
+							<span class="ident">e</span>,
+						);
+						<span class="prelude-val">Some</span>(<span class="ident">WIDELY_DEPLOYED_API_VERSION</span>)
+					})
+					.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+						<span class="macro">tracing::warn!</span>(
+							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+							<span class="string">&quot;no runtime version is reported&quot;</span>
+						);
+						<span class="ident">WIDELY_DEPLOYED_API_VERSION</span>
+					})
+			} <span class="kw">else</span> {
+				<span class="comment">// The required version is less or equal to the widely deployed runtime API version.</span>
+				<span class="ident">WIDELY_DEPLOYED_API_VERSION</span>
+			};
+
+			<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">runtime_version</span> <span class="op">&lt;</span><span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">version</span> {
+				<span class="ident">api</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">api_name</span>(<span class="kw-2">&amp;</span><span class="ident">BlockId::Hash</span>(<span class="ident">relay_parent</span>) $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">param</span>.<span class="ident">clone</span>() )<span class="kw-2">*</span>)
+					.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RuntimeApiError::Execution</span> {
+						<span class="ident">runtime_api_name</span>: <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">api_name</span>),
+						<span class="ident">source</span>: <span class="ident">std::sync::Arc::new</span>(<span class="ident">e</span>),
+					})
+			} <span class="kw">else</span> {
+				<span class="prelude-val">Err</span>(<span class="ident">RuntimeApiError::NotSupported</span> {
+					<span class="ident">runtime_api_name</span>: <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">api_name</span>),
+				})
+			};
 			<span class="ident">metrics</span>.<span class="ident">on_request</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
 			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">res</span>.<span class="ident">clone</span>());
 
@@ -792,36 +894,58 @@
 	}
 
 	<span class="kw">match</span> <span class="ident">request</span> {
-		<span class="ident">Request::Authorities</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">Authorities</span>, <span class="ident">authorities</span>(), <span class="ident">sender</span>),
-		<span class="ident">Request::Validators</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">Validators</span>, <span class="ident">validators</span>(), <span class="ident">sender</span>),
-		<span class="ident">Request::ValidatorGroups</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">ValidatorGroups</span>, <span class="ident">validator_groups</span>(), <span class="ident">sender</span>),
+		<span class="ident">Request::Authorities</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">Authorities</span>, <span class="ident">authorities</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::Validators</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">Validators</span>, <span class="ident">validators</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::ValidatorGroups</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="macro">query!</span>(<span class="ident">ValidatorGroups</span>, <span class="ident">validator_groups</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
 		<span class="ident">Request::AvailabilityCores</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">AvailabilityCores</span>, <span class="ident">availability_cores</span>(), <span class="ident">sender</span>),
-		<span class="ident">Request::PersistedValidationData</span>(<span class="ident">para</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">PersistedValidationData</span>, <span class="ident">persisted_validation_data</span>(<span class="ident">para</span>, <span class="ident">assumption</span>), <span class="ident">sender</span>),
+			<span class="macro">query!</span>(<span class="ident">AvailabilityCores</span>, <span class="ident">availability_cores</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::PersistedValidationData</span>(<span class="ident">para</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(
+			<span class="ident">PersistedValidationData</span>,
+			<span class="ident">persisted_validation_data</span>(<span class="ident">para</span>, <span class="ident">assumption</span>),
+			<span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>,
+			<span class="ident">sender</span>
+		),
 		<span class="ident">Request::AssumedValidationData</span>(<span class="ident">para</span>, <span class="ident">expected_persisted_validation_data_hash</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
 			<span class="macro">query!</span>(
 				<span class="ident">AssumedValidationData</span>,
 				<span class="ident">assumed_validation_data</span>(<span class="ident">para</span>, <span class="ident">expected_persisted_validation_data_hash</span>),
+				<span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>,
 				<span class="ident">sender</span>
 			),
-		<span class="ident">Request::CheckValidationOutputs</span>(<span class="ident">para</span>, <span class="ident">commitments</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">CheckValidationOutputs</span>, <span class="ident">check_validation_outputs</span>(<span class="ident">para</span>, <span class="ident">commitments</span>), <span class="ident">sender</span>),
+		<span class="ident">Request::CheckValidationOutputs</span>(<span class="ident">para</span>, <span class="ident">commitments</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(
+			<span class="ident">CheckValidationOutputs</span>,
+			<span class="ident">check_validation_outputs</span>(<span class="ident">para</span>, <span class="ident">commitments</span>),
+			<span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>,
+			<span class="ident">sender</span>
+		),
 		<span class="ident">Request::SessionIndexForChild</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">SessionIndexForChild</span>, <span class="ident">session_index_for_child</span>(), <span class="ident">sender</span>),
+			<span class="macro">query!</span>(<span class="ident">SessionIndexForChild</span>, <span class="ident">session_index_for_child</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
 		<span class="ident">Request::ValidationCode</span>(<span class="ident">para</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">ValidationCode</span>, <span class="ident">validation_code</span>(<span class="ident">para</span>, <span class="ident">assumption</span>), <span class="ident">sender</span>),
-		<span class="ident">Request::ValidationCodeByHash</span>(<span class="ident">validation_code_hash</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">ValidationCodeByHash</span>, <span class="ident">validation_code_by_hash</span>(<span class="ident">validation_code_hash</span>), <span class="ident">sender</span>),
-		<span class="ident">Request::CandidatePendingAvailability</span>(<span class="ident">para</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">CandidatePendingAvailability</span>, <span class="ident">candidate_pending_availability</span>(<span class="ident">para</span>), <span class="ident">sender</span>),
-		<span class="ident">Request::CandidateEvents</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">CandidateEvents</span>, <span class="ident">candidate_events</span>(), <span class="ident">sender</span>),
-		<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">SessionInfo</span>, <span class="ident">session_info</span>(<span class="ident">index</span>), <span class="ident">sender</span>),
-		<span class="ident">Request::DmqContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">DmqContents</span>, <span class="ident">dmq_contents</span>(<span class="ident">id</span>), <span class="ident">sender</span>),
+			<span class="macro">query!</span>(<span class="ident">ValidationCode</span>, <span class="ident">validation_code</span>(<span class="ident">para</span>, <span class="ident">assumption</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::ValidationCodeByHash</span>(<span class="ident">validation_code_hash</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(
+			<span class="ident">ValidationCodeByHash</span>,
+			<span class="ident">validation_code_by_hash</span>(<span class="ident">validation_code_hash</span>),
+			<span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>,
+			<span class="ident">sender</span>
+		),
+		<span class="ident">Request::CandidatePendingAvailability</span>(<span class="ident">para</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(
+			<span class="ident">CandidatePendingAvailability</span>,
+			<span class="ident">candidate_pending_availability</span>(<span class="ident">para</span>),
+			<span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>,
+			<span class="ident">sender</span>
+		),
+		<span class="ident">Request::CandidateEvents</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="macro">query!</span>(<span class="ident">CandidateEvents</span>, <span class="ident">candidate_events</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="macro">query!</span>(<span class="ident">SessionInfo</span>, <span class="ident">session_info</span>(<span class="ident">index</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::DmqContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">DmqContents</span>, <span class="ident">dmq_contents</span>(<span class="ident">id</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
 		<span class="ident">Request::InboundHrmpChannelsContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
-			<span class="macro">query!</span>(<span class="ident">InboundHrmpChannelsContents</span>, <span class="ident">inbound_hrmp_channels_contents</span>(<span class="ident">id</span>), <span class="ident">sender</span>),
-		<span class="ident">Request::CurrentBabeEpoch</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">CurrentBabeEpoch</span>, <span class="ident">current_epoch</span>(), <span class="ident">sender</span>),
-		<span class="ident">Request::FetchOnChainVotes</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">query!</span>(<span class="ident">FetchOnChainVotes</span>, <span class="ident">on_chain_votes</span>(), <span class="ident">sender</span>),
+			<span class="macro">query!</span>(<span class="ident">InboundHrmpChannelsContents</span>, <span class="ident">inbound_hrmp_channels_contents</span>(<span class="ident">id</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::CurrentBabeEpoch</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="macro">query!</span>(<span class="ident">CurrentBabeEpoch</span>, <span class="ident">current_epoch</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::FetchOnChainVotes</span>(<span class="ident">sender</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="macro">query!</span>(<span class="ident">FetchOnChainVotes</span>, <span class="ident">on_chain_votes</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
 	}
 }
 
