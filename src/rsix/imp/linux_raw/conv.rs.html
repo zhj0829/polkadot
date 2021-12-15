@@ -405,121 +405,121 @@
 
 <span class="doccomment">/// Convert `SYS_*` constants for socketcall.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">x86_sys</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">sys</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">x86_sys</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">sys</span>: <span class="ident">u32</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">sys</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;little&quot;</span>, <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">lo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">lo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;little&quot;</span>, <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">hi</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">hi</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>((<span class="ident">x</span> <span class="op">&amp;</span> <span class="number">0xffff_ffff</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;big&quot;</span>, <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">lo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">lo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>((<span class="ident">x</span> <span class="op">&amp;</span> <span class="number">0xffff_ffff</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;big&quot;</span>, <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">hi</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">hi</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">32</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">zero</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">zero</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>() -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="number">0</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">size_of</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">size_of</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>() -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>())
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">pass_usize</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">pass_usize</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">t</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">void_star</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">void_star</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">c</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">const_void_star</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">const_void_star</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">c</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">c_str</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">c_str</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">c</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">opt_c_str</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">opt_c_str</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span><span class="op">&gt;</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(
         (<span class="kw">match</span> <span class="ident">t</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">s</span>.<span class="ident">as_ptr</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">null</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">s</span>) =&gt; <span class="ident">s</span>.<span class="ident">as_ptr</span>(),
+            <span class="prelude-val">None</span> =&gt; <span class="ident">null</span>(),
         }) <span class="kw">as</span> <span class="ident">usize</span>,
     )
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">borrowed_fd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">borrowed_fd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="comment">// Linux doesn&#39;t look at the high bits beyond the `c_int`, so use</span>
     <span class="comment">// zero-extension rather than sign-extension because it&#39;s a smaller</span>
     <span class="comment">// instruction.</span>
-    <span class="macro">debug_assert!</span>(<span class="ident">fd</span>.<span class="ident">as_raw_fd</span>() <span class="op">=</span><span class="op">=</span> <span class="ident"><span class="kw">crate</span>::fs::cwd</span>().<span class="ident">as_raw_fd</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">fd</span>.<span class="ident">as_raw_fd</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">fd</span>.<span class="ident">as_raw_fd</span>() <span class="op">==</span> <span class="ident"><span class="kw">crate</span>::fs::cwd</span>().<span class="ident">as_raw_fd</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">fd</span>.<span class="ident">as_raw_fd</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
     <span class="ident">raw_arg</span>(<span class="ident">fd</span>.<span class="ident">as_raw_fd</span>() <span class="kw">as</span> <span class="ident">c_uint</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">raw_fd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">raw_fd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="comment">// As above, use zero-extension rather than sign-extension.</span>
-    <span class="macro">debug_assert!</span>(<span class="ident">fd</span> <span class="op">=</span><span class="op">=</span> <span class="ident"><span class="kw">crate</span>::fs::cwd</span>().<span class="ident">as_raw_fd</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">fd</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">fd</span> <span class="op">==</span> <span class="ident"><span class="kw">crate</span>::fs::cwd</span>().<span class="ident">as_raw_fd</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">fd</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
     <span class="ident">raw_arg</span>(<span class="ident">fd</span> <span class="kw">as</span> <span class="ident">c_uint</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">no_fd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">no_fd</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>() -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="op">-</span><span class="number">1_isize</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">slice_just_addr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">slice_just_addr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">v</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">slice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num0</span>: <span class="ident">ArgNumber</span>, <span class="ident">Num1</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(
     <span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>],
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num0</span><span class="op">&gt;</span>, <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num1</span><span class="op">&gt;</span>) {
+) -&gt; (<span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num0</span><span class="op">&gt;</span>, <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num1</span><span class="op">&gt;</span>) {
     (<span class="ident">raw_arg</span>(<span class="ident">v</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>), <span class="ident">raw_arg</span>(<span class="ident">v</span>.<span class="ident">len</span>()))
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">slice_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num0</span>: <span class="ident">ArgNumber</span>, <span class="ident">Num1</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(
     <span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>],
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num0</span><span class="op">&gt;</span>, <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num1</span><span class="op">&gt;</span>) {
+) -&gt; (<span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num0</span><span class="op">&gt;</span>, <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num1</span><span class="op">&gt;</span>) {
     (<span class="ident">raw_arg</span>(<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>), <span class="ident">raw_arg</span>(<span class="ident">v</span>.<span class="ident">len</span>()))
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">by_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">by_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">as_ptr</span>(<span class="ident">t</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">by_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">by_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">as_mut_ptr</span>(<span class="ident">t</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
@@ -534,7 +534,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">opt_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(
     <span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">transmute</span>(<span class="ident">t</span>)
 }
 
@@ -548,64 +548,64 @@
 <span class="doccomment">/// to syscalls expecting nullable pointers.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;riscv64&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">opt_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">opt_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">transmute</span>(<span class="ident">t</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">c_int</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">c_int</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">c_uint</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">c_uint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
-    <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">loff_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">__kernel_loff_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">c_uint</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">c_uint</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">loff_t_from_u64</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">loff_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">__kernel_loff_t</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+    <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">loff_t_from_u64</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="comment">// `loff_t` is signed, but syscalls which expect `loff_t` return `EINVAL`</span>
     <span class="comment">// if it&#39;s outside the signed `i64` range, so we can silently cast.</span>
     <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">clockid_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">ClockId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">clockid_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">ClockId</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">socklen_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">socklen_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">socklen_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">i</span>: <span class="ident">socklen_t</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">mode_as</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">mode</span>: <span class="ident">Mode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">mode_as</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">mode</span>: <span class="ident">Mode</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">mode</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">dev_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">dev</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">dev_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">dev</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">dev</span> <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">dev_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">dev</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">dev_t</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">dev</span>: <span class="ident">u64</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
     <span class="ident">dev</span>.<span class="ident">try_into</span>().<span class="ident">map</span>(<span class="ident">raw_arg</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">_err</span><span class="op">|</span> <span class="ident">io::Error::INVAL</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">oflags_bits</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_uint</span> {
+<span class="kw">fn</span> <span class="ident">oflags_bits</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) -&gt; <span class="ident">c_uint</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bits</span> <span class="op">=</span> <span class="ident">oflags</span>.<span class="ident">bits</span>();
     <span class="comment">// Add `O_LARGEFILE`, unless `O_PATH` is set, as Linux returns `EINVAL`</span>
     <span class="comment">// when both are set.</span>
@@ -616,20 +616,20 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">oflags_bits</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_uint</span> {
+<span class="kw">fn</span> <span class="ident">oflags_bits</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) -&gt; <span class="ident">c_uint</span> {
     <span class="ident">oflags</span>.<span class="ident">bits</span>()
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">oflags</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">oflags</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">oflags_bits</span>(<span class="ident">oflags</span>) <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">oflags_for_open_how</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">oflags_for_open_how</span>(<span class="ident">oflags</span>: <span class="ident">OFlags</span>) -&gt; <span class="ident">u64</span> {
     <span class="ident">u64::from</span>(<span class="ident">oflags_bits</span>(<span class="ident">oflags</span>))
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">out</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">out</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Sized</span>, <span class="ident">Num</span>: <span class="ident">ArgNumber</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Num</span><span class="op">&gt;</span> {
     <span class="ident">raw_arg</span>(<span class="ident">t</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>)
 }
 
@@ -641,7 +641,7 @@
 <span class="doccomment">/// The caller must ensure that this is the return value of a syscall which</span>
 <span class="doccomment">/// just returns 0 on success.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">try_decode_void</span>(<span class="ident">raw</span>)
 }
 
@@ -663,14 +663,14 @@
 <span class="doccomment">/// Convert a `usize` returned from a syscall that effectively returns a</span>
 <span class="doccomment">/// `c_int` on success.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_c_int</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_int</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_c_int</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_int</span><span class="op">&gt;</span> {
     <span class="ident">try_decode_c_int</span>(<span class="ident">raw</span>)
 }
 
 <span class="doccomment">/// Convert a `usize` returned from a syscall that effectively returns a</span>
 <span class="doccomment">/// `c_uint` on success.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_c_uint</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_uint</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_c_uint</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_uint</span><span class="op">&gt;</span> {
     <span class="ident">try_decode_c_uint</span>(<span class="ident">raw</span>)
 }
 
@@ -678,14 +678,14 @@
 <span class="doccomment">/// on success.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_u64</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_u64</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
     <span class="ident">try_decode_u64</span>(<span class="ident">raw</span>)
 }
 
 <span class="doccomment">/// Convert a `usize` returned from a syscall that effectively returns a</span>
 <span class="doccomment">/// `usize` on success.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_usize</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_usize</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="ident">try_decode_usize</span>(<span class="ident">raw</span>)
 }
 
@@ -697,7 +697,7 @@
 <span class="doccomment">/// This function must only be used with return values from infallible</span>
 <span class="doccomment">/// syscalls.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret_usize_infallible</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret_usize_infallible</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">usize</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
     {
         <span class="ident">try_decode_usize</span>(<span class="ident">raw</span>).<span class="ident">unwrap</span>()
@@ -716,7 +716,7 @@
 <span class="doccomment">/// The caller must ensure that this is the return value of a syscall which</span>
 <span class="doccomment">/// returns an owned file descriptor.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret_owned_fd</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret_owned_fd</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">raw_fd</span> <span class="op">=</span> <span class="ident">try_decode_raw_fd</span>(<span class="ident">raw</span>)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">OwnedFd::from</span>(<span class="ident">io_lifetimes::OwnedFd::from_raw_fd</span>(<span class="ident">raw_fd</span>)))
 }
@@ -731,7 +731,7 @@
 <span class="doccomment">/// The caller must ensure that this is the return value of a syscall which</span>
 <span class="doccomment">/// returns a file descriptor.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret_discarded_fd</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ret_discarded_fd</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">_raw_fd</span> <span class="op">=</span> <span class="ident">try_decode_raw_fd</span>(<span class="ident">raw</span>)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
@@ -739,7 +739,7 @@
 <span class="doccomment">/// Convert a `usize` returned from a syscall that effectively returns a</span>
 <span class="doccomment">/// `*mut c_void` on success.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_void_star</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">ret_void_star</span>(<span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span><span class="op">&gt;</span> {
     <span class="ident">try_decode_void_star</span>(<span class="ident">raw</span>)
 }
 </code></pre></div>

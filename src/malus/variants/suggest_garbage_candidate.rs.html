@@ -169,7 +169,6 @@
 <span id="169">169</span>
 <span id="170">170</span>
 <span id="171">171</span>
-<span id="172">172</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -232,7 +231,6 @@
 <span class="kw">where</span>
 	<span class="ident">Sender</span>: <span class="ident">Send</span>,
 {
-	<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
 	<span class="ident">queue</span>: <span class="ident">metered::UnboundedMeteredSender</span><span class="op">&lt;</span>(<span class="ident">Sender</span>, <span class="ident">Hash</span>, <span class="ident">CandidateReceipt</span>)<span class="op">&gt;</span>,
 }
 
@@ -246,22 +244,22 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Sender</span>,
 		<span class="ident">msg</span>: <span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Message</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Message</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Message</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="ident">msg</span> {
 			<span class="ident">FromOverseer::Communication</span> {
 				<span class="ident">msg</span>: <span class="ident">CandidateBackingMessage::Second</span>(<span class="ident">hash</span>, <span class="ident">candidate_receipt</span>, <span class="ident">_pov</span>),
-			} <span class="op">=</span><span class="op">&gt;</span> {
+			} =&gt; {
 				<span class="self">self</span>.<span class="ident">queue</span>
 					.<span class="ident">unbounded_send</span>((<span class="ident">sender</span>.<span class="ident">clone</span>(), <span class="ident">hash</span>, <span class="ident">candidate_receipt</span>.<span class="ident">clone</span>()))
 					.<span class="ident">unwrap</span>();
 
 				<span class="prelude-val">None</span>
 			},
-			<span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">other</span>),
+			<span class="ident">other</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">other</span>),
 		}
 	}
 
-	<span class="kw">fn</span> <span class="ident">intercept_outgoing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">AllMessages</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AllMessages</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">intercept_outgoing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">msg</span>: <span class="ident">AllMessages</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AllMessages</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Some</span>(<span class="ident">msg</span>)
 	}
 }
@@ -274,7 +272,7 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">connector</span>: <span class="ident">OverseerConnector</span>,
 		<span class="ident">args</span>: <span class="ident">OverseerGenArgs</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Spawner</span>, <span class="ident">RuntimeClient</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Overseer</span><span class="op">&lt;</span><span class="ident">Spawner</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RuntimeClient</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">OverseerHandle</span>), <span class="ident">Error</span><span class="op">&gt;</span>
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Overseer</span><span class="op">&lt;</span><span class="ident">Spawner</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RuntimeClient</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">OverseerHandle</span>), <span class="ident">Error</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">RuntimeClient</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">ProvideRuntimeApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">HeaderBackend</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AuxStore</span>,
 		<span class="ident">RuntimeClient::Api</span>: <span class="ident">ParachainHost</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">BabeApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AuthorityDiscoveryApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
@@ -284,7 +282,7 @@
 		<span class="kw">let</span> (<span class="ident">sink</span>, <span class="ident">source</span>) <span class="op">=</span> <span class="ident">metered::unbounded</span>();
 		<span class="kw">let</span> <span class="ident">keystore</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">keystore</span>.<span class="ident">clone</span>() <span class="kw">as</span> <span class="ident">SyncCryptoStorePtr</span>;
 
-		<span class="kw">let</span> <span class="ident">filter</span> <span class="op">=</span> <span class="ident">ReplacePoVBytes</span> { <span class="ident">keystore</span>: <span class="ident">keystore</span>.<span class="ident">clone</span>(), <span class="ident">queue</span>: <span class="ident">sink</span> };
+		<span class="kw">let</span> <span class="ident">filter</span> <span class="op">=</span> <span class="ident">ReplacePoVBytes</span> { <span class="ident">queue</span>: <span class="ident">sink</span> };
 
 		<span class="kw">let</span> <span class="ident">keystore2</span> <span class="op">=</span> <span class="ident">keystore</span>.<span class="ident">clone</span>();
 		<span class="kw">let</span> <span class="ident">spawner2</span> <span class="op">=</span> <span class="ident">spawner</span>.<span class="ident">clone</span>();

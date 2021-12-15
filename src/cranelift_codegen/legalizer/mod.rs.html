@@ -351,14 +351,14 @@
 <span class="doccomment">/// platform-specific transforms.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simple_legalize</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>, <span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ControlFlowGraph</span>, <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>) {
     <span class="macro">macro_rules!</span> <span class="ident">expand_imm_op</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">from</span>:<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {{
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">from</span>:<span class="ident">ident</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">ident</span>) =&gt; {{
             <span class="kw">let</span> (<span class="ident">arg</span>, <span class="ident">imm</span>) <span class="op">=</span> <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>] {
                 <span class="ident">ir::InstructionData::BinaryImm64</span> {
                     <span class="ident">opcode</span>: <span class="kw">_</span>,
                     <span class="ident">arg</span>,
                     <span class="ident">imm</span>,
-                } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">arg</span>, <span class="ident">imm</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
+                } =&gt; (<span class="ident">arg</span>, <span class="ident">imm</span>),
+                <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(
                     <span class="macro">concat!</span>(<span class="string">&quot;Expected &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">from</span>), <span class="string">&quot;: {}&quot;</span>),
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>)
                 ),
@@ -368,14 +368,14 @@
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">replace</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>(<span class="ident">arg</span>, <span class="ident">imm</span>);
         }};
 
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>:<span class="ident">ident</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ident</span><span class="op">&gt;</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">from</span>:<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {{
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>:<span class="ident">ident</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ident</span><span class="op">&gt;</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">from</span>:<span class="ident">ident</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">ident</span>) =&gt; {{
             <span class="kw">let</span> (<span class="ident">arg</span>, <span class="ident">imm</span>) <span class="op">=</span> <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>] {
                 <span class="ident">ir::InstructionData::BinaryImm64</span> {
                     <span class="ident">opcode</span>: <span class="kw">_</span>,
                     <span class="ident">arg</span>,
                     <span class="ident">imm</span>,
-                } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">arg</span>, <span class="ident">imm</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
+                } =&gt; (<span class="ident">arg</span>, <span class="ident">imm</span>),
+                <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(
                     <span class="macro">concat!</span>(<span class="string">&quot;Expected &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">from</span>), <span class="string">&quot;: {}&quot;</span>),
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inst</span>)
                 ),
@@ -393,69 +393,69 @@
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">inst</span>) <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">next_inst</span>() {
             <span class="kw">match</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>() {
                 <span class="comment">// control flow</span>
-                <span class="ident">ir::Opcode::BrIcmp</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expand_br_icmp</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
-                <span class="ident">ir::Opcode::Trapnz</span> <span class="op">|</span> <span class="ident">ir::Opcode::Trapz</span> <span class="op">|</span> <span class="ident">ir::Opcode::ResumableTrapnz</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ir::Opcode::BrIcmp</span> =&gt; <span class="ident">expand_br_icmp</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
+                <span class="ident">ir::Opcode::Trapnz</span> <span class="op">|</span> <span class="ident">ir::Opcode::Trapz</span> <span class="op">|</span> <span class="ident">ir::Opcode::ResumableTrapnz</span> =&gt; {
                     <span class="ident">expand_cond_trap</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>);
                 }
 
                 <span class="comment">// memory and constants</span>
-                <span class="ident">ir::Opcode::GlobalValue</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expand_global_value</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
-                <span class="ident">ir::Opcode::HeapAddr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expand_heap_addr</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
-                <span class="ident">ir::Opcode::StackLoad</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expand_stack_load</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
-                <span class="ident">ir::Opcode::StackStore</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expand_stack_store</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
-                <span class="ident">ir::Opcode::TableAddr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expand_table_addr</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
+                <span class="ident">ir::Opcode::GlobalValue</span> =&gt; <span class="ident">expand_global_value</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
+                <span class="ident">ir::Opcode::HeapAddr</span> =&gt; <span class="ident">expand_heap_addr</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
+                <span class="ident">ir::Opcode::StackLoad</span> =&gt; <span class="ident">expand_stack_load</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
+                <span class="ident">ir::Opcode::StackStore</span> =&gt; <span class="ident">expand_stack_store</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
+                <span class="ident">ir::Opcode::TableAddr</span> =&gt; <span class="ident">expand_table_addr</span>(<span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pos</span>.<span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">isa</span>),
 
                 <span class="comment">// bitops</span>
-                <span class="ident">ir::Opcode::BandImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">band_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">band</span>),
-                <span class="ident">ir::Opcode::BorImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">bor_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bor</span>),
-                <span class="ident">ir::Opcode::BxorImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">bxor_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bxor</span>),
-                <span class="ident">ir::Opcode::IaddImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">iadd_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">iadd</span>),
+                <span class="ident">ir::Opcode::BandImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">band_imm</span> =&gt; <span class="ident">band</span>),
+                <span class="ident">ir::Opcode::BorImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">bor_imm</span> =&gt; <span class="ident">bor</span>),
+                <span class="ident">ir::Opcode::BxorImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">bxor_imm</span> =&gt; <span class="ident">bxor</span>),
+                <span class="ident">ir::Opcode::IaddImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">iadd_imm</span> =&gt; <span class="ident">iadd</span>),
 
                 <span class="comment">// bitshifting</span>
-                <span class="ident">ir::Opcode::IshlImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">ishl_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ishl</span>),
-                <span class="ident">ir::Opcode::RotlImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">rotl_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">rotl</span>),
-                <span class="ident">ir::Opcode::RotrImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">rotr_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">rotr</span>),
-                <span class="ident">ir::Opcode::SshrImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">sshr_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sshr</span>),
-                <span class="ident">ir::Opcode::UshrImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">ushr_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ushr</span>),
+                <span class="ident">ir::Opcode::IshlImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">ishl_imm</span> =&gt; <span class="ident">ishl</span>),
+                <span class="ident">ir::Opcode::RotlImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">rotl_imm</span> =&gt; <span class="ident">rotl</span>),
+                <span class="ident">ir::Opcode::RotrImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">rotr_imm</span> =&gt; <span class="ident">rotr</span>),
+                <span class="ident">ir::Opcode::SshrImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">sshr_imm</span> =&gt; <span class="ident">sshr</span>),
+                <span class="ident">ir::Opcode::UshrImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span><span class="op">&lt;</span><span class="ident">I32</span><span class="op">&gt;</span>: <span class="ident">ushr_imm</span> =&gt; <span class="ident">ushr</span>),
 
                 <span class="comment">// math</span>
-                <span class="ident">ir::Opcode::IrsubImm</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ir::Opcode::IrsubImm</span> =&gt; {
                     <span class="kw">let</span> (<span class="ident">arg</span>, <span class="ident">imm</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>] {
                         <span class="ident">ir::InstructionData::BinaryImm64</span> {
                             <span class="ident">opcode</span>: <span class="kw">_</span>,
                             <span class="ident">arg</span>,
                             <span class="ident">imm</span>,
-                        } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">arg</span>, <span class="ident">imm</span>),
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected irsub_imm: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+                        } =&gt; (<span class="ident">arg</span>, <span class="ident">imm</span>),
+                        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected irsub_imm: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
                     };
                     <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg</span>);
                     <span class="kw">let</span> <span class="ident">imm</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">ty</span>, <span class="ident">imm</span>);
                     <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">replace</span>(<span class="ident">inst</span>).<span class="ident">isub</span>(<span class="ident">imm</span>, <span class="ident">arg</span>); <span class="comment">// note: arg order reversed</span>
                 }
-                <span class="ident">ir::Opcode::ImulImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">imul_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">imul</span>),
-                <span class="ident">ir::Opcode::SdivImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">sdiv_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sdiv</span>),
-                <span class="ident">ir::Opcode::SremImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">srem_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">srem</span>),
-                <span class="ident">ir::Opcode::UdivImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">udiv_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">udiv</span>),
-                <span class="ident">ir::Opcode::UremImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">urem_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">urem</span>),
+                <span class="ident">ir::Opcode::ImulImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">imul_imm</span> =&gt; <span class="ident">imul</span>),
+                <span class="ident">ir::Opcode::SdivImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">sdiv_imm</span> =&gt; <span class="ident">sdiv</span>),
+                <span class="ident">ir::Opcode::SremImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">srem_imm</span> =&gt; <span class="ident">srem</span>),
+                <span class="ident">ir::Opcode::UdivImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">udiv_imm</span> =&gt; <span class="ident">udiv</span>),
+                <span class="ident">ir::Opcode::UremImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">urem_imm</span> =&gt; <span class="ident">urem</span>),
 
                 <span class="comment">// comparisons</span>
-                <span class="ident">ir::Opcode::IfcmpImm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">ifcmp_imm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ifcmp</span>),
-                <span class="ident">ir::Opcode::IcmpImm</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ir::Opcode::IfcmpImm</span> =&gt; <span class="macro">expand_imm_op!</span>(<span class="ident">pos</span>, <span class="ident">inst</span>: <span class="ident">ifcmp_imm</span> =&gt; <span class="ident">ifcmp</span>),
+                <span class="ident">ir::Opcode::IcmpImm</span> =&gt; {
                     <span class="kw">let</span> (<span class="ident">cc</span>, <span class="ident">x</span>, <span class="ident">y</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>] {
                         <span class="ident">ir::InstructionData::IntCompareImm</span> {
                             <span class="ident">opcode</span>: <span class="kw">_</span>,
                             <span class="ident">cond</span>,
                             <span class="ident">arg</span>,
                             <span class="ident">imm</span>,
-                        } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected ircmp_imm: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+                        } =&gt; (<span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
+                        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected ircmp_imm: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
                     };
                     <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">x</span>);
                     <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">ty</span>, <span class="ident">y</span>);
                     <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">replace</span>(<span class="ident">inst</span>).<span class="ident">icmp</span>(<span class="ident">cc</span>, <span class="ident">x</span>, <span class="ident">y</span>);
                 }
 
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">_</span> =&gt; {
                     <span class="ident">prev_pos</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">position</span>();
                     <span class="kw">continue</span>;
                 }
@@ -479,16 +479,16 @@
     <span class="comment">// Parse the instruction.</span>
     <span class="kw">let</span> <span class="ident">trapz</span>;
     <span class="kw">let</span> (<span class="ident">arg</span>, <span class="ident">code</span>, <span class="ident">opcode</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>] {
-        <span class="ident">ir::InstructionData::CondTrap</span> { <span class="ident">opcode</span>, <span class="ident">arg</span>, <span class="ident">code</span> } <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">ir::InstructionData::CondTrap</span> { <span class="ident">opcode</span>, <span class="ident">arg</span>, <span class="ident">code</span> } =&gt; {
             <span class="comment">// We want to branch *over* an unconditional trap.</span>
             <span class="ident">trapz</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">opcode</span> {
-                <span class="ident">ir::Opcode::Trapz</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-                <span class="ident">ir::Opcode::Trapnz</span> <span class="op">|</span> <span class="ident">ir::Opcode::ResumableTrapnz</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected cond trap: {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+                <span class="ident">ir::Opcode::Trapz</span> =&gt; <span class="bool-val">true</span>,
+                <span class="ident">ir::Opcode::Trapnz</span> <span class="op">|</span> <span class="ident">ir::Opcode::ResumableTrapnz</span> =&gt; <span class="bool-val">false</span>,
+                <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected cond trap: {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
             };
             (<span class="ident">arg</span>, <span class="ident">code</span>, <span class="ident">opcode</span>)
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected cond trap: {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected cond trap: {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
     };
 
     <span class="comment">// Split the block after `inst`:</span>
@@ -526,14 +526,14 @@
     <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">new_block_trap</span>);
 
     <span class="kw">match</span> <span class="ident">opcode</span> {
-        <span class="ident">ir::Opcode::Trapz</span> <span class="op">|</span> <span class="ident">ir::Opcode::Trapnz</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">ir::Opcode::Trapz</span> <span class="op">|</span> <span class="ident">ir::Opcode::Trapnz</span> =&gt; {
             <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">trap</span>(<span class="ident">code</span>);
         }
-        <span class="ident">ir::Opcode::ResumableTrapnz</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">ir::Opcode::ResumableTrapnz</span> =&gt; {
             <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">resumable_trap</span>(<span class="ident">code</span>);
             <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">jump</span>(<span class="ident">new_block_resume</span>, <span class="kw-2">&amp;</span>[]);
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
     }
 
     <span class="comment">// Insert the new label and resume the execution when the trap fails.</span>
@@ -557,14 +557,14 @@
             <span class="ident">destination</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> (
+        } =&gt; (
             <span class="ident">cond</span>,
             <span class="ident">args</span>.<span class="ident">get</span>(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_lists</span>).<span class="ident">unwrap</span>(),
             <span class="ident">args</span>.<span class="ident">get</span>(<span class="number">1</span>, <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_lists</span>).<span class="ident">unwrap</span>(),
             <span class="ident">destination</span>,
             <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_lists</span>)[<span class="number">2</span>..].<span class="ident">to_vec</span>(),
         ),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected br_icmp {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected br_icmp {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
     };
 
     <span class="kw">let</span> <span class="ident">old_block</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">pp_block</span>(<span class="ident">inst</span>);
@@ -597,8 +597,8 @@
             <span class="ident">opcode</span>: <span class="ident">_opcode</span>,
             <span class="ident">stack_slot</span>,
             <span class="ident">offset</span>,
-        } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">stack_slot</span>, <span class="ident">offset</span>),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected stack_load: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+        } =&gt; (<span class="ident">stack_slot</span>, <span class="ident">offset</span>),
+        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected stack_load: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
     };
 
     <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">stack_addr</span>(<span class="ident">addr_ty</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>);
@@ -626,8 +626,8 @@
             <span class="ident">arg</span>,
             <span class="ident">stack_slot</span>,
             <span class="ident">offset</span>,
-        } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">arg</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Expected stack_store: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
+        } =&gt; (<span class="ident">arg</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>),
+        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected stack_store: {}&quot;</span>, <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)),
     };
 
     <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">stack_addr</span>(<span class="ident">addr_ty</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>);

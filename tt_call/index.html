@@ -16,7 +16,7 @@ expansion for macro_rules.</p>
 tt-call = &quot;1.0&quot;</code></pre></div>
 <p><em>Version requirement: tt-call requires a Rust compiler version 1.31 or
 newer.</em></p>
-<h2 id="calling-convention-rules" class="section-header"><a href="#calling-convention-rules">Calling convention rules</a></h2>
+<h3 id="calling-convention-rules" class="section-header"><a href="#calling-convention-rules">Calling convention rules</a></h3>
 <ul>
 <li>
 <p><strong>Macros that conform to tt-call must be invoked with curly braces.</strong></p>
@@ -65,7 +65,7 @@ Expanding to nothing, expanding to more than one macro invocation, or
 expanding to anything other than a macro invocation are not permitted.</p>
 </li>
 </ul>
-<h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
+<h3 id="examples" class="section-header"><a href="#examples">Examples</a></h3>
 <p>Just as a flavor of the syntax, one of the rules from the implementation of
 the built-in <a href="macro.tt_replace.html"><code>tt_replace!</code></a> macro is written as follows. The macro takes in
 a token stream and for each token that matches a given predicate it replaces
@@ -84,7 +84,7 @@ returns false.</p>
     <span class="ident">replace_with</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">with</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
     <span class="ident">tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
     <span class="ident">rest</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>:<span class="ident">tt</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
-} <span class="op">=</span><span class="op">&gt;</span> {
+} =&gt; {
     <span class="macro">tt_if!</span> {
         <span class="ident">condition</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">condition</span> }]
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span> }]
@@ -118,7 +118,7 @@ tokens back to the caller using <code>tt_return!</code>.</p>
     <span class="ident">replace_with</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">with</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
     <span class="ident">tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
     <span class="ident">rest</span> <span class="op">=</span> [{ }]
-} <span class="op">=</span><span class="op">&gt;</span> {
+} =&gt; {
     <span class="macro">tt_return!</span> {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
         <span class="ident">tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>)<span class="op">*</span> }]
@@ -133,7 +133,7 @@ lowercase <code>self</code>.</p>
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="self">self</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro">tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is</span> <span class="op">=</span> [{ <span class="bool-val">true</span> }]
@@ -144,7 +144,7 @@ lowercase <code>self</code>.</p>
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">tt</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro">tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is</span> <span class="op">=</span> [{ <span class="bool-val">false</span> }]
@@ -159,7 +159,7 @@ calling convention. Internally though it uses several tt-call helpers as
 building blocks.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="macro">macro_rules!</span> <span class="ident">closure</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expr</span>:<span class="ident">tt</span>)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expr</span>:<span class="ident">tt</span>)<span class="op">+</span>) =&gt; {
         <span class="op">|</span><span class="ident">__value</span><span class="op">|</span> <span class="macro">tt_call!</span> {
             <span class="kw">macro</span> <span class="op">=</span> [{ <span class="ident">tt_replace</span> }]
             <span class="ident">condition</span> <span class="op">=</span> [{ <span class="ident">is_lowercase_self</span> }]
@@ -173,14 +173,14 @@ building blocks.</p>
     <span class="kw">let</span> <span class="ident">add_one</span> <span class="op">=</span> <span class="macro">closure!</span>(<span class="self">self</span> <span class="op">+</span> <span class="number">1</span>);
     <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">add_one</span>(<span class="number">1</span>));
 }</code></pre></div>
-<h2 id="motivation" class="section-header"><a href="#motivation">Motivation</a></h2>
+<h3 id="motivation" class="section-header"><a href="#motivation">Motivation</a></h3>
 <p>This may seem like a lot of ceremony around what should be very simple macro
 calls. After all, couldn’t we write <code>is_lowercase_self</code> in a much more
 straightforward way as follows?</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="macro">macro_rules!</span> <span class="ident">is_lowercase_self</span> {
-    (<span class="self">self</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="bool-val">true</span> };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">tt</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="bool-val">false</span> };
+    (<span class="self">self</span>) =&gt; { <span class="bool-val">true</span> };
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">tt</span>) =&gt; { <span class="bool-val">false</span> };
 }
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
@@ -215,14 +215,14 @@ adventures and can be even nastier than tt-call once you get the hang of
 both. In addition, procedural macros must be defined in a separate crate
 from the rest of your library so they are not well suited for quick one-off
 helper macros.</p>
-<h2 id="design-philosphy" class="section-header"><a href="#design-philosphy">Design philosphy</a></h2>
+<h3 id="design-philosphy" class="section-header"><a href="#design-philosphy">Design philosphy</a></h3>
 <p>As may be no surprise by this point, the calling convention design
 prioritizes scalability and composability over conciseness. A reader
 familiar with the calling convention (maybe you, six months after writing
 the macro) should be able to look at any individual tt-call rule by itself
 and comfortably read off what it does top to bottom and identify its
 purpose.</p>
-<h2 id="links" class="section-header"><a href="#links">Links</a></h2>
+<h3 id="links" class="section-header"><a href="#links">Links</a></h3>
 <ul>
 <li>
 <p>The code that implements <code>closure!(self + 1)</code>, all of which is shown
@@ -238,7 +238,7 @@ version of <code>$:ty</code>.</p>
     <span class="ident">std::fs::File</span>,
     <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">str</span>,
     <span class="kw">impl</span> <span class="ident">Display</span>,
-    <span class="kw">fn</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span>,
+    <span class="kw">fn</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span>,
 };
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
@@ -252,33 +252,33 @@ version of <code>$:ty</code>.</p>
 </li>
 </ul>
 </div></details><h2 id="macros" class="section-header"><a href="#macros">Macros</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="macro" href="macro.error_eof.html" title="tt_call::error_eof macro">error_eof</a></div><div class="item-right docblock-short"><p>Fail due to an unexpected end of input.</p>
-</div><div class="item-left module-item"><a class="macro" href="macro.error_unexpected.html" title="tt_call::error_unexpected macro">error_unexpected</a></div><div class="item-right docblock-short"><p>Fail due to an unexpected input token.</p>
-</div><div class="item-left module-item"><a class="macro" href="macro.error_unexpected_last.html" title="tt_call::error_unexpected_last macro">error_unexpected_last</a></div><div class="item-right docblock-short"><p>Fail due to an unexpected input token, faulting the last token.</p>
-</div><div class="item-left module-item"><a class="macro" href="macro.parse_type.html" title="tt_call::parse_type macro">parse_type</a></div><div class="item-right docblock-short"><p>Parse any syntactically valid Rust type.
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.error_eof.html" title="tt_call::error_eof macro">error_eof</a></div><div class="item-right docblock-short"><p>Fail due to an unexpected end of input.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.error_unexpected.html" title="tt_call::error_unexpected macro">error_unexpected</a></div><div class="item-right docblock-short"><p>Fail due to an unexpected input token.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.error_unexpected_last.html" title="tt_call::error_unexpected_last macro">error_unexpected_last</a></div><div class="item-right docblock-short"><p>Fail due to an unexpected input token, faulting the last token.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.parse_type.html" title="tt_call::parse_type macro">parse_type</a></div><div class="item-right docblock-short"><p>Parse any syntactically valid Rust type.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_call.html" title="tt_call::tt_call macro">tt_call</a></div><div class="item-right docblock-short"><p>Evaluate a tt-call macro and return its output to a given return
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_call.html" title="tt_call::tt_call macro">tt_call</a></div><div class="item-right docblock-short"><p>Evaluate a tt-call macro and return its output to a given return
 destination.</p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_debug.html" title="tt_call::tt_debug macro">tt_debug</a></div><div class="item-right docblock-short"><p>Print arbitrary output values returned by a tt-call macro. This is valuable
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_debug.html" title="tt_call::tt_debug macro">tt_debug</a></div><div class="item-right docblock-short"><p>Print arbitrary output values returned by a tt-call macro. This is valuable
 for debugging.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_false.html" title="tt_call::tt_false macro">tt_false</a></div><div class="item-right docblock-short"><p>Predicate that is always false.
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_false.html" title="tt_call::tt_false macro">tt_false</a></div><div class="item-right docblock-short"><p>Predicate that is always false.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_if.html" title="tt_call::tt_if macro">tt_if</a></div><div class="item-right docblock-short"><p>Evaluate a condition and expand to one or the other of two branches.</p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_is_comma.html" title="tt_call::tt_is_comma macro">tt_is_comma</a></div><div class="item-right docblock-short"><p>Predicate that accepts a single token and determines whether it is a comma.
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_if.html" title="tt_call::tt_if macro">tt_if</a></div><div class="item-right docblock-short"><p>Evaluate a condition and expand to one or the other of two branches.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_is_comma.html" title="tt_call::tt_is_comma macro">tt_is_comma</a></div><div class="item-right docblock-short"><p>Predicate that accepts a single token and determines whether it is a comma.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_is_ident.html" title="tt_call::tt_is_ident macro">tt_is_ident</a></div><div class="item-right docblock-short"><p>Predicate that accepts a single token and determines whether it is an
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_is_ident.html" title="tt_call::tt_is_ident macro">tt_is_ident</a></div><div class="item-right docblock-short"><p>Predicate that accepts a single token and determines whether it is an
 identifier.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_is_lifetime.html" title="tt_call::tt_is_lifetime macro">tt_is_lifetime</a></div><div class="item-right docblock-short"><p>Predicate that accepts a single token and determines whether it is a
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_is_lifetime.html" title="tt_call::tt_is_lifetime macro">tt_is_lifetime</a></div><div class="item-right docblock-short"><p>Predicate that accepts a single token and determines whether it is a
 lifetime token.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_replace.html" title="tt_call::tt_replace macro">tt_replace</a></div><div class="item-right docblock-short"><p>Replace each token that matches a given predicate by a given replacement
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_replace.html" title="tt_call::tt_replace macro">tt_replace</a></div><div class="item-right docblock-short"><p>Replace each token that matches a given predicate by a given replacement
 sequence of tokens.
 <sup><strong>[tt-call]</strong></sup></p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_return.html" title="tt_call::tt_return macro">tt_return</a></div><div class="item-right docblock-short"><p>Return zero or more output values to the caller macro.</p>
-</div><div class="item-left module-item"><a class="macro" href="macro.tt_true.html" title="tt_call::tt_true macro">tt_true</a></div><div class="item-right docblock-short"><p>Predicate that is always true.
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_return.html" title="tt_call::tt_return macro">tt_return</a></div><div class="item-right docblock-short"><p>Return zero or more output values to the caller macro.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.tt_true.html" title="tt_call::tt_true macro">tt_true</a></div><div class="item-right docblock-short"><p>Predicate that is always true.
 <sup><strong>[tt-call]</strong></sup></p>
-</div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="tt_call" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+</div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="tt_call" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script>
 </body></html>

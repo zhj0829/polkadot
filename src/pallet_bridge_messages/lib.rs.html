@@ -2579,14 +2579,14 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// May only be called either by root, or by `PalletOwner`.</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>((<span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>), <span class="ident">DispatchClass::Operational</span>))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_owner</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new_owner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_owner</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new_owner</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_owner_or_root</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="kw">match</span> <span class="ident">new_owner</span> {
-				<span class="prelude-val">Some</span>(<span class="ident">new_owner</span>) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Some</span>(<span class="ident">new_owner</span>) =&gt; {
 					<span class="ident">PalletOwner</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="kw-2">&amp;</span><span class="ident">new_owner</span>);
 					<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>, <span class="string">&quot;Setting pallet Owner to: {:?}&quot;</span>, <span class="ident">new_owner</span>);
 				},
-				<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">None</span> =&gt; {
 					<span class="ident">PalletOwner</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::kill</span>();
 					<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>, <span class="string">&quot;Removed Owner of pallet.&quot;</span>);
 				},
@@ -2601,7 +2601,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_operating_mode</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">operating_mode</span>: <span class="ident">OperatingMode</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_owner_or_root</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">PalletOperatingMode</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">operating_mode</span>);
 			<span class="macro">log::info!</span>(
@@ -2622,7 +2622,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_pallet_parameter</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">parameter</span>: <span class="ident">T::Parameter</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_owner_or_root</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident">parameter</span>.<span class="ident">save</span>();
 			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::ParameterUpdated</span>(<span class="ident">parameter</span>));
@@ -2636,7 +2636,7 @@
 			<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
 			<span class="ident">payload</span>: <span class="ident">T::OutboundPayload</span>,
 			<span class="ident">delivery_and_dispatch_fee</span>: <span class="ident">T::OutboundMessageFee</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
+		) -&gt; <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident"><span class="kw">crate</span>::send_message</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(
 				<span class="ident">origin</span>.<span class="ident">into</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">BadOrigin</span>)<span class="question-mark">?</span>,
 				<span class="ident">lane_id</span>,
@@ -2656,7 +2656,7 @@
 			<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
 			<span class="ident">nonce</span>: <span class="ident">MessageNonce</span>,
 			<span class="ident">additional_fee</span>: <span class="ident">T::OutboundMessageFee</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
+		) -&gt; <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident">ensure_not_halted</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 			<span class="comment">// if someone tries to pay for already-delivered message, we&#39;re rejecting this intention</span>
 			<span class="comment">// (otherwise this additional fee will be locked forever in relayers fund)</span>
@@ -2729,7 +2729,7 @@
 			<span class="ident">proof</span>: <span class="ident">MessagesProofOf</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>,
 			<span class="ident">messages_count</span>: <span class="ident">u32</span>,
 			<span class="ident">dispatch_weight</span>: <span class="ident">Weight</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
+		) -&gt; <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident">ensure_not_halted</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 			<span class="kw">let</span> <span class="ident">relayer_id_at_this_chain</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
@@ -2824,7 +2824,7 @@
 					<span class="comment">// delivery transaction cost anyway. And base cost covers everything except</span>
 					<span class="comment">// dispatch, so we have a balance here.</span>
 					<span class="kw">let</span> (<span class="ident">unspent_weight</span>, <span class="ident">refund_pay_dispatch_fee</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">receival_result</span> {
-						<span class="ident">ReceivalResult::Dispatched</span>(<span class="ident">dispatch_result</span>) <span class="op">=</span><span class="op">&gt;</span> {
+						<span class="ident">ReceivalResult::Dispatched</span>(<span class="ident">dispatch_result</span>) =&gt; {
 							<span class="ident">valid_messages</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 							(
 								<span class="ident">dispatch_result</span>.<span class="ident">unspent_weight</span>,
@@ -2833,7 +2833,7 @@
 						},
 						<span class="ident">ReceivalResult::InvalidNonce</span> <span class="op">|</span>
 						<span class="ident">ReceivalResult::TooManyUnrewardedRelayers</span> <span class="op">|</span>
-						<span class="ident">ReceivalResult::TooManyUnconfirmedMessages</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">dispatch_weight</span>, <span class="bool-val">true</span>),
+						<span class="ident">ReceivalResult::TooManyUnconfirmedMessages</span> =&gt; (<span class="ident">dispatch_weight</span>, <span class="bool-val">true</span>),
 					};
 
 					<span class="kw">let</span> <span class="ident">unspent_weight</span> <span class="op">=</span> <span class="ident">sp_std::cmp::min</span>(<span class="ident">unspent_weight</span>, <span class="ident">dispatch_weight</span>);
@@ -2873,7 +2873,7 @@
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">proof</span>: <span class="ident">MessagesDeliveryProofOf</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>,
 			<span class="ident">relayers_state</span>: <span class="ident">UnrewardedRelayersState</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
+		) -&gt; <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident">ensure_not_halted</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 
 			<span class="comment">// why do we need to know the weight of this (`receive_messages_delivery_proof`) call?</span>
@@ -2910,9 +2910,9 @@
 			<span class="comment">// (we only care about total number of entries and messages, because this affects call</span>
 			<span class="comment">// weight)</span>
 			<span class="macro">ensure!</span>(
-				<span class="ident">total_unrewarded_messages</span>(<span class="kw-2">&amp;</span><span class="ident">lane_data</span>.<span class="ident">relayers</span>).<span class="ident">unwrap_or</span>(<span class="ident">MessageNonce::MAX</span>) <span class="op">=</span><span class="op">=</span>
+				<span class="ident">total_unrewarded_messages</span>(<span class="kw-2">&amp;</span><span class="ident">lane_data</span>.<span class="ident">relayers</span>).<span class="ident">unwrap_or</span>(<span class="ident">MessageNonce::MAX</span>) <span class="op">==</span>
 					<span class="ident">relayers_state</span>.<span class="ident">total_messages</span> <span class="op">&amp;&amp;</span>
-					<span class="ident">lane_data</span>.<span class="ident">relayers</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">MessageNonce</span> <span class="op">=</span><span class="op">=</span>
+					<span class="ident">lane_data</span>.<span class="ident">relayers</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">MessageNonce</span> <span class="op">==</span>
 						<span class="ident">relayers_state</span>.<span class="ident">unrewarded_relayer_entries</span>,
 				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::InvalidUnrewardedRelayersState</span>
 			);
@@ -2925,12 +2925,12 @@
 				<span class="ident">last_delivered_nonce</span>,
 				<span class="kw-2">&amp;</span><span class="ident">lane_data</span>.<span class="ident">relayers</span>,
 			) {
-				<span class="ident">ReceivalConfirmationResult::ConfirmedMessages</span>(<span class="ident">confirmed_messages</span>) <span class="op">=</span><span class="op">&gt;</span>
+				<span class="ident">ReceivalConfirmationResult::ConfirmedMessages</span>(<span class="ident">confirmed_messages</span>) =&gt;
 					<span class="prelude-val">Some</span>(<span class="ident">confirmed_messages</span>),
-				<span class="ident">ReceivalConfirmationResult::NoNewConfirmations</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+				<span class="ident">ReceivalConfirmationResult::NoNewConfirmations</span> =&gt; <span class="prelude-val">None</span>,
 				<span class="ident">ReceivalConfirmationResult::TryingToConfirmMoreMessagesThanExpected</span>(
 					<span class="ident">to_confirm_messages_count</span>,
-				) <span class="op">=</span><span class="op">&gt;</span> {
+				) =&gt; {
 					<span class="macro">log::trace!</span>(
 						<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
 						<span class="string">&quot;Messages delivery proof contains too many messages to confirm: {} vs declared {}&quot;</span>,
@@ -2940,7 +2940,7 @@
 
 					<span class="macro">fail!</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::TryingToConfirmMoreMessagesThanExpected</span>);
 				},
-				<span class="ident">error</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="ident">error</span> =&gt; {
 					<span class="macro">log::trace!</span>(
 						<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
 						<span class="string">&quot;Messages delivery proof contains invalid unrewarded relayers vec: {:?}&quot;</span>,
@@ -2958,8 +2958,8 @@
 				<span class="kw">let</span> <span class="ident">actual_callback_weight</span> <span class="op">=</span>
 					<span class="ident">T::OnDeliveryConfirmed::on_messages_delivered</span>(<span class="kw-2">&amp;</span><span class="ident">lane_id</span>, <span class="kw-2">&amp;</span><span class="ident">confirmed_messages</span>);
 				<span class="kw">match</span> <span class="ident">preliminary_callback_overhead</span>.<span class="ident">checked_sub</span>(<span class="ident">actual_callback_weight</span>) {
-					<span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="kw">if</span> <span class="ident">difference</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> (),
-					<span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="kw">if</span> <span class="ident">difference</span> <span class="op">==</span> <span class="number">0</span> =&gt; (),
+					<span class="prelude-val">Some</span>(<span class="ident">difference</span>) =&gt; {
 						<span class="macro">log::trace!</span>(
 							<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
 							<span class="string">&quot;T::OnDeliveryConfirmed callback has spent less weight than expected. Refunding: \
@@ -2970,7 +2970,7 @@
 						);
 						<span class="ident">actual_weight</span> <span class="op">=</span> <span class="ident">actual_weight</span>.<span class="ident">saturating_sub</span>(<span class="ident">difference</span>);
 					},
-					<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">None</span> =&gt; {
 						<span class="macro">debug_assert!</span>(
 							<span class="bool-val">false</span>,
 							<span class="string">&quot;T::OnDeliveryConfirmed callback consumed too much weight.&quot;</span>
@@ -3098,7 +3098,7 @@
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">GenesisConfig</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
 			<span class="self">Self</span> {
 				<span class="ident">operating_mode</span>: <span class="ident">Default::default</span>(),
 				<span class="ident">owner</span>: <span class="ident">Default::default</span>(),
@@ -3122,34 +3122,34 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_message_data</span>(
 			<span class="ident">lane</span>: <span class="ident">LaneId</span>,
 			<span class="ident">nonce</span>: <span class="ident">MessageNonce</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageData</span><span class="op">&lt;</span><span class="ident">T::OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+		) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageData</span><span class="op">&lt;</span><span class="ident">T::OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="ident">OutboundMessages</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">MessageKey</span> { <span class="ident">lane_id</span>: <span class="ident">lane</span>, <span class="ident">nonce</span> })
 		}
 
 		<span class="doccomment">/// Get nonce of the latest generated message at given outbound lane.</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_latest_generated_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_latest_generated_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span> {
 			<span class="ident">OutboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>).<span class="ident">latest_generated_nonce</span>
 		}
 
 		<span class="doccomment">/// Get nonce of the latest confirmed message at given outbound lane.</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span> {
 			<span class="ident">OutboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>).<span class="ident">latest_received_nonce</span>
 		}
 
 		<span class="doccomment">/// Get nonce of the latest received message at given inbound lane.</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span> {
 			<span class="ident">InboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>).<span class="ident">last_delivered_nonce</span>()
 		}
 
 		<span class="doccomment">/// Get nonce of the latest confirmed message at given inbound lane.</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_latest_confirmed_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_latest_confirmed_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span> {
 			<span class="ident">InboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>).<span class="ident">last_confirmed_nonce</span>
 		}
 
 		<span class="doccomment">/// Get state of unrewarded relayers set.</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_unrewarded_relayers_state</span>(
 			<span class="ident">lane</span>: <span class="ident">bp_messages::LaneId</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bp_messages::UnrewardedRelayersState</span> {
+		) -&gt; <span class="ident">bp_messages::UnrewardedRelayersState</span> {
 			<span class="kw">let</span> <span class="ident">relayers</span> <span class="op">=</span> <span class="ident">InboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="ident">lane</span>).<span class="ident">relayers</span>;
 			<span class="ident">bp_messages::UnrewardedRelayersState</span> {
 				<span class="ident">unrewarded_relayer_entries</span>: <span class="ident">relayers</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="kw">_</span>,
@@ -3170,7 +3170,7 @@
 	<span class="kw">use</span> <span class="ident">sp_core::storage::StorageKey</span>;
 
 	<span class="doccomment">/// Storage key of the outbound message in the runtime storage.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_key</span>(<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">nonce</span>: <span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_key</span>(<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">nonce</span>: <span class="ident">MessageNonce</span>) -&gt; <span class="ident">StorageKey</span> {
 		<span class="ident">bp_runtime::storage_map_final_key_blake2_128concat</span>(
 			<span class="ident">pallet_prefix</span>,
 			<span class="string">&quot;OutboundMessages&quot;</span>,
@@ -3179,12 +3179,12 @@
 	}
 
 	<span class="doccomment">/// Storage key of the outbound message lane state in the runtime storage.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_lane_data_key</span>(<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outbound_lane_data_key</span>(<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) -&gt; <span class="ident">StorageKey</span> {
 		<span class="ident">bp_runtime::storage_map_final_key_blake2_128concat</span>(<span class="ident">pallet_prefix</span>, <span class="string">&quot;OutboundLanes&quot;</span>, <span class="ident">lane</span>)
 	}
 
 	<span class="doccomment">/// Storage key of the inbound message lane state in the runtime storage.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_lane_data_key</span>(<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StorageKey</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inbound_lane_data_key</span>(<span class="ident">pallet_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) -&gt; <span class="ident">StorageKey</span> {
 		<span class="ident">bp_runtime::storage_map_final_key_blake2_128concat</span>(<span class="ident">pallet_prefix</span>, <span class="string">&quot;InboundLanes&quot;</span>, <span class="ident">lane</span>)
 	}
 }
@@ -3195,7 +3195,7 @@
 <span class="doccomment">/// on the implementation it can be used to store relayers rewards.</span>
 <span class="doccomment">/// See [`InstantCurrencyPayments`] for a concrete implementation.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">relayer_fund_account_id</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">AccountIdConverter</span>: <span class="ident">Convert</span><span class="op">&lt;</span><span class="ident">H256</span>, <span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountId</span> {
+) -&gt; <span class="ident">AccountId</span> {
 	<span class="kw">let</span> <span class="ident">encoded_id</span> <span class="op">=</span> <span class="ident">bp_runtime::derive_relayer_fund_account_id</span>(<span class="ident">bp_runtime::NO_INSTANCE_ID</span>);
 	<span class="ident">AccountIdConverter::convert</span>(<span class="ident">encoded_id</span>)
 }
@@ -3217,7 +3217,7 @@
 		<span class="ident">lane</span>: <span class="ident">LaneId</span>,
 		<span class="ident">message</span>: <span class="ident">T::OutboundPayload</span>,
 		<span class="ident">delivery_and_dispatch_fee</span>: <span class="ident">T::OutboundMessageFee</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SendMessageArtifacts</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SendMessageArtifacts</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="ident"><span class="kw">crate</span>::send_message</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">sender</span>, <span class="ident">lane</span>, <span class="ident">message</span>, <span class="ident">delivery_and_dispatch_fee</span>)
 	}
 }
@@ -3228,7 +3228,7 @@
 	<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
 	<span class="ident">payload</span>: <span class="ident">T::OutboundPayload</span>,
 	<span class="ident">delivery_and_dispatch_fee</span>: <span class="ident">T::OutboundMessageFee</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_std::result::Result</span><span class="op">&lt;</span>
+) -&gt; <span class="ident">sp_std::result::Result</span><span class="op">&lt;</span>
 	<span class="ident">SendMessageArtifacts</span>,
 	<span class="ident">sp_runtime::DispatchErrorWithPostInfo</span><span class="op">&lt;</span><span class="ident">PostDispatchInfo</span><span class="op">&gt;</span>,
 <span class="op">&gt;</span> {
@@ -3301,8 +3301,8 @@
 		<span class="ident">T::WeightInfo::single_message_callback_overhead</span>(<span class="ident">T::DbWeight::get</span>());
 	<span class="kw">let</span> <span class="ident">actual_callback_weight</span> <span class="op">=</span> <span class="ident">T::OnMessageAccepted::on_messages_accepted</span>(<span class="kw-2">&amp;</span><span class="ident">lane_id</span>, <span class="kw-2">&amp;</span><span class="ident">nonce</span>);
 	<span class="kw">match</span> <span class="ident">single_message_callback_overhead</span>.<span class="ident">checked_sub</span>(<span class="ident">actual_callback_weight</span>) {
-		<span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="kw">if</span> <span class="ident">difference</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> (),
-		<span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="prelude-val">Some</span>(<span class="ident">difference</span>) <span class="kw">if</span> <span class="ident">difference</span> <span class="op">==</span> <span class="number">0</span> =&gt; (),
+		<span class="prelude-val">Some</span>(<span class="ident">difference</span>) =&gt; {
 			<span class="macro">log::trace!</span>(
 				<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
 				<span class="string">&quot;T::OnMessageAccepted callback has spent less weight than expected. Refunding: \
@@ -3313,7 +3313,7 @@
 			);
 			<span class="ident">actual_weight</span> <span class="op">=</span> <span class="ident">actual_weight</span>.<span class="ident">saturating_sub</span>(<span class="ident">difference</span>);
 		},
-		<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="prelude-val">None</span> =&gt; {
 			<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;T::OnMessageAccepted callback consumed too much weight.&quot;</span>);
 			<span class="macro">log::error!</span>(
 				<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
@@ -3348,18 +3348,18 @@
 }
 
 <span class="doccomment">/// Ensure that the origin is either root, or `PalletOwner`.</span>
-<span class="kw">fn</span> <span class="ident">ensure_owner_or_root</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">origin</span>: <span class="ident">T::Origin</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">BadOrigin</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">ensure_owner_or_root</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">origin</span>: <span class="ident">T::Origin</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">BadOrigin</span><span class="op">&gt;</span> {
 	<span class="kw">match</span> <span class="ident">origin</span>.<span class="ident">into</span>() {
-		<span class="prelude-val">Ok</span>(<span class="ident">RawOrigin::Root</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+		<span class="prelude-val">Ok</span>(<span class="ident">RawOrigin::Root</span>) =&gt; <span class="prelude-val">Ok</span>(()),
 		<span class="prelude-val">Ok</span>(<span class="ident">RawOrigin::Signed</span>(<span class="kw-2">ref</span> <span class="ident">signer</span>))
-			<span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">signer</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::module_owner</span>().<span class="ident">as_ref</span>() <span class="op">=</span><span class="op">&gt;</span>
+			<span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">signer</span>) <span class="op">==</span> <span class="ident">Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::module_owner</span>().<span class="ident">as_ref</span>() =&gt;
 			<span class="prelude-val">Ok</span>(()),
-		<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">BadOrigin</span>),
+		<span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BadOrigin</span>),
 	}
 }
 
 <span class="doccomment">/// Ensure that the pallet is in normal operational mode.</span>
-<span class="kw">fn</span> <span class="ident">ensure_normal_operating_mode</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">ensure_normal_operating_mode</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">if</span> <span class="ident">PalletOperatingMode</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">OperatingMode::Normal</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::Halted</span>)
 	} <span class="kw">else</span> {
@@ -3368,8 +3368,8 @@
 }
 
 <span class="doccomment">/// Ensure that the pallet is not halted.</span>
-<span class="kw">fn</span> <span class="ident">ensure_not_halted</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-	<span class="kw">if</span> <span class="ident">PalletOperatingMode</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">OperatingMode::Halted</span> {
+<span class="kw">fn</span> <span class="ident">ensure_not_halted</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">if</span> <span class="ident">PalletOperatingMode</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>() <span class="op">==</span> <span class="ident">OperatingMode::Halted</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::Halted</span>)
 	} <span class="kw">else</span> {
 		<span class="prelude-val">Ok</span>(())
@@ -3379,14 +3379,14 @@
 <span class="doccomment">/// Creates new inbound lane object, backed by runtime storage.</span>
 <span class="kw">fn</span> <span class="ident">inbound_lane</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
 	<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InboundLane</span><span class="op">&lt;</span><span class="ident">RuntimeInboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">InboundLane</span><span class="op">&lt;</span><span class="ident">RuntimeInboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="ident">InboundLane::new</span>(<span class="ident">inbound_lane_storage</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">lane_id</span>))
 }
 
 <span class="doccomment">/// Creates new runtime inbound lane storage.</span>
 <span class="kw">fn</span> <span class="ident">inbound_lane_storage</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
 	<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RuntimeInboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">RuntimeInboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
 	<span class="ident">RuntimeInboundLaneStorage</span> {
 		<span class="ident">lane_id</span>,
 		<span class="ident">cached_data</span>: <span class="ident">RefCell::new</span>(<span class="prelude-val">None</span>),
@@ -3397,7 +3397,7 @@
 <span class="doccomment">/// Creates new outbound lane object, backed by runtime storage.</span>
 <span class="kw">fn</span> <span class="ident">outbound_lane</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
 	<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutboundLane</span><span class="op">&lt;</span><span class="ident">RuntimeOutboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">OutboundLane</span><span class="op">&lt;</span><span class="ident">RuntimeOutboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="ident">OutboundLane::new</span>(<span class="ident">RuntimeOutboundLaneStorage</span> { <span class="ident">lane_id</span>, <span class="ident">_phantom</span>: <span class="ident">Default::default</span>() })
 }
 
@@ -3412,22 +3412,22 @@
 	<span class="kw">type</span> <span class="ident">MessageFee</span> <span class="op">=</span> <span class="ident">T::InboundMessageFee</span>;
 	<span class="kw">type</span> <span class="ident">Relayer</span> <span class="op">=</span> <span class="ident">T::InboundRelayer</span>;
 
-	<span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LaneId</span> {
+	<span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">LaneId</span> {
 		<span class="self">self</span>.<span class="ident">lane_id</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">max_unrewarded_relayer_entries</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+	<span class="kw">fn</span> <span class="ident">max_unrewarded_relayer_entries</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MessageNonce</span> {
 		<span class="ident">T::MaxUnrewardedRelayerEntriesAtInboundLane::get</span>()
 	}
 
-	<span class="kw">fn</span> <span class="ident">max_unconfirmed_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+	<span class="kw">fn</span> <span class="ident">max_unconfirmed_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MessageNonce</span> {
 		<span class="ident">T::MaxUnconfirmedMessagesAtInboundLane::get</span>()
 	}
 
-	<span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">T::InboundRelayer</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">T::InboundRelayer</span><span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="self">self</span>.<span class="ident">cached_data</span>.<span class="ident">clone</span>().<span class="ident">into_inner</span>() {
-			<span class="prelude-val">Some</span>(<span class="ident">data</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">data</span>,
-			<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Some</span>(<span class="ident">data</span>) =&gt; <span class="ident">data</span>,
+			<span class="prelude-val">None</span> =&gt; {
 				<span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">InboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">lane_id</span>);
 				<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">cached_data</span>.<span class="ident">try_borrow_mut</span>().<span class="ident">expect</span>(
 					<span class="string">&quot;we&#39;re in the single-threaded environment;\
@@ -3456,11 +3456,11 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">OutboundLaneStorage</span> <span class="kw">for</span> <span class="ident">RuntimeOutboundLaneStorage</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
 	<span class="kw">type</span> <span class="ident">MessageFee</span> <span class="op">=</span> <span class="ident">T::OutboundMessageFee</span>;
 
-	<span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LaneId</span> {
+	<span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">LaneId</span> {
 		<span class="self">self</span>.<span class="ident">lane_id</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutboundLaneData</span> {
+	<span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">OutboundLaneData</span> {
 		<span class="ident">OutboundLanes</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">lane_id</span>)
 	}
 
@@ -3469,7 +3469,7 @@
 	}
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-	<span class="kw">fn</span> <span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonce</span>: <span class="kw-2">&amp;</span><span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageData</span><span class="op">&lt;</span><span class="ident">T::OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonce</span>: <span class="kw-2">&amp;</span><span class="ident">MessageNonce</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageData</span><span class="op">&lt;</span><span class="ident">T::OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="ident">OutboundMessages</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">MessageKey</span> { <span class="ident">lane_id</span>: <span class="self">self</span>.<span class="ident">lane_id</span>, <span class="ident">nonce</span>: <span class="kw-2">*</span><span class="ident">nonce</span> })
 	}
 
@@ -3490,7 +3490,7 @@
 <span class="kw">fn</span> <span class="ident">verify_and_decode_messages_proof</span><span class="op">&lt;</span><span class="ident">Chain</span>: <span class="ident">SourceHeaderChain</span><span class="op">&lt;</span><span class="ident">Fee</span><span class="op">&gt;</span>, <span class="ident">Fee</span>, <span class="ident">DispatchPayload</span>: <span class="ident">Decode</span><span class="op">&gt;</span>(
 	<span class="ident">proof</span>: <span class="ident">Chain::MessagesProof</span>,
 	<span class="ident">messages_count</span>: <span class="ident">u32</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">DispatchMessage</span><span class="op">&lt;</span><span class="ident">DispatchPayload</span>, <span class="ident">Fee</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Chain::Error</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">DispatchMessage</span><span class="op">&lt;</span><span class="ident">DispatchPayload</span>, <span class="ident">Fee</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Chain::Error</span><span class="op">&gt;</span> {
 	<span class="comment">// `receive_messages_proof` weight formula and `MaxUnconfirmedMessagesAtInboundLane` check</span>
 	<span class="comment">// guarantees that the `message_count` is sane and Vec&lt;Message&gt; may be allocated.</span>
 	<span class="comment">// (tx with too many messages will either be rejected from the pool, or will fail earlier)</span>
@@ -3531,7 +3531,7 @@
 		<span class="ident">System</span>::<span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span><span class="ident">::reset_events</span>();
 	}
 
-	<span class="kw">fn</span> <span class="ident">send_regular_message</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">send_regular_message</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">get_ready_for_events</span>();
 
 		<span class="kw">let</span> <span class="ident">message_nonce</span> <span class="op">=</span>
@@ -4383,7 +4383,7 @@
 				<span class="ident">nonce</span>: <span class="ident">MessageNonce</span>,
 				<span class="ident">unspent_weight</span>: <span class="ident">Weight</span>,
 				<span class="ident">is_prepaid</span>: <span class="ident">bool</span>,
-			) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
+			) -&gt; (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
 				<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">payload</span> <span class="op">=</span> <span class="ident">REGULAR_PAYLOAD</span>;
 				<span class="ident">payload</span>.<span class="ident">dispatch_result</span>.<span class="ident">unspent_weight</span> <span class="op">=</span> <span class="ident">unspent_weight</span>;
 				<span class="ident">payload</span>.<span class="ident">dispatch_result</span>.<span class="ident">dispatch_fee_paid_during_dispatch</span> <span class="op">=</span> <span class="op">!</span><span class="ident">is_prepaid</span>;
@@ -4501,7 +4501,7 @@
 		});
 	}
 
-	<span class="kw">fn</span> <span class="ident">confirm_3_messages_delivery</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
+	<span class="kw">fn</span> <span class="ident">confirm_3_messages_delivery</span>() -&gt; (<span class="ident">Weight</span>, <span class="ident">Weight</span>) {
 		<span class="ident">send_regular_message</span>();
 		<span class="ident">send_regular_message</span>();
 		<span class="ident">send_regular_message</span>();

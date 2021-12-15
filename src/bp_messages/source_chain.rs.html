@@ -351,12 +351,12 @@
 	<span class="doccomment">/// 1MB. BTC nodes aren&#39;t accepting transactions that are larger than 1MB, so relayer</span>
 	<span class="doccomment">/// will be unable to craft valid transaction =&gt; this (and all subsequent) messages will</span>
 	<span class="doccomment">/// never be delivered.</span>
-	<span class="kw">fn</span> <span class="ident">verify_message</span>(<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">verify_message</span>(<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Verify messages delivery proof and return lane &amp;&amp; nonce of the latest received message.</span>
 	<span class="kw">fn</span> <span class="ident">verify_messages_delivery_proof</span>(
 		<span class="ident">proof</span>: <span class="ident"><span class="self">Self</span>::MessagesDeliveryProof</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Lane message verifier.</span>
@@ -379,7 +379,7 @@
 		<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>,
 		<span class="ident">outbound_data</span>: <span class="kw-2">&amp;</span><span class="ident">OutboundLaneData</span>,
 		<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Message delivery payment. It is called as a part of submit-message transaction. Transaction</span>
@@ -405,7 +405,7 @@
 		<span class="ident">submitter</span>: <span class="kw-2">&amp;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 		<span class="ident">fee</span>: <span class="kw-2">&amp;</span><span class="ident">Balance</span>,
 		<span class="ident">relayer_fund_account</span>: <span class="kw-2">&amp;</span><span class="ident">AccountId</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Pay rewards for delivering messages to the given relayers.</span>
 	<span class="doccomment">///</span>
@@ -442,7 +442,7 @@
 		<span class="ident">lane</span>: <span class="ident">LaneId</span>,
 		<span class="ident">message</span>: <span class="ident">Payload</span>,
 		<span class="ident">delivery_and_dispatch_fee</span>: <span class="ident">Balance</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SendMessageArtifacts</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SendMessageArtifacts</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Bridge that does nothing when message is being sent.</span>
@@ -459,7 +459,7 @@
 		<span class="ident">_lane</span>: <span class="ident">LaneId</span>,
 		<span class="ident">_message</span>: <span class="ident">Payload</span>,
 		<span class="ident">_delivery_and_dispatch_fee</span>: <span class="ident">Balance</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SendMessageArtifacts</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SendMessageArtifacts</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Ok</span>(<span class="ident">SendMessageArtifacts</span> { <span class="ident">nonce</span>: <span class="number">0</span>, <span class="ident">weight</span>: <span class="number">0</span> })
 	}
 }
@@ -478,12 +478,12 @@
 	<span class="doccomment">/// return weight that is larger than total number of messages * (db read + db write).</span>
 	<span class="doccomment">/// If your pallet needs more time for processing single message, please do it</span>
 	<span class="doccomment">/// from `on_initialize` call(s) of the next block(s).</span>
-	<span class="kw">fn</span> <span class="ident">on_messages_delivered</span>(<span class="ident">_lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">_messages</span>: <span class="kw-2">&amp;</span><span class="ident">DeliveredMessages</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">on_messages_delivered</span>(<span class="ident">_lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">_messages</span>: <span class="kw-2">&amp;</span><span class="ident">DeliveredMessages</span>) -&gt; <span class="ident">Weight</span>;
 }
 
 <span class="attribute">#[<span class="ident">impl_trait_for_tuples::impl_for_tuples</span>(<span class="number">30</span>)]</span>
 <span class="kw">impl</span> <span class="ident">OnDeliveryConfirmed</span> <span class="kw">for</span> <span class="ident">Tuple</span> {
-	<span class="kw">fn</span> <span class="ident">on_messages_delivered</span>(<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">messages</span>: <span class="kw-2">&amp;</span><span class="ident">DeliveredMessages</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">on_messages_delivered</span>(<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">messages</span>: <span class="kw-2">&amp;</span><span class="ident">DeliveredMessages</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">total_weight</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">0</span>;
 		<span class="macro">for_tuples!</span>(
 			#(
@@ -497,11 +497,11 @@
 <span class="doccomment">/// Handler for messages have been accepted</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">OnMessageAccepted</span> {
 	<span class="doccomment">/// Called when a message has been accepted by message pallet.</span>
-	<span class="kw">fn</span> <span class="ident">on_messages_accepted</span>(<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">on_messages_accepted</span>(<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">MessageNonce</span>) -&gt; <span class="ident">Weight</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">OnMessageAccepted</span> <span class="kw">for</span> () {
-	<span class="kw">fn</span> <span class="ident">on_messages_accepted</span>(<span class="ident">_lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">_message</span>: <span class="kw-2">&amp;</span><span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">on_messages_accepted</span>(<span class="ident">_lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>, <span class="ident">_message</span>: <span class="kw-2">&amp;</span><span class="ident">MessageNonce</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="number">0</span>
 	}
 }
@@ -519,13 +519,13 @@
 
 	<span class="kw">type</span> <span class="ident">MessagesDeliveryProof</span> <span class="op">=</span> ();
 
-	<span class="kw">fn</span> <span class="ident">verify_message</span>(<span class="ident">_payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">verify_message</span>(<span class="ident">_payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">ALL_OUTBOUND_MESSAGES_REJECTED</span>)
 	}
 
 	<span class="kw">fn</span> <span class="ident">verify_messages_delivery_proof</span>(
 		<span class="ident">_proof</span>: <span class="ident"><span class="self">Self</span>::MessagesDeliveryProof</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">ALL_OUTBOUND_MESSAGES_REJECTED</span>)
 	}
 }
@@ -541,7 +541,7 @@
 		<span class="ident">_lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>,
 		<span class="ident">_outbound_data</span>: <span class="kw-2">&amp;</span><span class="ident">OutboundLaneData</span>,
 		<span class="ident">_payload</span>: <span class="kw-2">&amp;</span><span class="ident">Payload</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">ALL_OUTBOUND_MESSAGES_REJECTED</span>)
 	}
 }
@@ -555,7 +555,7 @@
 		<span class="ident">_submitter</span>: <span class="kw-2">&amp;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>,
 		<span class="ident">_fee</span>: <span class="kw-2">&amp;</span><span class="ident">Balance</span>,
 		<span class="ident">_relayer_fund_account</span>: <span class="kw-2">&amp;</span><span class="ident">AccountId</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">ALL_OUTBOUND_MESSAGES_REJECTED</span>)
 	}
 

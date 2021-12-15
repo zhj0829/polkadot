@@ -413,7 +413,7 @@
 
 	<span class="kw">impl</span> <span class="ident"><span class="kw">super</span>::Config</span> <span class="kw">for</span> <span class="ident">Test</span> {}
 
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_test_ext</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_io::TestExternalities</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_test_ext</span>() -&gt; <span class="ident">sp_io::TestExternalities</span> {
 		<span class="kw">use</span> <span class="ident">sp_keystore</span>::{<span class="ident">testing::KeyStore</span>, <span class="ident">KeystoreExt</span>, <span class="ident">SyncCryptoStorePtr</span>};
 		<span class="kw">use</span> <span class="ident">sp_std::sync::Arc</span>;
 

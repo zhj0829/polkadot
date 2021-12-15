@@ -177,7 +177,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GenesisParameters</span>;
 
 <span class="kw">impl</span> <span class="ident">substrate_test_client::GenesisInit</span> <span class="kw">for</span> <span class="ident">GenesisParameters</span> {
-	<span class="kw">fn</span> <span class="ident">genesis_storage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Storage</span> {
+	<span class="kw">fn</span> <span class="ident">genesis_storage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Storage</span> {
 		<span class="ident">polkadot_test_service::chain_spec::polkadot_local_testnet_genesis</span>()
 			.<span class="ident">build_storage</span>()
 			.<span class="ident">expect</span>(<span class="string">&quot;Builds test runtime genesis storage&quot;</span>)
@@ -187,16 +187,16 @@
 <span class="doccomment">/// A `test-runtime` extensions to `TestClientBuilder`.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TestClientBuilderExt</span>: <span class="ident">Sized</span> {
 	<span class="doccomment">/// Build the test client.</span>
-	<span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Client</span> {
+	<span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) -&gt; <span class="ident">Client</span> {
 		<span class="self">self</span>.<span class="ident">build_with_longest_chain</span>().<span class="number">0</span>
 	}
 
 	<span class="doccomment">/// Build the test client and longest chain selector.</span>
-	<span class="kw">fn</span> <span class="ident">build_with_longest_chain</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Client</span>, <span class="ident">LongestChain</span>);
+	<span class="kw">fn</span> <span class="ident">build_with_longest_chain</span>(<span class="self">self</span>) -&gt; (<span class="ident">Client</span>, <span class="ident">LongestChain</span>);
 }
 
 <span class="kw">impl</span> <span class="ident">TestClientBuilderExt</span> <span class="kw">for</span> <span class="ident">TestClientBuilder</span> {
-	<span class="kw">fn</span> <span class="ident">build_with_longest_chain</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Client</span>, <span class="ident">LongestChain</span>) {
+	<span class="kw">fn</span> <span class="ident">build_with_longest_chain</span>(<span class="self">self</span>) -&gt; (<span class="ident">Client</span>, <span class="ident">LongestChain</span>) {
 		<span class="self">self</span>.<span class="ident">build_with_native_executor</span>(<span class="prelude-val">None</span>)
 	}
 }
@@ -204,11 +204,11 @@
 <span class="doccomment">/// A `TestClientBuilder` with default backend and executor.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DefaultTestClientBuilderExt</span>: <span class="ident">Sized</span> {
 	<span class="doccomment">/// Create new `TestClientBuilder`</span>
-	<span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+	<span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">DefaultTestClientBuilderExt</span> <span class="kw">for</span> <span class="ident">TestClientBuilder</span> {
-	<span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
 		<span class="ident"><span class="self">Self</span>::with_default_backend</span>()
 	}
 }

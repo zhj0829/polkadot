@@ -47,7 +47,7 @@
 
 <span class="kw">use</span> <span class="ident">color_eyre::eyre</span>;
 
-<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 	<span class="ident">color_eyre::install</span>()<span class="question-mark">?</span>;
 	<span class="ident">polkadot_cli::run</span>()<span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>(())

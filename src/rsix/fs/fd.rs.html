@@ -244,7 +244,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/lseek.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/lseek.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">seek</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">pos</span>: <span class="ident">SeekFrom</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">seek</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">pos</span>: <span class="ident">SeekFrom</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::seek</span>(<span class="ident">fd</span>, <span class="ident">pos</span>)
 }
@@ -262,7 +262,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/lseek.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/lseek.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tell</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tell</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::tell</span>(<span class="ident">fd</span>)
 }
@@ -280,7 +280,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/fchmod.2.html</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fchmod</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">mode</span>: <span class="ident">Mode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fchmod</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">mode</span>: <span class="ident">Mode</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::fchmod</span>(<span class="ident">fd</span>, <span class="ident">mode</span>)
 }
@@ -294,7 +294,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/fstat.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/fstat.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fstat</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stat</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fstat</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stat</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::fstat</span>(<span class="ident">fd</span>)
 }
@@ -307,7 +307,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/fstatfs.2.html</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;netbsd&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;redox&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>)))]</span> <span class="comment">// not implemented in libc for netbsd yet</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fstatfs</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">StatFs</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fstatfs</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">StatFs</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::fstatfs</span>(<span class="ident">fd</span>)
 }
@@ -321,7 +321,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/futimens.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/futimens.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">futimens</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">times</span>: <span class="kw-2">&amp;</span>[<span class="ident">Timespec</span>; <span class="number">2</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">futimens</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">times</span>: <span class="kw-2">&amp;</span>[<span class="ident">Timespec</span>; <span class="number">2</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::futimens</span>(<span class="ident">fd</span>, <span class="ident">times</span>)
 }
@@ -344,7 +344,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;netbsd&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;openbsd&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;redox&quot;</span>)))]</span> <span class="comment">// not implemented in libc for netbsd yet</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;posix_fallocate&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fallocate</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">mode</span>: <span class="ident">FallocateFlags</span>, <span class="ident">offset</span>: <span class="ident">u64</span>, <span class="ident">len</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fallocate</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">mode</span>: <span class="ident">FallocateFlags</span>, <span class="ident">offset</span>: <span class="ident">u64</span>, <span class="ident">len</span>: <span class="ident">u64</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::fallocate</span>(<span class="ident">fd</span>, <span class="ident">mode</span>, <span class="ident">offset</span>, <span class="ident">len</span>)
 }
@@ -356,12 +356,12 @@
 <span class="doccomment">/// for example, it doesn&#39;t reflect whether sockets have been shut down; for</span>
 <span class="doccomment">/// general I/O handle support, use [`io::is_read_write`].</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_file_read_write</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_file_read_write</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">_is_file_read_write</span>(<span class="ident">fd</span>)
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">_is_file_read_write</span>(<span class="ident">fd</span>: <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">_is_file_read_write</span>(<span class="ident">fd</span>: <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">bool</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">mode</span> <span class="op">=</span> <span class="ident">imp::syscalls::fcntl_getfl</span>(<span class="ident">fd</span>)<span class="question-mark">?</span>;
 
     <span class="comment">// Check for `O_PATH`.</span>
@@ -378,10 +378,10 @@
     <span class="comment">// Use `RWMODE` rather than `ACCMODE` as `ACCMODE` may include `O_PATH`.</span>
     <span class="comment">// We handled `O_PATH` above.</span>
     <span class="kw">match</span> <span class="ident">mode</span> <span class="op">&amp;</span> <span class="ident"><span class="kw">crate</span>::fs::OFlags::RWMODE</span> {
-        <span class="ident"><span class="kw">crate</span>::fs::OFlags::RDONLY</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="bool-val">true</span>, <span class="bool-val">false</span>)),
-        <span class="ident"><span class="kw">crate</span>::fs::OFlags::RDWR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="bool-val">true</span>, <span class="bool-val">true</span>)),
-        <span class="ident"><span class="kw">crate</span>::fs::OFlags::WRONLY</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>((<span class="bool-val">false</span>, <span class="bool-val">true</span>)),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+        <span class="ident"><span class="kw">crate</span>::fs::OFlags::RDONLY</span> =&gt; <span class="prelude-val">Ok</span>((<span class="bool-val">true</span>, <span class="bool-val">false</span>)),
+        <span class="ident"><span class="kw">crate</span>::fs::OFlags::RDWR</span> =&gt; <span class="prelude-val">Ok</span>((<span class="bool-val">true</span>, <span class="bool-val">true</span>)),
+        <span class="ident"><span class="kw">crate</span>::fs::OFlags::WRONLY</span> =&gt; <span class="prelude-val">Ok</span>((<span class="bool-val">false</span>, <span class="bool-val">true</span>)),
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
     }
 }
 
@@ -395,7 +395,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/fsync.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/fsync.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fsync</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fsync</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::fsync</span>(<span class="ident">fd</span>)
 }
@@ -411,7 +411,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/fdatasync.2.html</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;redox&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fdatasync</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fdatasync</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::fdatasync</span>(<span class="ident">fd</span>)
 }
@@ -425,7 +425,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/ftruncate.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/ftruncate.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ftruncate</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">length</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ftruncate</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">length</span>: <span class="ident">u64</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::ftruncate</span>(<span class="ident">fd</span>, <span class="ident">length</span>)
 }
@@ -438,7 +438,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/flock.2.html</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flock</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">operation</span>: <span class="ident">FlockOperation</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flock</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">operation</span>: <span class="ident">FlockOperation</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::flock</span>(<span class="ident">fd</span>, <span class="ident">operation</span>)
 }

@@ -227,7 +227,7 @@
 
 <span class="kw">impl</span> <span class="ident">StackMap</span> {
     <span class="doccomment">/// Create a vec of Bitsets from a slice of bools.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_slice</span>(<span class="ident">vec</span>: <span class="kw-2">&amp;</span>[<span class="ident">bool</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_slice</span>(<span class="ident">vec</span>: <span class="kw-2">&amp;</span>[<span class="ident">bool</span>]) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">len</span>();
         <span class="kw">let</span> <span class="ident">num_word</span> <span class="op">=</span> <span class="ident">len</span> <span class="op">/</span> <span class="ident">NUM_BITS</span> <span class="op">+</span> (<span class="ident">len</span> <span class="op">%</span> <span class="ident">NUM_BITS</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>) <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bitmap</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">num_word</span>);
@@ -248,7 +248,7 @@
     }
 
     <span class="doccomment">/// Returns a specified bit.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bit_index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bit_index</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">assert!</span>(<span class="ident">bit_index</span> <span class="op">&lt;</span> <span class="ident">NUM_BITS</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">bitmap</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="ident">word_index</span> <span class="op">=</span> <span class="ident">bit_index</span> <span class="op">/</span> <span class="ident">NUM_BITS</span>;
         <span class="kw">let</span> <span class="ident">word_offset</span> <span class="op">=</span> (<span class="ident">bit_index</span> <span class="op">%</span> <span class="ident">NUM_BITS</span>) <span class="kw">as</span> <span class="ident">u8</span>;
@@ -256,12 +256,12 @@
     }
 
     <span class="doccomment">/// Returns the raw bitmap that represents this stack map.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">BitSet</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">BitSet</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bitmap</span>
     }
 
     <span class="doccomment">/// Returns the number of words represented by this stack map.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mapped_words</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mapped_words</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">mapped_words</span>
     }
 }

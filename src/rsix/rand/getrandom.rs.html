@@ -25,7 +25,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/getrandom.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getrandom</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">GetRandomFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getrandom</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">GetRandomFlags</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::getrandom</span>(<span class="ident">buf</span>, <span class="ident">flags</span>)
 }
 </code></pre></div>

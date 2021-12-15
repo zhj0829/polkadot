@@ -233,12 +233,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Stream</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Stream::PendingRead</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingRead&quot;</span>),
-            <span class="ident">Stream::PendingBehaviour</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingBehaviour&quot;</span>),
-            <span class="ident">Stream::PendingSend</span>(<span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingSend&quot;</span>),
-            <span class="ident">Stream::PendingClose</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingClose&quot;</span>),
+            <span class="ident">Stream::PendingRead</span>(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingRead&quot;</span>),
+            <span class="ident">Stream::PendingBehaviour</span>(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingBehaviour&quot;</span>),
+            <span class="ident">Stream::PendingSend</span>(<span class="kw">_</span>, <span class="kw">_</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingSend&quot;</span>),
+            <span class="ident">Stream::PendingClose</span>(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Inbound::PendingClose&quot;</span>),
         }
     }
 }
@@ -275,33 +275,33 @@
 
     <span class="kw">fn</span> <span class="ident">upgrade</span>(
         <span class="ident">open_info</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident">PassthroughProtocol</span>, <span class="ident"><span class="self">Self</span>::OpenInfo</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident">PassthroughProtocol</span>, <span class="ident"><span class="self">Self</span>::OpenInfo</span><span class="op">&gt;</span> {
         <span class="ident">SubstreamProtocol::new</span>(<span class="ident">PassthroughProtocol::new</span>(<span class="ident">PROTOCOL_IDENT</span>), <span class="ident">open_info</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">substream</span>: <span class="ident">NegotiatedSubstream</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">substream</span>: <span class="ident">NegotiatedSubstream</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Stream::PendingRead</span>(<span class="ident">Framed::new</span>(<span class="ident">substream</span>, <span class="ident">RendezvousCodec::default</span>()))
     }
 
-    <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> (<span class="ident">event</span>, <span class="self">self</span>) {
-            (<span class="ident">InEvent::RegisterResponse</span> { <span class="ident">ttl</span> }, <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">InEvent::RegisterResponse</span> { <span class="ident">ttl</span> }, <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>)) =&gt; {
                 <span class="ident">Stream::PendingSend</span>(<span class="ident">substream</span>, <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Ok</span>(<span class="ident">ttl</span>)))
             }
-            (<span class="ident">InEvent::DeclineRegisterRequest</span>(<span class="ident">error</span>), <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">InEvent::DeclineRegisterRequest</span>(<span class="ident">error</span>), <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>)) =&gt; {
                 <span class="ident">Stream::PendingSend</span>(<span class="ident">substream</span>, <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)))
             }
             (
                 <span class="ident">InEvent::DiscoverResponse</span> { <span class="ident">discovered</span>, <span class="ident">cookie</span> },
                 <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>),
-            ) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Stream::PendingSend</span>(
+            ) =&gt; <span class="ident">Stream::PendingSend</span>(
                 <span class="ident">substream</span>,
                 <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Ok</span>((<span class="ident">discovered</span>, <span class="ident">cookie</span>))),
             ),
-            (<span class="ident">InEvent::DeclineDiscoverRequest</span>(<span class="ident">error</span>), <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">InEvent::DeclineDiscoverRequest</span>(<span class="ident">error</span>), <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>)) =&gt; {
                 <span class="ident">Stream::PendingSend</span>(<span class="ident">substream</span>, <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)))
             }
-            (<span class="ident">event</span>, <span class="ident">inbound</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">event</span>, <span class="ident">inbound</span>) =&gt; {
                 <span class="macro">debug_assert!</span>(<span class="bool-val">false</span>, <span class="string">&quot;{:?} cannot handle event {:?}&quot;</span>, <span class="ident">inbound</span>, <span class="ident">event</span>);
 
                 <span class="ident">inbound</span>
@@ -309,28 +309,28 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::OutEvent</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::OutEvent</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">next_state</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Stream::PendingRead</span>(<span class="kw-2">mut</span> <span class="ident">substream</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Stream::PendingRead</span>(<span class="kw-2">mut</span> <span class="ident">substream</span>) =&gt; {
                 <span class="kw">match</span> <span class="ident">substream</span>.<span class="ident">poll_next_unpin</span>(<span class="ident">cx</span>).<span class="ident">map_err</span>(<span class="ident">Error::ReadMessage</span>)<span class="question-mark">?</span> {
-                    <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)) =&gt; {
                         <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">msg</span> {
-                            <span class="ident">Message::Register</span>(<span class="ident">registration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">Message::Register</span>(<span class="ident">registration</span>) =&gt; {
                                 <span class="ident">OutEvent::RegistrationRequested</span>(<span class="ident">registration</span>)
                             }
                             <span class="ident">Message::Discover</span> {
                                 <span class="ident">cookie</span>,
                                 <span class="ident">namespace</span>,
                                 <span class="ident">limit</span>,
-                            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OutEvent::DiscoverRequested</span> {
+                            } =&gt; <span class="ident">OutEvent::DiscoverRequested</span> {
                                 <span class="ident">cookie</span>,
                                 <span class="ident">namespace</span>,
                                 <span class="ident">limit</span>,
                             },
-                            <span class="ident">Message::Unregister</span>(<span class="ident">namespace</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">Message::Unregister</span>(<span class="ident">namespace</span>) =&gt; {
                                 <span class="ident">OutEvent::UnregisterRequested</span>(<span class="ident">namespace</span>)
                             }
-                            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::BadMessage</span>(<span class="ident">other</span>)),
+                            <span class="ident">other</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::BadMessage</span>(<span class="ident">other</span>)),
                         };
 
                         <span class="ident">Next::EmitEvent</span> {
@@ -338,20 +338,20 @@
                             <span class="ident">next_state</span>: <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>),
                         }
                     }
-                    <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::UnexpectedEndOfStream</span>),
-                    <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Pending</span> {
+                    <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::UnexpectedEndOfStream</span>),
+                    <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Next::Pending</span> {
                         <span class="ident">next_state</span>: <span class="ident">Stream::PendingRead</span>(<span class="ident">substream</span>),
                     },
                 }
             }
-            <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Pending</span> {
+            <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>) =&gt; <span class="ident">Next::Pending</span> {
                 <span class="ident">next_state</span>: <span class="ident">Stream::PendingBehaviour</span>(<span class="ident">substream</span>),
             },
-            <span class="ident">Stream::PendingSend</span>(<span class="kw-2">mut</span> <span class="ident">substream</span>, <span class="ident">message</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">substream</span>
+            <span class="ident">Stream::PendingSend</span>(<span class="kw-2">mut</span> <span class="ident">substream</span>, <span class="ident">message</span>) =&gt; <span class="kw">match</span> <span class="ident">substream</span>
                 .<span class="ident">poll_ready_unpin</span>(<span class="ident">cx</span>)
                 .<span class="ident">map_err</span>(<span class="ident">Error::WriteMessage</span>)<span class="question-mark">?</span>
             {
-                <span class="ident">Poll::Ready</span>(()) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Poll::Ready</span>(()) =&gt; {
                     <span class="ident">substream</span>
                         .<span class="ident">start_send_unpin</span>(<span class="ident">message</span>)
                         .<span class="ident">map_err</span>(<span class="ident">Error::WriteMessage</span>)<span class="question-mark">?</span>;
@@ -360,14 +360,14 @@
                         <span class="ident">next_state</span>: <span class="ident">Stream::PendingClose</span>(<span class="ident">substream</span>),
                     }
                 }
-                <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Pending</span> {
+                <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Next::Pending</span> {
                     <span class="ident">next_state</span>: <span class="ident">Stream::PendingSend</span>(<span class="ident">substream</span>, <span class="ident">message</span>),
                 },
             },
-            <span class="ident">Stream::PendingClose</span>(<span class="kw-2">mut</span> <span class="ident">substream</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">substream</span>.<span class="ident">poll_close_unpin</span>(<span class="ident">cx</span>) {
-                <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Done</span>,
-                <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Done</span>, <span class="comment">// there is nothing we can do about an error during close</span>
-                <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Pending</span> {
+            <span class="ident">Stream::PendingClose</span>(<span class="kw-2">mut</span> <span class="ident">substream</span>) =&gt; <span class="kw">match</span> <span class="ident">substream</span>.<span class="ident">poll_close_unpin</span>(<span class="ident">cx</span>) {
+                <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())) =&gt; <span class="ident">Next::Done</span>,
+                <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; <span class="ident">Next::Done</span>, <span class="comment">// there is nothing we can do about an error during close</span>
+                <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Next::Pending</span> {
                     <span class="ident">next_state</span>: <span class="ident">Stream::PendingClose</span>(<span class="ident">substream</span>),
                 },
             },

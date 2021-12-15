@@ -634,14 +634,14 @@
 
 <span class="doccomment">/// Implementation of `construct_runtime` macro. Either expand to some code which will call</span>
 <span class="doccomment">/// `construct_runtime` again, or expand to the final runtime definition.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">construct_runtime</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">construct_runtime</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="kw">let</span> <span class="ident">input_copy</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">clone</span>();
 	<span class="kw">let</span> <span class="ident">definition</span> <span class="op">=</span> <span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">RuntimeDeclaration</span>);
 
 	<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">definition</span> {
-		<span class="ident">RuntimeDeclaration::Implicit</span>(<span class="ident">implicit_def</span>) <span class="op">=</span><span class="op">&gt;</span>
+		<span class="ident">RuntimeDeclaration::Implicit</span>(<span class="ident">implicit_def</span>) =&gt;
 			<span class="ident">construct_runtime_intermediary_expansion</span>(<span class="ident">input_copy</span>.<span class="ident">into</span>(), <span class="ident">implicit_def</span>),
-		<span class="ident">RuntimeDeclaration::Explicit</span>(<span class="ident">explicit_decl</span>) <span class="op">=</span><span class="op">&gt;</span>
+		<span class="ident">RuntimeDeclaration::Explicit</span>(<span class="ident">explicit_decl</span>) =&gt;
 			<span class="ident">construct_runtime_final_expansion</span>(<span class="ident">explicit_decl</span>),
 	};
 
@@ -653,7 +653,7 @@
 <span class="kw">fn</span> <span class="ident">construct_runtime_intermediary_expansion</span>(
 	<span class="ident">input</span>: <span class="ident">TokenStream2</span>,
 	<span class="ident">definition</span>: <span class="ident">ImplicitRuntimeDeclaration</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream2</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream2</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">frame_support</span> <span class="op">=</span> <span class="ident">generate_crate_access_2018</span>(<span class="string">&quot;frame-support&quot;</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">expansion</span> <span class="op">=</span> <span class="macro">quote::quote!</span>(
 		#<span class="macro">frame_support::construct_runtime!</span> { #<span class="ident">input</span> }
@@ -680,7 +680,7 @@
 <span class="doccomment">/// All pallets have explicit definition of parts, this will expand to the runtime declaration.</span>
 <span class="kw">fn</span> <span class="ident">construct_runtime_final_expansion</span>(
 	<span class="ident">definition</span>: <span class="ident">ExplicitRuntimeDeclaration</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream2</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream2</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">ExplicitRuntimeDeclaration</span> {
 		<span class="ident">name</span>,
 		<span class="ident">where_section</span>: <span class="ident">WhereSection</span> { <span class="ident">block</span>, <span class="ident">node_block</span>, <span class="ident">unchecked_extrinsic</span> },
@@ -689,7 +689,7 @@
 	} <span class="op">=</span> <span class="ident">definition</span>;
 
 	<span class="kw">let</span> <span class="ident">system_pallet</span> <span class="op">=</span>
-		<span class="ident">pallets</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">decl</span><span class="op">|</span> <span class="ident">decl</span>.<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SYSTEM_PALLET_NAME</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+		<span class="ident">pallets</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">decl</span><span class="op">|</span> <span class="ident">decl</span>.<span class="ident">name</span> <span class="op">==</span> <span class="ident">SYSTEM_PALLET_NAME</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="ident">syn::Error::new</span>(
 				<span class="ident">pallets_token</span>.<span class="ident">span</span>,
 				<span class="string">&quot;`System` pallet declaration is missing. \
@@ -763,7 +763,7 @@
 <span class="kw">fn</span> <span class="ident">decl_all_pallets</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
 	<span class="ident">runtime</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Ident</span>,
 	<span class="ident">pallet_declarations</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Pallet</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
+) -&gt; <span class="ident">TokenStream2</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">types</span> <span class="op">=</span> <span class="ident">TokenStream2::new</span>();
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">names</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 	<span class="kw">for</span> <span class="ident">pallet_declaration</span> <span class="kw">in</span> <span class="ident">pallet_declarations</span> {
@@ -808,9 +808,9 @@
 		.<span class="ident">iter</span>()
 		.<span class="ident">fold</span>(<span class="ident">TokenStream2::default</span>(), <span class="op">|</span><span class="ident">combined</span>, <span class="ident">name</span><span class="op">|</span> <span class="macro">quote!</span>((#<span class="ident">name</span>, #<span class="ident">combined</span>)));
 
-	<span class="kw">let</span> <span class="ident">system_pallet</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">names</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SYSTEM_PALLET_NAME</span>) {
-		<span class="prelude-val">Some</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>,
-		<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span>
+	<span class="kw">let</span> <span class="ident">system_pallet</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">names</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">n</span> <span class="op">==</span> <span class="ident">SYSTEM_PALLET_NAME</span>) {
+		<span class="prelude-val">Some</span>(<span class="ident">name</span>) =&gt; <span class="ident">name</span>,
+		<span class="prelude-val">None</span> =&gt;
 			<span class="kw">return</span> <span class="ident">syn::Error::new</span>(
 				<span class="ident">proc_macro2::Span::call_site</span>(),
 				<span class="string">&quot;`System` pallet declaration is missing. \
@@ -860,7 +860,7 @@
 	<span class="ident">runtime</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>,
 	<span class="ident">pallet_declarations</span>: <span class="kw-2">&amp;</span>[<span class="ident">Pallet</span>],
 	<span class="ident">scrate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream2</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
+) -&gt; <span class="ident">TokenStream2</span> {
 	<span class="kw">let</span> <span class="ident">names</span> <span class="op">=</span> <span class="ident">pallet_declarations</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">d</span>.<span class="ident">name</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 	<span class="kw">let</span> <span class="ident">name_strings</span> <span class="op">=</span> <span class="ident">pallet_declarations</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">name</span>.<span class="ident">to_string</span>());
 	<span class="kw">let</span> <span class="ident">module_names</span> <span class="op">=</span> <span class="ident">pallet_declarations</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">path</span>.<span class="ident">module_name</span>());
@@ -870,8 +870,8 @@
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">pallet</span><span class="op">|</span> {
 			<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">pallet</span>.<span class="ident">path</span>;
 			<span class="kw">match</span> <span class="ident">pallet</span>.<span class="ident">instance</span>.<span class="ident">as_ref</span>() {
-				<span class="prelude-val">Some</span>(<span class="ident">inst</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">path::Pallet</span><span class="op">&lt;</span>#<span class="ident">runtime</span>, #<span class="ident">path</span>::#<span class="ident">inst</span><span class="op">&gt;</span>),
-				<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">path::Pallet</span><span class="op">&lt;</span>#<span class="ident">runtime</span><span class="op">&gt;</span>),
+				<span class="prelude-val">Some</span>(<span class="ident">inst</span>) =&gt; <span class="macro">quote!</span>(#<span class="ident">path::Pallet</span><span class="op">&lt;</span>#<span class="ident">runtime</span>, #<span class="ident">path</span>::#<span class="ident">inst</span><span class="op">&gt;</span>),
+				<span class="prelude-val">None</span> =&gt; <span class="macro">quote!</span>(#<span class="ident">path::Pallet</span><span class="op">&lt;</span>#<span class="ident">runtime</span><span class="op">&gt;</span>),
 			}
 		})
 		.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -882,10 +882,10 @@
 		<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PalletInfo</span>;
 
 		<span class="kw">impl</span> #<span class="ident">scrate::traits::PalletInfo</span> <span class="kw">for</span> <span class="ident">PalletInfo</span> {
-			<span class="kw">fn</span> <span class="ident">index</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+			<span class="kw">fn</span> <span class="ident">index</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
 				<span class="kw">let</span> <span class="ident">type_id</span> <span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>();
 				#(
-					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">=</span><span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
+					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">==</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
 						<span class="kw">return</span> <span class="prelude-val">Some</span>(#<span class="ident">indices</span>)
 					}
 				)<span class="op">*</span>
@@ -893,10 +893,10 @@
 				<span class="prelude-val">None</span>
 			}
 
-			<span class="kw">fn</span> <span class="ident">name</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+			<span class="kw">fn</span> <span class="ident">name</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
 				<span class="kw">let</span> <span class="ident">type_id</span> <span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>();
 				#(
-					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">=</span><span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
+					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">==</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
 						<span class="kw">return</span> <span class="prelude-val">Some</span>(#<span class="ident">name_strings</span>)
 					}
 				)<span class="op">*</span>
@@ -904,10 +904,10 @@
 				<span class="prelude-val">None</span>
 			}
 
-			<span class="kw">fn</span> <span class="ident">module_name</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+			<span class="kw">fn</span> <span class="ident">module_name</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
 				<span class="kw">let</span> <span class="ident">type_id</span> <span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>();
 				#(
-					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">=</span><span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
+					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">==</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
 						<span class="kw">return</span> <span class="prelude-val">Some</span>(#<span class="ident">module_names</span>)
 					}
 				)<span class="op">*</span>
@@ -915,10 +915,10 @@
 				<span class="prelude-val">None</span>
 			}
 
-			<span class="kw">fn</span> <span class="ident">crate_version</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>#<span class="ident">scrate::traits::CrateVersion</span><span class="op">&gt;</span> {
+			<span class="kw">fn</span> <span class="ident">crate_version</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="lifetime">&#39;static</span><span class="op">&gt;</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>#<span class="ident">scrate::traits::CrateVersion</span><span class="op">&gt;</span> {
 				<span class="kw">let</span> <span class="ident">type_id</span> <span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>();
 				#(
-					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">=</span><span class="op">=</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
+					<span class="kw">if</span> <span class="ident">type_id</span> <span class="op">==</span> #<span class="ident">scrate::sp_std::any::TypeId::of</span>::<span class="op">&lt;</span>#<span class="ident">names</span><span class="op">&gt;</span>() {
 						<span class="kw">return</span> <span class="prelude-val">Some</span>(
 							<span class="op">&lt;</span>#<span class="ident">pallet_structs</span> <span class="kw">as</span> #<span class="ident">scrate::traits::PalletInfoAccess</span><span class="op">&gt;</span><span class="ident">::crate_version</span>()
 						)
@@ -931,7 +931,7 @@
 	)
 }
 
-<span class="kw">fn</span> <span class="ident">decl_integrity_test</span>(<span class="ident">scrate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
+<span class="kw">fn</span> <span class="ident">decl_integrity_test</span>(<span class="ident">scrate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream2</span>) -&gt; <span class="ident">TokenStream2</span> {
 	<span class="macro">quote!</span>(
 		<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 		<span class="kw">mod</span> <span class="ident">__construct_runtime_integrity_test</span> {

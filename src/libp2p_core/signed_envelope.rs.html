@@ -226,7 +226,7 @@
         <span class="ident">domain_separation</span>: <span class="ident">String</span>,
         <span class="ident">payload_type</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
         <span class="ident">payload</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">SigningError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">SigningError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">signature_payload</span>(<span class="ident">domain_separation</span>, <span class="kw-2">&amp;</span><span class="ident">payload_type</span>, <span class="kw-2">&amp;</span><span class="ident">payload</span>);
 
         <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="ident">key</span>.<span class="ident">sign</span>(<span class="kw-2">&amp;</span><span class="ident">buffer</span>)<span class="question-mark">?</span>;
@@ -241,7 +241,7 @@
 
     <span class="doccomment">/// Verify this [`SignedEnvelope`] against the provided domain-separation string.</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">domain_separation</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">domain_separation</span>: <span class="ident">String</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">signature_payload</span>(<span class="ident">domain_separation</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">payload_type</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">payload</span>);
 
         <span class="self">self</span>.<span class="ident">key</span>.<span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="ident">buffer</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">signature</span>)
@@ -255,7 +255,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">domain_separation</span>: <span class="ident">String</span>,
         <span class="ident">expected_payload_type</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">ReadPayloadError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">ReadPayloadError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">payload_type</span> <span class="op">!</span><span class="op">=</span> <span class="ident">expected_payload_type</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ReadPayloadError::UnexpectedPayloadType</span> {
                 <span class="ident">expected</span>: <span class="ident">expected_payload_type</span>.<span class="ident">to_vec</span>(),
@@ -271,7 +271,7 @@
     }
 
     <span class="doccomment">/// Encode this [`SignedEnvelope`] using the protobuf encoding specified in the RFC.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_protobuf_encoding</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_protobuf_encoding</span>(<span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">prost::Message</span>;
 
         <span class="kw">let</span> <span class="ident">envelope</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::envelope_proto::Envelope</span> {
@@ -290,7 +290,7 @@
     }
 
     <span class="doccomment">/// Decode a [`SignedEnvelope`] using the protobuf encoding specified in the RFC.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_protobuf_encoding</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">DecodingError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_protobuf_encoding</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">DecodingError</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">prost::Message</span>;
 
         <span class="kw">let</span> <span class="ident">envelope</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::envelope_proto::Envelope::decode</span>(<span class="ident">bytes</span>)<span class="question-mark">?</span>;
@@ -307,7 +307,7 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">signature_payload</span>(<span class="ident">domain_separation</span>: <span class="ident">String</span>, <span class="ident">payload_type</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">signature_payload</span>(<span class="ident">domain_separation</span>: <span class="ident">String</span>, <span class="ident">payload_type</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">domain_sep_length_buffer</span> <span class="op">=</span> <span class="ident">usize_buffer</span>();
     <span class="kw">let</span> <span class="ident">domain_sep_length</span> <span class="op">=</span>
         <span class="ident">unsigned_varint::encode::usize</span>(<span class="ident">domain_separation</span>.<span class="ident">len</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">domain_sep_length_buffer</span>);
@@ -350,33 +350,33 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">prost::DecodeError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DecodingError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">prost::DecodeError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">prost::DecodeError</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::InvalidEnvelope</span>(<span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">identity::error::DecodingError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DecodingError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">identity::error::DecodingError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">identity::error::DecodingError</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::InvalidPublicKey</span>(<span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DecodingError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::InvalidEnvelope</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Failed to decode envelope&quot;</span>),
-            <span class="ident"><span class="self">Self</span>::InvalidPublicKey</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Failed to convert public key&quot;</span>),
-            <span class="ident"><span class="self">Self</span>::MissingPublicKey</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Public key is missing from protobuf struct&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::InvalidEnvelope</span>(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Failed to decode envelope&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::InvalidPublicKey</span>(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Failed to convert public key&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::MissingPublicKey</span> =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Public key is missing from protobuf struct&quot;</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">DecodingError</span> {
-    <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">std::error::Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::InvalidEnvelope</span>(<span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">inner</span>),
-            <span class="ident"><span class="self">Self</span>::InvalidPublicKey</span>(<span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">inner</span>),
-            <span class="ident"><span class="self">Self</span>::MissingPublicKey</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident"><span class="self">Self</span>::InvalidEnvelope</span>(<span class="ident">inner</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">inner</span>),
+            <span class="ident"><span class="self">Self</span>::InvalidPublicKey</span>(<span class="ident">inner</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">inner</span>),
+            <span class="ident"><span class="self">Self</span>::MissingPublicKey</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 }
@@ -391,10 +391,10 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ReadPayloadError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::InvalidSignature</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Invalid signature&quot;</span>),
-            <span class="ident"><span class="self">Self</span>::UnexpectedPayloadType</span> { <span class="ident">expected</span>, <span class="ident">got</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(
+            <span class="ident"><span class="self">Self</span>::InvalidSignature</span> =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Invalid signature&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::UnexpectedPayloadType</span> { <span class="ident">expected</span>, <span class="ident">got</span> } =&gt; <span class="macro">write!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;Unexpected payload type, expected {:?} but got {:?}&quot;</span>,
                 <span class="ident">expected</span>, <span class="ident">got</span>

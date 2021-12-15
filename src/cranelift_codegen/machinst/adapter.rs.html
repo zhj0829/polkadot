@@ -94,7 +94,7 @@
 
 <span class="kw">impl</span> <span class="ident">TargetIsaAdapter</span> {
     <span class="doccomment">/// Create a new `TargetIsa` wrapper around a `MachBackend`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MachBackend</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">backend</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TargetIsaAdapter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MachBackend</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">backend</span>: <span class="ident">B</span>) -&gt; <span class="ident">TargetIsaAdapter</span> {
         <span class="kw">let</span> <span class="ident">triple</span> <span class="op">=</span> <span class="ident">backend</span>.<span class="ident">triple</span>();
         <span class="ident">TargetIsaAdapter</span> {
             <span class="ident">backend</span>: <span class="ident">Box::new</span>(<span class="ident">backend</span>),
@@ -104,7 +104,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TargetIsaAdapter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MachBackend&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">name</span>())
             .<span class="ident">field</span>(<span class="string">&quot;triple&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">triple</span>())
@@ -114,37 +114,37 @@
 }
 
 <span class="kw">impl</span> <span class="ident">TargetIsa</span> <span class="kw">for</span> <span class="ident">TargetIsaAdapter</span> {
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">name</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">triple</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Triple</span> {
+    <span class="kw">fn</span> <span class="ident">triple</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Triple</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">triple</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Flags</span> {
+    <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Flags</span> {
         <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">flags</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">isa_flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">settings::Value</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">isa_flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">settings::Value</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">isa_flags</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mach_backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">MachBackend</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_mach_backend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">MachBackend</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">backend</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">unsigned_add_overflow_condition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ir::condcodes::IntCC</span> {
+    <span class="kw">fn</span> <span class="ident">unsigned_add_overflow_condition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ir::condcodes::IntCC</span> {
         <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">unsigned_add_overflow_condition</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwind&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">create_systemv_cie</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gimli::write::CommonInformationEntry</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">create_systemv_cie</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">gimli::write::CommonInformationEntry</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">create_systemv_cie</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwind&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">map_regalloc_reg_to_dwarf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">Reg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u16</span>, <span class="ident">RegisterMappingError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">map_regalloc_reg_to_dwarf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">r</span>: <span class="ident">Reg</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u16</span>, <span class="ident">RegisterMappingError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">map_reg_to_dwarf</span>(<span class="ident">r</span>)
     }
 }

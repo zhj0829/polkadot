@@ -1607,7 +1607,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span> {
 			<span class="ident">group_rotation_frequency</span>: <span class="number">1u32</span>.<span class="ident">into</span>(),
 			<span class="ident">chain_availability_period</span>: <span class="number">1u32</span>.<span class="ident">into</span>(),
@@ -1700,32 +1700,32 @@
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WeightInfo</span> {
-	<span class="kw">fn</span> <span class="ident">set_config_with_block_number</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">set_config_with_u32</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">set_config_with_option_u32</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">set_config_with_weight</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">set_config_with_balance</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">set_hrmp_open_request_ttl</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_config_with_block_number</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_config_with_u32</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_config_with_option_u32</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_config_with_weight</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_config_with_balance</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_hrmp_open_request_ttl</span>() -&gt; <span class="ident">Weight</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestWeightInfo</span>;
 <span class="kw">impl</span> <span class="ident">WeightInfo</span> <span class="kw">for</span> <span class="ident">TestWeightInfo</span> {
-	<span class="kw">fn</span> <span class="ident">set_config_with_block_number</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_config_with_block_number</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">Weight::MAX</span>
 	}
-	<span class="kw">fn</span> <span class="ident">set_config_with_u32</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_config_with_u32</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">Weight::MAX</span>
 	}
-	<span class="kw">fn</span> <span class="ident">set_config_with_option_u32</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_config_with_option_u32</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">Weight::MAX</span>
 	}
-	<span class="kw">fn</span> <span class="ident">set_config_with_weight</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_config_with_weight</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">Weight::MAX</span>
 	}
-	<span class="kw">fn</span> <span class="ident">set_config_with_balance</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_config_with_balance</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">Weight::MAX</span>
 	}
-	<span class="kw">fn</span> <span class="ident">set_hrmp_open_request_ttl</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_hrmp_open_request_ttl</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident">Weight::MAX</span>
 	}
 }
@@ -1769,7 +1769,7 @@
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">GenesisConfig</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
 			<span class="ident">GenesisConfig</span> { <span class="ident">config</span>: <span class="ident">Default::default</span>() }
 		}
 	}
@@ -1792,7 +1792,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_validation_upgrade_frequency</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">validation_upgrade_frequency</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1808,7 +1808,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_validation_upgrade_delay</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">validation_upgrade_delay</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1824,7 +1824,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_code_retention_period</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">code_retention_period</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1837,7 +1837,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_code_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_code_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="macro">ensure!</span>(<span class="ident">new</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_CODE_SIZE</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
@@ -1851,7 +1851,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_pov_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_pov_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="macro">ensure!</span>(<span class="ident">new</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_POV_SIZE</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
@@ -1865,7 +1865,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_head_data_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_head_data_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="macro">ensure!</span>(<span class="ident">new</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_HEAD_DATA_SIZE</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
@@ -1879,7 +1879,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_parathread_cores</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_parathread_cores</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">parathread_cores</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1892,7 +1892,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_parathread_retries</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_parathread_retries</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">parathread_retries</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1908,7 +1908,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_group_rotation_frequency</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
@@ -1927,7 +1927,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_chain_availability_period</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
@@ -1946,7 +1946,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_thread_availability_period</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
@@ -1962,7 +1962,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scheduling_lookahead</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scheduling_lookahead</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">scheduling_lookahead</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1978,7 +1978,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_validators_per_core</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_validators_per_core</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -1991,7 +1991,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_option_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_validators</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_validators</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_validators</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2004,7 +2004,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_period</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">SessionIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_period</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">dispute_period</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2020,7 +2020,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_post_conclusion_acceptance_period</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">dispute_post_conclusion_acceptance_period</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span>
@@ -2034,7 +2034,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_max_spam_slots</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_max_spam_slots</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">dispute_max_spam_slots</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2050,7 +2050,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_conclusion_by_time_out_period</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">dispute_conclusion_by_time_out_period</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2064,7 +2064,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_no_show_slots</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_no_show_slots</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
@@ -2080,7 +2080,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_n_delay_tranches</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_n_delay_tranches</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">n_delay_tranches</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2093,7 +2093,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_zeroth_delay_tranche_width</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_zeroth_delay_tranche_width</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">zeroth_delay_tranche_width</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2106,7 +2106,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_needed_approvals</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_needed_approvals</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">needed_approvals</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2119,7 +2119,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_relay_vrf_modulo_samples</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_relay_vrf_modulo_samples</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">relay_vrf_modulo_samples</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2132,7 +2132,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_queue_count</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_queue_count</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_upward_queue_count</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2145,7 +2145,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_queue_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_queue_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_upward_queue_size</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2158,7 +2158,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_downward_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_downward_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_downward_message_size</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2171,7 +2171,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_weight</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ump_service_total_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ump_service_total_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">ump_service_total_weight</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2184,7 +2184,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_upward_message_size</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2200,7 +2200,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_message_num_per_candidate</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">max_upward_message_num_per_candidate</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2215,7 +2215,7 @@
 		))]</span>
 		<span class="comment">// Deprecated, but is not marked as such, because that would trigger warnings coming from</span>
 		<span class="comment">// the macro.</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_open_request_ttl</span>(<span class="ident">_origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">_new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_open_request_ttl</span>(<span class="ident">_origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">_new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="prelude-val">Err</span>(<span class="string">&quot;this doesn&#39;t have any effect&quot;</span>.<span class="ident">into</span>())
 		}
 
@@ -2224,7 +2224,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_balance</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_sender_deposit</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Balance</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_sender_deposit</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Balance</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_sender_deposit</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2238,7 +2238,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_balance</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_recipient_deposit</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Balance</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_recipient_deposit</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Balance</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_recipient_deposit</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2251,7 +2251,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_capacity</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_capacity</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_channel_max_capacity</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2264,7 +2264,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_total_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_total_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_channel_max_total_size</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2280,7 +2280,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_max_parachain_inbound_channels</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_max_parachain_inbound_channels</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2296,7 +2296,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_max_parathread_inbound_channels</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_max_parathread_inbound_channels</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2309,7 +2309,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_channel_max_message_size</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2325,7 +2325,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_max_parachain_outbound_channels</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_max_parachain_outbound_channels</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2341,7 +2341,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_max_parathread_outbound_channels</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_max_parathread_outbound_channels</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2357,7 +2357,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_max_message_num_per_candidate</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">u32</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">hrmp_max_message_num_per_candidate</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2370,7 +2370,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_weight</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ump_max_individual_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ump_max_individual_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">ump_max_individual_weight</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2384,7 +2384,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pvf_checking_enabled</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pvf_checking_enabled</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">bool</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">pvf_checking_enabled</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2397,7 +2397,7 @@
 			<span class="ident">T::WeightInfo::set_config_with_u32</span>(),
 			<span class="ident">DispatchClass::Operational</span>,
 		))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pvf_voting_ttl</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">SessionIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pvf_voting_ttl</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">pvf_voting_ttl</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2414,7 +2414,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_minimum_validation_upgrade_delay</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">sp_std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>.<span class="ident">minimum_validation_upgrade_delay</span>, <span class="ident">new</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">new</span>
@@ -2425,7 +2425,7 @@
 
 	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+		<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() -&gt; <span class="ident">Weight</span> {
 			<span class="ident">migration::migrate_to_latest</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()
 		}
 
@@ -2442,7 +2442,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Called by the initializer to initialize the configuration module.</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_initialize</span>(<span class="ident">_now</span>: <span class="ident">T::BlockNumber</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_initialize</span>(<span class="ident">_now</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="number">0</span>
 	}
 
@@ -2457,7 +2457,7 @@
 	}
 
 	<span class="doccomment">/// Return the session index that should be used for any future scheduled changes.</span>
-	<span class="kw">fn</span> <span class="ident">scheduled_session</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SessionIndex</span> {
+	<span class="kw">fn</span> <span class="ident">scheduled_session</span>() -&gt; <span class="ident">SessionIndex</span> {
 		<span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::scheduled_session</span>()
 	}
 
@@ -2473,7 +2473,7 @@
 	<span class="comment">// duplicated code (making this function to show up in the top of heaviest functions) only for</span>
 	<span class="comment">// the sake of essentially avoiding an indirect call. Doesn&#39;t worth it.</span>
 	<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-	<span class="kw">fn</span> <span class="ident">update_config_member</span>(<span class="ident">updater</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>) {
+	<span class="kw">fn</span> <span class="ident">update_config_member</span>(<span class="ident">updater</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span>) {
 		<span class="kw">let</span> <span class="ident">scheduled_session</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::scheduled_session</span>();
 		<span class="kw">let</span> <span class="ident">pending</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PendingConfig::get</span>(<span class="ident">scheduled_session</span>);
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">pending</span>.<span class="ident">unwrap_or_else</span>(<span class="ident"><span class="self">Self</span>::config</span>);

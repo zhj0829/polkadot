@@ -31,14 +31,14 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_macros</span>)]</span>
 <span class="macro">macro_rules!</span> <span class="ident">cstr</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>:<span class="ident">literal</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>:<span class="ident">literal</span>) =&gt; {
         <span class="ident">std::ffi::CStr::from_bytes_with_nul</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>, <span class="string">&quot;\0&quot;</span>).<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>()
     };
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_macros</span>)]</span>
 <span class="macro">macro_rules!</span> <span class="ident">cstr</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>:<span class="ident">literal</span>) <span class="op">=</span><span class="op">&gt;</span> {{
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>:<span class="ident">literal</span>) =&gt; {{
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unsafe_code</span>, <span class="ident">unused_unsafe</span>)]</span>
         <span class="kw">unsafe</span> {
             <span class="ident">std::ffi::CStr::from_bytes_with_nul_unchecked</span>(<span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>, <span class="string">&quot;\0&quot;</span>).<span class="ident">as_bytes</span>())

@@ -505,19 +505,19 @@
     <span class="kw">const</span> <span class="ident">ANSI_BG</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">into_dyncolors</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::DynColors</span>;
+    <span class="kw">fn</span> <span class="ident">into_dyncolors</span>() -&gt; <span class="ident"><span class="kw">crate</span>::DynColors</span>;
 }
 
 <span class="doccomment">/// A trait describing a runtime-configurable color which can displayed using [`FgDynColorDisplay`](FgDynColorDisplay)</span>
 <span class="doccomment">/// or [`BgDynColorDisplay`](BgDynColorDisplay). If your color will be known at compile time it</span>
 <span class="doccomment">/// is recommended you avoid this.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">DynColor</span> {
-    <span class="kw">fn</span> <span class="ident">fmt_ansi_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
-    <span class="kw">fn</span> <span class="ident">fmt_ansi_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt_ansi_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt_ansi_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_dyncolors_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DynColors</span>;
+    <span class="kw">fn</span> <span class="ident">get_dyncolors_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DynColors</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_dyncolors_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DynColors</span>;
+    <span class="kw">fn</span> <span class="ident">get_dyncolors_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">DynColors</span>;
 }
 
 <span class="doccomment">/// Transparent wrapper around a type which implements all the formatters the wrapped type does,</span>
@@ -545,17 +545,17 @@
 <span class="macro">macro_rules!</span> <span class="ident">color_methods</span> {
     ($(
         <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fg_meta</span>:<span class="ident">meta</span>]</span> <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bg_meta</span>:<span class="ident">meta</span>]</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fg_method</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bg_method</span>:<span class="ident">ident</span>
-    ),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {
         $(
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fg_meta</span>]</span>
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fg_method</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fg_method</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">FgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
                 <span class="ident">FgColorDisplay</span>(<span class="self">self</span>, <span class="ident">PhantomData</span>)
             }
 
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fg_meta</span>]</span>
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bg_method</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bg_method</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">BgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
                 <span class="ident">BgColorDisplay</span>(<span class="self">self</span>, <span class="ident">PhantomData</span>)
             }
          )<span class="op">*</span>
@@ -563,11 +563,11 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">style_methods</span> {
-    ($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">meta</span>]</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) =&gt; {
         $(
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>]</span>
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">styles</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">styles</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span><span class="op">&gt;</span> {
                 <span class="ident">styles</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>(<span class="self">self</span>)
             }
          )<span class="op">*</span>
@@ -634,7 +634,7 @@
     <span class="doccomment">/// println!(&quot;{}&quot;, &quot;red foreground&quot;.fg::&lt;Red&gt;());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">Color</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">Color</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">FgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">FgColorDisplay</span>(<span class="self">self</span>, <span class="ident">PhantomData</span>)
     }
 
@@ -646,7 +646,7 @@
     <span class="doccomment">/// println!(&quot;{}&quot;, &quot;black background&quot;.bg::&lt;Black&gt;());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">bg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">Color</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">bg</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">Color</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">BgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">BgColorDisplay</span>(<span class="self">self</span>, <span class="ident">PhantomData</span>)
     }
 
@@ -741,7 +741,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">color</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>: <span class="ident">DynColor</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">color</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>: <span class="ident">DynColor</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) -&gt; <span class="ident">FgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">FgDynColorDisplay</span>(<span class="self">self</span>, <span class="ident">color</span>)
     }
 
@@ -757,7 +757,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">on_color</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>: <span class="ident">DynColor</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">on_color</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>: <span class="ident">DynColor</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) -&gt; <span class="ident">BgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Color</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">BgDynColorDisplay</span>(<span class="self">self</span>, <span class="ident">color</span>)
     }
 
@@ -769,7 +769,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;custom&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">fg_rgb</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">R</span>: <span class="ident">u8</span>, <span class="kw">const</span> <span class="ident">G</span>: <span class="ident">u8</span>, <span class="kw">const</span> <span class="ident">B</span>: <span class="ident">u8</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors::CustomColor</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">G</span>, <span class="ident">B</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">FgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors::CustomColor</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">G</span>, <span class="ident">B</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">FgColorDisplay</span>(<span class="self">self</span>, <span class="ident">PhantomData</span>)
     }
 
@@ -781,24 +781,24 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;custom&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">bg_rgb</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">R</span>: <span class="ident">u8</span>, <span class="kw">const</span> <span class="ident">G</span>: <span class="ident">u8</span>, <span class="kw">const</span> <span class="ident">B</span>: <span class="ident">u8</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors::CustomColor</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">G</span>, <span class="ident">B</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">BgColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">colors::CustomColor</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">G</span>, <span class="ident">B</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">BgColorDisplay</span>(<span class="self">self</span>, <span class="ident">PhantomData</span>)
     }
 
     <span class="doccomment">/// Sets the foreground color to an RGB value.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">truecolor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Rgb</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">truecolor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) -&gt; <span class="ident">FgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Rgb</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">FgDynColorDisplay</span>(<span class="self">self</span>, <span class="ident">Rgb</span>(<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>))
     }
 
     <span class="doccomment">/// Sets the background color to an RGB value.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">on_truecolor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Rgb</span>, <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">on_truecolor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">r</span>: <span class="ident">u8</span>, <span class="ident">g</span>: <span class="ident">u8</span>, <span class="ident">b</span>: <span class="ident">u8</span>) -&gt; <span class="ident">BgDynColorDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Rgb</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">BgDynColorDisplay</span>(<span class="self">self</span>, <span class="ident">Rgb</span>(<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>))
     }
 
     <span class="doccomment">/// Apply a runtime-determined style</span>
-    <span class="kw">fn</span> <span class="ident">style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">style</span>: <span class="ident">Style</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Styled</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">style</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">style</span>: <span class="ident">Style</span>) -&gt; <span class="ident">Styled</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">style</span>.<span class="ident">style</span>(<span class="self">self</span>)
     }
     
@@ -833,8 +833,8 @@
     <span class="kw">fn</span> <span class="ident">if_stdout_tty</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Out</span>, <span class="ident">ApplyFn</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
         <span class="ident">apply</span>: <span class="ident">ApplyFn</span>
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TtyDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">StdOut</span>, <span class="self">Self</span>, <span class="ident">Out</span>, <span class="ident">ApplyFn</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">ApplyFn</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Out</span>
+    ) -&gt; <span class="ident">TtyDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">StdOut</span>, <span class="self">Self</span>, <span class="ident">Out</span>, <span class="ident">ApplyFn</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">ApplyFn</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>) -&gt; <span class="ident">Out</span>
     {
         <span class="ident">TtyDisplay</span>(<span class="self">self</span>, <span class="ident">apply</span>, <span class="ident">StdOut</span>)
     }
@@ -859,8 +859,8 @@
     <span class="kw">fn</span> <span class="ident">if_stderr_tty</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Out</span>, <span class="ident">ApplyFn</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
         <span class="ident">apply</span>: <span class="ident">ApplyFn</span>
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TtyDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">StdErr</span>, <span class="self">Self</span>, <span class="ident">Out</span>, <span class="ident">ApplyFn</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">ApplyFn</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Out</span>
+    ) -&gt; <span class="ident">TtyDisplay</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">StdErr</span>, <span class="self">Self</span>, <span class="ident">Out</span>, <span class="ident">ApplyFn</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">ApplyFn</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>) -&gt; <span class="ident">Out</span>
     {
         <span class="ident">TtyDisplay</span>(<span class="self">self</span>, <span class="ident">apply</span>, <span class="ident">StdErr</span>)
     }

@@ -1125,11 +1125,11 @@
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">account</span>: <span class="ident">T::AccountId</span>,
 			<span class="ident">call</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Call</span><span class="op">&gt;</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Check `who` is allowed to make a call on behalf of `account`</span>
 			<span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::proxy</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>).<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotAllowed</span>)<span class="question-mark">?</span>;
-			<span class="macro">ensure!</span>(<span class="kw-2">&amp;</span><span class="ident">target</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">account</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotAllowed</span>);
+			<span class="macro">ensure!</span>(<span class="kw-2">&amp;</span><span class="ident">target</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">account</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotAllowed</span>);
 			<span class="ident">call</span>.<span class="ident">dispatch</span>(<span class="ident">frame_system::RawOrigin::Signed</span>(<span class="ident">account</span>).<span class="ident">into</span>())
 				.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">error</span>)
@@ -1153,7 +1153,7 @@
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">lost</span>: <span class="ident">T::AccountId</span>,
 			<span class="ident">rescuer</span>: <span class="ident">T::AccountId</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Create the recovery storage item.</span>
 			<span class="op">&lt;</span><span class="ident">Proxy</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">rescuer</span>, <span class="kw-2">&amp;</span><span class="ident">lost</span>);
@@ -1197,7 +1197,7 @@
 			<span class="ident">friends</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>,
 			<span class="ident">threshold</span>: <span class="ident">u16</span>,
 			<span class="ident">delay_period</span>: <span class="ident">T::BlockNumber</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Check account is not already set up for recovery</span>
 			<span class="macro">ensure!</span>(<span class="op">!</span><span class="op">&lt;</span><span class="ident">Recoverable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AlreadyRecoverable</span>);
@@ -1250,7 +1250,7 @@
 		<span class="doccomment">/// Total Complexity: O(F + X)</span>
 		<span class="doccomment">/// # &lt;/weight&gt;</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">100_000_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initiate_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">account</span>: <span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initiate_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">account</span>: <span class="ident">T::AccountId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Check that the account is recoverable</span>
 			<span class="macro">ensure!</span>(<span class="op">&lt;</span><span class="ident">Recoverable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">account</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotRecoverable</span>);
@@ -1306,7 +1306,7 @@
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">lost</span>: <span class="ident">T::AccountId</span>,
 			<span class="ident">rescuer</span>: <span class="ident">T::AccountId</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Get the recovery configuration for the lost account.</span>
 			<span class="kw">let</span> <span class="ident">recovery_config</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::recovery_config</span>(<span class="kw-2">&amp;</span><span class="ident">lost</span>).<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotRecoverable</span>)<span class="question-mark">?</span>;
@@ -1317,8 +1317,8 @@
 			<span class="macro">ensure!</span>(<span class="ident"><span class="self">Self</span>::is_friend</span>(<span class="kw-2">&amp;</span><span class="ident">recovery_config</span>.<span class="ident">friends</span>, <span class="kw-2">&amp;</span><span class="ident">who</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotFriend</span>);
 			<span class="comment">// Either insert the vouch, or return an error that the user already vouched.</span>
 			<span class="kw">match</span> <span class="ident">active_recovery</span>.<span class="ident">friends</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>) {
-				<span class="prelude-val">Ok</span>(<span class="ident">_pos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AlreadyVouched</span>)<span class="question-mark">?</span>,
-				<span class="prelude-val">Err</span>(<span class="ident">pos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">active_recovery</span>.<span class="ident">friends</span>.<span class="ident">insert</span>(<span class="ident">pos</span>, <span class="ident">who</span>.<span class="ident">clone</span>()),
+				<span class="prelude-val">Ok</span>(<span class="ident">_pos</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AlreadyVouched</span>)<span class="question-mark">?</span>,
+				<span class="prelude-val">Err</span>(<span class="ident">pos</span>) =&gt; <span class="ident">active_recovery</span>.<span class="ident">friends</span>.<span class="ident">insert</span>(<span class="ident">pos</span>, <span class="ident">who</span>.<span class="ident">clone</span>()),
 			}
 			<span class="comment">// Update storage with the latest details</span>
 			<span class="op">&lt;</span><span class="ident">ActiveRecoveries</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">lost</span>, <span class="kw-2">&amp;</span><span class="ident">rescuer</span>, <span class="ident">active_recovery</span>);
@@ -1351,7 +1351,7 @@
 		<span class="doccomment">/// Total Complexity: O(F + V)</span>
 		<span class="doccomment">/// # &lt;/weight&gt;</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">100_000_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">claim_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">account</span>: <span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">claim_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">account</span>: <span class="ident">T::AccountId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Get the recovery configuration for the lost account</span>
 			<span class="kw">let</span> <span class="ident">recovery_config</span> <span class="op">=</span>
@@ -1403,7 +1403,7 @@
 		<span class="doccomment">/// Total Complexity: O(V + X)</span>
 		<span class="doccomment">/// # &lt;/weight&gt;</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">30_000_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">rescuer</span>: <span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">rescuer</span>: <span class="ident">T::AccountId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Take the active recovery process started by the rescuer for this account.</span>
 			<span class="kw">let</span> <span class="ident">active_recovery</span> <span class="op">=</span>
@@ -1446,7 +1446,7 @@
 		<span class="doccomment">/// Total Complexity: O(F + X)</span>
 		<span class="doccomment">/// # &lt;/weight&gt;</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">30_000_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_recovery</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Check there are no active recoveries</span>
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">active_recoveries</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">ActiveRecoveries</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::iter_prefix_values</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>);
@@ -1472,10 +1472,10 @@
 		<span class="doccomment">/// - One storage mutation to check account is recovered by `who`. O(1)</span>
 		<span class="doccomment">/// # &lt;/weight&gt;</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">30_000_000</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancel_recovered</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">account</span>: <span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancel_recovered</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">account</span>: <span class="ident">T::AccountId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">who</span> <span class="op">=</span> <span class="ident">ensure_signed</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Check `who` is allowed to make a call on behalf of `account`</span>
-			<span class="macro">ensure!</span>(<span class="ident"><span class="self">Self</span>::proxy</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>) <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">account</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotAllowed</span>);
+			<span class="macro">ensure!</span>(<span class="ident"><span class="self">Self</span>::proxy</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>) <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">account</span>), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::NotAllowed</span>);
 			<span class="ident">Proxy</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::remove</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>);
 			<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::dec_consumers</span>(<span class="kw-2">&amp;</span><span class="ident">who</span>);
 			<span class="prelude-val">Ok</span>(())
@@ -1485,12 +1485,12 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Check that friends list is sorted and has no duplicates.</span>
-	<span class="kw">fn</span> <span class="ident">is_sorted_and_unique</span>(<span class="ident">friends</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">is_sorted_and_unique</span>(<span class="ident">friends</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
 		<span class="ident">friends</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">all</span>(<span class="op">|</span><span class="ident">w</span><span class="op">|</span> <span class="ident">w</span>[<span class="number">0</span>] <span class="op">&lt;</span> <span class="ident">w</span>[<span class="number">1</span>])
 	}
 
 	<span class="doccomment">/// Check that a user is a friend in the friends list.</span>
-	<span class="kw">fn</span> <span class="ident">is_friend</span>(<span class="ident">friends</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>, <span class="ident">friend</span>: <span class="kw-2">&amp;</span><span class="ident">T::AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">is_friend</span>(<span class="ident">friends</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>, <span class="ident">friend</span>: <span class="kw-2">&amp;</span><span class="ident">T::AccountId</span>) -&gt; <span class="ident">bool</span> {
 		<span class="ident">friends</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">friend</span>).<span class="ident">is_ok</span>()
 	}
 }

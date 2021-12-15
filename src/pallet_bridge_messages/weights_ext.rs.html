@@ -589,12 +589,12 @@
 	<span class="doccomment">/// factors that may increase proof size: (1) the message size may be larger than predefined</span>
 	<span class="doccomment">/// and (2) relayer may add extra trie nodes to the proof. So if proof size is larger than</span>
 	<span class="doccomment">/// this value, we&#39;re going to charge relayer for that.</span>
-	<span class="kw">fn</span> <span class="ident">expected_extra_storage_proof_size</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
+	<span class="kw">fn</span> <span class="ident">expected_extra_storage_proof_size</span>() -&gt; <span class="ident">u32</span>;
 
 	<span class="comment">// Functions that are directly mapped to extrinsics weights.</span>
 
 	<span class="doccomment">/// Weight of message send extrinsic.</span>
-	<span class="kw">fn</span> <span class="ident">send_message_weight</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Size</span>, <span class="ident">db_weight</span>: <span class="ident">RuntimeDbWeight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">send_message_weight</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Size</span>, <span class="ident">db_weight</span>: <span class="ident">RuntimeDbWeight</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">transaction_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::send_message_overhead</span>();
 		<span class="kw">let</span> <span class="ident">message_size_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::send_message_size_overhead</span>(<span class="ident">message</span>.<span class="ident">size_hint</span>());
 		<span class="kw">let</span> <span class="ident">call_back_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::single_message_callback_overhead</span>(<span class="ident">db_weight</span>);
@@ -609,7 +609,7 @@
 		<span class="ident">proof</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Size</span>,
 		<span class="ident">messages_count</span>: <span class="ident">u32</span>,
 		<span class="ident">dispatch_weight</span>: <span class="ident">Weight</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	) -&gt; <span class="ident">Weight</span> {
 		<span class="comment">// basic components of extrinsic weight</span>
 		<span class="kw">let</span> <span class="ident">transaction_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_messages_proof_overhead</span>();
 		<span class="kw">let</span> <span class="ident">outbound_state_delivery_weight</span> <span class="op">=</span>
@@ -639,7 +639,7 @@
 		<span class="ident">proof</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Size</span>,
 		<span class="ident">relayers_state</span>: <span class="kw-2">&amp;</span><span class="ident">UnrewardedRelayersState</span>,
 		<span class="ident">db_weight</span>: <span class="ident">RuntimeDbWeight</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	) -&gt; <span class="ident">Weight</span> {
 		<span class="comment">// basic components of extrinsic weight</span>
 		<span class="kw">let</span> <span class="ident">transaction_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_messages_delivery_proof_overhead</span>();
 		<span class="kw">let</span> <span class="ident">messages_overhead</span> <span class="op">=</span>
@@ -671,13 +671,13 @@
 	<span class="comment">// Functions that are used by extrinsics weights formulas.</span>
 
 	<span class="doccomment">/// Returns weight of message send transaction (`send_message`).</span>
-	<span class="kw">fn</span> <span class="ident">send_message_overhead</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">send_message_overhead</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident"><span class="self">Self</span>::send_minimal_message_worst_case</span>()
 	}
 
 	<span class="doccomment">/// Returns weight that needs to be accounted when message of given size is sent</span>
 	<span class="doccomment">/// (`send_message`).</span>
-	<span class="kw">fn</span> <span class="ident">send_message_size_overhead</span>(<span class="ident">message_size</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">send_message_size_overhead</span>(<span class="ident">message_size</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">message_size_in_kb</span> <span class="op">=</span> (<span class="number">1024u64</span> <span class="op">+</span> <span class="ident">message_size</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">/</span> <span class="number">1024</span>;
 		<span class="kw">let</span> <span class="ident">single_kb_weight</span> <span class="op">=</span>
 			(<span class="ident"><span class="self">Self</span>::send_16_kb_message_worst_case</span>() <span class="op">-</span> <span class="ident"><span class="self">Self</span>::send_1_kb_message_worst_case</span>()) <span class="op">/</span> <span class="number">15</span>;
@@ -685,7 +685,7 @@
 	}
 
 	<span class="doccomment">/// Returns weight overhead of message delivery transaction (`receive_messages_proof`).</span>
-	<span class="kw">fn</span> <span class="ident">receive_messages_proof_overhead</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">receive_messages_proof_overhead</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_and_two_tx_overheads</span> <span class="op">=</span>
 			<span class="ident"><span class="self">Self</span>::receive_single_message_proof</span>().<span class="ident">saturating_mul</span>(<span class="number">2</span>);
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_and_single_tx_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_two_messages_proof</span>();
@@ -695,7 +695,7 @@
 
 	<span class="doccomment">/// Returns weight that needs to be accounted when receiving given a number of messages with</span>
 	<span class="doccomment">/// message delivery transaction (`receive_messages_proof`).</span>
-	<span class="kw">fn</span> <span class="ident">receive_messages_proof_messages_overhead</span>(<span class="ident">messages</span>: <span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">receive_messages_proof_messages_overhead</span>(<span class="ident">messages</span>: <span class="ident">MessageNonce</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_and_single_tx_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_two_messages_proof</span>();
 		<span class="kw">let</span> <span class="ident">weight_of_single_message_and_single_tx_overhead</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_single_message_proof</span>();
 		<span class="ident">weight_of_two_messages_and_single_tx_overhead</span>
@@ -705,7 +705,7 @@
 
 	<span class="doccomment">/// Returns weight that needs to be accounted when message delivery transaction</span>
 	<span class="doccomment">/// (`receive_messages_proof`) is carrying outbound lane state proof.</span>
-	<span class="kw">fn</span> <span class="ident">receive_messages_proof_outbound_lane_state_overhead</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">receive_messages_proof_outbound_lane_state_overhead</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight_of_single_message_and_lane_state</span> <span class="op">=</span>
 			<span class="ident"><span class="self">Self</span>::receive_single_message_proof_with_outbound_lane_state</span>();
 		<span class="kw">let</span> <span class="ident">weight_of_single_message</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_single_message_proof</span>();
@@ -714,7 +714,7 @@
 
 	<span class="doccomment">/// Returns weight overhead of delivery confirmation transaction</span>
 	<span class="doccomment">/// (`receive_messages_delivery_proof`).</span>
-	<span class="kw">fn</span> <span class="ident">receive_messages_delivery_proof_overhead</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">receive_messages_delivery_proof_overhead</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_and_two_tx_overheads</span> <span class="op">=</span>
 			<span class="ident"><span class="self">Self</span>::receive_delivery_proof_for_single_message</span>().<span class="ident">saturating_mul</span>(<span class="number">2</span>);
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_and_single_tx_overhead</span> <span class="op">=</span>
@@ -725,7 +725,7 @@
 
 	<span class="doccomment">/// Returns weight that needs to be accounted when receiving confirmations for given a number of</span>
 	<span class="doccomment">/// messages with delivery confirmation transaction (`receive_messages_delivery_proof`).</span>
-	<span class="kw">fn</span> <span class="ident">receive_messages_delivery_proof_messages_overhead</span>(<span class="ident">messages</span>: <span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">receive_messages_delivery_proof_messages_overhead</span>(<span class="ident">messages</span>: <span class="ident">MessageNonce</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages</span> <span class="op">=</span>
 			<span class="ident"><span class="self">Self</span>::receive_delivery_proof_for_two_messages_by_single_relayer</span>();
 		<span class="kw">let</span> <span class="ident">weight_of_single_message</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::receive_delivery_proof_for_single_message</span>();
@@ -736,7 +736,7 @@
 
 	<span class="doccomment">/// Returns weight that needs to be accounted when receiving confirmations for given a number of</span>
 	<span class="doccomment">/// relayers entries with delivery confirmation transaction (`receive_messages_delivery_proof`).</span>
-	<span class="kw">fn</span> <span class="ident">receive_messages_delivery_proof_relayers_overhead</span>(<span class="ident">relayers</span>: <span class="ident">MessageNonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">receive_messages_delivery_proof_relayers_overhead</span>(<span class="ident">relayers</span>: <span class="ident">MessageNonce</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_by_two_relayers</span> <span class="op">=</span>
 			<span class="ident"><span class="self">Self</span>::receive_delivery_proof_for_two_messages_by_two_relayers</span>();
 		<span class="kw">let</span> <span class="ident">weight_of_two_messages_by_single_relayer</span> <span class="op">=</span>
@@ -754,7 +754,7 @@
 	<span class="doccomment">/// shouldn&#39;t be added to cost of transaction, but instead should act as a minimal cost that the</span>
 	<span class="doccomment">/// relayer must pay when it relays proof of given size (even if cost based on other parameters</span>
 	<span class="doccomment">/// is less than that cost).</span>
-	<span class="kw">fn</span> <span class="ident">storage_proof_size_overhead</span>(<span class="ident">proof_size</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">storage_proof_size_overhead</span>(<span class="ident">proof_size</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">proof_size_in_bytes</span> <span class="op">=</span> <span class="ident">proof_size</span> <span class="kw">as</span> <span class="ident">Weight</span>;
 		<span class="kw">let</span> <span class="ident">byte_weight</span> <span class="op">=</span> (<span class="ident"><span class="self">Self</span>::receive_single_message_proof_16_kb</span>() <span class="op">-</span>
 			<span class="ident"><span class="self">Self</span>::receive_single_message_proof_1_kb</span>()) <span class="op">/</span>
@@ -766,7 +766,7 @@
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// This function may return zero if runtime doesn&#39;t support pay-dispatch-fee-at-target-chain</span>
 	<span class="doccomment">/// option.</span>
-	<span class="kw">fn</span> <span class="ident">pay_inbound_dispatch_fee_overhead</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pay_inbound_dispatch_fee_overhead</span>() -&gt; <span class="ident">Weight</span> {
 		<span class="ident"><span class="self">Self</span>::receive_single_message_proof</span>()
 			.<span class="ident">saturating_sub</span>(<span class="ident"><span class="self">Self</span>::receive_single_prepaid_message_proof</span>())
 	}
@@ -776,19 +776,19 @@
 	<span class="doccomment">/// When benchmarking the weight please take into consideration both the `OnMessageAccepted` and</span>
 	<span class="doccomment">/// `OnDeliveryConfirmed` callbacks. The method should return the greater of the two, because</span>
 	<span class="doccomment">/// it&#39;s used to estimate the weight in both contexts.</span>
-	<span class="kw">fn</span> <span class="ident">single_message_callback_overhead</span>(<span class="ident">db_weight</span>: <span class="ident">RuntimeDbWeight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">single_message_callback_overhead</span>(<span class="ident">db_weight</span>: <span class="ident">RuntimeDbWeight</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="ident">db_weight</span>.<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>)
 	}
 }
 
 <span class="kw">impl</span> <span class="ident">WeightInfoExt</span> <span class="kw">for</span> () {
-	<span class="kw">fn</span> <span class="ident">expected_extra_storage_proof_size</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+	<span class="kw">fn</span> <span class="ident">expected_extra_storage_proof_size</span>() -&gt; <span class="ident">u32</span> {
 		<span class="ident">EXTRA_STORAGE_PROOF_SIZE</span>
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span><span class="op">&gt;</span> <span class="ident">WeightInfoExt</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::weights::RialtoWeight</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">expected_extra_storage_proof_size</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+	<span class="kw">fn</span> <span class="ident">expected_extra_storage_proof_size</span>() -&gt; <span class="ident">u32</span> {
 		<span class="ident">EXTRA_STORAGE_PROOF_SIZE</span>
 	}
 }

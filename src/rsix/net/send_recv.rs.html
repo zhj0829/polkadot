@@ -134,7 +134,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/recv.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/recv.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">RecvFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">RecvFlags</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::recv</span>(<span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">flags</span>)
 }
@@ -148,7 +148,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/send.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/send.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">SendFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span><span class="op">&lt;</span><span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">flags</span>: <span class="ident">SendFlags</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::send</span>(<span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">flags</span>)
 }
@@ -167,7 +167,7 @@
     <span class="ident">fd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>,
     <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
     <span class="ident">flags</span>: <span class="ident">RecvFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">SocketAddr</span>)<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">SocketAddr</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::recvfrom</span>(<span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">flags</span>)
 }
@@ -188,7 +188,7 @@
     <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
     <span class="ident">flags</span>: <span class="ident">SendFlags</span>,
     <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV4</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::sendto_v4</span>(<span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">flags</span>, <span class="ident">addr</span>)
 }
@@ -209,7 +209,7 @@
     <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
     <span class="ident">flags</span>: <span class="ident">SendFlags</span>,
     <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV6</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::sendto_v6</span>(<span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">flags</span>, <span class="ident">addr</span>)
 }
@@ -230,7 +230,7 @@
     <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
     <span class="ident">flags</span>: <span class="ident">SendFlags</span>,
     <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrUnix</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">fd</span>.<span class="ident">as_fd</span>();
     <span class="ident">imp::syscalls::sendto_unix</span>(<span class="ident">fd</span>, <span class="ident">buf</span>, <span class="ident">flags</span>, <span class="ident">addr</span>)
 }

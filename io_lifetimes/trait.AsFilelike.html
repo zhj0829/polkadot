@@ -6,7 +6,7 @@
 <code>AsHandle</code>. It also provides the <code>as_filelike_view</code> convenience function
 providing typed views.</p>
 </div></details><h2 id="required-methods" class="small-section-header">Required methods<a href="#required-methods" class="anchor"></a></h2><div class="methods"><details class="rustdoc-toggle" open><summary><div id="tymethod.as_filelike" class="method has-srclink"><div class="rightside"><a class="srclink" href="../src/io_lifetimes/portability.rs.html#94" title="goto source code">[src]</a></div><h4 class="code-header">fn <a href="#tymethod.as_filelike" class="fnname">as_filelike</a>(&amp;self) -&gt; <a class="type" href="type.BorrowedFilelike.html" title="type io_lifetimes::BorrowedFilelike">BorrowedFilelike</a>&lt;'_&gt;</h4></div></summary><div class="docblock"><p>Borrows the reference.</p>
-<h1 id="example" class="section-header"><a href="#example">Example</a></h1>
+<h5 id="example" class="section-header"><a href="#example">Example</a></h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">std::fs::File</span>;
 <span class="kw">use</span> <span class="ident">io_lifetimes</span>::{<span class="ident">AsFilelike</span>, <span class="ident">BorrowedFilelike</span>};
 

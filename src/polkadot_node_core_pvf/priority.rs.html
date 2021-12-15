@@ -66,8 +66,8 @@
 
 <span class="kw">impl</span> <span class="ident">Priority</span> {
 	<span class="doccomment">/// Returns `true` if `self` is `Crticial`</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_critical</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-		<span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Priority::Critical</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_critical</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+		<span class="self">self</span> <span class="op">==</span> <span class="ident">Priority::Critical</span>
 	}
 }
 </code></pre></div>

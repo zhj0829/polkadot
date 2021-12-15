@@ -583,24 +583,24 @@
     <span class="doccomment">/// let borrowed_filelike: BorrowedFilelike&lt;&#39;_&gt; = f.as_filelike();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Return a borrowing view of a resource which dereferences to a `&amp;Target`</span>
     <span class="doccomment">/// or `&amp;mut Target`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`File`]: std::fs::File</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsFd</span><span class="op">&gt;</span> <span class="ident">AsFilelike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">as_fd</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
         <span class="ident">FilelikeView::new</span>(<span class="self">self</span>)
     }
 }
@@ -625,24 +625,24 @@
     <span class="doccomment">/// let borrowed_filelike: BorrowedFilelike&lt;&#39;_&gt; = f.as_filelike();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Return a borrowing view of a resource which dereferences to a `&amp;Target`</span>
     <span class="doccomment">/// or `&amp;mut Target`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`File`]: std::fs::File</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsHandle</span><span class="op">&gt;</span> <span class="ident">AsFilelike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_filelike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedFilelike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">as_handle</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_filelike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromFilelike</span> <span class="op">+</span> <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">FilelikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
         <span class="ident">FilelikeView::new</span>(<span class="self">self</span>)
     }
 }
@@ -656,7 +656,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsSocketlike</span>: <span class="ident">AsFd</span> {
     <span class="doccomment">/// Borrows the reference.</span>
-    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedSocketlike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedSocketlike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Return a borrowing view of a resource which dereferences to a `&amp;Target`</span>
     <span class="doccomment">/// or `&amp;mut Target`.</span>
@@ -664,20 +664,20 @@
     <span class="doccomment">/// [`TcpStream`]: std::net::TcpStream</span>
     <span class="kw">fn</span> <span class="ident">as_socketlike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromSocketlike</span> <span class="op">+</span> <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsFd</span><span class="op">&gt;</span> <span class="ident">AsSocketlike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedSocketlike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedSocketlike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">as_fd</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">as_socketlike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromSocketlike</span> <span class="op">+</span> <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
         <span class="ident">SocketlikeView::new</span>(<span class="self">self</span>)
     }
 }
@@ -691,7 +691,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsSocketlike</span>: <span class="ident">AsSocket</span> {
     <span class="doccomment">/// Borrows the reference.</span>
-    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedSocketlike</span>;
+    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedSocketlike</span>;
 
     <span class="doccomment">/// Return a borrowing view of a resource which dereferences to a `&amp;Target`</span>
     <span class="doccomment">/// or `&amp;mut Target`.</span>
@@ -699,20 +699,20 @@
     <span class="doccomment">/// [`TcpStream`]: std::net::TcpStream</span>
     <span class="kw">fn</span> <span class="ident">as_socketlike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromSocketlike</span> <span class="op">+</span> <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsSocket</span><span class="op">&gt;</span> <span class="ident">AsSocketlike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedSocketlike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_socketlike</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedSocketlike</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">as_socket</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">as_socketlike_view</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">FromSocketlike</span> <span class="op">+</span> <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">SocketlikeView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Target</span><span class="op">&gt;</span> {
         <span class="ident">SocketlikeView::new</span>(<span class="self">self</span>)
     }
 }
@@ -737,13 +737,13 @@
     <span class="doccomment">/// let owned_filelike: OwnedFilelike = f.into_filelike();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFilelike</span>;
+    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedFilelike</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IntoFd</span><span class="op">&gt;</span> <span class="ident">IntoFilelike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFilelike</span> {
+    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedFilelike</span> {
         <span class="self">self</span>.<span class="ident">into_fd</span>()
     }
 }
@@ -756,13 +756,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IntoFilelike</span>: <span class="ident">IntoHandle</span> {
     <span class="doccomment">/// Consumes this object, returning the underlying filelike object.</span>
-    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFilelike</span>;
+    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedFilelike</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IntoHandle</span><span class="op">&gt;</span> <span class="ident">IntoFilelike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFilelike</span> {
+    <span class="kw">fn</span> <span class="ident">into_filelike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedFilelike</span> {
         <span class="self">self</span>.<span class="ident">into_handle</span>()
     }
 }
@@ -775,13 +775,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IntoSocketlike</span>: <span class="ident">IntoFd</span> {
     <span class="doccomment">/// Consumes this object, returning the underlying socketlike object.</span>
-    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedSocketlike</span>;
+    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedSocketlike</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IntoFd</span><span class="op">&gt;</span> <span class="ident">IntoSocketlike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedSocketlike</span> {
+    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedSocketlike</span> {
         <span class="self">self</span>.<span class="ident">into_fd</span>()
     }
 }
@@ -806,13 +806,13 @@
     <span class="doccomment">/// let owned_filelike: OwnedFilelike = f.into_filelike();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedSocketlike</span>;
+    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedSocketlike</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">IntoSocket</span><span class="op">&gt;</span> <span class="ident">IntoSocketlike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedSocketlike</span> {
+    <span class="kw">fn</span> <span class="ident">into_socketlike</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedSocketlike</span> {
         <span class="self">self</span>.<span class="ident">into_socket</span>()
     }
 }
@@ -839,7 +839,7 @@
     <span class="doccomment">/// let f = File::from_filelike(owned_filelike);</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given filelike object</span>
     <span class="doccomment">/// converted from `into_owned`.</span>
@@ -855,18 +855,18 @@
     <span class="doccomment">/// let f = File::from_into_filelike(f);</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FromFd</span><span class="op">&gt;</span> <span class="ident">FromFilelike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_fd</span>(<span class="ident">owned</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_filelike</span>(<span class="ident">owned</span>.<span class="ident">into_filelike</span>())
     }
 }
@@ -893,7 +893,7 @@
     <span class="doccomment">/// let f = File::from_filelike(owned_filelike);</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given filelike object</span>
     <span class="doccomment">/// converted from `into_owned`.</span>
@@ -909,18 +909,18 @@
     <span class="doccomment">/// let f = File::from_into_filelike(f);</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FromHandle</span><span class="op">&gt;</span> <span class="ident">FromFilelike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_filelike</span>(<span class="ident">owned</span>: <span class="ident">OwnedFilelike</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_handle</span>(<span class="ident">owned</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_into_filelike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFilelike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_filelike</span>(<span class="ident">owned</span>.<span class="ident">into_filelike</span>())
     }
 }
@@ -934,22 +934,22 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FromSocketlike</span>: <span class="ident">FromFd</span> {
     <span class="doccomment">/// Constructs a new instance of `Self` from the given socketlike object.</span>
-    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given socketlike object</span>
     <span class="doccomment">/// converted from `into_owned`.</span>
-    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FromFd</span><span class="op">&gt;</span> <span class="ident">FromSocketlike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_fd</span>(<span class="ident">owned</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_socketlike</span>(<span class="ident">owned</span>.<span class="ident">into_socketlike</span>())
     }
 }
@@ -963,22 +963,22 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FromSocketlike</span>: <span class="ident">FromSocket</span> {
     <span class="doccomment">/// Constructs a new instance of `Self` from the given socketlike object.</span>
-    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given socketlike object</span>
     <span class="doccomment">/// converted from `into_owned`.</span>
-    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FromSocket</span><span class="op">&gt;</span> <span class="ident">FromSocketlike</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_socketlike</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocketlike</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_socket</span>(<span class="ident">owned</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_into_socketlike</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocketlike</span><span class="op">&gt;</span>(<span class="ident">owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_socketlike</span>(<span class="ident">owned</span>.<span class="ident">into_socketlike</span>())
     }
 }

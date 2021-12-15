@@ -227,19 +227,19 @@
 
 <span class="kw">impl</span> <span class="ident">Binding</span> <span class="kw">for</span> <span class="ident">ApplyLocation</span> {
     <span class="kw">type</span> <span class="ident">Raw</span> <span class="op">=</span> <span class="ident">raw::git_apply_location_t</span>;
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">raw::git_apply_location_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">raw::git_apply_location_t</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">raw::GIT_APPLY_LOCATION_WORKDIR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::WorkDir</span>,
-            <span class="ident">raw::GIT_APPLY_LOCATION_INDEX</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Index</span>,
-            <span class="ident">raw::GIT_APPLY_LOCATION_BOTH</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Both</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown git diff binary kind&quot;</span>),
+            <span class="ident">raw::GIT_APPLY_LOCATION_WORKDIR</span> =&gt; <span class="ident"><span class="self">Self</span>::WorkDir</span>,
+            <span class="ident">raw::GIT_APPLY_LOCATION_INDEX</span> =&gt; <span class="ident"><span class="self">Self</span>::Index</span>,
+            <span class="ident">raw::GIT_APPLY_LOCATION_BOTH</span> =&gt; <span class="ident"><span class="self">Self</span>::Both</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unknown git diff binary kind&quot;</span>),
         }
     }
-    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">raw::git_apply_location_t</span> {
+    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">raw::git_apply_location_t</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::WorkDir</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_APPLY_LOCATION_WORKDIR</span>,
-            <span class="ident"><span class="self">Self</span>::Index</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_APPLY_LOCATION_INDEX</span>,
-            <span class="ident"><span class="self">Self</span>::Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_APPLY_LOCATION_BOTH</span>,
+            <span class="ident"><span class="self">Self</span>::WorkDir</span> =&gt; <span class="ident">raw::GIT_APPLY_LOCATION_WORKDIR</span>,
+            <span class="ident"><span class="self">Self</span>::Index</span> =&gt; <span class="ident">raw::GIT_APPLY_LOCATION_INDEX</span>,
+            <span class="ident"><span class="self">Self</span>::Both</span> =&gt; <span class="ident">raw::GIT_APPLY_LOCATION_BOTH</span>,
         }
     }
 }
@@ -251,17 +251,17 @@
     <span class="ident">delta_cb</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">DeltaCB</span><span class="op">&lt;</span><span class="lifetime">&#39;cb</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">type</span> <span class="ident">HunkCB</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffHunk</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
-<span class="kw">type</span> <span class="ident">DeltaCB</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffDelta</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
+<span class="kw">type</span> <span class="ident">HunkCB</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffHunk</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
+<span class="kw">type</span> <span class="ident">DeltaCB</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffDelta</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
 
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">delta_cb_c</span>(<span class="ident">delta</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_diff_delta</span>, <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">delta_cb_c</span>(<span class="ident">delta</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_diff_delta</span>, <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) -&gt; <span class="ident">c_int</span> {
     <span class="ident">panic::wrap</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">Binding::from_raw_opt</span>(<span class="ident">delta</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);
 
         <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ApplyOptions</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>);
         <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">payload</span>.<span class="ident">delta_cb</span> {
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="op">-</span><span class="number">1</span>,
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">c</span>) =&gt; <span class="ident">c</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="op">-</span><span class="number">1</span>,
         };
 
         <span class="kw">let</span> <span class="ident">apply</span> <span class="op">=</span> <span class="ident">callback</span>(<span class="ident">delta</span>);
@@ -274,14 +274,14 @@
     .<span class="ident">unwrap_or</span>(<span class="op">-</span><span class="number">1</span>)
 }
 
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">hunk_cb_c</span>(<span class="ident">hunk</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_diff_hunk</span>, <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">hunk_cb_c</span>(<span class="ident">hunk</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_diff_hunk</span>, <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) -&gt; <span class="ident">c_int</span> {
     <span class="ident">panic::wrap</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="ident">hunk</span> <span class="op">=</span> <span class="ident">Binding::from_raw_opt</span>(<span class="ident">hunk</span>);
 
         <span class="kw">let</span> <span class="ident">payload</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ApplyOptions</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>);
         <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">payload</span>.<span class="ident">hunk_cb</span> {
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="op">-</span><span class="number">1</span>,
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">c</span>) =&gt; <span class="ident">c</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="op">-</span><span class="number">1</span>,
         };
 
         <span class="kw">let</span> <span class="ident">apply</span> <span class="op">=</span> <span class="ident">callback</span>(<span class="ident">hunk</span>);
@@ -296,7 +296,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;cb</span><span class="op">&gt;</span> <span class="ident">ApplyOptions</span><span class="op">&lt;</span><span class="lifetime">&#39;cb</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a new set of empty options (zeroed).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">opts</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">raw</span>: <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() },
             <span class="ident">hunk_cb</span>: <span class="prelude-val">None</span>,
@@ -309,7 +309,7 @@
         <span class="ident">opts</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">flag</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">opt</span>: <span class="ident">raw::git_apply_flags_t</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">flag</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">opt</span>: <span class="ident">raw::git_apply_flags_t</span>, <span class="ident">val</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">opt</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">if</span> <span class="ident">val</span> {
             <span class="self">self</span>.<span class="ident">raw</span>.<span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">opt</span>;
@@ -320,14 +320,14 @@
     }
 
     <span class="doccomment">/// Don&#39;t actually make changes, just test that the patch applies.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">check</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">check</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">flag</span>(<span class="ident">raw::GIT_APPLY_CHECK</span>, <span class="ident">check</span>)
     }
 
     <span class="doccomment">/// When applying a patch, callback that will be made per hunk.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hunk_callback</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cb</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hunk_callback</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cb</span>: <span class="ident">F</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffHunk</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;cb</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffHunk</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;cb</span>,
     {
         <span class="self">self</span>.<span class="ident">hunk_cb</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">cb</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">HunkCB</span><span class="op">&lt;</span><span class="lifetime">&#39;cb</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
@@ -338,9 +338,9 @@
     }
 
     <span class="doccomment">/// When applying a patch, callback that will be made per delta (file).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delta_callback</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cb</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delta_callback</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cb</span>: <span class="ident">F</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffDelta</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;cb</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DiffDelta</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;cb</span>,
     {
         <span class="self">self</span>.<span class="ident">delta_cb</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">cb</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">DeltaCB</span><span class="op">&lt;</span><span class="lifetime">&#39;cb</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
@@ -351,7 +351,7 @@
     }
 
     <span class="doccomment">/// Pointer to a raw git_stash_apply_options</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_apply_options</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_apply_options</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>
     }
 }

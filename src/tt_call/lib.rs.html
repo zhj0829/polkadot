@@ -1264,7 +1264,7 @@
         $(
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         )<span class="op">*</span>
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span>)::<span class="op">*</span> <span class="op">!</span> {
             (<span class="ident">__tt_call_private</span> <span class="macro-nonterminal">$</span><span class="macro">crate::tt_identity_return!</span> {})
             $(
@@ -1280,7 +1280,7 @@
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         )<span class="op">*</span>
         ~~<span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="kw">return</span>:<span class="macro-nonterminal">ident</span>)::<span class="op">*</span>
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span>)::<span class="op">*</span> <span class="op">!</span> {
             (<span class="ident">__tt_call_private</span> $(<span class="macro-nonterminal">$</span><span class="kw">return</span>)::<span class="op">*</span> <span class="op">!</span> {})
             $(
@@ -1301,7 +1301,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">state</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
             )<span class="op">*</span>
         }
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span>)::<span class="op">*</span> <span class="op">!</span> {
             (<span class="ident">__tt_call_private</span> $(<span class="macro-nonterminal">$</span><span class="kw">return</span>)::<span class="op">*</span> <span class="op">!</span> {
                 $(
@@ -1327,7 +1327,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">state</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
             )<span class="op">*</span>
         }
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span>)::<span class="op">*</span> <span class="op">!</span> {
             (<span class="ident">__tt_call_private</span> $(<span class="macro-nonterminal">$</span><span class="kw">return</span>)::<span class="op">*</span> <span class="op">!</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
@@ -1348,7 +1348,7 @@
     <span class="comment">// Macro returned one value.</span>
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>)<span class="op">*</span>
     };
 
@@ -1356,7 +1356,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         <span class="ident">rest</span> <span class="op">=</span> [{ }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>)<span class="op">*</span>
     };
 
@@ -1364,7 +1364,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         <span class="ident">rest</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">unexpected</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::error_unexpected!</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">unexpected</span>)<span class="op">*</span>
         }
@@ -1426,7 +1426,7 @@
         $(
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         )<span class="op">*</span>
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::private_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             $(
@@ -1442,7 +1442,7 @@
     {
         (<span class="ident">__tt_call_private</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">ident</span>)::<span class="op">*</span> <span class="op">!</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">state</span>:<span class="ident">tt</span>)<span class="op">*</span> })
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">append</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>)::<span class="op">*</span> <span class="op">!</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">state</span>)<span class="op">*</span>
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">append</span>)<span class="op">*</span>
@@ -1516,7 +1516,7 @@
         <span class="ident">input</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         <span class="bool-val">true</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">then</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         <span class="bool-val">false</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="kw">else</span>:<span class="macro-nonterminal">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_call!</span> {
             <span class="kw">macro</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">condition</span>)::<span class="op">*</span> }]
             <span class="ident">input</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>)<span class="op">*</span> }]
@@ -1536,7 +1536,7 @@
         <span class="bool-val">true</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">then</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         <span class="bool-val">false</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="kw">else</span>:<span class="macro-nonterminal">tt</span>)<span class="op">*</span> }]
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">condition</span>:<span class="ident">ident</span> <span class="op">=</span> [{ <span class="bool-val">true</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">then</span>)<span class="op">*</span>
     };
 
@@ -1545,7 +1545,7 @@
         <span class="bool-val">true</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">then</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         <span class="bool-val">false</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="kw">else</span>:<span class="macro-nonterminal">tt</span>)<span class="op">*</span> }]
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">condition</span>:<span class="ident">ident</span> <span class="op">=</span> [{ <span class="bool-val">false</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(<span class="macro-nonterminal">$</span><span class="kw">else</span>)<span class="op">*</span>
     };
 }
@@ -1580,7 +1580,7 @@
         $(
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">output</span>:<span class="ident">ident</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
         )<span class="op">*</span>
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         $(
             <span class="macro">println!</span>(
                 <span class="string">&quot;{}&quot;</span>,

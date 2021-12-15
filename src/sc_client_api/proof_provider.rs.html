@@ -122,7 +122,7 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span><span class="ident">StorageProof</span><span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span><span class="ident">StorageProof</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Reads child storage value at a given block + storage_key + key, returning</span>
 	<span class="doccomment">/// read proof.</span>
@@ -131,7 +131,7 @@
 		<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">child_info</span>: <span class="kw-2">&amp;</span><span class="ident">ChildInfo</span>,
 		<span class="ident">keys</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span><span class="ident">StorageProof</span><span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span><span class="ident">StorageProof</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Execute a call to a contract on top of state in a block of given hash</span>
 	<span class="doccomment">/// AND returning execution proof.</span>
@@ -142,7 +142,7 @@
 		<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">method</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
 		<span class="ident">call_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">StorageProof</span>)<span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">StorageProof</span>)<span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Given a `BlockId` iterate over all storage values starting at `start_keys`.</span>
 	<span class="doccomment">/// Last `start_keys` element contains last accessed key value.</span>
@@ -157,7 +157,7 @@
 		<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">start_keys</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>],
 		<span class="ident">size_limit</span>: <span class="ident">usize</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>(<span class="ident">CompactProof</span>, <span class="ident">u32</span>)<span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>(<span class="ident">CompactProof</span>, <span class="ident">u32</span>)<span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Given a `BlockId` iterate over all storage values starting at `start_key`.</span>
 	<span class="doccomment">/// Returns collected keys and values.</span>
@@ -172,7 +172,7 @@
 		<span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">start_key</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>],
 		<span class="ident">size_limit</span>: <span class="ident">usize</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">KeyValueStorageLevel</span>, <span class="ident">bool</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">KeyValueStorageLevel</span>, <span class="ident">bool</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Verify read storage proof for a set of keys.</span>
 	<span class="doccomment">/// Returns collected key-value pairs and a the nested state</span>
@@ -182,7 +182,7 @@
 		<span class="ident">root</span>: <span class="ident">Block::Hash</span>,
 		<span class="ident">proof</span>: <span class="ident">CompactProof</span>,
 		<span class="ident">start_keys</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>],
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>(<span class="ident">KeyValueStates</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>(<span class="ident">KeyValueStates</span>, <span class="ident">usize</span>)<span class="op">&gt;</span>;
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="sc_client_api" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

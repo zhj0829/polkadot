@@ -612,15 +612,15 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">GI</span><span class="op">&gt;</span> <span class="ident">ThisChainWithMessages</span> <span class="kw">for</span> <span class="ident">RococoLikeChain</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">GI</span><span class="op">&gt;</span> {
 	<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::Call</span>;
 
-	<span class="kw">fn</span> <span class="ident">is_outbound_lane_enabled</span>(<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-		<span class="kw-2">*</span><span class="ident">lane</span> <span class="op">=</span><span class="op">=</span> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]
+	<span class="kw">fn</span> <span class="ident">is_outbound_lane_enabled</span>(<span class="ident">lane</span>: <span class="kw-2">&amp;</span><span class="ident">LaneId</span>) -&gt; <span class="ident">bool</span> {
+		<span class="kw-2">*</span><span class="ident">lane</span> <span class="op">==</span> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]
 	}
 
-	<span class="kw">fn</span> <span class="ident">maximal_pending_messages_at_outbound_lane</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span> {
+	<span class="kw">fn</span> <span class="ident">maximal_pending_messages_at_outbound_lane</span>() -&gt; <span class="ident">MessageNonce</span> {
 		<span class="ident">MAXIMAL_PENDING_MESSAGES_AT_OUTBOUND_LANE</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">estimate_delivery_confirmation_transaction</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">estimate_delivery_confirmation_transaction</span>() -&gt; <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">inbound_data_size</span> <span class="op">=</span> <span class="ident">InboundLaneData</span>::<span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::AccountId</span><span class="op">&gt;</span><span class="ident">::encoded_size_hint</span>(
 			<span class="ident">MAXIMAL_ENCODED_ACCOUNT_ID_SIZE</span>,
 			<span class="number">1</span>,
@@ -636,7 +636,7 @@
 		}
 	}
 
-	<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::Balance</span> {
+	<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Balance</span> {
 		<span class="comment">// current fee multiplier is used here</span>
 		<span class="ident">bridge_runtime_common::messages::transaction_payment</span>(
 			<span class="ident"><span class="kw">crate</span>::BlockWeights::get</span>()
@@ -651,11 +651,11 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">GI</span><span class="op">&gt;</span> <span class="ident">BridgedChainWithMessages</span> <span class="kw">for</span> <span class="ident">RococoLikeChain</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">GI</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">maximal_extrinsic_size</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+	<span class="kw">fn</span> <span class="ident">maximal_extrinsic_size</span>() -&gt; <span class="ident">u32</span> {
 		<span class="ident">max_extrinsic_size</span>()
 	}
 
-	<span class="kw">fn</span> <span class="ident">message_weight_limits</span>(<span class="ident">_message_payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RangeInclusive</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">message_weight_limits</span>(<span class="ident">_message_payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">RangeInclusive</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span> {
 		<span class="comment">// we don&#39;t want to relay too large messages + keep reserve for future upgrades</span>
 		<span class="kw">let</span> <span class="ident">upper_limit</span> <span class="op">=</span>
 			<span class="ident">messages_target::maximal_incoming_message_dispatch_weight</span>(<span class="ident">max_extrinsic_weight</span>());
@@ -672,7 +672,7 @@
 		<span class="ident">message_payload</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
 		<span class="ident">include_pay_dispatch_fee_cost</span>: <span class="ident">bool</span>,
 		<span class="ident">message_dispatch_weight</span>: <span class="ident">Weight</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span> {
+	) -&gt; <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">message_payload_len</span> <span class="op">=</span> <span class="ident">u32::try_from</span>(<span class="ident">message_payload</span>.<span class="ident">len</span>()).<span class="ident">unwrap_or</span>(<span class="ident">u32::MAX</span>);
 		<span class="kw">let</span> <span class="ident">extra_bytes_in_payload</span> <span class="op">=</span> <span class="ident">Weight::from</span>(<span class="ident">message_payload_len</span>)
 			.<span class="ident">saturating_sub</span>(<span class="ident">pallet_bridge_messages::EXPECTED_DEFAULT_MESSAGE_LENGTH</span>.<span class="ident">into</span>());
@@ -693,7 +693,7 @@
 		}
 	}
 
-	<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::Balance</span> {
+	<span class="kw">fn</span> <span class="ident">transaction_payment</span>(<span class="ident">transaction</span>: <span class="ident">MessageTransaction</span><span class="op">&lt;</span><span class="ident">Weight</span><span class="op">&gt;</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Balance</span> {
 		<span class="comment">// current fee multiplier is used here</span>
 		<span class="ident">bridge_runtime_common::messages::transaction_payment</span>(
 			<span class="ident"><span class="kw">crate</span>::BlockWeights::get</span>()
@@ -720,13 +720,13 @@
 	<span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 	<span class="kw">type</span> <span class="ident">MessagesDeliveryProof</span> <span class="op">=</span> <span class="ident">messages_source::FromBridgedChainMessagesDeliveryProof</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Hash</span><span class="op">&gt;</span>;
 
-	<span class="kw">fn</span> <span class="ident">verify_message</span>(<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">messages_source::FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">verify_message</span>(<span class="ident">payload</span>: <span class="kw-2">&amp;</span><span class="ident">messages_source::FromThisChainMessagePayload</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="ident">messages_source::verify_chain_message</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">payload</span>)
 	}
 
 	<span class="kw">fn</span> <span class="ident">verify_messages_delivery_proof</span>(
 		<span class="ident">proof</span>: <span class="ident"><span class="self">Self</span>::MessagesDeliveryProof</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::AccountId</span><span class="op">&gt;</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">LaneId</span>, <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::AccountId</span><span class="op">&gt;</span>), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="ident">messages_source::verify_messages_delivery_proof</span>::<span class="op">&lt;</span><span class="ident">B</span>, <span class="ident"><span class="kw">crate</span>::Runtime</span>, <span class="ident">GI</span><span class="op">&gt;</span>(<span class="ident">proof</span>)
 	}
 }
@@ -745,7 +745,7 @@
 	<span class="kw">fn</span> <span class="ident">verify_messages_proof</span>(
 		<span class="ident">proof</span>: <span class="ident"><span class="self">Self</span>::MessagesProof</span>,
 		<span class="ident">messages_count</span>: <span class="ident">u32</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="ident">messages_target::verify_messages_proof</span>::<span class="op">&lt;</span><span class="ident">B</span>, <span class="ident"><span class="kw">crate</span>::Runtime</span>, <span class="ident">GI</span><span class="op">&gt;</span>(<span class="ident">proof</span>, <span class="ident">messages_count</span>).<span class="ident">and_then</span>(<span class="ident">verify_inbound_messages_lane</span>)
 	}
 }
@@ -756,7 +756,7 @@
 <span class="doccomment">/// Verify that lanes of inbound messages are enabled.</span>
 <span class="kw">fn</span> <span class="ident">verify_inbound_messages_lane</span>(
 	<span class="ident">messages</span>: <span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">allowed_incoming_lanes</span> <span class="op">=</span> [[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]];
 	<span class="kw">if</span> <span class="ident">messages</span>.<span class="ident">keys</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">lane_id</span><span class="op">|</span> <span class="op">!</span><span class="ident">allowed_incoming_lanes</span>.<span class="ident">contains</span>(<span class="ident">lane_id</span>)) {
 		<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INBOUND_LANE_DISABLED</span>)
@@ -768,7 +768,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDeliveryConfirmationTransactionFee</span>;
 
 <span class="kw">impl</span> <span class="ident">Get</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GetDeliveryConfirmationTransactionFee</span> {
-	<span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::Balance</span> {
+	<span class="kw">fn</span> <span class="ident">get</span>() -&gt; <span class="ident"><span class="kw">crate</span>::Balance</span> {
 		<span class="op">&lt;</span><span class="ident">RococoAtRococo</span> <span class="kw">as</span> <span class="ident">ThisChainWithMessages</span><span class="op">&gt;</span><span class="ident">::transaction_payment</span>(
 			<span class="ident">RococoAtRococo::estimate_delivery_confirmation_transaction</span>(),
 		)
@@ -795,7 +795,7 @@
 
 		<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(
 			<span class="ident">bridged_balance</span>: <span class="ident">bp_wococo::Balance</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bp_rococo::Balance</span> {
+		) -&gt; <span class="ident">bp_rococo::Balance</span> {
 			<span class="ident">bridged_balance</span>
 		}
 	}
@@ -845,7 +845,7 @@
 
 		<span class="kw">fn</span> <span class="ident">bridged_balance_to_this_balance</span>(
 			<span class="ident">bridged_balance</span>: <span class="ident">bp_rococo::Balance</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bp_wococo::Balance</span> {
+		) -&gt; <span class="ident">bp_wococo::Balance</span> {
 			<span class="ident">bridged_balance</span>
 		}
 	}
@@ -969,7 +969,7 @@
 		);
 	}
 
-	<span class="kw">fn</span> <span class="ident">proved_messages</span>(<span class="ident">lane_id</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">proved_messages</span>(<span class="ident">lane_id</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">ProvedMessages</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::Balance</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="macro">vec!</span>[(
 			<span class="ident">lane_id</span>,
 			<span class="ident">ProvedLaneMessages</span> {

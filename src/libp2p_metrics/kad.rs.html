@@ -472,7 +472,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Metrics</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registry</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registry</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">sub_registry</span> <span class="op">=</span> <span class="ident">registry</span>.<span class="ident">sub_registry_with_prefix</span>(<span class="string">&quot;kad&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">query_result_get_record_ok</span> <span class="op">=</span> <span class="ident">Histogram::new</span>(<span class="ident">exponential_buckets</span>(<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">10</span>));
@@ -589,7 +589,7 @@
 <span class="kw">impl</span> <span class="ident"><span class="kw">super</span>::Recorder</span><span class="op">&lt;</span><span class="ident">libp2p_kad::KademliaEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident"><span class="kw">super</span>::Metrics</span> {
     <span class="kw">fn</span> <span class="ident">record</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::KademliaEvent</span>) {
         <span class="kw">match</span> <span class="ident">event</span> {
-            <span class="ident">libp2p_kad::KademliaEvent::OutboundQueryCompleted</span> { <span class="ident">result</span>, <span class="ident">stats</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">libp2p_kad::KademliaEvent::OutboundQueryCompleted</span> { <span class="ident">result</span>, <span class="ident">stats</span>, .. } =&gt; {
                 <span class="self">self</span>.<span class="ident">kad</span>
                     .<span class="ident">query_result_num_requests</span>
                     .<span class="ident">get_or_create</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">into</span>())
@@ -610,43 +610,43 @@
                 }
 
                 <span class="kw">match</span> <span class="ident">result</span> {
-                    <span class="ident">libp2p_kad::QueryResult::GetRecord</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">result</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>
+                    <span class="ident">libp2p_kad::QueryResult::GetRecord</span>(<span class="ident">result</span>) =&gt; <span class="kw">match</span> <span class="ident">result</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) =&gt; <span class="self">self</span>
                             .<span class="ident">kad</span>
                             .<span class="ident">query_result_get_record_ok</span>
                             .<span class="ident">observe</span>(<span class="ident">ok</span>.<span class="ident">records</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">f64</span>),
-                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
                             <span class="self">self</span>.<span class="ident">kad</span>
                                 .<span class="ident">query_result_get_record_error</span>
                                 .<span class="ident">get_or_create</span>(<span class="kw-2">&amp;</span><span class="ident">error</span>.<span class="ident">into</span>())
                                 .<span class="ident">inc</span>();
                         }
                     },
-                    <span class="ident">libp2p_kad::QueryResult::GetClosestPeers</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">result</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>
+                    <span class="ident">libp2p_kad::QueryResult::GetClosestPeers</span>(<span class="ident">result</span>) =&gt; <span class="kw">match</span> <span class="ident">result</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) =&gt; <span class="self">self</span>
                             .<span class="ident">kad</span>
                             .<span class="ident">query_result_get_closest_peers_ok</span>
                             .<span class="ident">observe</span>(<span class="ident">ok</span>.<span class="ident">peers</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">f64</span>),
-                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
                             <span class="self">self</span>.<span class="ident">kad</span>
                                 .<span class="ident">query_result_get_closest_peers_error</span>
                                 .<span class="ident">get_or_create</span>(<span class="kw-2">&amp;</span><span class="ident">error</span>.<span class="ident">into</span>())
                                 .<span class="ident">inc</span>();
                         }
                     },
-                    <span class="ident">libp2p_kad::QueryResult::GetProviders</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">result</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>
+                    <span class="ident">libp2p_kad::QueryResult::GetProviders</span>(<span class="ident">result</span>) =&gt; <span class="kw">match</span> <span class="ident">result</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">ok</span>) =&gt; <span class="self">self</span>
                             .<span class="ident">kad</span>
                             .<span class="ident">query_result_get_providers_ok</span>
                             .<span class="ident">observe</span>(<span class="ident">ok</span>.<span class="ident">providers</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">f64</span>),
-                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
                             <span class="self">self</span>.<span class="ident">kad</span>
                                 .<span class="ident">query_result_get_providers_error</span>
                                 .<span class="ident">get_or_create</span>(<span class="kw-2">&amp;</span><span class="ident">error</span>.<span class="ident">into</span>())
                                 .<span class="ident">inc</span>();
                         }
                     },
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                    <span class="kw">_</span> =&gt; {}
                 }
             }
             <span class="ident">libp2p_kad::KademliaEvent::RoutingUpdated</span> {
@@ -654,7 +654,7 @@
                 <span class="ident">old_peer</span>,
                 <span class="ident">bucket_range</span>: (<span class="ident">low</span>, <span class="ident">_high</span>),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> {
+            } =&gt; {
                 <span class="kw">let</span> <span class="ident">bucket</span> <span class="op">=</span> <span class="ident">low</span>.<span class="ident">ilog2</span>().<span class="ident">unwrap_or</span>(<span class="number">0</span>);
                 <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">is_new_peer</span> {
                     <span class="self">self</span>.<span class="ident">kad</span>
@@ -685,13 +685,13 @@
                 }
             }
 
-            <span class="ident">libp2p_kad::KademliaEvent::InboundRequestServed</span> { <span class="ident">request</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">libp2p_kad::KademliaEvent::InboundRequestServed</span> { <span class="ident">request</span> } =&gt; {
                 <span class="self">self</span>.<span class="ident">kad</span>
                     .<span class="ident">inbound_requests</span>
                     .<span class="ident">get_or_create</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>.<span class="ident">into</span>())
                     .<span class="ident">inc</span>();
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="kw">_</span> =&gt; {}
         }
     }
 }
@@ -714,30 +714,30 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">libp2p_kad::QueryResult</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">QueryResult</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">result</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::QueryResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">result</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::QueryResult</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">result</span> {
-            <span class="ident">libp2p_kad::QueryResult::Bootstrap</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::Bootstrap</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::Bootstrap</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::GetClosestPeers</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::GetClosestPeers</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::GetClosestPeers</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::GetProviders</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::GetProviders</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::GetProviders</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::StartProviding</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::StartProviding</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::StartProviding</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::RepublishProvider</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::RepublishProvider</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::RepublishProvider</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::GetRecord</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::GetRecord</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::GetRecord</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::PutRecord</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::PutRecord</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::PutRecord</span>,
             },
-            <span class="ident">libp2p_kad::QueryResult::RepublishRecord</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">QueryResult</span> {
+            <span class="ident">libp2p_kad::QueryResult::RepublishRecord</span>(<span class="kw">_</span>) =&gt; <span class="ident">QueryResult</span> {
                 <span class="ident">r#type</span>: <span class="ident">QueryType::RepublishRecord</span>,
             },
         }
@@ -757,15 +757,15 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetRecordError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GetRecordResult</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetRecordError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetRecordError</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">libp2p_kad::GetRecordError::NotFound</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">GetRecordResult</span> {
+            <span class="ident">libp2p_kad::GetRecordError::NotFound</span> { .. } =&gt; <span class="ident">GetRecordResult</span> {
                 <span class="ident">error</span>: <span class="ident">GetRecordError::NotFound</span>,
             },
-            <span class="ident">libp2p_kad::GetRecordError::QuorumFailed</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">GetRecordResult</span> {
+            <span class="ident">libp2p_kad::GetRecordError::QuorumFailed</span> { .. } =&gt; <span class="ident">GetRecordResult</span> {
                 <span class="ident">error</span>: <span class="ident">GetRecordError::QuorumFailed</span>,
             },
-            <span class="ident">libp2p_kad::GetRecordError::Timeout</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">GetRecordResult</span> {
+            <span class="ident">libp2p_kad::GetRecordError::Timeout</span> { .. } =&gt; <span class="ident">GetRecordResult</span> {
                 <span class="ident">error</span>: <span class="ident">GetRecordError::Timeout</span>,
             },
         }
@@ -783,9 +783,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetClosestPeersError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GetClosestPeersResult</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetClosestPeersError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetClosestPeersError</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">libp2p_kad::GetClosestPeersError::Timeout</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">GetClosestPeersResult</span> {
+            <span class="ident">libp2p_kad::GetClosestPeersError::Timeout</span> { .. } =&gt; <span class="ident">GetClosestPeersResult</span> {
                 <span class="ident">error</span>: <span class="ident">GetClosestPeersError::Timeout</span>,
             },
         }
@@ -803,9 +803,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetProvidersError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GetProvidersResult</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetProvidersError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::GetProvidersError</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">libp2p_kad::GetProvidersError::Timeout</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">GetProvidersResult</span> {
+            <span class="ident">libp2p_kad::GetProvidersError::Timeout</span> { .. } =&gt; <span class="ident">GetProvidersResult</span> {
                 <span class="ident">error</span>: <span class="ident">GetProvidersError::Timeout</span>,
             },
         }
@@ -831,14 +831,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">libp2p_kad::InboundRequest</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">InboundRequest</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::InboundRequest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_kad::InboundRequest</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">request</span>: <span class="kw">match</span> <span class="ident">request</span> {
-                <span class="ident">libp2p_kad::InboundRequest::FindNode</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Request::FindNode</span>,
-                <span class="ident">libp2p_kad::InboundRequest::GetProvider</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Request::GetProvider</span>,
-                <span class="ident">libp2p_kad::InboundRequest::AddProvider</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Request::AddProvider</span>,
-                <span class="ident">libp2p_kad::InboundRequest::GetRecord</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Request::GetRecord</span>,
-                <span class="ident">libp2p_kad::InboundRequest::PutRecord</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Request::PutRecord</span>,
+                <span class="ident">libp2p_kad::InboundRequest::FindNode</span> { .. } =&gt; <span class="ident">Request::FindNode</span>,
+                <span class="ident">libp2p_kad::InboundRequest::GetProvider</span> { .. } =&gt; <span class="ident">Request::GetProvider</span>,
+                <span class="ident">libp2p_kad::InboundRequest::AddProvider</span> { .. } =&gt; <span class="ident">Request::AddProvider</span>,
+                <span class="ident">libp2p_kad::InboundRequest::GetRecord</span> { .. } =&gt; <span class="ident">Request::GetRecord</span>,
+                <span class="ident">libp2p_kad::InboundRequest::PutRecord</span> { .. } =&gt; <span class="ident">Request::PutRecord</span>,
             },
         }
     }

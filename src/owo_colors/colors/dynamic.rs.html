@@ -91,72 +91,72 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Rgb</span>(<span class="kw">pub</span> <span class="ident">u8</span>, <span class="kw">pub</span> <span class="ident">u8</span>, <span class="kw">pub</span> <span class="ident">u8</span>);
 
 <span class="kw">impl</span> <span class="ident">DynColor</span> <span class="kw">for</span> <span class="ident">Rgb</span> {
-    <span class="kw">fn</span> <span class="ident">fmt_ansi_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_ansi_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">Rgb</span>(<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>;
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;\x1b[38;2;{};{};{}m&quot;</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">fmt_ansi_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_ansi_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">Rgb</span>(<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>;
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;\x1b[48;2;{};{};{}m&quot;</span>, <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>)
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_dyncolors_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::DynColors</span> {
+    <span class="kw">fn</span> <span class="ident">get_dyncolors_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::DynColors</span> {
         <span class="kw">let</span> <span class="ident">Rgb</span>(<span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>;
         <span class="ident"><span class="kw">crate</span>::DynColors::Rgb</span>(<span class="kw-2">*</span><span class="ident">r</span>, <span class="kw-2">*</span><span class="ident">g</span>, <span class="kw-2">*</span><span class="ident">b</span>)
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_dyncolors_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::DynColors</span> {
+    <span class="kw">fn</span> <span class="ident">get_dyncolors_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::DynColors</span> {
         <span class="self">self</span>.<span class="ident">get_dyncolors_fg</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">DynColor</span> <span class="kw">for</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">fmt_ansi_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_ansi_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">color</span>: <span class="ident">AnsiColors</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">into</span>();
         <span class="ident">color</span>.<span class="ident">fmt_ansi_fg</span>(<span class="ident">f</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">fmt_ansi_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_ansi_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">color</span>: <span class="ident">AnsiColors</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">into</span>();
         <span class="ident">color</span>.<span class="ident">fmt_ansi_bg</span>(<span class="ident">f</span>)
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_dyncolors_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::DynColors</span> {
+    <span class="kw">fn</span> <span class="ident">get_dyncolors_fg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::DynColors</span> {
         <span class="ident"><span class="kw">crate</span>::DynColors::Ansi</span>(<span class="self">self</span>.<span class="ident">into</span>())
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_dyncolors_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::DynColors</span> {
+    <span class="kw">fn</span> <span class="ident">get_dyncolors_bg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::DynColors</span> {
         <span class="ident"><span class="kw">crate</span>::DynColors::Ansi</span>(<span class="self">self</span>.<span class="ident">into</span>())
     }
 }
 
 <span class="doccomment">/// Implemented for drop-in replacement support for `colored`</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnsiColors</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">color</span> {
-            <span class="string">&quot;black&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Black</span>,
-            <span class="string">&quot;red&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Red</span>,
-            <span class="string">&quot;green&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Green</span>,
-            <span class="string">&quot;yellow&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Yellow</span>,
-            <span class="string">&quot;blue&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Blue</span>,
-            <span class="string">&quot;magenta&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Magenta</span>,
-            <span class="string">&quot;purple&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Magenta</span>,
-            <span class="string">&quot;cyan&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::Cyan</span>,
-            <span class="string">&quot;white&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::White</span>,
-            <span class="string">&quot;bright black&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightBlack</span>,
-            <span class="string">&quot;bright red&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightRed</span>,
-            <span class="string">&quot;bright green&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightGreen</span>,
-            <span class="string">&quot;bright yellow&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightYellow</span>,
-            <span class="string">&quot;bright blue&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightBlue</span>,
-            <span class="string">&quot;bright magenta&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightMagenta</span>,
-            <span class="string">&quot;bright cyan&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightCyan</span>,
-            <span class="string">&quot;bright white&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::BrightWhite</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AnsiColors::White</span>,
+            <span class="string">&quot;black&quot;</span> =&gt; <span class="ident">AnsiColors::Black</span>,
+            <span class="string">&quot;red&quot;</span> =&gt; <span class="ident">AnsiColors::Red</span>,
+            <span class="string">&quot;green&quot;</span> =&gt; <span class="ident">AnsiColors::Green</span>,
+            <span class="string">&quot;yellow&quot;</span> =&gt; <span class="ident">AnsiColors::Yellow</span>,
+            <span class="string">&quot;blue&quot;</span> =&gt; <span class="ident">AnsiColors::Blue</span>,
+            <span class="string">&quot;magenta&quot;</span> =&gt; <span class="ident">AnsiColors::Magenta</span>,
+            <span class="string">&quot;purple&quot;</span> =&gt; <span class="ident">AnsiColors::Magenta</span>,
+            <span class="string">&quot;cyan&quot;</span> =&gt; <span class="ident">AnsiColors::Cyan</span>,
+            <span class="string">&quot;white&quot;</span> =&gt; <span class="ident">AnsiColors::White</span>,
+            <span class="string">&quot;bright black&quot;</span> =&gt; <span class="ident">AnsiColors::BrightBlack</span>,
+            <span class="string">&quot;bright red&quot;</span> =&gt; <span class="ident">AnsiColors::BrightRed</span>,
+            <span class="string">&quot;bright green&quot;</span> =&gt; <span class="ident">AnsiColors::BrightGreen</span>,
+            <span class="string">&quot;bright yellow&quot;</span> =&gt; <span class="ident">AnsiColors::BrightYellow</span>,
+            <span class="string">&quot;bright blue&quot;</span> =&gt; <span class="ident">AnsiColors::BrightBlue</span>,
+            <span class="string">&quot;bright magenta&quot;</span> =&gt; <span class="ident">AnsiColors::BrightMagenta</span>,
+            <span class="string">&quot;bright cyan&quot;</span> =&gt; <span class="ident">AnsiColors::BrightCyan</span>,
+            <span class="string">&quot;bright white&quot;</span> =&gt; <span class="ident">AnsiColors::BrightWhite</span>,
+            <span class="kw">_</span> =&gt; <span class="ident">AnsiColors::White</span>,
         }
     }
 }

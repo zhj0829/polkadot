@@ -168,7 +168,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// `storage` must point to a valid socket address returned from the OS.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_ss_family</span>(<span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sockaddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_ss_family</span>(<span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sockaddr</span>) -&gt; <span class="ident">u16</span> {
     <span class="comment">// Assert that we know the layout of `sockaddr`.</span>
     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">sockaddr</span> {
         <span class="ident">__storage</span>: <span class="ident">__kernel_sockaddr_storage</span> {
@@ -185,14 +185,14 @@
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `storage` must point to valid socket address storage.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_sockaddr</span>(<span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sockaddr</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_sockaddr</span>(<span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sockaddr</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">offsetof_sun_path</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::offsetof_sun_path</span>();
 
     <span class="kw">if</span> <span class="ident">len</span> <span class="op">&lt;</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::__kernel_sa_family_t</span><span class="op">&gt;</span>() {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::INVAL</span>);
     }
     <span class="kw">match</span> <span class="ident">read_ss_family</span>(<span class="ident">storage</span>).<span class="ident">into</span>() {
-        <span class="ident">linux_raw_sys::general::AF_INET</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">linux_raw_sys::general::AF_INET</span> =&gt; {
             <span class="kw">if</span> <span class="ident">len</span> <span class="op">&lt;</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in</span><span class="op">&gt;</span>() {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::INVAL</span>);
             }
@@ -202,7 +202,7 @@
                 <span class="ident">u16::from_be</span>(<span class="ident">decode</span>.<span class="ident">sin_port</span>),
             )))
         }
-        <span class="ident">linux_raw_sys::general::AF_INET6</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">linux_raw_sys::general::AF_INET6</span> =&gt; {
             <span class="kw">if</span> <span class="ident">len</span> <span class="op">&lt;</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in6</span><span class="op">&gt;</span>() {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::INVAL</span>);
             }
@@ -214,11 +214,11 @@
                 <span class="ident">decode</span>.<span class="ident">sin6_scope_id</span>,
             )))
         }
-        <span class="ident">linux_raw_sys::general::AF_UNIX</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">linux_raw_sys::general::AF_UNIX</span> =&gt; {
             <span class="kw">if</span> <span class="ident">len</span> <span class="op">&lt;</span> <span class="ident">offsetof_sun_path</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::INVAL</span>);
             }
-            <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="ident">offsetof_sun_path</span> {
+            <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="ident">offsetof_sun_path</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">SocketAddr::Unix</span>(<span class="ident">SocketAddrUnix::new</span>(<span class="kw-2">&amp;</span>[][..])<span class="question-mark">?</span>))
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">decode</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_un</span><span class="op">&gt;</span>();
@@ -234,7 +234,7 @@
                 )<span class="question-mark">?</span>))
             }
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::NOTSUP</span>),
+        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::NOTSUP</span>),
     }
 }
 
@@ -243,7 +243,7 @@
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `storage` must point to a valid socket address returned from the OS.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_sockaddr_os</span>(<span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sockaddr</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketAddr</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_sockaddr_os</span>(<span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">sockaddr</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="ident">SocketAddr</span> {
     <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">linux_raw_sys::general::sockaddr_un</span> {
         <span class="ident">sun_family</span>: <span class="number">0_u16</span>,
         <span class="ident">sun_path</span>: [<span class="number">0</span>; <span class="number">108</span>],
@@ -252,7 +252,7 @@
 
     <span class="macro">assert!</span>(<span class="ident">len</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::__kernel_sa_family_t</span><span class="op">&gt;</span>());
     <span class="kw">match</span> <span class="ident">read_ss_family</span>(<span class="ident">storage</span>).<span class="ident">into</span>() {
-        <span class="ident">linux_raw_sys::general::AF_INET</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">linux_raw_sys::general::AF_INET</span> =&gt; {
             <span class="macro">assert!</span>(<span class="ident">len</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in</span><span class="op">&gt;</span>());
             <span class="kw">let</span> <span class="ident">decode</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in</span><span class="op">&gt;</span>();
             <span class="ident">SocketAddr::V4</span>(<span class="ident">SocketAddrV4::new</span>(
@@ -260,7 +260,7 @@
                 <span class="ident">u16::from_be</span>(<span class="ident">decode</span>.<span class="ident">sin_port</span>),
             ))
         }
-        <span class="ident">linux_raw_sys::general::AF_INET6</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">linux_raw_sys::general::AF_INET6</span> =&gt; {
             <span class="macro">assert!</span>(<span class="ident">len</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in6</span><span class="op">&gt;</span>());
             <span class="kw">let</span> <span class="ident">decode</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in6</span><span class="op">&gt;</span>();
             <span class="ident">SocketAddr::V6</span>(<span class="ident">SocketAddrV6::new</span>(
@@ -270,9 +270,9 @@
                 <span class="ident">decode</span>.<span class="ident">sin6_scope_id</span>,
             ))
         }
-        <span class="ident">linux_raw_sys::general::AF_UNIX</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">linux_raw_sys::general::AF_UNIX</span> =&gt; {
             <span class="macro">assert!</span>(<span class="ident">len</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">offsetof_sun_path</span>);
-            <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="ident">offsetof_sun_path</span> {
+            <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="ident">offsetof_sun_path</span> {
                 <span class="ident">SocketAddr::Unix</span>(<span class="ident">SocketAddrUnix::new</span>(<span class="kw-2">&amp;</span>[][..]).<span class="ident">unwrap</span>())
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">decode</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_un</span><span class="op">&gt;</span>();
@@ -291,7 +291,7 @@
                 )
             }
         }
-        <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">other</span>),
+        <span class="ident">other</span> =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">other</span>),
     }
 }
 </code></pre></div>

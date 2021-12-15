@@ -43,7 +43,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/makedev.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">makedev</span>(<span class="ident">maj</span>: <span class="ident">u32</span>, <span class="ident">min</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Dev</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">makedev</span>(<span class="ident">maj</span>: <span class="ident">u32</span>, <span class="ident">min</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Dev</span> {
     <span class="ident">imp::fs::makedev</span>(<span class="ident">maj</span>, <span class="ident">min</span>)
 }
 
@@ -54,7 +54,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/minor.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">minor</span>(<span class="ident">dev</span>: <span class="ident">Dev</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">minor</span>(<span class="ident">dev</span>: <span class="ident">Dev</span>) -&gt; <span class="ident">u32</span> {
     <span class="ident">imp::fs::minor</span>(<span class="ident">dev</span>)
 }
 
@@ -65,7 +65,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/major.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">major</span>(<span class="ident">dev</span>: <span class="ident">Dev</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">major</span>(<span class="ident">dev</span>: <span class="ident">Dev</span>) -&gt; <span class="ident">u32</span> {
     <span class="ident">imp::fs::major</span>(<span class="ident">dev</span>)
 }
 </code></pre></div>

@@ -357,7 +357,7 @@
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">spawn</span>(
 	<span class="ident">program_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
 	<span class="ident">spawn_timeout</span>: <span class="ident">Duration</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">IdleWorker</span>, <span class="ident">WorkerHandle</span>), <span class="ident">SpawnErr</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">IdleWorker</span>, <span class="ident">WorkerHandle</span>), <span class="ident">SpawnErr</span><span class="op">&gt;</span> {
 	<span class="ident">spawn_with_program_path</span>(<span class="string">&quot;prepare&quot;</span>, <span class="ident">program_path</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;prepare-worker&quot;</span>], <span class="ident">spawn_timeout</span>).<span class="kw">await</span>
 }
 
@@ -384,7 +384,7 @@
 	<span class="ident">code</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">cache_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
 	<span class="ident">artifact_path</span>: <span class="ident">PathBuf</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Outcome</span> {
+) -&gt; <span class="ident">Outcome</span> {
 	<span class="kw">let</span> <span class="ident">IdleWorker</span> { <span class="kw-2">mut</span> <span class="ident">stream</span>, <span class="ident">pid</span> } <span class="op">=</span> <span class="ident">worker</span>;
 
 	<span class="macro">tracing::debug!</span>(
@@ -419,7 +419,7 @@
 
 		<span class="kw">let</span> <span class="ident">selected</span> <span class="op">=</span>
 			<span class="kw">match</span> <span class="ident">async_std::future::timeout</span>(<span class="ident">COMPILATION_TIMEOUT</span>, <span class="ident">framed_recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stream</span>)).<span class="kw">await</span> {
-				<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">response_bytes</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">response_bytes</span>)) =&gt; {
 					<span class="comment">// Received bytes from worker within the time limit.</span>
 					<span class="comment">// By convention we expect encoded `PrepareResult`.</span>
 					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">result</span>) <span class="op">=</span> <span class="ident">PrepareResult::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">response_bytes</span>.<span class="ident">as_slice</span>()) {
@@ -461,7 +461,7 @@
 						<span class="ident">Selected::IoErr</span>
 					}
 				},
-				<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) =&gt; {
 					<span class="comment">// Communication error within the time limit.</span>
 					<span class="macro">tracing::warn!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
@@ -471,17 +471,17 @@
 					);
 					<span class="ident">Selected::IoErr</span>
 				},
-				<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
 					<span class="comment">// Timed out.</span>
 					<span class="ident">Selected::Deadline</span>
 				},
 			};
 
 		<span class="kw">match</span> <span class="ident">selected</span> {
-			<span class="ident">Selected::Done</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">Selected::Done</span>(<span class="ident">result</span>) =&gt;
 				<span class="ident">Outcome::Concluded</span> { <span class="ident">worker</span>: <span class="ident">IdleWorker</span> { <span class="ident">stream</span>, <span class="ident">pid</span> }, <span class="ident">result</span> },
-			<span class="ident">Selected::Deadline</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome::TimedOut</span>,
-			<span class="ident">Selected::IoErr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome::DidNotMakeIt</span>,
+			<span class="ident">Selected::Deadline</span> =&gt; <span class="ident">Outcome::TimedOut</span>,
+			<span class="ident">Selected::IoErr</span> =&gt; <span class="ident">Outcome::DidNotMakeIt</span>,
 		}
 	})
 	.<span class="kw">await</span>
@@ -491,14 +491,14 @@
 <span class="doccomment">/// future/closure passing the file path in.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The function will try best effort to not leave behind the temporary file.</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">with_tmp_file</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">Fut</span><span class="op">&gt;</span>(<span class="ident">pid</span>: <span class="ident">u32</span>, <span class="ident">cache_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Outcome</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">with_tmp_file</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">Fut</span><span class="op">&gt;</span>(<span class="ident">pid</span>: <span class="ident">u32</span>, <span class="ident">cache_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">Outcome</span>
 <span class="kw">where</span>
 	<span class="ident">Fut</span>: <span class="ident">futures::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">Outcome</span><span class="op">&gt;</span>,
-	<span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fut</span>,
+	<span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">PathBuf</span>) -&gt; <span class="ident">Fut</span>,
 {
 	<span class="kw">let</span> <span class="ident">tmp_file</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">tmpfile_in</span>(<span class="string">&quot;prepare-artifact-&quot;</span>, <span class="ident">cache_path</span>).<span class="kw">await</span> {
-		<span class="prelude-val">Ok</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>,
-		<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="prelude-val">Ok</span>(<span class="ident">f</span>) =&gt; <span class="ident">f</span>,
+		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
 			<span class="macro">tracing::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">worker_pid</span> <span class="op">=</span> <span class="op">%</span><span class="ident">pid</span>,
@@ -517,9 +517,9 @@
 	<span class="comment">// In any case, we try to remove the file here so that there are no leftovers. We only report</span>
 	<span class="comment">// errors that are different from the `NotFound`.</span>
 	<span class="kw">match</span> <span class="ident">async_std::fs::remove_file</span>(<span class="ident">tmp_file</span>).<span class="kw">await</span> {
-		<span class="prelude-val">Ok</span>(()) <span class="op">=</span><span class="op">&gt;</span> (),
-		<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">std::io::ErrorKind::NotFound</span> <span class="op">=</span><span class="op">&gt;</span> (),
-		<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="prelude-val">Ok</span>(()) =&gt; (),
+		<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">std::io::ErrorKind::NotFound</span> =&gt; (),
+		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
 			<span class="macro">tracing::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">worker_pid</span> <span class="op">=</span> <span class="op">%</span><span class="ident">pid</span>,
@@ -536,13 +536,13 @@
 	<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UnixStream</span>,
 	<span class="ident">code</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">tmp_file</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 	<span class="ident">framed_send</span>(<span class="ident">stream</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">code</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 	<span class="ident">framed_send</span>(<span class="ident">stream</span>, <span class="ident">path_to_bytes</span>(<span class="ident">tmp_file</span>)).<span class="kw">await</span><span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv_request</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UnixStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span> {
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv_request</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UnixStream</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">framed_recv</span>(<span class="ident">stream</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">tmp_file</span> <span class="op">=</span> <span class="ident">framed_recv</span>(<span class="ident">stream</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">tmp_file</span> <span class="op">=</span> <span class="ident">bytes_to_path</span>(<span class="kw-2">&amp;</span><span class="ident">tmp_file</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
@@ -568,11 +568,11 @@
 			);
 
 			<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">prepare_artifact</span>(<span class="kw-2">&amp;</span><span class="ident">code</span>) {
-				<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
 					<span class="comment">// Serialized error will be written into the socket.</span>
 					<span class="prelude-val">Err</span>(<span class="ident">err</span>)
 				},
-				<span class="prelude-val">Ok</span>(<span class="ident">compiled_artifact</span>) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Ok</span>(<span class="ident">compiled_artifact</span>) =&gt; {
 					<span class="comment">// Write the serialized artifact into a temp file.</span>
 					<span class="comment">// PVF host only keeps artifacts statuses in its memory,</span>
 					<span class="comment">// successfully compiled code gets stored on the disk (and</span>
@@ -599,16 +599,16 @@
 	});
 }
 
-<span class="kw">fn</span> <span class="ident">prepare_artifact</span>(<span class="ident">code</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CompiledArtifact</span>, <span class="ident">PrepareError</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">prepare_artifact</span>(<span class="ident">code</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CompiledArtifact</span>, <span class="ident">PrepareError</span><span class="op">&gt;</span> {
 	<span class="ident">panic::catch_unwind</span>(<span class="op">|</span><span class="op">|</span> {
 		<span class="kw">let</span> <span class="ident">blob</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::executor_intf::prevalidate</span>(<span class="ident">code</span>) {
-			<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PrepareError::Prevalidation</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>))),
-			<span class="prelude-val">Ok</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>,
+			<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">PrepareError::Prevalidation</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>))),
+			<span class="prelude-val">Ok</span>(<span class="ident">b</span>) =&gt; <span class="ident">b</span>,
 		};
 
 		<span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::executor_intf::prepare</span>(<span class="ident">blob</span>) {
-			<span class="prelude-val">Ok</span>(<span class="ident">compiled_artifact</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">CompiledArtifact::new</span>(<span class="ident">compiled_artifact</span>)),
-			<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">PrepareError::Preparation</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>))),
+			<span class="prelude-val">Ok</span>(<span class="ident">compiled_artifact</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">CompiledArtifact::new</span>(<span class="ident">compiled_artifact</span>)),
+			<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">PrepareError::Preparation</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>))),
 		}
 	})
 	.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">panic_payload</span><span class="op">|</span> <span class="ident">PrepareError::Panic</span>(<span class="ident">stringify_panic_payload</span>(<span class="ident">panic_payload</span>)))
@@ -618,13 +618,13 @@
 <span class="doccomment">/// Attempt to convert an opaque panic payload to a string.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This is a best effort, and is not guaranteed to provide the most accurate value.</span>
-<span class="kw">fn</span> <span class="ident">stringify_panic_payload</span>(<span class="ident">payload</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">stringify_panic_payload</span>(<span class="ident">payload</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>) -&gt; <span class="ident">String</span> {
 	<span class="kw">match</span> <span class="ident">payload</span>.<span class="ident">downcast</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>() {
-		<span class="prelude-val">Ok</span>(<span class="ident">msg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">msg</span>.<span class="ident">to_string</span>(),
-		<span class="prelude-val">Err</span>(<span class="ident">payload</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">payload</span>.<span class="ident">downcast</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>() {
-			<span class="prelude-val">Ok</span>(<span class="ident">msg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">msg</span>,
+		<span class="prelude-val">Ok</span>(<span class="ident">msg</span>) =&gt; <span class="ident">msg</span>.<span class="ident">to_string</span>(),
+		<span class="prelude-val">Err</span>(<span class="ident">payload</span>) =&gt; <span class="kw">match</span> <span class="ident">payload</span>.<span class="ident">downcast</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>() {
+			<span class="prelude-val">Ok</span>(<span class="ident">msg</span>) =&gt; <span class="kw-2">*</span><span class="ident">msg</span>,
 			<span class="comment">// At least we tried...</span>
-			<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;unkown panic payload&quot;</span>.<span class="ident">to_string</span>(),
+			<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="string">&quot;unkown panic payload&quot;</span>.<span class="ident">to_string</span>(),
 		},
 	}
 }

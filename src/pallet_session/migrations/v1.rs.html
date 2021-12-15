@@ -233,10 +233,10 @@
 <span class="doccomment">/// to date storage. Thus the on chain storage version must be less than 1 in order to trigger the</span>
 <span class="doccomment">/// migration.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">pallet_session_historical::Config</span>, <span class="ident">P</span>: <span class="ident">GetStorageVersion</span> <span class="op">+</span> <span class="ident">PalletInfoAccess</span><span class="op">&gt;</span>(
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+) -&gt; <span class="ident">Weight</span> {
 	<span class="kw">let</span> <span class="ident">new_pallet_name</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">P</span> <span class="kw">as</span> <span class="ident">PalletInfoAccess</span><span class="op">&gt;</span><span class="ident">::name</span>();
 
-	<span class="kw">if</span> <span class="ident">new_pallet_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OLD_PREFIX</span> {
+	<span class="kw">if</span> <span class="ident">new_pallet_name</span> <span class="op">==</span> <span class="ident">OLD_PREFIX</span> {
 		<span class="macro">log::info!</span>(
 			<span class="ident">target</span>: <span class="string">&quot;runtime::session_historical&quot;</span>,
 			<span class="string">&quot;New pallet name is equal to the old prefix. No migration needs to be done.&quot;</span>,
@@ -297,7 +297,7 @@
 	<span class="ident">log_migration</span>(<span class="string">&quot;pre-migration&quot;</span>, <span class="ident">storage_prefix_historical_sessions</span>, <span class="ident">OLD_PREFIX</span>, <span class="ident">new_pallet_name</span>);
 	<span class="ident">log_migration</span>(<span class="string">&quot;pre-migration&quot;</span>, <span class="ident">storage_prefix_stored_range</span>, <span class="ident">OLD_PREFIX</span>, <span class="ident">new_pallet_name</span>);
 
-	<span class="kw">if</span> <span class="ident">new_pallet_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OLD_PREFIX</span> {
+	<span class="kw">if</span> <span class="ident">new_pallet_name</span> <span class="op">==</span> <span class="ident">OLD_PREFIX</span> {
 		<span class="kw">return</span>
 	}
 
@@ -311,7 +311,7 @@
 	);
 
 	<span class="comment">// Ensure nothing except the storage_version_key is stored in the new prefix.</span>
-	<span class="macro">assert!</span>(<span class="ident">new_pallet_prefix_iter</span>.<span class="ident">all</span>(<span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="ident">key</span> <span class="op">=</span><span class="op">=</span> <span class="ident">storage_version_key</span>));
+	<span class="macro">assert!</span>(<span class="ident">new_pallet_prefix_iter</span>.<span class="ident">all</span>(<span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="ident">key</span> <span class="op">==</span> <span class="ident">storage_version_key</span>));
 
 	<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">P</span> <span class="kw">as</span> <span class="ident">GetStorageVersion</span><span class="op">&gt;</span><span class="ident">::on_chain_storage_version</span>() <span class="op">&lt;</span> <span class="number">1</span>);
 }
@@ -338,7 +338,7 @@
 	);
 	<span class="ident">log_migration</span>(<span class="string">&quot;post-migration&quot;</span>, <span class="ident">storage_prefix_stored_range</span>, <span class="ident">OLD_PREFIX</span>, <span class="ident">new_pallet_name</span>);
 
-	<span class="kw">if</span> <span class="ident">new_pallet_name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OLD_PREFIX</span> {
+	<span class="kw">if</span> <span class="ident">new_pallet_name</span> <span class="op">==</span> <span class="ident">OLD_PREFIX</span> {
 		<span class="kw">return</span>
 	}
 

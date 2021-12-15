@@ -131,7 +131,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::raw</span>::{<span class="ident">read</span>, <span class="ident">read_mib</span>};
 
 <span class="macro">option!</span> {
-    <span class="ident">allocatedp</span>[ <span class="ident">str</span>: <span class="string">b&quot;thread.allocatedp\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">2</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span> <span class="op">|</span>
+    <span class="ident">allocatedp</span>[ <span class="ident">str</span>: <span class="string">b&quot;thread.allocatedp\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">2</span> ] =&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span> <span class="op">|</span>
     <span class="ident">ops</span>:  <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// Access to the total number of bytes allocated by the current thread.</span>
@@ -172,20 +172,20 @@
 
 <span class="kw">impl</span> <span class="ident">allocatedp</span> {
     <span class="doccomment">/// Reads value using string API.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">read</span>(<span class="ident"><span class="self">Self</span>::name</span>().<span class="ident">as_bytes</span>()).<span class="ident">map</span>(<span class="ident">ThreadLocal</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">allocatedp_mib</span> {
     <span class="doccomment">/// Reads value using MIB API.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">read_mib</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>()).<span class="ident">map</span>(<span class="ident">ThreadLocal</span>) }
     }
 }
 
 <span class="macro">option!</span> {
-    <span class="ident">deallocatedp</span>[ <span class="ident">str</span>: <span class="string">b&quot;thread.deallocatedp\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">2</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span> <span class="op">|</span>
+    <span class="ident">deallocatedp</span>[ <span class="ident">str</span>: <span class="string">b&quot;thread.deallocatedp\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">2</span> ] =&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span> <span class="op">|</span>
     <span class="ident">ops</span>:  <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// Access to the total number of bytes deallocated by the current thread.</span>
@@ -222,14 +222,14 @@
 
 <span class="kw">impl</span> <span class="ident">deallocatedp</span> {
     <span class="doccomment">/// Reads value using string API.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">read</span>(<span class="ident"><span class="self">Self</span>::name</span>().<span class="ident">as_bytes</span>()).<span class="ident">map</span>(<span class="ident">ThreadLocal</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">deallocatedp_mib</span> {
     <span class="doccomment">/// Reads value using MIB API.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ThreadLocal</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">read_mib</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>()).<span class="ident">map</span>(<span class="ident">ThreadLocal</span>) }
     }
 }
@@ -248,7 +248,7 @@
 {
     <span class="doccomment">/// Returns the current value at the pointer.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span> }
     }
 }

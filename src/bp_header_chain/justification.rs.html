@@ -274,7 +274,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::FinalityProof</span><span class="op">&lt;</span><span class="ident">H::Number</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GrandpaJustification</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">target_header_number</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">H::Number</span> {
+	<span class="kw">fn</span> <span class="ident">target_header_number</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">H::Number</span> {
 		<span class="self">self</span>.<span class="ident">commit</span>.<span class="ident">target_number</span>
 	}
 }
@@ -301,7 +301,7 @@
 <span class="doccomment">/// Decode justification target.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_justification_target</span><span class="op">&lt;</span><span class="ident">Header</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span>(
 	<span class="ident">raw_justification</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Header::Hash</span>, <span class="ident">Header::Number</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Header::Hash</span>, <span class="ident">Header::Number</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
 	<span class="ident">GrandpaJustification</span>::<span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span><span class="ident">::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">raw_justification</span>)
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">justification</span><span class="op">|</span> (<span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_hash</span>, <span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">target_number</span>))
 		.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error::JustificationDecode</span>)
@@ -313,7 +313,7 @@
 	<span class="ident">authorities_set_id</span>: <span class="ident">SetId</span>,
 	<span class="ident">authorities_set</span>: <span class="kw-2">&amp;</span><span class="ident">VoterSet</span><span class="op">&lt;</span><span class="ident">AuthorityId</span><span class="op">&gt;</span>,
 	<span class="ident">justification</span>: <span class="kw-2">&amp;</span><span class="ident">GrandpaJustification</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Header::Number</span>: <span class="ident">finality_grandpa::BlockNumberOps</span>,
 {
@@ -329,8 +329,8 @@
 	<span class="kw">for</span> <span class="ident">signed</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">justification</span>.<span class="ident">commit</span>.<span class="ident">precommits</span> {
 		<span class="comment">// authority must be in the set</span>
 		<span class="kw">let</span> <span class="ident">authority_info</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">authorities_set</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">signed</span>.<span class="ident">id</span>) {
-			<span class="prelude-val">Some</span>(<span class="ident">authority_info</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">authority_info</span>,
-			<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Some</span>(<span class="ident">authority_info</span>) =&gt; <span class="ident">authority_info</span>,
+			<span class="prelude-val">None</span> =&gt; {
 				<span class="comment">// just ignore precommit from unknown authority as</span>
 				<span class="comment">// `finality_grandpa::import_precommit` does</span>
 				<span class="kw">continue</span>
@@ -408,7 +408,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Header</span>: <span class="ident">HeaderT</span><span class="op">&gt;</span> <span class="ident">AncestryChain</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Create new ancestry chain.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ancestry</span>: <span class="kw-2">&amp;</span>[<span class="ident">Header</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AncestryChain</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ancestry</span>: <span class="kw-2">&amp;</span>[<span class="ident">Header</span>]) -&gt; <span class="ident">AncestryChain</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parents</span> <span class="op">=</span> <span class="ident">BTreeMap::new</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unvisited</span> <span class="op">=</span> <span class="ident">BTreeSet::new</span>();
 		<span class="kw">for</span> <span class="ident">ancestor</span> <span class="kw">in</span> <span class="ident">ancestry</span> {
@@ -426,16 +426,16 @@
 		<span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">commit_target</span>: <span class="kw-2">&amp;</span><span class="ident">Header::Hash</span>,
 		<span class="ident">precommit_target</span>: <span class="kw-2">&amp;</span><span class="ident">Header::Hash</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_hash</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">precommit_target</span>;
 		<span class="kw">loop</span> {
-			<span class="kw">if</span> <span class="ident">current_hash</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">commit_target</span> {
+			<span class="kw">if</span> <span class="ident">current_hash</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">commit_target</span> {
 				<span class="kw">break</span>
 			}
 
 			<span class="kw">let</span> <span class="ident">is_visited_before</span> <span class="op">=</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">unvisited</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">current_hash</span>);
 			<span class="ident">current_hash</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">parents</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">current_hash</span>) {
-				<span class="prelude-val">Some</span>(<span class="ident">parent_hash</span>) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Some</span>(<span class="ident">parent_hash</span>) =&gt; {
 					<span class="kw">if</span> <span class="ident">is_visited_before</span> {
 						<span class="comment">// `Some(parent_hash)` means that the `current_hash` is in the `parents`</span>
 						<span class="comment">// container `is_visited_before` means that it has been visited before in</span>
@@ -446,7 +446,7 @@
 
 					<span class="kw-2">*</span><span class="ident">parent_hash</span>
 				},
-				<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::PrecommitIsNotCommitDescendant</span>),
+				<span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::PrecommitIsNotCommitDescendant</span>),
 			};
 		}
 		<span class="prelude-val">Ok</span>(<span class="self">self</span>)

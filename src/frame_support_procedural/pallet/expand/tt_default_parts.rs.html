@@ -101,7 +101,7 @@
 <span class="kw">use</span> <span class="ident">syn::spanned::Spanned</span>;
 
 <span class="doccomment">/// Generate the `tt_default_parts` macro.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_tt_default_parts</span>(<span class="ident">def</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Def</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">proc_macro2::TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_tt_default_parts</span>(<span class="ident">def</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Def</span>) -&gt; <span class="ident">proc_macro2::TokenStream</span> {
 	<span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">COUNTER</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">counter</span><span class="op">|</span> <span class="ident">counter</span>.<span class="ident">borrow_mut</span>().<span class="ident">inc</span>());
 	<span class="kw">let</span> <span class="ident">default_parts_unique_id</span> <span class="op">=</span>
 		<span class="ident">syn::Ident::new</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;__tt_default_parts_{}&quot;</span>, <span class="ident">count</span>), <span class="ident">def</span>.<span class="ident">item</span>.<span class="ident">span</span>());
@@ -146,7 +146,7 @@
 			{
 				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
 				<span class="ident">frame_support</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">frame_support</span>:<span class="ident">ident</span>)::<span class="op">*</span> }]
-			} <span class="op">=</span><span class="op">&gt;</span> {
+			} =&gt; {
 				$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">frame_support</span>)<span class="kw-2">*</span><span class="macro">::tt_return!</span> {
 					<span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
 					<span class="ident">tokens</span> <span class="op">=</span> [{

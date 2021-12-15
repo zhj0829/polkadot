@@ -50,7 +50,7 @@
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">flags</span>: <span class="ident">AtFlags</span>,
     <span class="ident">mask</span>: <span class="ident">StatxFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Statx</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Statx</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::statx</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">flags</span>, <span class="ident">mask</span>))
 }

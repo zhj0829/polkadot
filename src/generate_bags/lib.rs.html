@@ -314,7 +314,7 @@
 <span class="kw">fn</span> <span class="ident">existential_weight</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">pallet_staking::Config</span><span class="op">&gt;</span>(
 	<span class="ident">total_issuance</span>: <span class="ident">u128</span>,
 	<span class="ident">minimum_balance</span>: <span class="ident">u128</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VoteWeight</span> {
+) -&gt; <span class="ident">VoteWeight</span> {
 	<span class="kw">use</span> <span class="ident">frame_support::traits::CurrencyToVote</span>;
 
 	<span class="ident">T::CurrencyToVote::to_vote</span>(
@@ -333,7 +333,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Just searches the git working directory root for files matching certain patterns; it&#39;s</span>
 <span class="doccomment">/// pretty naive.</span>
-<span class="kw">fn</span> <span class="ident">path_to_header_file</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">path_to_header_file</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">repo</span> <span class="op">=</span> <span class="ident">git2::Repository::open_from_env</span>().<span class="ident">ok</span>()<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">workdir</span> <span class="op">=</span> <span class="ident">repo</span>.<span class="ident">workdir</span>()<span class="question-mark">?</span>;
 	<span class="kw">for</span> <span class="ident">file_name</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;HEADER-APACHE2&quot;</span>, <span class="string">&quot;HEADER-GPL3&quot;</span>, <span class="string">&quot;HEADER&quot;</span>, <span class="string">&quot;file_header.txt&quot;</span>] {
@@ -346,7 +346,7 @@
 }
 
 <span class="doccomment">/// Create an underscore formatter: a formatter which inserts `_` every 3 digits of a number.</span>
-<span class="kw">fn</span> <span class="ident">underscore_formatter</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">num_format::CustomFormat</span> {
+<span class="kw">fn</span> <span class="ident">underscore_formatter</span>() -&gt; <span class="ident">num_format::CustomFormat</span> {
 	<span class="ident">num_format::CustomFormat::builder</span>()
 		.<span class="ident">grouping</span>(<span class="ident">num_format::Grouping::Standard</span>)
 		.<span class="ident">separator</span>(<span class="string">&quot;_&quot;</span>)
@@ -359,7 +359,7 @@
 <span class="doccomment">/// This ratio ensures that each bag, with the possible exceptions of certain small ones and the</span>
 <span class="doccomment">/// final one, is a constant multiple of the previous, while fully occupying the `VoteWeight`</span>
 <span class="doccomment">/// space.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">constant_ratio</span>(<span class="ident">existential_weight</span>: <span class="ident">VoteWeight</span>, <span class="ident">n_bags</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">constant_ratio</span>(<span class="ident">existential_weight</span>: <span class="ident">VoteWeight</span>, <span class="ident">n_bags</span>: <span class="ident">usize</span>) -&gt; <span class="ident">f64</span> {
 	((<span class="ident">VoteWeight::MAX</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="ident">existential_weight</span> <span class="kw">as</span> <span class="ident">f64</span>).<span class="ident">ln</span>() <span class="op">/</span> ((<span class="ident">n_bags</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">f64</span>)).<span class="ident">exp</span>()
 }
 
@@ -375,7 +375,7 @@
 	<span class="ident">existential_weight</span>: <span class="ident">VoteWeight</span>,
 	<span class="ident">constant_ratio</span>: <span class="ident">f64</span>,
 	<span class="ident">n_bags</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">VoteWeight</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">VoteWeight</span><span class="op">&gt;</span> {
 	<span class="kw">const</span> <span class="ident">WEIGHT_LIMIT</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">VoteWeight::MAX</span> <span class="kw">as</span> <span class="ident">f64</span>;
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">thresholds</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">n_bags</span>);
@@ -398,8 +398,8 @@
 	<span class="ident">thresholds</span>.<span class="ident">push</span>(<span class="ident">VoteWeight::MAX</span>);
 
 	<span class="macro">debug_assert_eq!</span>(<span class="ident">thresholds</span>.<span class="ident">len</span>(), <span class="ident">n_bags</span>);
-	<span class="macro">debug_assert!</span>(<span class="ident">n_bags</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">thresholds</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">existential_weight</span>);
-	<span class="macro">debug_assert!</span>(<span class="ident">n_bags</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">thresholds</span>[<span class="ident">thresholds</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">VoteWeight::MAX</span>);
+	<span class="macro">debug_assert!</span>(<span class="ident">n_bags</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">thresholds</span>[<span class="number">0</span>] <span class="op">==</span> <span class="ident">existential_weight</span>);
+	<span class="macro">debug_assert!</span>(<span class="ident">n_bags</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">thresholds</span>[<span class="ident">thresholds</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>] <span class="op">==</span> <span class="ident">VoteWeight::MAX</span>);
 
 	<span class="ident">thresholds</span>
 }
@@ -425,7 +425,7 @@
 	<span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
 	<span class="ident">total_issuance</span>: <span class="ident">u128</span>,
 	<span class="ident">minimum_balance</span>: <span class="ident">u128</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std::io::Error</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std::io::Error</span><span class="op">&gt;</span> {
 	<span class="comment">// ensure the file is accessable</span>
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>) <span class="op">=</span> <span class="ident">output</span>.<span class="ident">parent</span>() {
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">parent</span>.<span class="ident">exists</span>() {

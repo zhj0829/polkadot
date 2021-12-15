@@ -45,7 +45,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/getrlimit.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/getrlimit.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getrlimit</span>(<span class="ident">resource</span>: <span class="ident">Resource</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rlimit</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">getrlimit</span>(<span class="ident">resource</span>: <span class="ident">Resource</span>) -&gt; <span class="ident">Rlimit</span> {
     <span class="ident">imp::syscalls::getrlimit</span>(<span class="ident">resource</span>)
 }
 </code></pre></div>

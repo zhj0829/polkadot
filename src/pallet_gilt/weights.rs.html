@@ -246,14 +246,14 @@
 
 <span class="doccomment">/// Weight functions needed for pallet_gilt.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WeightInfo</span> {
-	<span class="kw">fn</span> <span class="ident">place_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">place_bid_max</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">retract_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">set_target</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">thaw</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">pursue_target_noop</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">pursue_target_per_item</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">pursue_target_per_queue</span>(<span class="ident">q</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">place_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">place_bid_max</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">retract_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">set_target</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">thaw</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">pursue_target_noop</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">pursue_target_per_item</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">pursue_target_per_queue</span>(<span class="ident">q</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span>;
 }
 
 <span class="doccomment">/// Weights for pallet_gilt using the Substrate node and recommended hardware.</span>
@@ -261,7 +261,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span><span class="op">&gt;</span> <span class="ident">WeightInfo</span> <span class="kw">for</span> <span class="ident">SubstrateWeight</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">place_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">place_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">59_219_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">156_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">l</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -270,14 +270,14 @@
 	}
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">place_bid_max</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">place_bid_max</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">184_943_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">retract_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">retract_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">59_352_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">129_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">l</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -285,20 +285,20 @@
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt ActiveTotal (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_target</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_target</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_444_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt Active (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt ActiveTotal (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">thaw</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">thaw</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">71_399_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt ActiveTotal (r:1 w:0)</span>
-	<span class="kw">fn</span> <span class="ident">pursue_target_noop</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pursue_target_noop</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">3_044_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
@@ -306,7 +306,7 @@
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Active (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">pursue_target_per_item</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pursue_target_per_item</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">54_478_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 2_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">10_150_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">b</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -318,7 +318,7 @@
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Active (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">pursue_target_per_queue</span>(<span class="ident">q</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pursue_target_per_queue</span>(<span class="ident">q</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">20_099_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 7_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">16_603_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">q</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -333,7 +333,7 @@
 <span class="kw">impl</span> <span class="ident">WeightInfo</span> <span class="kw">for</span> () {
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">place_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">place_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">59_219_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">156_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">l</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -342,14 +342,14 @@
 	}
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">place_bid_max</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">place_bid_max</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">184_943_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">retract_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">retract_bid</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">59_352_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">129_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">l</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -357,20 +357,20 @@
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt ActiveTotal (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_target</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_target</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_444_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt Active (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt ActiveTotal (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">thaw</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">thaw</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">71_399_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Gilt ActiveTotal (r:1 w:0)</span>
-	<span class="kw">fn</span> <span class="ident">pursue_target_noop</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pursue_target_noop</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">3_044_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
@@ -378,7 +378,7 @@
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Active (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">pursue_target_per_item</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pursue_target_per_item</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">54_478_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 2_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">10_150_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">b</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -390,7 +390,7 @@
 	<span class="comment">// Storage: Gilt QueueTotals (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Queues (r:1 w:1)</span>
 	<span class="comment">// Storage: Gilt Active (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">pursue_target_per_queue</span>(<span class="ident">q</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">pursue_target_per_queue</span>(<span class="ident">q</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">20_099_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 7_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">16_603_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">q</span> <span class="kw">as</span> <span class="ident">Weight</span>))

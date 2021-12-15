@@ -74,25 +74,25 @@
 
 <span class="attribute">#[<span class="ident">runtime_interface</span>]</span>
 <span class="kw">trait</span> <span class="ident">Crypto</span> {
-	<span class="kw">fn</span> <span class="ident">ecdsa_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Public</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">ecdsa_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Public</span>) -&gt; <span class="ident">bool</span> {
 		<span class="bool-val">true</span>
 	}
 
 	<span class="attribute">#[<span class="ident">version</span>(<span class="number">2</span>)]</span>
-	<span class="kw">fn</span> <span class="ident">ecdsa_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Public</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">ecdsa_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">ecdsa::Public</span>) -&gt; <span class="ident">bool</span> {
 		<span class="bool-val">true</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">ed25519_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">ed25519::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">ed25519::Public</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">ed25519_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">ed25519::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">ed25519::Public</span>) -&gt; <span class="ident">bool</span> {
 		<span class="bool-val">true</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">sr25519_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Public</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">sr25519_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Public</span>) -&gt; <span class="ident">bool</span> {
 		<span class="bool-val">true</span>
 	}
 
 	<span class="attribute">#[<span class="ident">version</span>(<span class="number">2</span>)]</span>
-	<span class="kw">fn</span> <span class="ident">sr25519_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Public</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">sr25519_verify</span>(<span class="ident">_sig</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Signature</span>, <span class="ident">_msg</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">_pub_key</span>: <span class="kw-2">&amp;</span><span class="ident">sr25519::Public</span>) -&gt; <span class="ident">bool</span> {
 		<span class="bool-val">true</span>
 	}
 }

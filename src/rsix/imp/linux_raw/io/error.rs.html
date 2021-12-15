@@ -375,7 +375,7 @@
     <span class="doccomment">/// This isn&#39;t a `From` conversion because it&#39;s expected to be relatively</span>
     <span class="doccomment">/// uncommon.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_io_error</span>(<span class="ident">io_err</span>: <span class="kw-2">&amp;</span><span class="ident">std::io::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_io_error</span>(<span class="ident">io_err</span>: <span class="kw-2">&amp;</span><span class="ident">std::io::Error</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">io_err</span>.<span class="ident">raw_os_error</span>().<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">raw</span><span class="op">|</span> {
             <span class="comment">// `std::io::Error` could theoretically have arbitrary &quot;OS error&quot;</span>
             <span class="comment">// values, so check that they&#39;re in Linux&#39;s range.</span>
@@ -389,18 +389,18 @@
 
     <span class="doccomment">/// Extract the raw OS error number from this error.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">raw_os_error</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">raw_os_error</span>(<span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         (<span class="self">self</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">i16</span> <span class="kw">as</span> <span class="ident">i32</span>).<span class="ident">wrapping_neg</span>()
     }
 
     <span class="doccomment">/// Construct an `Error` from a raw OS error number.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_raw_os_error</span>(<span class="ident">raw</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_raw_os_error</span>(<span class="ident">raw</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_errno</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
     <span class="doccomment">/// Convert from a C errno value (which is positive) to an `Error`.</span>
-    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_errno</span>(<span class="ident">raw</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_errno</span>(<span class="ident">raw</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// We store error values in negated form, so that we don&#39;t have to negate</span>
         <span class="comment">// them after every syscall.</span>
         <span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">raw</span>.<span class="ident">wrapping_neg</span>() <span class="kw">as</span> <span class="ident">u16</span>;
@@ -420,7 +420,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">fn</span> <span class="ident">try_decode_c_int</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_int</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_int</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">is_in_range</span>(<span class="op">-</span><span class="number">4095</span>..<span class="number">0</span>) {
         <span class="comment">// Safety: `raw` must be in `-4095..0`, and we just checked that raw is</span>
         <span class="comment">// in that range.</span>
@@ -435,7 +435,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">fn</span> <span class="ident">try_decode_c_uint</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_uint</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">c_uint</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">is_in_range</span>(<span class="op">-</span><span class="number">4095</span>..<span class="number">0</span>) {
         <span class="comment">// Safety: `raw` must be in `-4095..0`, and we just checked that raw is</span>
         <span class="comment">// in that range.</span>
@@ -450,7 +450,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">fn</span> <span class="ident">try_decode_usize</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">is_in_range</span>(<span class="op">-</span><span class="number">4095</span>..<span class="number">0</span>) {
         <span class="comment">// Safety: `raw` must be in `-4095..0`, and we just checked that raw is</span>
         <span class="comment">// in that range.</span>
@@ -465,7 +465,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">fn</span> <span class="ident">try_decode_void_star</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">is_in_range</span>(<span class="op">-</span><span class="number">4095</span>..<span class="number">0</span>) {
         <span class="comment">// Safety: `raw` must be in `-4095..0`, and we just checked that raw is</span>
         <span class="comment">// in that range.</span>
@@ -481,7 +481,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">fn</span> <span class="ident">try_decode_u64</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">is_in_range</span>(<span class="op">-</span><span class="number">4095</span>..<span class="number">0</span>) {
         <span class="comment">// Safety: `raw` must be in `-4095..0`, and we just checked that raw is</span>
         <span class="comment">// in that range.</span>
@@ -501,7 +501,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_decode_raw_fd</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RawFd</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">RawFd</span><span class="op">&gt;</span> {
     <span class="comment">// Instead of using `check_result` here, we just check for negative, since</span>
     <span class="comment">// this function is only used for system calls which return file</span>
     <span class="comment">// descriptors, and this produces smaller code.</span>
@@ -521,7 +521,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_decode_void</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="comment">// Instead of using `check_result` here, we just check for zero, since this</span>
     <span class="comment">// function is only used for system calls which have no other return value,</span>
     <span class="comment">// and this produces smaller code.</span>
@@ -539,7 +539,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">fn</span> <span class="ident">decode_usize_infallible</span><span class="op">&lt;</span><span class="ident">Num</span>: <span class="ident">RetNumber</span><span class="op">&gt;</span>(
     <span class="ident">raw</span>: <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">Num</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+) -&gt; <span class="ident">usize</span> {
     <span class="ident">raw</span>.<span class="ident">decode_usize</span>()
 }
 

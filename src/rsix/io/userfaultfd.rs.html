@@ -51,7 +51,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/userfaultfd.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">userfaultfd</span>(<span class="ident">flags</span>: <span class="ident">UserfaultfdFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">userfaultfd</span>(<span class="ident">flags</span>: <span class="ident">UserfaultfdFlags</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::userfaultfd</span>(<span class="ident">flags</span>)
 }
 </code></pre></div>

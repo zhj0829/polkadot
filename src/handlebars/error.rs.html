@@ -295,9 +295,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">line_no</span>, <span class="self">self</span>.<span class="ident">column_no</span>) {
-            (<span class="prelude-val">Some</span>(<span class="ident">line</span>), <span class="prelude-val">Some</span>(<span class="ident">col</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(
+            (<span class="prelude-val">Some</span>(<span class="ident">line</span>), <span class="prelude-val">Some</span>(<span class="ident">col</span>)) =&gt; <span class="macro">write!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;Error rendering \&quot;{}\&quot; line {}, col {}: {}&quot;</span>,
                 <span class="self">self</span>.<span class="ident">template_name</span>.<span class="ident">as_deref</span>().<span class="ident">unwrap_or</span>(<span class="string">&quot;Unnamed template&quot;</span>),
@@ -305,13 +305,13 @@
                 <span class="ident">col</span>,
                 <span class="self">self</span>.<span class="ident">desc</span>
             ),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">desc</span>),
+            <span class="kw">_</span> =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">desc</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Error</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">cause</span>
             .<span class="ident">as_ref</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">as_ref</span>() <span class="kw">as</span> <span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>))
@@ -319,73 +319,73 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">IOError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">IOError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">IOError</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Cannot generate output.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SerdeError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">SerdeError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">SerdeError</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Failed to access JSON data.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FromUtf8Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">FromUtf8Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">FromUtf8Error</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Failed to generate bytes.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ParseIntError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ParseIntError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ParseIntError</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Cannot access array/vector with string index.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">TemplateError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">TemplateError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">TemplateError</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Failed to parse template.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">EvalAltResult</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">EvalAltResult</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">EvalAltResult</span><span class="op">&gt;</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Cannot convert data to Rhai dynamic&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ScriptError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ScriptError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ScriptError</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Failed to load rhai script&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">RenderError</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">desc</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">desc</span>: <span class="ident">T</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError</span> {
             <span class="ident">desc</span>: <span class="ident">desc</span>.<span class="ident">as_ref</span>().<span class="ident">to_owned</span>(),
             ..<span class="ident">Default::default</span>()
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">unimplemented</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">unimplemented</span>() -&gt; <span class="ident">RenderError</span> {
         <span class="ident">RenderError</span> {
             <span class="ident">unimplemented</span>: <span class="bool-val">true</span>,
             ..<span class="ident">Default::default</span>()
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">strict_error</span>(<span class="ident">path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">strict_error</span>(<span class="ident">path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">String</span><span class="op">&gt;</span>) -&gt; <span class="ident">RenderError</span> {
         <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">path</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;Variable {:?} not found in strict mode.&quot;</span>, <span class="ident">path</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Value is missing in strict mode&quot;</span>.<span class="ident">to_owned</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">path</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;Variable {:?} not found in strict mode.&quot;</span>, <span class="ident">path</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="string">&quot;Value is missing in strict mode&quot;</span>.<span class="ident">to_owned</span>(),
         };
         <span class="ident">RenderError::new</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_error</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">error_info</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">cause</span>: <span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_error</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">error_info</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">cause</span>: <span class="ident">E</span>) -&gt; <span class="ident">RenderError</span>
     <span class="kw">where</span>
         <span class="ident">E</span>: <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
@@ -396,7 +396,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_unimplemented</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_unimplemented</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">unimplemented</span>
     }
 }
@@ -443,7 +443,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">TemplateError</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">of</span>(<span class="ident">e</span>: <span class="ident">TemplateErrorReason</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TemplateError</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">of</span>(<span class="ident">e</span>: <span class="ident">TemplateErrorReason</span>) -&gt; <span class="ident">TemplateError</span> {
         <span class="ident">TemplateError</span> {
             <span class="ident">reason</span>: <span class="ident">e</span>,
             <span class="ident">template_name</span>: <span class="prelude-val">None</span>,
@@ -453,14 +453,14 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">at</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">template_str</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">line_no</span>: <span class="ident">usize</span>, <span class="ident">column_no</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TemplateError</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">at</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">template_str</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">line_no</span>: <span class="ident">usize</span>, <span class="ident">column_no</span>: <span class="ident">usize</span>) -&gt; <span class="ident">TemplateError</span> {
         <span class="self">self</span>.<span class="ident">line_no</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">line_no</span>);
         <span class="self">self</span>.<span class="ident">column_no</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">column_no</span>);
         <span class="self">self</span>.<span class="ident">segment</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">template_segment</span>(<span class="ident">template_str</span>, <span class="ident">line_no</span>, <span class="ident">column_no</span>));
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">in_template</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TemplateError</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">in_template</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">String</span>) -&gt; <span class="ident">TemplateError</span> {
         <span class="self">self</span>.<span class="ident">template_name</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">name</span>);
         <span class="self">self</span>
     }
@@ -469,7 +469,7 @@
 <span class="kw">impl</span> <span class="ident">Error</span> <span class="kw">for</span> <span class="ident">TemplateError</span> {}
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>(<span class="ident">IOError</span>, <span class="ident">String</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TemplateError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err_info</span>: (<span class="ident">IOError</span>, <span class="ident">String</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TemplateError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err_info</span>: (<span class="ident">IOError</span>, <span class="ident">String</span>)) -&gt; <span class="ident">TemplateError</span> {
         <span class="kw">let</span> (<span class="ident">e</span>, <span class="ident">name</span>) <span class="op">=</span> <span class="ident">err_info</span>;
         <span class="ident">TemplateError::of</span>(<span class="ident">TemplateErrorReason::IoError</span>(<span class="ident">e</span>, <span class="ident">name</span>))
     }
@@ -477,12 +477,12 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WalkdirError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TemplateError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">WalkdirError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TemplateError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">WalkdirError</span>) -&gt; <span class="ident">TemplateError</span> {
         <span class="ident">TemplateError::of</span>(<span class="ident">TemplateErrorReason::WalkdirError</span>(<span class="ident">e</span>))
     }
 }
 
-<span class="kw">fn</span> <span class="ident">template_segment</span>(<span class="ident">template_str</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">line</span>: <span class="ident">usize</span>, <span class="ident">col</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">template_segment</span>(<span class="ident">template_str</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">line</span>: <span class="ident">usize</span>, <span class="ident">col</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
     <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="number">3</span>;
     <span class="kw">let</span> <span class="ident">line_start</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">line</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">range</span> { <span class="ident">line</span> <span class="op">-</span> <span class="ident">range</span> } <span class="kw">else</span> { <span class="number">0</span> };
     <span class="kw">let</span> <span class="ident">line_end</span> <span class="op">=</span> <span class="ident">line</span> <span class="op">+</span> <span class="ident">range</span>;
@@ -491,7 +491,7 @@
     <span class="kw">for</span> (<span class="ident">line_count</span>, <span class="ident">line_content</span>) <span class="kw">in</span> <span class="ident">template_str</span>.<span class="ident">lines</span>().<span class="ident">enumerate</span>() {
         <span class="kw">if</span> <span class="ident">line_count</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">line_start</span> <span class="op">&amp;&amp;</span> <span class="ident">line_count</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">line_end</span> {
             <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:4} | {}\n&quot;</span>, <span class="ident">line_count</span>, <span class="ident">line_content</span>));
-            <span class="kw">if</span> <span class="ident">line_count</span> <span class="op">=</span><span class="op">=</span> <span class="ident">line</span> <span class="op">-</span> <span class="number">1</span> {
+            <span class="kw">if</span> <span class="ident">line_count</span> <span class="op">==</span> <span class="ident">line</span> <span class="op">-</span> <span class="number">1</span> {
                 <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="string">&quot;     |&quot;</span>);
                 <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">line_content</span>.<span class="ident">len</span>() {
                     <span class="kw">if</span> <span class="ident">c</span> <span class="op">!</span><span class="op">=</span> <span class="ident">col</span> {
@@ -509,9 +509,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TemplateError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">line_no</span>, <span class="self">self</span>.<span class="ident">column_no</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">segment</span>) {
-            (<span class="prelude-val">Some</span>(<span class="ident">line</span>), <span class="prelude-val">Some</span>(<span class="ident">col</span>), <span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">seg</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">writeln!</span>(
+            (<span class="prelude-val">Some</span>(<span class="ident">line</span>), <span class="prelude-val">Some</span>(<span class="ident">col</span>), <span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">seg</span>)) =&gt; <span class="macro">writeln!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;Template error: {}\n    --&gt; Template error in \&quot;{}\&quot;:{}:{}\n     |\n{}     |\n     = reason: {}&quot;</span>,
                 <span class="self">self</span>.<span class="ident">reason</span>,
@@ -523,7 +523,7 @@
                 <span class="ident">seg</span>,
                 <span class="self">self</span>.<span class="ident">reason</span>
             ),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">reason</span>),
+            <span class="kw">_</span> =&gt; <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">reason</span>),
         }
     }
 }

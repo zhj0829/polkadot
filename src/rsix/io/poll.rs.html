@@ -27,7 +27,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/poll.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/poll.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll</span>(<span class="ident">fds</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">PollFd</span>], <span class="ident">timeout</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll</span>(<span class="ident">fds</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">PollFd</span>], <span class="ident">timeout</span>: <span class="ident">i32</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::poll</span>(<span class="ident">fds</span>, <span class="ident">timeout</span>)
 }
 </code></pre></div>

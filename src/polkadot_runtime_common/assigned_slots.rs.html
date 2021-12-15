@@ -1452,7 +1452,7 @@
 
 	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">on_initialize</span>(<span class="ident">n</span>: <span class="ident">T::BlockNumber</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+		<span class="kw">fn</span> <span class="ident">on_initialize</span>(<span class="ident">n</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">lease_period</span>, <span class="ident">first_block</span>)) <span class="op">=</span> <span class="ident"><span class="self">Self</span>::lease_period_index</span>(<span class="ident">n</span>) {
 				<span class="comment">// If we&#39;re beginning a new lease period then handle that.</span>
 				<span class="kw">if</span> <span class="ident">first_block</span> {
@@ -1470,7 +1470,7 @@
 		<span class="comment">// TODO: Benchmark this</span>
 		<span class="doccomment">/// Assign a permanent parachain slot and immediately create a lease for it.</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(((<span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">10</span>) <span class="kw">as</span> <span class="ident">Weight</span>, <span class="ident">DispatchClass::Operational</span>))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assign_perm_parachain_slot</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assign_perm_parachain_slot</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">T::AssignSlotOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">T::Registrar::manager_of</span>(<span class="ident">id</span>).<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::ParaDoesntExist</span>)<span class="question-mark">?</span>;
@@ -1532,7 +1532,7 @@
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">id</span>: <span class="ident">ParaId</span>,
 			<span class="ident">lease_period_start</span>: <span class="ident">SlotLeasePeriodStart</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">T::AssignSlotOrigin::ensure_origin</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">T::Registrar::manager_of</span>(<span class="ident">id</span>).<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::ParaDoesntExist</span>)<span class="question-mark">?</span>;
@@ -1566,15 +1566,15 @@
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">temp_slot</span> <span class="op">=</span> <span class="ident">ParachainTemporarySlot</span> {
 				<span class="ident">manager</span>: <span class="ident">manager</span>.<span class="ident">clone</span>(),
 				<span class="ident">period_begin</span>: <span class="kw">match</span> <span class="ident">lease_period_start</span> {
-					<span class="ident">SlotLeasePeriodStart::Current</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">current_lease_period</span>,
-					<span class="ident">SlotLeasePeriodStart::Next</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">current_lease_period</span> <span class="op">+</span> <span class="ident">One::one</span>(),
+					<span class="ident">SlotLeasePeriodStart::Current</span> =&gt; <span class="ident">current_lease_period</span>,
+					<span class="ident">SlotLeasePeriodStart::Next</span> =&gt; <span class="ident">current_lease_period</span> <span class="op">+</span> <span class="ident">One::one</span>(),
 				},
 				<span class="ident">period_count</span>: <span class="ident">T::TemporarySlotLeasePeriodLength::get</span>().<span class="ident">into</span>(),
 				<span class="ident">last_lease</span>: <span class="prelude-val">None</span>,
 				<span class="ident">lease_count</span>: <span class="number">0</span>,
 			};
 
-			<span class="kw">if</span> <span class="ident">lease_period_start</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SlotLeasePeriodStart::Current</span> <span class="op">&amp;&amp;</span>
+			<span class="kw">if</span> <span class="ident">lease_period_start</span> <span class="op">==</span> <span class="ident">SlotLeasePeriodStart::Current</span> <span class="op">&amp;&amp;</span>
 				<span class="ident"><span class="self">Self</span>::active_temporary_slot_count</span>() <span class="op">&lt;</span> <span class="ident">T::MaxTemporarySlotPerLeasePeriod::get</span>()
 			{
 				<span class="comment">// Try to allocate slot directly</span>
@@ -1584,12 +1584,12 @@
 					<span class="ident">temp_slot</span>.<span class="ident">period_begin</span>,
 					<span class="ident">temp_slot</span>.<span class="ident">period_count</span>,
 				) {
-					<span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
 						<span class="ident">ActiveTemporarySlotCount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::mutate</span>(<span class="op">|</span><span class="ident">count</span><span class="op">|</span> <span class="ident">count</span>.<span class="ident">saturating_inc</span>());
 						<span class="ident">temp_slot</span>.<span class="ident">last_lease</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">temp_slot</span>.<span class="ident">period_begin</span>);
 						<span class="ident">temp_slot</span>.<span class="ident">lease_count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 					},
-					<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
 						<span class="comment">// Treat failed lease creation as warning .. slot will be allocated a lease</span>
 						<span class="comment">// in a subsequent lease period by the `allocate_temporary_slot_leases` function.</span>
 						<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="string">&quot;assigned_slots&quot;</span>,
@@ -1611,7 +1611,7 @@
 		<span class="comment">// TODO: Benchmark this</span>
 		<span class="doccomment">/// Unassign a permanent or temporary parachain slot</span>
 		<span class="attribute">#[<span class="ident">pallet::weight</span>(((<span class="ident">MAXIMUM_BLOCK_WEIGHT</span> <span class="op">/</span> <span class="number">10</span>) <span class="kw">as</span> <span class="ident">Weight</span>, <span class="ident">DispatchClass::Operational</span>))]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unassign_parachain_slot</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unassign_parachain_slot</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">T::AssignSlotOrigin::ensure_origin</span>(<span class="ident">origin</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
 
 			<span class="macro">ensure!</span>(
@@ -1669,7 +1669,7 @@
 	<span class="doccomment">/// Assigned slots with a `period_begin` bigger than current lease period are not considered (yet).</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// The function will call out to `Leaser::lease_out` to create the appropriate slot leases.</span>
-	<span class="kw">fn</span> <span class="ident">allocate_temporary_slot_leases</span>(<span class="ident">lease_period_index</span>: <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+	<span class="kw">fn</span> <span class="ident">allocate_temporary_slot_leases</span>(<span class="ident">lease_period_index</span>: <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">active_temp_slots</span> <span class="op">=</span> <span class="number">0u32</span>;
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pending_temp_slots</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 		<span class="ident">TemporarySlots</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::iter</span>().<span class="ident">for_each</span>(<span class="op">|</span>(<span class="ident">para</span>, <span class="ident">slot</span>)<span class="op">|</span> {
@@ -1677,21 +1677,21 @@
 					<span class="prelude-val">Some</span>(<span class="ident">last_lease</span>)
 						<span class="kw">if</span> <span class="ident">last_lease</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">lease_period_index</span> <span class="op">&amp;&amp;</span>
 							<span class="ident">lease_period_index</span> <span class="op">&lt;</span>
-								(<span class="ident">last_lease</span>.<span class="ident">saturating_add</span>(<span class="ident">slot</span>.<span class="ident">period_count</span>)) <span class="op">=</span><span class="op">&gt;</span>
+								(<span class="ident">last_lease</span>.<span class="ident">saturating_add</span>(<span class="ident">slot</span>.<span class="ident">period_count</span>)) =&gt;
 					{
 						<span class="comment">// Active slot lease</span>
 						<span class="ident">active_temp_slots</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 					}
 					<span class="prelude-val">Some</span>(<span class="ident">last_lease</span>)
 						<span class="comment">// Slot w/ past lease, only consider it every other slot lease period (times period_count)</span>
-						<span class="kw">if</span> <span class="ident">last_lease</span>.<span class="ident">saturating_add</span>(<span class="ident">slot</span>.<span class="ident">period_count</span>.<span class="ident">saturating_mul</span>(<span class="number">2u32</span>.<span class="ident">into</span>())) <span class="op">&lt;</span><span class="op">=</span> <span class="ident">lease_period_index</span> <span class="op">=</span><span class="op">&gt;</span> {
+						<span class="kw">if</span> <span class="ident">last_lease</span>.<span class="ident">saturating_add</span>(<span class="ident">slot</span>.<span class="ident">period_count</span>.<span class="ident">saturating_mul</span>(<span class="number">2u32</span>.<span class="ident">into</span>())) <span class="op">&lt;</span><span class="op">=</span> <span class="ident">lease_period_index</span> =&gt; {
 							<span class="ident">pending_temp_slots</span>.<span class="ident">push</span>((<span class="ident">para</span>, <span class="ident">slot</span>));
 					},
-					<span class="prelude-val">None</span> <span class="kw">if</span> <span class="ident">slot</span>.<span class="ident">period_begin</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">lease_period_index</span> <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">None</span> <span class="kw">if</span> <span class="ident">slot</span>.<span class="ident">period_begin</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">lease_period_index</span> =&gt; {
 						<span class="comment">// Slot hasn&#39;t had a lease yet</span>
 						<span class="ident">pending_temp_slots</span>.<span class="ident">insert</span>(<span class="number">0</span>, (<span class="ident">para</span>, <span class="ident">slot</span>));
 					},
-					<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="kw">_</span> =&gt; {
 						<span class="comment">// Slot not being considered for this lease period (will be for a subsequent one)</span>
 					},
 				}
@@ -1749,7 +1749,7 @@
 
 	<span class="doccomment">/// Clear out all slot leases for both permanent &amp; temporary slots.</span>
 	<span class="doccomment">/// The function merely calls out to `Slots::clear_all_leases`.</span>
-	<span class="kw">fn</span> <span class="ident">clear_slot_leases</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResult</span> {
+	<span class="kw">fn</span> <span class="ident">clear_slot_leases</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">DispatchResult</span> {
 		<span class="ident">Slots</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::clear_all_leases</span>(<span class="ident">origin</span>, <span class="ident">id</span>)
 	}
 
@@ -1760,39 +1760,39 @@
 		<span class="ident">manager</span>: <span class="ident">T::AccountId</span>,
 		<span class="ident">lease_period</span>: <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 		<span class="ident">lease_duration</span>: <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">LeaseError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">LeaseError</span><span class="op">&gt;</span> {
 		<span class="ident">T::Leaser::lease_out</span>(<span class="ident">para</span>, <span class="kw-2">&amp;</span><span class="ident">manager</span>, <span class="ident">BalanceOf</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::zero</span>(), <span class="ident">lease_period</span>, <span class="ident">lease_duration</span>)
 	}
 
 	<span class="doccomment">/// Returns whether a para has been assigned a permanent slot.</span>
-	<span class="kw">fn</span> <span class="ident">has_permanent_slot</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">has_permanent_slot</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">bool</span> {
 		<span class="ident">PermanentSlots</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="ident">id</span>)
 	}
 
 	<span class="doccomment">/// Returns whether a para has been assigned temporary slot.</span>
-	<span class="kw">fn</span> <span class="ident">has_temporary_slot</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">has_temporary_slot</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">bool</span> {
 		<span class="ident">TemporarySlots</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::contains_key</span>(<span class="ident">id</span>)
 	}
 
 	<span class="doccomment">/// Returns whether a para is currently a parachain.</span>
-	<span class="kw">fn</span> <span class="ident">is_parachain</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+	<span class="kw">fn</span> <span class="ident">is_parachain</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">bool</span> {
 		<span class="ident">T::Registrar::is_parachain</span>(<span class="ident">id</span>)
 	}
 
 	<span class="doccomment">/// Returns current lease period index.</span>
-	<span class="kw">fn</span> <span class="ident">current_lease_period_index</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">current_lease_period_index</span>() -&gt; <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="ident">T::Leaser::lease_period_index</span>(<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::block_number</span>())
 			.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="number">0</span>))
 			.<span class="ident">unwrap</span>()
 	}
 
 	<span class="doccomment">/// Returns lease period index for block</span>
-	<span class="kw">fn</span> <span class="ident">lease_period_index</span>(<span class="ident">block</span>: <span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">lease_period_index</span>(<span class="ident">block</span>: <span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
 		<span class="ident">T::Leaser::lease_period_index</span>(<span class="ident">block</span>)
 	}
 
 	<span class="doccomment">/// Handles start of a lease period.</span>
-	<span class="kw">fn</span> <span class="ident">manage_lease_period_start</span>(<span class="ident">lease_period_index</span>: <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">manage_lease_period_start</span>(<span class="ident">lease_period_index</span>: <span class="ident">LeasePeriodOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="comment">// Note: leases that have ended in previous lease period, should have been cleaned in slots pallet.</span>
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident"><span class="self">Self</span>::allocate_temporary_slot_leases</span>(<span class="ident">lease_period_index</span>) {
 			<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="string">&quot;assigned_slots&quot;</span>,
@@ -1939,7 +1939,7 @@
 
 	<span class="comment">// This function basically just builds a genesis storage key/value store according to</span>
 	<span class="comment">// our desired mock up.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_test_ext</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_io::TestExternalities</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_test_ext</span>() -&gt; <span class="ident">sp_io::TestExternalities</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">frame_system::GenesisConfig::default</span>().<span class="ident">build_storage</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
 		<span class="ident">pallet_balances::GenesisConfig</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span> {
 			<span class="ident">balances</span>: <span class="macro">vec!</span>[(<span class="number">1</span>, <span class="number">10</span>), (<span class="number">2</span>, <span class="number">20</span>), (<span class="number">3</span>, <span class="number">30</span>), (<span class="number">4</span>, <span class="number">40</span>), (<span class="number">5</span>, <span class="number">50</span>), (<span class="number">6</span>, <span class="number">60</span>)],

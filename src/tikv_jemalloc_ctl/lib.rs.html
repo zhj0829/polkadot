@@ -318,7 +318,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">keys</span>::{<span class="ident">Access</span>, <span class="ident">AsName</span>, <span class="ident">Mib</span>, <span class="ident">MibStr</span>, <span class="ident">Name</span>};
 
 <span class="macro">option!</span> {
-    <span class="ident">version</span>[ <span class="ident">str</span>: <span class="string">b&quot;version\0&quot;</span>, <span class="ident">str</span>: <span class="number">1</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">|</span>
+    <span class="ident">version</span>[ <span class="ident">str</span>: <span class="string">b&quot;version\0&quot;</span>, <span class="ident">str</span>: <span class="number">1</span> ] =&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">|</span>
     <span class="ident">ops</span>: <span class="ident">r</span> <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// `jemalloc` version string.</span>
@@ -340,7 +340,7 @@
 }
 
 <span class="macro">option!</span> {
-    <span class="ident">background_thread</span>[ <span class="ident">str</span>: <span class="string">b&quot;background_thread\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">1</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bool</span> <span class="op">|</span>
+    <span class="ident">background_thread</span>[ <span class="ident">str</span>: <span class="string">b&quot;background_thread\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">1</span> ] =&gt; <span class="ident">bool</span> <span class="op">|</span>
     <span class="ident">ops</span>: <span class="ident">r</span>,<span class="ident">w</span>,<span class="ident">u</span> <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// State of internal background worker threads.</span>
@@ -374,7 +374,7 @@
 }
 
 <span class="macro">option!</span> {
-    <span class="ident">max_background_threads</span>[ <span class="ident">str</span>: <span class="string">b&quot;max_background_threads\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">1</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="ident">libc::size_t</span> <span class="op">|</span>
+    <span class="ident">max_background_threads</span>[ <span class="ident">str</span>: <span class="string">b&quot;max_background_threads\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">1</span> ] =&gt; <span class="ident">libc::size_t</span> <span class="op">|</span>
     <span class="ident">ops</span>: <span class="ident">r</span>, <span class="ident">w</span>, <span class="ident">u</span> <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// Maximum number of background threads that will be created.</span>
@@ -399,7 +399,7 @@
 }
 
 <span class="macro">option!</span> {
-    <span class="ident">epoch</span>[ <span class="ident">str</span>: <span class="string">b&quot;epoch\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">1</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="ident">u64</span> <span class="op">|</span>
+    <span class="ident">epoch</span>[ <span class="ident">str</span>: <span class="string">b&quot;epoch\0&quot;</span>, <span class="ident">non_str</span>: <span class="number">1</span> ] =&gt; <span class="ident">u64</span> <span class="op">|</span>
     <span class="ident">ops</span>: <span class="ident">r</span>, <span class="ident">w</span>, <span class="ident">u</span> <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// `jemalloc` epoch.</span>
@@ -431,14 +431,14 @@
 
 <span class="kw">impl</span> <span class="ident">epoch</span> {
     <span class="doccomment">/// Advances the epoch returning its old value - see [`epoch`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::error::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>() -&gt; <span class="ident"><span class="kw">crate</span>::error::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="ident"><span class="self">Self</span>::update</span>(<span class="number">1</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">epoch_mib</span> {
     <span class="doccomment">/// Advances the epoch returning its old value - see [`epoch`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::error::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::error::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">update</span>(<span class="number">1</span>)
     }
 }

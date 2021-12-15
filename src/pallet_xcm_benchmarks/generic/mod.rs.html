@@ -57,20 +57,20 @@
 			<span class="op">+</span> <span class="ident">Encode</span>;
 
 		<span class="doccomment">///	The response which causes the most runtime weight.</span>
-		<span class="kw">fn</span> <span class="ident">worst_case_response</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">u64</span>, <span class="ident">Response</span>);
+		<span class="kw">fn</span> <span class="ident">worst_case_response</span>() -&gt; (<span class="ident">u64</span>, <span class="ident">Response</span>);
 
 		<span class="doccomment">/// The `MultiLocation` used for successful transaction XCMs.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// If set to `None`, benchmarks which rely on a `transact_origin` will be skipped.</span>
-		<span class="kw">fn</span> <span class="ident">transact_origin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
+		<span class="kw">fn</span> <span class="ident">transact_origin</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// A valid `MultiLocation` we can successfully subscribe to.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// If set to `None`, benchmarks which rely on a `subscribe_origin` will be skipped.</span>
-		<span class="kw">fn</span> <span class="ident">subscribe_origin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
+		<span class="kw">fn</span> <span class="ident">subscribe_origin</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// Return an origin, ticket, and assets that can be trapped and claimed.</span>
-		<span class="kw">fn</span> <span class="ident">claimable_asset</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiLocation</span>, <span class="ident">MultiAssets</span>), <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
+		<span class="kw">fn</span> <span class="ident">claimable_asset</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">MultiLocation</span>, <span class="ident">MultiLocation</span>, <span class="ident">MultiAssets</span>), <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::pallet</span>]</span>

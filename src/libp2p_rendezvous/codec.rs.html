@@ -670,7 +670,7 @@
     <span class="doccomment">/// Creates a new [`Namespace`] from a static string.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will panic if the namespace is too long. We accepting panicking in this case because we are enforcing a `static lifetime which means this value can only be a constant in the program and hence we hope the developer checked that it is of an acceptable length.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_static</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_static</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">255</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;Namespace &#39;{}&#39; is too long!&quot;</span>, <span class="ident">value</span>)
         }
@@ -678,7 +678,7 @@
         <span class="ident">Namespace</span>(<span class="ident">value</span>.<span class="ident">to_owned</span>())
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NamespaceTooLong</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">String</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NamespaceTooLong</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">255</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">NamespaceTooLong</span>);
         }
@@ -688,25 +688,25 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Namespace</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">namespace</span>: <span class="ident">Namespace</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">namespace</span>: <span class="ident">Namespace</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">namespace</span>.<span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Namespace</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Namespace</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">eq</span>(<span class="ident">other</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">Namespace</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Namespace</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Namespace</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">other</span>.<span class="number">0</span>.<span class="ident">eq</span>(<span class="self">self</span>)
     }
 }
@@ -725,7 +725,7 @@
     <span class="doccomment">/// Construct a new [`Cookie`] for a given namespace.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This cookie will only be valid for subsequent DISCOVER requests targeting the same namespace.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_namespace</span>(<span class="ident">namespace</span>: <span class="ident">Namespace</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_namespace</span>(<span class="ident">namespace</span>: <span class="ident">Namespace</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">id</span>: <span class="ident">rand::thread_rng</span>().<span class="ident">next_u64</span>(),
             <span class="ident">namespace</span>: <span class="prelude-val">Some</span>(<span class="ident">namespace</span>),
@@ -733,14 +733,14 @@
     }
 
     <span class="doccomment">/// Construct a new [`Cookie`] for a DISCOVER request that inquires about all namespaces.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_all_namespaces</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_all_namespaces</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">id</span>: <span class="ident">rand::random</span>(),
             <span class="ident">namespace</span>: <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_wire_encoding</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_wire_encoding</span>(<span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">id_bytes</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">id</span>.<span class="ident">to_be_bytes</span>();
         <span class="kw">let</span> <span class="ident">namespace</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">namespace</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ns</span><span class="op">|</span> <span class="ident">ns</span>.<span class="number">0</span>).<span class="ident">unwrap_or_default</span>();
 
@@ -751,7 +751,7 @@
         <span class="ident">buffer</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_wire_encoding</span>(<span class="kw-2">mut</span> <span class="ident">bytes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">InvalidCookie</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_wire_encoding</span>(<span class="kw-2">mut</span> <span class="ident">bytes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">InvalidCookie</span><span class="op">&gt;</span> {
         <span class="comment">// check length early to avoid panic during slicing</span>
         <span class="kw">if</span> <span class="ident">bytes</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="number">8</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidCookie</span>);
@@ -773,7 +773,7 @@
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">id</span>, <span class="ident">namespace</span> })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Namespace</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Namespace</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">namespace</span>.<span class="ident">as_ref</span>()
     }
 }
@@ -790,7 +790,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NewRegistration</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">namespace</span>: <span class="ident">Namespace</span>, <span class="ident">record</span>: <span class="ident">PeerRecord</span>, <span class="ident">ttl</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ttl</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">namespace</span>: <span class="ident">Namespace</span>, <span class="ident">record</span>: <span class="ident">PeerRecord</span>, <span class="ident">ttl</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ttl</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">namespace</span>,
             <span class="ident">record</span>,
@@ -798,7 +798,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">effective_ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ttl</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">effective_ttl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Ttl</span> {
         <span class="self">self</span>.<span class="ident">ttl</span>.<span class="ident">unwrap_or</span>(<span class="ident">DEFAULT_TTL</span>)
     }
 }
@@ -827,7 +827,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">RendezvousCodec</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">length_codec</span> <span class="op">=</span> <span class="ident">UviBytes::default</span>();
         <span class="ident">length_codec</span>.<span class="ident">set_max_len</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>); <span class="comment">// 1MB</span>
 
@@ -839,7 +839,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Message</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="ident"><span class="self">Self</span>::Item</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="ident"><span class="self">Self</span>::Item</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">prost::Message</span>;
 
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">wire::Message::from</span>(<span class="ident">item</span>);
@@ -861,12 +861,12 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Message</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">prost::Message</span>;
 
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">length_codec</span>.<span class="ident">decode</span>(<span class="ident">src</span>)<span class="question-mark">?</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">p</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">p</span>) =&gt; <span class="ident">p</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
         };
 
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">wire::Message::decode</span>(<span class="ident">message</span>)<span class="question-mark">?</span>;
@@ -888,7 +888,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">wire::Message</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">message</span>: <span class="ident">Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">message</span>: <span class="ident">Message</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">wire::message</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="ident">message</span> {
@@ -896,7 +896,7 @@
                 <span class="ident">namespace</span>,
                 <span class="ident">record</span>,
                 <span class="ident">ttl</span>,
-            }) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            }) =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::Register</span>.<span class="ident">into</span>()),
                 <span class="ident">register</span>: <span class="prelude-val">Some</span>(<span class="ident">Register</span> {
                     <span class="ident">ns</span>: <span class="prelude-val">Some</span>(<span class="ident">namespace</span>.<span class="ident">into</span>()),
@@ -910,7 +910,7 @@
                 <span class="ident">discover</span>: <span class="prelude-val">None</span>,
                 <span class="ident">discover_response</span>: <span class="prelude-val">None</span>,
             },
-            <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Ok</span>(<span class="ident">ttl</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Ok</span>(<span class="ident">ttl</span>)) =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::RegisterResponse</span>.<span class="ident">into</span>()),
                 <span class="ident">register_response</span>: <span class="prelude-val">Some</span>(<span class="ident">RegisterResponse</span> {
                     <span class="ident">status</span>: <span class="prelude-val">Some</span>(<span class="ident">ResponseStatus::Ok</span>.<span class="ident">into</span>()),
@@ -922,7 +922,7 @@
                 <span class="ident">unregister</span>: <span class="prelude-val">None</span>,
                 <span class="ident">discover_response</span>: <span class="prelude-val">None</span>,
             },
-            <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)) =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::RegisterResponse</span>.<span class="ident">into</span>()),
                 <span class="ident">register_response</span>: <span class="prelude-val">Some</span>(<span class="ident">RegisterResponse</span> {
                     <span class="ident">status</span>: <span class="prelude-val">Some</span>(<span class="ident">ResponseStatus::from</span>(<span class="ident">error</span>).<span class="ident">into</span>()),
@@ -934,7 +934,7 @@
                 <span class="ident">unregister</span>: <span class="prelude-val">None</span>,
                 <span class="ident">discover_response</span>: <span class="prelude-val">None</span>,
             },
-            <span class="ident">Message::Unregister</span>(<span class="ident">namespace</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            <span class="ident">Message::Unregister</span>(<span class="ident">namespace</span>) =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::Unregister</span>.<span class="ident">into</span>()),
                 <span class="ident">unregister</span>: <span class="prelude-val">Some</span>(<span class="ident">Unregister</span> {
                     <span class="ident">ns</span>: <span class="prelude-val">Some</span>(<span class="ident">namespace</span>.<span class="ident">into</span>()),
@@ -949,7 +949,7 @@
                 <span class="ident">namespace</span>,
                 <span class="ident">cookie</span>,
                 <span class="ident">limit</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            } =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::Discover</span>.<span class="ident">into</span>()),
                 <span class="ident">discover</span>: <span class="prelude-val">Some</span>(<span class="ident">Discover</span> {
                     <span class="ident">ns</span>: <span class="ident">namespace</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ns</span><span class="op">|</span> <span class="ident">ns</span>.<span class="ident">into</span>()),
@@ -961,7 +961,7 @@
                 <span class="ident">unregister</span>: <span class="prelude-val">None</span>,
                 <span class="ident">discover_response</span>: <span class="prelude-val">None</span>,
             },
-            <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Ok</span>((<span class="ident">registrations</span>, <span class="ident">cookie</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Ok</span>((<span class="ident">registrations</span>, <span class="ident">cookie</span>))) =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::DiscoverResponse</span>.<span class="ident">into</span>()),
                 <span class="ident">discover_response</span>: <span class="prelude-val">Some</span>(<span class="ident">DiscoverResponse</span> {
                     <span class="ident">registrations</span>: <span class="ident">registrations</span>
@@ -983,7 +983,7 @@
                 <span class="ident">unregister</span>: <span class="prelude-val">None</span>,
                 <span class="ident">register_response</span>: <span class="prelude-val">None</span>,
             },
-            <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wire::Message</span> {
+            <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)) =&gt; <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="ident">MessageType::DiscoverResponse</span>.<span class="ident">into</span>()),
                 <span class="ident">discover_response</span>: <span class="prelude-val">Some</span>(<span class="ident">DiscoverResponse</span> {
                     <span class="ident">registrations</span>: <span class="ident">Vec::new</span>(),
@@ -1003,7 +1003,7 @@
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">wire::Message</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Message</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ConversionError</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">message</span>: <span class="ident">wire::Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">message</span>: <span class="ident">wire::Message</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">wire::message</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">message</span> {
@@ -1016,7 +1016,7 @@
                         <span class="ident">signed_peer_record</span>: <span class="prelude-val">Some</span>(<span class="ident">signed_peer_record</span>),
                     }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Message::Register</span>(<span class="ident">NewRegistration</span> {
+            } =&gt; <span class="ident">Message::Register</span>(<span class="ident">NewRegistration</span> {
                 <span class="ident">namespace</span>: <span class="ident">ns</span>
                     .<span class="ident">map</span>(<span class="ident">Namespace::new</span>)
                     .<span class="ident">transpose</span>()<span class="question-mark">?</span>
@@ -1035,12 +1035,12 @@
                         ..
                     }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Ok</span>(<span class="ident">ttl</span>.<span class="ident">ok_or</span>(<span class="ident">ConversionError::MissingTtl</span>)<span class="question-mark">?</span>)),
+            } =&gt; <span class="ident">Message::RegisterResponse</span>(<span class="prelude-val">Ok</span>(<span class="ident">ttl</span>.<span class="ident">ok_or</span>(<span class="ident">ConversionError::MissingTtl</span>)<span class="question-mark">?</span>)),
             <span class="ident">wire::Message</span> {
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="number">3</span>),
                 <span class="ident">discover</span>: <span class="prelude-val">Some</span>(<span class="ident">Discover</span> { <span class="ident">ns</span>, <span class="ident">limit</span>, <span class="ident">cookie</span> }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Message::Discover</span> {
+            } =&gt; <span class="ident">Message::Discover</span> {
                 <span class="ident">namespace</span>: <span class="ident">ns</span>.<span class="ident">map</span>(<span class="ident">Namespace::new</span>).<span class="ident">transpose</span>()<span class="question-mark">?</span>,
                 <span class="ident">cookie</span>: <span class="ident">cookie</span>.<span class="ident">map</span>(<span class="ident">Cookie::from_wire_encoding</span>).<span class="ident">transpose</span>()<span class="question-mark">?</span>,
                 <span class="ident">limit</span>,
@@ -1055,7 +1055,7 @@
                         ..
                     }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> {
+            } =&gt; {
                 <span class="kw">let</span> <span class="ident">registrations</span> <span class="op">=</span> <span class="ident">registrations</span>
                     .<span class="ident">into_iter</span>()
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">reggo</span><span class="op">|</span> {
@@ -1088,7 +1088,7 @@
                         ..
                     }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> {
+            } =&gt; {
                 <span class="kw">let</span> <span class="ident">error_code</span> <span class="op">=</span> <span class="ident">wire::message::ResponseStatus::from_i32</span>(<span class="ident">error_code</span>)
                     .<span class="ident">ok_or</span>(<span class="ident">ConversionError::BadStatusCode</span>)<span class="question-mark">?</span>
                     .<span class="ident">try_into</span>()<span class="question-mark">?</span>;
@@ -1098,7 +1098,7 @@
                 <span class="ident">r#type</span>: <span class="prelude-val">Some</span>(<span class="number">2</span>),
                 <span class="ident">unregister</span>: <span class="prelude-val">Some</span>(<span class="ident">Unregister</span> { <span class="ident">ns</span>, .. }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Message::Unregister</span>(
+            } =&gt; <span class="ident">Message::Unregister</span>(
                 <span class="ident">ns</span>.<span class="ident">map</span>(<span class="ident">Namespace::new</span>)
                     .<span class="ident">transpose</span>()<span class="question-mark">?</span>
                     .<span class="ident">ok_or</span>(<span class="ident">ConversionError::MissingNamespace</span>)<span class="question-mark">?</span>,
@@ -1111,13 +1111,13 @@
                         ..
                     }),
                 ..
-            } <span class="op">=</span><span class="op">&gt;</span> {
+            } =&gt; {
                 <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">wire::message::ResponseStatus::from_i32</span>(<span class="ident">error_code</span>)
                     .<span class="ident">ok_or</span>(<span class="ident">ConversionError::BadStatusCode</span>)<span class="question-mark">?</span>
                     .<span class="ident">try_into</span>()<span class="question-mark">?</span>;
                 <span class="ident">Message::DiscoverResponse</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>))
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConversionError::InconsistentWireMessage</span>),
+            <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConversionError::InconsistentWireMessage</span>),
         };
 
         <span class="prelude-val">Ok</span>(<span class="ident">message</span>)
@@ -1151,19 +1151,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ConversionError</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_error_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ErrorCode</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_error_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ErrorCode</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ConversionError::MissingNamespace</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidNamespace</span>,
-            <span class="ident">ConversionError::MissingSignedPeerRecord</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
-            <span class="ident">ConversionError::BadSignedEnvelope</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
-            <span class="ident">ConversionError::BadSignedPeerRecord</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
-            <span class="ident">ConversionError::BadCookie</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidCookie</span>,
-            <span class="ident">ConversionError::MissingTtl</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidTtl</span>,
-            <span class="ident">ConversionError::InconsistentWireMessage</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InternalError</span>,
-            <span class="ident">ConversionError::BadStatusCode</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InternalError</span>,
-            <span class="ident">ConversionError::PoWDifficultyOutOfRange</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InternalError</span>,
-            <span class="ident">ConversionError::BadPoWHash</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InternalError</span>,
-            <span class="ident">ConversionError::InvalidNamespace</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidNamespace</span>,
+            <span class="ident">ConversionError::MissingNamespace</span> =&gt; <span class="ident">ErrorCode::InvalidNamespace</span>,
+            <span class="ident">ConversionError::MissingSignedPeerRecord</span> =&gt; <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
+            <span class="ident">ConversionError::BadSignedEnvelope</span>(<span class="kw">_</span>) =&gt; <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
+            <span class="ident">ConversionError::BadSignedPeerRecord</span>(<span class="kw">_</span>) =&gt; <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
+            <span class="ident">ConversionError::BadCookie</span>(<span class="kw">_</span>) =&gt; <span class="ident">ErrorCode::InvalidCookie</span>,
+            <span class="ident">ConversionError::MissingTtl</span> =&gt; <span class="ident">ErrorCode::InvalidTtl</span>,
+            <span class="ident">ConversionError::InconsistentWireMessage</span> =&gt; <span class="ident">ErrorCode::InternalError</span>,
+            <span class="ident">ConversionError::BadStatusCode</span> =&gt; <span class="ident">ErrorCode::InternalError</span>,
+            <span class="ident">ConversionError::PoWDifficultyOutOfRange</span> =&gt; <span class="ident">ErrorCode::InternalError</span>,
+            <span class="ident">ConversionError::BadPoWHash</span> =&gt; <span class="ident">ErrorCode::InternalError</span>,
+            <span class="ident">ConversionError::InvalidNamespace</span>(<span class="kw">_</span>) =&gt; <span class="ident">ErrorCode::InvalidNamespace</span>,
         }
     }
 }
@@ -1171,18 +1171,18 @@
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">wire::message::ResponseStatus</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ErrorCode</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">UnmappableStatusCode</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">wire::message::ResponseStatus</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">wire::message::ResponseStatus</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">wire::message::ResponseStatus</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">value</span> {
-            <span class="prelude-val">Ok</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">UnmappableStatusCode</span>(<span class="ident">value</span>)),
-            <span class="ident">EInvalidNamespace</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidNamespace</span>,
-            <span class="ident">EInvalidSignedPeerRecord</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
-            <span class="ident">EInvalidTtl</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidTtl</span>,
-            <span class="ident">EInvalidCookie</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InvalidCookie</span>,
-            <span class="ident">ENotAuthorized</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::NotAuthorized</span>,
-            <span class="ident">EInternalError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::InternalError</span>,
-            <span class="ident">EUnavailable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ErrorCode::Unavailable</span>,
+            <span class="prelude-val">Ok</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">UnmappableStatusCode</span>(<span class="ident">value</span>)),
+            <span class="ident">EInvalidNamespace</span> =&gt; <span class="ident">ErrorCode::InvalidNamespace</span>,
+            <span class="ident">EInvalidSignedPeerRecord</span> =&gt; <span class="ident">ErrorCode::InvalidSignedPeerRecord</span>,
+            <span class="ident">EInvalidTtl</span> =&gt; <span class="ident">ErrorCode::InvalidTtl</span>,
+            <span class="ident">EInvalidCookie</span> =&gt; <span class="ident">ErrorCode::InvalidCookie</span>,
+            <span class="ident">ENotAuthorized</span> =&gt; <span class="ident">ErrorCode::NotAuthorized</span>,
+            <span class="ident">EInternalError</span> =&gt; <span class="ident">ErrorCode::InternalError</span>,
+            <span class="ident">EUnavailable</span> =&gt; <span class="ident">ErrorCode::Unavailable</span>,
         };
 
         <span class="ident">Result::Ok</span>(<span class="ident">code</span>)
@@ -1190,23 +1190,23 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ErrorCode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">wire::message::ResponseStatus</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error_code</span>: <span class="ident">ErrorCode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error_code</span>: <span class="ident">ErrorCode</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">wire::message::ResponseStatus</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="ident">error_code</span> {
-            <span class="ident">ErrorCode::InvalidNamespace</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EInvalidNamespace</span>,
-            <span class="ident">ErrorCode::InvalidSignedPeerRecord</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EInvalidSignedPeerRecord</span>,
-            <span class="ident">ErrorCode::InvalidTtl</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EInvalidTtl</span>,
-            <span class="ident">ErrorCode::InvalidCookie</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EInvalidCookie</span>,
-            <span class="ident">ErrorCode::NotAuthorized</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ENotAuthorized</span>,
-            <span class="ident">ErrorCode::InternalError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EInternalError</span>,
-            <span class="ident">ErrorCode::Unavailable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EUnavailable</span>,
+            <span class="ident">ErrorCode::InvalidNamespace</span> =&gt; <span class="ident">EInvalidNamespace</span>,
+            <span class="ident">ErrorCode::InvalidSignedPeerRecord</span> =&gt; <span class="ident">EInvalidSignedPeerRecord</span>,
+            <span class="ident">ErrorCode::InvalidTtl</span> =&gt; <span class="ident">EInvalidTtl</span>,
+            <span class="ident">ErrorCode::InvalidCookie</span> =&gt; <span class="ident">EInvalidCookie</span>,
+            <span class="ident">ErrorCode::NotAuthorized</span> =&gt; <span class="ident">ENotAuthorized</span>,
+            <span class="ident">ErrorCode::InternalError</span> =&gt; <span class="ident">EInternalError</span>,
+            <span class="ident">ErrorCode::Unavailable</span> =&gt; <span class="ident">EUnavailable</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">UnmappableStatusCode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ConversionError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">UnmappableStatusCode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">UnmappableStatusCode</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">ConversionError::InconsistentWireMessage</span>
     }
 }

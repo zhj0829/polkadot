@@ -348,21 +348,21 @@
 {
     <span class="kw">type</span> <span class="ident">Handler</span> <span class="op">=</span> <span class="ident">Either</span><span class="op">&lt;</span><span class="ident">L::Handler</span>, <span class="ident">R::Handler</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_handler</span>(<span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">PeerId</span>, <span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="ident">ConnectedPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Handler</span> {
+    <span class="kw">fn</span> <span class="ident">into_handler</span>(<span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">&amp;</span><span class="ident">PeerId</span>, <span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="ident">ConnectedPoint</span>) -&gt; <span class="ident"><span class="self">Self</span>::Handler</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">IntoEitherHandler::Left</span>(<span class="ident">into_handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Either::Left</span>(<span class="ident">into_handler</span>.<span class="ident">into_handler</span>(<span class="ident">p</span>, <span class="ident">c</span>)),
-            <span class="ident">IntoEitherHandler::Right</span>(<span class="ident">into_handler</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">IntoEitherHandler::Left</span>(<span class="ident">into_handler</span>) =&gt; <span class="ident">Either::Left</span>(<span class="ident">into_handler</span>.<span class="ident">into_handler</span>(<span class="ident">p</span>, <span class="ident">c</span>)),
+            <span class="ident">IntoEitherHandler::Right</span>(<span class="ident">into_handler</span>) =&gt; {
                 <span class="ident">Either::Right</span>(<span class="ident">into_handler</span>.<span class="ident">into_handler</span>(<span class="ident">p</span>, <span class="ident">c</span>))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">inbound_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Handler</span> <span class="kw">as</span> <span class="ident">ProtocolsHandler</span><span class="op">&gt;</span><span class="ident">::InboundProtocol</span> {
+    <span class="kw">fn</span> <span class="ident">inbound_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Handler</span> <span class="kw">as</span> <span class="ident">ProtocolsHandler</span><span class="op">&gt;</span><span class="ident">::InboundProtocol</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">IntoEitherHandler::Left</span>(<span class="ident">into_handler</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">IntoEitherHandler::Left</span>(<span class="ident">into_handler</span>) =&gt; {
                 <span class="ident">EitherUpgrade::A</span>(<span class="ident">SendWrapper</span>(<span class="ident">into_handler</span>.<span class="ident">inbound_protocol</span>()))
             }
-            <span class="ident">IntoEitherHandler::Right</span>(<span class="ident">into_handler</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">IntoEitherHandler::Right</span>(<span class="ident">into_handler</span>) =&gt; {
                 <span class="ident">EitherUpgrade::B</span>(<span class="ident">SendWrapper</span>(<span class="ident">into_handler</span>.<span class="ident">inbound_protocol</span>()))
             }
         }
@@ -386,13 +386,13 @@
     <span class="kw">type</span> <span class="ident">InboundOpenInfo</span> <span class="op">=</span> <span class="ident">Either</span><span class="op">&lt;</span><span class="ident">L::InboundOpenInfo</span>, <span class="ident">R::InboundOpenInfo</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">OutboundOpenInfo</span> <span class="op">=</span> <span class="ident">Either</span><span class="op">&lt;</span><span class="ident">L::OutboundOpenInfo</span>, <span class="ident">R::OutboundOpenInfo</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">listen_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::InboundProtocol</span>, <span class="ident"><span class="self">Self</span>::InboundOpenInfo</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">listen_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::InboundProtocol</span>, <span class="ident"><span class="self">Self</span>::InboundOpenInfo</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Either::Left</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">a</span>
+            <span class="ident">Either::Left</span>(<span class="ident">a</span>) =&gt; <span class="ident">a</span>
                 .<span class="ident">listen_protocol</span>()
                 .<span class="ident">map_upgrade</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">EitherUpgrade::A</span>(<span class="ident">SendWrapper</span>(<span class="ident">u</span>)))
                 .<span class="ident">map_info</span>(<span class="ident">Either::Left</span>),
-            <span class="ident">Either::Right</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>
+            <span class="ident">Either::Right</span>(<span class="ident">b</span>) =&gt; <span class="ident">b</span>
                 .<span class="ident">listen_protocol</span>()
                 .<span class="ident">map_upgrade</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">EitherUpgrade::B</span>(<span class="ident">SendWrapper</span>(<span class="ident">u</span>)))
                 .<span class="ident">map_info</span>(<span class="ident">Either::Right</span>),
@@ -405,13 +405,13 @@
         <span class="ident">info</span>: <span class="ident"><span class="self">Self</span>::OutboundOpenInfo</span>,
     ) {
         <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">output</span>, <span class="ident">info</span>) {
-            (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::First</span>(<span class="ident">output</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::First</span>(<span class="ident">output</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                 <span class="ident">handler</span>.<span class="ident">inject_fully_negotiated_outbound</span>(<span class="ident">output</span>, <span class="ident">info</span>)
             }
-            (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::Second</span>(<span class="ident">output</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::Second</span>(<span class="ident">output</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                 <span class="ident">handler</span>.<span class="ident">inject_fully_negotiated_outbound</span>(<span class="ident">output</span>, <span class="ident">info</span>)
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 
@@ -421,28 +421,28 @@
         <span class="ident">info</span>: <span class="ident"><span class="self">Self</span>::InboundOpenInfo</span>,
     ) {
         <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">output</span>, <span class="ident">info</span>) {
-            (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::First</span>(<span class="ident">output</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::First</span>(<span class="ident">output</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                 <span class="ident">handler</span>.<span class="ident">inject_fully_negotiated_inbound</span>(<span class="ident">output</span>, <span class="ident">info</span>)
             }
-            (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::Second</span>(<span class="ident">output</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">EitherOutput::Second</span>(<span class="ident">output</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                 <span class="ident">handler</span>.<span class="ident">inject_fully_negotiated_inbound</span>(<span class="ident">output</span>, <span class="ident">info</span>)
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 
     <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) {
         <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">event</span>) {
-            (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">event</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>.<span class="ident">inject_event</span>(<span class="ident">event</span>),
-            (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">event</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>.<span class="ident">inject_event</span>(<span class="ident">event</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">event</span>)) =&gt; <span class="ident">handler</span>.<span class="ident">inject_event</span>(<span class="ident">event</span>),
+            (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">event</span>)) =&gt; <span class="ident">handler</span>.<span class="ident">inject_event</span>(<span class="ident">event</span>),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 
     <span class="kw">fn</span> <span class="ident">inject_address_change</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">Multiaddr</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Either::Left</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>.<span class="ident">inject_address_change</span>(<span class="ident">addr</span>),
-            <span class="ident">Either::Right</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>.<span class="ident">inject_address_change</span>(<span class="ident">addr</span>),
+            <span class="ident">Either::Left</span>(<span class="ident">handler</span>) =&gt; <span class="ident">handler</span>.<span class="ident">inject_address_change</span>(<span class="ident">addr</span>),
+            <span class="ident">Either::Right</span>(<span class="ident">handler</span>) =&gt; <span class="ident">handler</span>.<span class="ident">inject_address_change</span>(<span class="ident">addr</span>),
         }
     }
 
@@ -452,59 +452,59 @@
         <span class="ident">error</span>: <span class="ident">ProtocolsHandlerUpgrErr</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::OutboundProtocol</span> <span class="kw">as</span> <span class="ident">OutboundUpgradeSend</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span>,
     ) {
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">ProtocolsHandlerUpgrErr::Timer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Timer</span> =&gt; <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
+                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timer</span>);
                 }
-                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timer</span>);
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span> =&gt; <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
+                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span>);
                 }
-                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span>);
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)) =&gt; <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
+                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(
                         <span class="ident">info</span>,
                         <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)),
                     );
                 }
-                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(
                         <span class="ident">info</span>,
                         <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)),
                     );
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::A</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::A</span>(<span class="ident">e</span>))) =&gt; {
                 <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                    (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                         <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(
                             <span class="ident">info</span>,
                             <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">e</span>)),
                         );
                     }
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                    <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
                 }
             }
-            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::B</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::B</span>(<span class="ident">e</span>))) =&gt; {
                 <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                    (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                         <span class="ident">handler</span>.<span class="ident">inject_dial_upgrade_error</span>(
                             <span class="ident">info</span>,
                             <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">e</span>)),
                         );
                     }
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                    <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
                 }
             }
         }
@@ -516,75 +516,75 @@
         <span class="ident">error</span>: <span class="ident">ProtocolsHandlerUpgrErr</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::InboundProtocol</span> <span class="kw">as</span> <span class="ident">InboundUpgradeSend</span><span class="op">&gt;</span><span class="ident">::Error</span><span class="op">&gt;</span>,
     ) {
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">ProtocolsHandlerUpgrErr::Timer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Timer</span> =&gt; <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
+                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timer</span>);
                 }
-                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timer</span>);
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span> =&gt; <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
+                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span>);
                 }
-                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(<span class="ident">info</span>, <span class="ident">ProtocolsHandlerUpgrErr::Timeout</span>);
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)) =&gt; <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
+                (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(
                         <span class="ident">info</span>,
                         <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)),
                     );
                 }
-                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                     <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(
                         <span class="ident">info</span>,
                         <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Select</span>(<span class="ident">error</span>)),
                     );
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             },
-            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::A</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::A</span>(<span class="ident">e</span>))) =&gt; {
                 <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                    (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">Either::Left</span>(<span class="ident">handler</span>), <span class="ident">Either::Left</span>(<span class="ident">info</span>)) =&gt; {
                         <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(
                             <span class="ident">info</span>,
                             <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">e</span>)),
                         );
                     }
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                    <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
                 }
             }
-            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::B</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">EitherError::B</span>(<span class="ident">e</span>))) =&gt; {
                 <span class="kw">match</span> (<span class="self">self</span>, <span class="ident">info</span>) {
-                    (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">Either::Right</span>(<span class="ident">handler</span>), <span class="ident">Either::Right</span>(<span class="ident">info</span>)) =&gt; {
                         <span class="ident">handler</span>.<span class="ident">inject_listen_upgrade_error</span>(
                             <span class="ident">info</span>,
                             <span class="ident">ProtocolsHandlerUpgrErr::Upgrade</span>(<span class="ident">UpgradeError::Apply</span>(<span class="ident">e</span>)),
                         );
                     }
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                    <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
                 }
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connection_keep_alive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">KeepAlive</span> {
+    <span class="kw">fn</span> <span class="ident">connection_keep_alive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">KeepAlive</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Either::Left</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>.<span class="ident">connection_keep_alive</span>(),
-            <span class="ident">Either::Right</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>.<span class="ident">connection_keep_alive</span>(),
+            <span class="ident">Either::Left</span>(<span class="ident">handler</span>) =&gt; <span class="ident">handler</span>.<span class="ident">connection_keep_alive</span>(),
+            <span class="ident">Either::Right</span>(<span class="ident">handler</span>) =&gt; <span class="ident">handler</span>.<span class="ident">connection_keep_alive</span>(),
         }
     }
 
     <span class="kw">fn</span> <span class="ident">poll</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span>
+    ) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span>
         <span class="ident">ProtocolsHandlerEvent</span><span class="op">&lt;</span>
             <span class="ident"><span class="self">Self</span>::OutboundProtocol</span>,
             <span class="ident"><span class="self">Self</span>::OutboundOpenInfo</span>,
@@ -593,12 +593,12 @@
         <span class="op">&gt;</span>,
     <span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Either::Left</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">futures::ready!</span>(<span class="ident">handler</span>.<span class="ident">poll</span>(<span class="ident">cx</span>))
+            <span class="ident">Either::Left</span>(<span class="ident">handler</span>) =&gt; <span class="macro">futures::ready!</span>(<span class="ident">handler</span>.<span class="ident">poll</span>(<span class="ident">cx</span>))
                 .<span class="ident">map_custom</span>(<span class="ident">Either::Left</span>)
                 .<span class="ident">map_close</span>(<span class="ident">Either::Left</span>)
                 .<span class="ident">map_protocol</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">EitherUpgrade::A</span>(<span class="ident">SendWrapper</span>(<span class="ident">p</span>)))
                 .<span class="ident">map_outbound_open_info</span>(<span class="ident">Either::Left</span>),
-            <span class="ident">Either::Right</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">futures::ready!</span>(<span class="ident">handler</span>.<span class="ident">poll</span>(<span class="ident">cx</span>))
+            <span class="ident">Either::Right</span>(<span class="ident">handler</span>) =&gt; <span class="macro">futures::ready!</span>(<span class="ident">handler</span>.<span class="ident">poll</span>(<span class="ident">cx</span>))
                 .<span class="ident">map_custom</span>(<span class="ident">Either::Right</span>)
                 .<span class="ident">map_close</span>(<span class="ident">Either::Right</span>)
                 .<span class="ident">map_protocol</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">EitherUpgrade::B</span>(<span class="ident">SendWrapper</span>(<span class="ident">p</span>)))

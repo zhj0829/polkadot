@@ -1226,10 +1226,10 @@
 
 <span class="comment">// Start &lt; End.</span>
 <span class="kw">impl</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="ident">BlockPos</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BlockPos::Start</span> <span class="op">&amp;&amp;</span> <span class="kw-2">*</span><span class="ident">other</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BlockPos::End</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="ident">BlockPos::Start</span> <span class="op">&amp;&amp;</span> <span class="kw-2">*</span><span class="ident">other</span> <span class="op">==</span> <span class="ident">BlockPos::End</span> {
             <span class="ident">Ordering::Less</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BlockPos::End</span> <span class="op">&amp;&amp;</span> <span class="kw-2">*</span><span class="ident">other</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BlockPos::Start</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="ident">BlockPos::End</span> <span class="op">&amp;&amp;</span> <span class="kw-2">*</span><span class="ident">other</span> <span class="op">==</span> <span class="ident">BlockPos::Start</span> {
             <span class="ident">Ordering::Greater</span>
         } <span class="kw">else</span> {
             <span class="ident">Ordering::Equal</span>
@@ -1253,7 +1253,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">RangeFrag</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">safepoint_str</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">safepoints</span>.<span class="ident">is_empty</span>() {
             <span class="macro">format!</span>(
                 <span class="string">&quot;; safepoints: {}&quot;</span>,
@@ -1279,7 +1279,7 @@
         <span class="ident">mentions</span>: <span class="ident">MentionMap</span>,
         <span class="ident">ref_typed</span>: <span class="ident">bool</span>,
         <span class="ident">safepoints</span>: <span class="ident">Safepoints</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>, <span class="ident">RangeFragMetrics</span>) {
+    ) -&gt; (<span class="self">Self</span>, <span class="ident">RangeFragMetrics</span>) {
         <span class="macro">debug_assert!</span>(<span class="ident">func</span>.<span class="ident">block_insns</span>(<span class="ident">bix</span>).<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">func</span>.<span class="ident">block_insns</span>(<span class="ident">bix</span>).<span class="ident">contains</span>(<span class="ident">first</span>.<span class="ident">iix</span>()));
         <span class="macro">debug_assert!</span>(<span class="ident">func</span>.<span class="ident">block_insns</span>(<span class="ident">bix</span>).<span class="ident">contains</span>(<span class="ident">last</span>.<span class="ident">iix</span>()));
@@ -1287,11 +1287,11 @@
 
         <span class="kw">let</span> <span class="ident">first_in_block</span> <span class="op">=</span> <span class="ident">InstPoint::new_use</span>(<span class="ident">func</span>.<span class="ident">block_insns</span>(<span class="ident">bix</span>).<span class="ident">first</span>());
         <span class="kw">let</span> <span class="ident">last_in_block</span> <span class="op">=</span> <span class="ident">InstPoint::new_def</span>(<span class="ident">func</span>.<span class="ident">block_insns</span>(<span class="ident">bix</span>).<span class="ident">last</span>());
-        <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">first</span> <span class="op">=</span><span class="op">=</span> <span class="ident">first_in_block</span>, <span class="ident">last</span> <span class="op">=</span><span class="op">=</span> <span class="ident">last_in_block</span>) {
-            (<span class="bool-val">false</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RangeFragKind::Local</span>,
-            (<span class="bool-val">false</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RangeFragKind::LiveOut</span>,
-            (<span class="bool-val">true</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RangeFragKind::LiveIn</span>,
-            (<span class="bool-val">true</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RangeFragKind::Thru</span>,
+        <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">first</span> <span class="op">==</span> <span class="ident">first_in_block</span>, <span class="ident">last</span> <span class="op">==</span> <span class="ident">last_in_block</span>) {
+            (<span class="bool-val">false</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">RangeFragKind::Local</span>,
+            (<span class="bool-val">false</span>, <span class="bool-val">true</span>) =&gt; <span class="ident">RangeFragKind::LiveOut</span>,
+            (<span class="bool-val">true</span>, <span class="bool-val">false</span>) =&gt; <span class="ident">RangeFragKind::LiveIn</span>,
+            (<span class="bool-val">true</span>, <span class="bool-val">true</span>) =&gt; <span class="ident">RangeFragKind::Thru</span>,
         };
 
         (
@@ -1307,7 +1307,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">inst</span>: <span class="kw-2">&amp;</span><span class="ident">InstPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">inst</span>: <span class="kw-2">&amp;</span><span class="ident">InstPoint</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">first</span> <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">inst</span> <span class="op">&amp;&amp;</span> <span class="kw-2">*</span><span class="ident">inst</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">last</span>
     }
 }
@@ -1337,7 +1337,7 @@
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">F</span>,
     <span class="ident">reg_universe</span>: <span class="kw-2">&amp;</span><span class="ident">RealRegUniverse</span>,
     <span class="ident">stackmap_request</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">StackmapRequestInfo</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AnalysisInfo</span>, <span class="ident">AnalysisError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AnalysisInfo</span>, <span class="ident">AnalysisError</span><span class="op">&gt;</span> {
     <span class="macro">trace!</span>(
         <span class="string">&quot;run_analysis: begin: {} blocks, {} insns&quot;</span>,
         <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>(),
@@ -1363,8 +1363,8 @@
     <span class="comment">// Calculate block-local def/use sets.</span>
     <span class="kw">let</span> (<span class="ident">def_sets_per_block</span>, <span class="ident">use_sets_per_block</span>) <span class="op">=</span>
         <span class="ident">calc_def_and_use</span>(<span class="ident">func</span>, <span class="kw-2">&amp;</span><span class="ident">reg_vecs_and_bounds</span>, <span class="kw-2">&amp;</span><span class="ident">reg_universe</span>);
-    <span class="macro">debug_assert!</span>(<span class="ident">def_sets_per_block</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
-    <span class="macro">debug_assert!</span>(<span class="ident">use_sets_per_block</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">def_sets_per_block</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">use_sets_per_block</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
 
     <span class="comment">// Calculate live-in and live-out sets per block, using the traditional</span>
     <span class="comment">// iterate-to-a-fixed-point scheme.</span>
@@ -1377,8 +1377,8 @@
         <span class="kw-2">&amp;</span><span class="ident">cfg_info</span>,
         <span class="kw-2">&amp;</span><span class="ident">reg_universe</span>,
     );
-    <span class="macro">debug_assert!</span>(<span class="ident">livein_sets_per_block</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
-    <span class="macro">debug_assert!</span>(<span class="ident">liveout_sets_per_block</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">livein_sets_per_block</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">liveout_sets_per_block</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
 
     <span class="comment">// Verify livein set of entry block against liveins specified by function (e.g., ABI params).</span>
     <span class="kw">let</span> <span class="ident">func_liveins</span> <span class="op">=</span> <span class="ident">SparseSet::from_vec</span>(
@@ -1506,7 +1506,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ReftypeAnalysis</span> <span class="kw">for</span> <span class="ident">LsraReftypeAnalysis</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">RangeId</span> <span class="op">=</span> <span class="ident">RangeId</span>;
 
-    <span class="kw">fn</span> <span class="ident">find_range_id_for_reg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pt</span>: <span class="ident">InstPoint</span>, <span class="ident">reg</span>: <span class="ident">Reg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::RangeId</span> {
+    <span class="kw">fn</span> <span class="ident">find_range_id_for_reg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pt</span>: <span class="ident">InstPoint</span>, <span class="ident">reg</span>: <span class="ident">Reg</span>) -&gt; <span class="ident"><span class="self">Self</span>::RangeId</span> {
         <span class="kw">if</span> <span class="ident">reg</span>.<span class="ident">is_real</span>() {
             <span class="kw">let</span> <span class="ident">frag_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">fixed_intervals</span>[<span class="ident">reg</span>.<span class="ident">get_index</span>()].<span class="ident">find_frag</span>(<span class="ident">pt</span>);
             <span class="kw">return</span> <span class="ident">RangeId::Fixed</span>(<span class="ident">reg</span>.<span class="ident">to_real_reg</span>(), <span class="ident">frag_index</span>);
@@ -1550,7 +1550,7 @@
 
     <span class="kw">fn</span> <span class="ident">mark_reffy</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::RangeId</span>) {
         <span class="kw">match</span> <span class="ident">range</span> {
-            <span class="ident">RangeId::Fixed</span>(<span class="ident">rreg</span>, <span class="ident">frag_ix</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RangeId::Fixed</span>(<span class="ident">rreg</span>, <span class="ident">frag_ix</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">frag</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">fixed_intervals</span>[<span class="ident">rreg</span>.<span class="ident">get_index</span>() <span class="kw">as</span> <span class="ident">usize</span>].<span class="ident">frags</span>[<span class="kw-2">*</span><span class="ident">frag_ix</span>];
                 <span class="macro">trace!</span>(
                     <span class="string">&quot;Fragment {} of interval for {:?} is reftyped.&quot;</span>,
@@ -1559,7 +1559,7 @@
                 );
                 <span class="ident">frag</span>.<span class="ident">ref_typed</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
-            <span class="ident">RangeId::Virtual</span>(<span class="ident">int_id</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RangeId::Virtual</span>(<span class="ident">int_id</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">int</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">virtual_intervals</span>[<span class="kw-2">*</span><span class="ident">int_id</span>];
                 <span class="ident">int</span>.<span class="ident">ref_typed</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="macro">trace!</span>(<span class="string">&quot;Virtual interval {:?} is reftyped&quot;</span>, <span class="ident">int</span>.<span class="ident">id</span>);
@@ -1705,7 +1705,7 @@
 
             <span class="comment">// This first loop iterates over all the uses for the first time, so there shouldn&#39;t be</span>
             <span class="comment">// any duplicates.</span>
-            <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">prev_frag</span>.<span class="ident">mentions</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">tuple</span><span class="op">|</span> <span class="ident">tuple</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">inst_ix</span>));
+            <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">prev_frag</span>.<span class="ident">mentions</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">tuple</span><span class="op">|</span> <span class="ident">tuple</span>.<span class="number">0</span> <span class="op">==</span> <span class="ident">inst_ix</span>));
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mention_set</span> <span class="op">=</span> <span class="ident">Mention::new</span>();
             <span class="ident">mention_set</span>.<span class="ident">add_use</span>();
             <span class="ident">prev_frag</span>.<span class="ident">mentions</span>.<span class="ident">push</span>((<span class="ident">inst_ix</span>, <span class="ident">mention_set</span>));
@@ -1747,7 +1747,7 @@
             <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">state</span>[<span class="ident">reg_state_ix</span>] {
                 <span class="comment">// First mention of a Reg we&#39;ve never heard of before.</span>
                 <span class="comment">// Start a new RangeFrag for it and keep going.</span>
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">None</span> =&gt; {
                     <span class="kw">let</span> <span class="ident">new_pt</span> <span class="op">=</span> <span class="ident">InstPoint::new_def</span>(<span class="ident">inst_ix</span>);
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mention_set</span> <span class="op">=</span> <span class="ident">Mention::new</span>();
                     <span class="ident">mention_set</span>.<span class="ident">add_def</span>();
@@ -1768,7 +1768,7 @@
                     <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">mentions</span>,
                     <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ref_typed</span>,
                     <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">safepoints</span>,
-                }) <span class="op">=</span><span class="op">&gt;</span> {
+                }) =&gt; {
                     <span class="comment">// Steal the mentions and replace the mutable ref by an empty vector for reuse.</span>
                     <span class="kw">let</span> <span class="ident">stolen_mentions</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="ident">mentions</span>, <span class="ident">MentionMap::new</span>());
                     <span class="kw">let</span> <span class="ident">stolen_safepoints</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="ident">safepoints</span>, <span class="ident">Default::default</span>());
@@ -1847,15 +1847,15 @@
     <span class="ident">rvb</span>: <span class="kw-2">&amp;</span><span class="ident">RegVecsAndBounds</span>,
     <span class="ident">liveins</span>: <span class="kw-2">&amp;</span><span class="ident">TypedIxVec</span><span class="op">&lt;</span><span class="ident">BlockIx</span>, <span class="ident">SparseSet</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">liveouts</span>: <span class="kw-2">&amp;</span><span class="ident">TypedIxVec</span><span class="op">&lt;</span><span class="ident">BlockIx</span>, <span class="ident">SparseSet</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (
+) -&gt; (
     <span class="ident">Vec</span><span class="op">&lt;</span><span class="comment">/*rreg index, then vreg index, */</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">RangeFragIx</span>; <span class="number">8</span>]<span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RangeFrag</span><span class="op">&gt;</span>,
     <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RangeFragMetrics</span><span class="op">&gt;</span>,
     <span class="ident">Vec</span><span class="op">&lt;</span><span class="comment">/*vreg index,*/</span> <span class="ident">RegClass</span><span class="op">&gt;</span>,
 ) {
     <span class="macro">trace!</span>(<span class="string">&quot;    get_range_frags: begin&quot;</span>);
-    <span class="macro">debug_assert!</span>(<span class="ident">liveins</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
-    <span class="macro">debug_assert!</span>(<span class="ident">liveouts</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">liveins</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+    <span class="macro">debug_assert!</span>(<span class="ident">liveouts</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
     <span class="macro">debug_assert!</span>(<span class="ident">rvb</span>.<span class="ident">is_sanitized</span>());
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vreg_classes</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">RegClass::INVALID</span>; <span class="ident">func</span>.<span class="ident">get_num_vregs</span>()];
@@ -1871,7 +1871,7 @@
         }
         <span class="kw">let</span> <span class="ident">r_ix</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_index</span>();
         <span class="kw">let</span> <span class="ident">vreg_classes_ptr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">vreg_classes</span>[<span class="ident">r_ix</span>];
-        <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">vreg_classes_ptr</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::INVALID</span> {
+        <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">vreg_classes_ptr</span> <span class="op">==</span> <span class="ident">RegClass::INVALID</span> {
             <span class="kw-2">*</span><span class="ident">vreg_classes_ptr</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_class</span>();
         } <span class="kw">else</span> {
             <span class="macro">debug_assert_eq!</span>(<span class="kw-2">*</span><span class="ident">vreg_classes_ptr</span>, <span class="ident">r</span>.<span class="ident">get_class</span>());
@@ -1907,9 +1907,9 @@
         );
     }
 
-    <span class="macro">assert!</span>(<span class="ident">tmp_state</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">num_regs</span>);
-    <span class="macro">assert!</span>(<span class="ident">result_map</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">num_regs</span>);
-    <span class="macro">assert!</span>(<span class="ident">vreg_classes</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">num_virtual_regs</span>);
+    <span class="macro">assert!</span>(<span class="ident">tmp_state</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">num_regs</span>);
+    <span class="macro">assert!</span>(<span class="ident">result_map</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">num_regs</span>);
+    <span class="macro">assert!</span>(<span class="ident">vreg_classes</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">num_virtual_regs</span>);
     <span class="comment">// This is pretty cheap (once per fn) and any failure will be catastrophic since it means we</span>
     <span class="comment">// may have forgotten some live range fragments.  Hence `assert!` and not `debug_assert!`.</span>
     <span class="kw">for</span> <span class="ident">state_elem</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">tmp_state</span> {
@@ -1926,7 +1926,7 @@
 
         <span class="macro">trace!</span>(<span class="string">&quot;&quot;</span>);
         <span class="kw">for</span> (<span class="ident">reg_ix</span>, <span class="ident">frag_ixs</span>) <span class="kw">in</span> <span class="ident">result_map</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="kw">if</span> <span class="ident">frag_ixs</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">frag_ixs</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span> {
                 <span class="kw">continue</span>;
             }
             <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">reg_ix_to_reg</span>(<span class="ident">reg_universe</span>, <span class="kw-2">&amp;</span><span class="ident">vreg_classes</span>, <span class="ident">reg_ix</span> <span class="kw">as</span> <span class="ident">u32</span>);
@@ -1939,7 +1939,7 @@
     }
 
     <span class="macro">trace!</span>(<span class="string">&quot;    get_range_frags: end&quot;</span>);
-    <span class="macro">assert!</span>(<span class="ident">result_frags</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">result_frag_metrics</span>.<span class="ident">len</span>());
+    <span class="macro">assert!</span>(<span class="ident">result_frags</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">result_frag_metrics</span>.<span class="ident">len</span>());
 
     (<span class="ident">result_map</span>, <span class="ident">result_frags</span>, <span class="ident">result_frag_metrics</span>, <span class="ident">vreg_classes</span>)
 }
@@ -1962,7 +1962,7 @@
     <span class="ident">cfg_info</span>: <span class="kw-2">&amp;</span><span class="ident">CFGInfo</span>,
     <span class="ident">vreg_classes</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="comment">/*vreg index,*/</span> <span class="ident">RegClass</span><span class="op">&gt;</span>,
     <span class="ident">wants_stackmaps</span>: <span class="ident">bool</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FixedInterval</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">VirtualInterval</span><span class="op">&gt;</span>, <span class="ident">VirtualRegToRanges</span>), <span class="ident">AnalysisError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FixedInterval</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">VirtualInterval</span><span class="op">&gt;</span>, <span class="ident">VirtualRegToRanges</span>), <span class="ident">AnalysisError</span><span class="op">&gt;</span> {
     <span class="macro">trace!</span>(<span class="string">&quot;    merge_range_frags: begin&quot;</span>);
     <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Trace</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stats_num_total_incoming_frags</span> <span class="op">=</span> <span class="number">0</span>;
@@ -1977,7 +1977,7 @@
         );
     }
 
-    <span class="macro">debug_assert!</span>(<span class="ident">frag_env</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">frag_metrics_env</span>.<span class="ident">len</span>());
+    <span class="macro">debug_assert!</span>(<span class="ident">frag_env</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">frag_metrics_env</span>.<span class="ident">len</span>());
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vreg_to_vranges</span>: <span class="ident">VirtualRegToRanges</span> <span class="op">=</span> <span class="macro">vec!</span>[
         <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">SimplifiedVirtualRange</span>; <span class="number">4</span>]<span class="op">&gt;</span><span class="ident">::new</span>(
@@ -2009,13 +2009,13 @@
         <span class="kw">let</span> <span class="ident">num_reg_frags</span> <span class="op">=</span> <span class="ident">all_frag_ixs_for_reg</span>.<span class="ident">len</span>();
 
         <span class="comment">// The reg might never have been mentioned at all, especially if it&#39;s a real reg.</span>
-        <span class="kw">if</span> <span class="ident">num_reg_frags</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">num_reg_frags</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">continue</span>;
         }
 
         <span class="comment">// Do some shortcutting.  First off, if there&#39;s only one frag for this reg, we can directly</span>
         <span class="comment">// give it its own live range, and have done.</span>
-        <span class="kw">if</span> <span class="ident">num_reg_frags</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">num_reg_frags</span> <span class="op">==</span> <span class="number">1</span> {
             <span class="ident">flush_interval</span>(
                 <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result_fixed</span>,
                 <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result_virtual</span>,
@@ -2038,7 +2038,7 @@
         <span class="kw">for</span> <span class="ident">fix</span> <span class="kw">in</span> <span class="ident">all_frag_ixs_for_reg</span> {
             <span class="kw">let</span> <span class="ident">frag_metrics</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">frag_metrics_env</span>[<span class="ident">fix</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">usize</span>];
 
-            <span class="kw">if</span> <span class="ident">frag_metrics</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::Local</span> {
+            <span class="kw">if</span> <span class="ident">frag_metrics</span>.<span class="ident">kind</span> <span class="op">==</span> <span class="ident">RangeFragKind::Local</span> {
                 <span class="comment">// This frag is Local (standalone).  Give it its own Range and move on.  This is an</span>
                 <span class="comment">// optimisation, but it&#39;s also necessary: the main fragment-merging logic below</span>
                 <span class="comment">// relies on the fact that the fragments it is presented with are all either</span>
@@ -2100,15 +2100,15 @@
             <span class="comment">// The simple way, which is N^2 in the length of `triples`.</span>
             <span class="kw">for</span> (<span class="ident">ix</span>, (<span class="ident">_fix</span>, <span class="ident">kind</span>, <span class="ident">bix</span>)) <span class="kw">in</span> <span class="ident">triples</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
                 <span class="comment">// Deal with liveness flows outbound from `fix`. Meaning, (1) above.</span>
-                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::LiveOut</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::Thru</span> {
+                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">==</span> <span class="ident">RangeFragKind::LiveOut</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">==</span> <span class="ident">RangeFragKind::Thru</span> {
                     <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="ident">cfg_info</span>.<span class="ident">succ_map</span>[<span class="kw-2">*</span><span class="ident">bix</span>].<span class="ident">iter</span>() {
                         <span class="comment">// Visit all entries in `triples` that are for `b`.</span>
                         <span class="kw">for</span> (<span class="ident">ix2</span>, (<span class="ident">_fix2</span>, <span class="ident">kind2</span>, <span class="ident">bix2</span>)) <span class="kw">in</span> <span class="ident">triples</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-                            <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">bix2</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind2</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::LiveOut</span> {
+                            <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">bix2</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind2</span> <span class="op">==</span> <span class="ident">RangeFragKind::LiveOut</span> {
                                 <span class="kw">continue</span>;
                             }
                             <span class="macro">debug_assert!</span>(
-                                <span class="kw-2">*</span><span class="ident">kind2</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::LiveIn</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind2</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::Thru</span>
+                                <span class="kw-2">*</span><span class="ident">kind2</span> <span class="op">==</span> <span class="ident">RangeFragKind::LiveIn</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind2</span> <span class="op">==</span> <span class="ident">RangeFragKind::Thru</span>
                             );
                             <span class="comment">// Now we know that liveness for this reg &quot;flows&quot; from `triples[ix]` to</span>
                             <span class="comment">// `triples[ix2]`.  So those two frags must be part of the same live</span>
@@ -2129,7 +2129,7 @@
 
             <span class="kw">for</span> (<span class="ident">ix</span>, (<span class="ident">_fix</span>, <span class="ident">kind</span>, <span class="ident">bix</span>)) <span class="kw">in</span> <span class="ident">triples</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
                 <span class="comment">// Deal with liveness flows outbound from `fix`.  Meaning, (1) above.</span>
-                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::LiveOut</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::Thru</span> {
+                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">==</span> <span class="ident">RangeFragKind::LiveOut</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">kind</span> <span class="op">==</span> <span class="ident">RangeFragKind::Thru</span> {
                     <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="ident">cfg_info</span>.<span class="ident">succ_map</span>[<span class="kw-2">*</span><span class="ident">bix</span>].<span class="ident">iter</span>() {
                         <span class="comment">// Visit all entries in `triples` that are for `b`.  Binary search</span>
                         <span class="comment">// `triples` to find the lowest-indexed entry for `b`.</span>
@@ -2163,7 +2163,7 @@
                             <span class="ident">ix_left</span> <span class="op">=</span> <span class="ident">triples_len</span>;
                         }
                         <span class="kw">if</span> <span class="ident">ix_left</span> <span class="op">&lt;</span> <span class="ident">triples_len</span> {
-                            <span class="macro">assert!</span>(<span class="ident">ix_left</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">triples</span>[<span class="ident">ix_left</span> <span class="op">-</span> <span class="number">1</span>].<span class="number">2</span> <span class="op">&lt;</span> <span class="kw-2">*</span><span class="ident">b</span>);
+                            <span class="macro">assert!</span>(<span class="ident">ix_left</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">triples</span>[<span class="ident">ix_left</span> <span class="op">-</span> <span class="number">1</span>].<span class="number">2</span> <span class="op">&lt;</span> <span class="kw-2">*</span><span class="ident">b</span>);
                         }
 
                         <span class="comment">// ix2 plays the same role as in the quadratic version.  ix_left and</span>
@@ -2171,15 +2171,15 @@
                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ix2</span> <span class="op">=</span> <span class="ident">ix_left</span>;
                         <span class="kw">loop</span> {
                             <span class="kw">let</span> (<span class="ident">_fix2</span>, <span class="ident">kind2</span>, <span class="ident">bix2</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">triples</span>.<span class="ident">get</span>(<span class="ident">ix2</span>) {
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
-                                <span class="prelude-val">Some</span>(<span class="ident">triple</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">triple</span>,
+                                <span class="prelude-val">None</span> =&gt; <span class="kw">break</span>,
+                                <span class="prelude-val">Some</span>(<span class="ident">triple</span>) =&gt; <span class="kw-2">*</span><span class="ident">triple</span>,
                             };
                             <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">&lt;</span> <span class="ident">bix2</span> {
                                 <span class="comment">// We&#39;ve come to the end of the sequence of `b`-blocks.</span>
                                 <span class="kw">break</span>;
                             }
-                            <span class="macro">debug_assert!</span>(<span class="kw-2">*</span><span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bix2</span>);
-                            <span class="kw">if</span> <span class="ident">kind2</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RangeFragKind::LiveOut</span> {
+                            <span class="macro">debug_assert!</span>(<span class="kw-2">*</span><span class="ident">b</span> <span class="op">==</span> <span class="ident">bix2</span>);
+                            <span class="kw">if</span> <span class="ident">kind2</span> <span class="op">==</span> <span class="ident">RangeFragKind::LiveOut</span> {
                                 <span class="ident">ix2</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                                 <span class="kw">continue</span>;
                             }
@@ -2247,7 +2247,7 @@
     <span class="ident">frag_ixs</span>: <span class="kw-2">&amp;</span>[<span class="ident">RangeFragIx</span>],
     <span class="ident">metrics</span>: <span class="kw-2">&amp;</span>[<span class="ident">RangeFragMetrics</span>],
     <span class="ident">frags</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RangeFrag</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AnalysisError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AnalysisError</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">reg</span>.<span class="ident">is_real</span>() {
         <span class="comment">// Append all the RangeFrags to this fixed interval. They&#39;ll get sorted later.</span>
         <span class="kw">let</span> <span class="ident">fixed_int</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result_real</span>[<span class="ident">reg</span>.<span class="ident">to_real_reg</span>().<span class="ident">get_index</span>()];
@@ -2297,7 +2297,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">to_remove</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">while</span> <span class="ident">s</span> <span class="op">&lt;</span> <span class="ident">mentions</span>.<span class="ident">len</span>() {
             <span class="ident">e</span> <span class="op">=</span> <span class="ident">s</span>;
-            <span class="kw">while</span> <span class="ident">e</span> <span class="op">+</span> <span class="number">1</span> <span class="op">&lt;</span> <span class="ident">mentions</span>.<span class="ident">len</span>() <span class="op">&amp;&amp;</span> <span class="ident">mentions</span>[<span class="ident">s</span>].<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mentions</span>[<span class="ident">e</span> <span class="op">+</span> <span class="number">1</span>].<span class="number">0</span> {
+            <span class="kw">while</span> <span class="ident">e</span> <span class="op">+</span> <span class="number">1</span> <span class="op">&lt;</span> <span class="ident">mentions</span>.<span class="ident">len</span>() <span class="op">&amp;&amp;</span> <span class="ident">mentions</span>[<span class="ident">s</span>].<span class="number">0</span> <span class="op">==</span> <span class="ident">mentions</span>[<span class="ident">e</span> <span class="op">+</span> <span class="number">1</span>].<span class="number">0</span> {
                 <span class="ident">e</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
             <span class="kw">if</span> <span class="ident">s</span> <span class="op">!</span><span class="op">=</span> <span class="ident">e</span> {
@@ -2339,20 +2339,20 @@
             <span class="comment">// we end up storing slightly more boundaries that we ought to: it&#39;s not a correctness</span>
             <span class="comment">// issue: the resolve_moves pass may skip such block boundaries when it requires those.</span>
             <span class="kw">match</span> <span class="ident">metric</span>.<span class="ident">kind</span> {
-                <span class="ident">RangeFragKind::Local</span> <span class="op">=</span><span class="op">&gt;</span> {}
-                <span class="ident">RangeFragKind::LiveIn</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RangeFragKind::Local</span> =&gt; {}
+                <span class="ident">RangeFragKind::LiveIn</span> =&gt; {
                     <span class="ident">block_boundaries</span>.<span class="ident">push</span>(<span class="ident">BlockBoundary</span> {
                         <span class="ident">bix</span>,
                         <span class="ident">pos</span>: <span class="ident">BlockPos::Start</span>,
                     });
                 }
-                <span class="ident">RangeFragKind::LiveOut</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RangeFragKind::LiveOut</span> =&gt; {
                     <span class="ident">block_boundaries</span>.<span class="ident">push</span>(<span class="ident">BlockBoundary</span> {
                         <span class="ident">bix</span>,
                         <span class="ident">pos</span>: <span class="ident">BlockPos::End</span>,
                     });
                 }
-                <span class="ident">RangeFragKind::Thru</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RangeFragKind::Thru</span> =&gt; {
                     <span class="ident">block_boundaries</span>.<span class="ident">push</span>(<span class="ident">BlockBoundary</span> {
                         <span class="ident">bix</span>,
                         <span class="ident">pos</span>: <span class="ident">BlockPos::Start</span>,

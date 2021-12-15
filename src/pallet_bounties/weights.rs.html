@@ -293,17 +293,17 @@
 
 <span class="doccomment">/// Weight functions needed for pallet_bounties.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WeightInfo</span> {
-	<span class="kw">fn</span> <span class="ident">propose_bounty</span>(<span class="ident">d</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">approve_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">propose_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">unassign_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">accept_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">award_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">claim_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">close_bounty_proposed</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">close_bounty_active</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">extend_bounty_expiry</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
-	<span class="kw">fn</span> <span class="ident">spend_funds</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">propose_bounty</span>(<span class="ident">d</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">approve_bounty</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">propose_curator</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">unassign_curator</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">accept_curator</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">award_bounty</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">claim_bounty</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">close_bounty_proposed</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">close_bounty_active</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">extend_bounty_expiry</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">spend_funds</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span>;
 }
 
 <span class="doccomment">/// Weights for pallet_bounties using the Substrate node and recommended hardware.</span>
@@ -313,7 +313,7 @@
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
 	<span class="comment">// Storage: Bounties Bounties (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">propose_bounty</span>(<span class="ident">d</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">propose_bounty</span>(<span class="ident">d</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">58_161_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">1_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">d</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -322,34 +322,34 @@
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyApprovals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">approve_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">approve_bounty</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">20_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">propose_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">propose_curator</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">14_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">unassign_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">unassign_curator</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">62_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">accept_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">accept_curator</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">55_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: ChildBounties ParentChildBounties (r:1 w:0)</span>
-	<span class="kw">fn</span> <span class="ident">award_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">award_bounty</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">46_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -358,7 +358,7 @@
 	<span class="comment">// Storage: System Account (r:3 w:3)</span>
 	<span class="comment">// Storage: ChildBounties ChildrenCuratorFees (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">claim_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">claim_bounty</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">185_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -367,7 +367,7 @@
 	<span class="comment">// Storage: ChildBounties ParentChildBounties (r:1 w:0)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">close_bounty_proposed</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">close_bounty_proposed</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">82_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -376,13 +376,13 @@
 	<span class="comment">// Storage: ChildBounties ParentChildBounties (r:1 w:0)</span>
 	<span class="comment">// Storage: System Account (r:2 w:2)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">close_bounty_active</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">close_bounty_active</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">137_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">4</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">4</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">extend_bounty_expiry</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">extend_bounty_expiry</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">33_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -390,7 +390,7 @@
 	<span class="comment">// Storage: Bounties BountyApprovals (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">spend_funds</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">spend_funds</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 191_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">81_116_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">b</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -407,7 +407,7 @@
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
 	<span class="comment">// Storage: Bounties Bounties (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">propose_bounty</span>(<span class="ident">d</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">propose_bounty</span>(<span class="ident">d</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">58_161_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">1_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">d</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -416,34 +416,34 @@
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyApprovals (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">approve_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">approve_bounty</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">20_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">propose_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">propose_curator</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">14_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">unassign_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">unassign_curator</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">62_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">accept_curator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">accept_curator</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">55_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: ChildBounties ParentChildBounties (r:1 w:0)</span>
-	<span class="kw">fn</span> <span class="ident">award_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">award_bounty</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">46_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -452,7 +452,7 @@
 	<span class="comment">// Storage: System Account (r:3 w:3)</span>
 	<span class="comment">// Storage: ChildBounties ChildrenCuratorFees (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">claim_bounty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">claim_bounty</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">185_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -461,7 +461,7 @@
 	<span class="comment">// Storage: ChildBounties ParentChildBounties (r:1 w:0)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">close_bounty_proposed</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">close_bounty_proposed</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">82_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -470,13 +470,13 @@
 	<span class="comment">// Storage: ChildBounties ParentChildBounties (r:1 w:0)</span>
 	<span class="comment">// Storage: System Account (r:2 w:2)</span>
 	<span class="comment">// Storage: Bounties BountyDescriptions (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">close_bounty_active</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">close_bounty_active</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">137_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">4</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">4</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">extend_bounty_expiry</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">extend_bounty_expiry</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">33_000_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">RocksDbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -484,7 +484,7 @@
 	<span class="comment">// Storage: Bounties BountyApprovals (r:1 w:1)</span>
 	<span class="comment">// Storage: Bounties Bounties (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">spend_funds</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">spend_funds</span>(<span class="ident">b</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 191_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">81_116_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">b</span> <span class="kw">as</span> <span class="ident">Weight</span>))

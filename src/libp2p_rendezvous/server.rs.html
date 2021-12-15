@@ -815,19 +815,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Config</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_min_ttl</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">min_ttl</span>: <span class="ident">Ttl</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_min_ttl</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">min_ttl</span>: <span class="ident">Ttl</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">min_ttl</span> <span class="op">=</span> <span class="ident">min_ttl</span>;
         <span class="self">self</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_max_ttl</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max_ttl</span>: <span class="ident">Ttl</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_max_ttl</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max_ttl</span>: <span class="ident">Ttl</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">max_ttl</span> <span class="op">=</span> <span class="ident">max_ttl</span>;
         <span class="self">self</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Config</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">min_ttl</span>: <span class="ident">MIN_TTL</span>,
             <span class="ident">max_ttl</span>: <span class="ident">MAX_TTL</span>,
@@ -837,7 +837,7 @@
 
 <span class="kw">impl</span> <span class="ident">Behaviour</span> {
     <span class="doccomment">/// Create a new instance of the rendezvous [`NetworkBehaviour`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">Config</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">Config</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">events</span>: <span class="ident">Default::default</span>(),
             <span class="ident">registrations</span>: <span class="ident">Registrations::with_config</span>(<span class="ident">config</span>),
@@ -876,7 +876,7 @@
     <span class="kw">type</span> <span class="ident">ProtocolsHandler</span> <span class="op">=</span> <span class="ident">SubstreamProtocolsHandler</span><span class="op">&lt;</span><span class="ident">inbound::Stream</span>, <span class="ident">Void</span>, ()<span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">OutEvent</span> <span class="op">=</span> <span class="ident">Event</span>;
 
-    <span class="kw">fn</span> <span class="ident">new_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::ProtocolsHandler</span> {
+    <span class="kw">fn</span> <span class="ident">new_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::ProtocolsHandler</span> {
         <span class="kw">let</span> <span class="ident">initial_keep_alive</span> <span class="op">=</span> <span class="ident">Duration::from_secs</span>(<span class="number">30</span>);
 
         <span class="ident">SubstreamProtocolsHandler::new_inbound_only</span>(<span class="ident">initial_keep_alive</span>)
@@ -889,11 +889,11 @@
         <span class="ident">event</span>: <span class="ident">handler::InboundOutEvent</span>,
     ) {
         <span class="kw">let</span> <span class="ident">new_events</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">event</span> {
-            <span class="ident">handler::InboundOutEvent::InboundEvent</span> { <span class="ident">id</span>, <span class="ident">message</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">handler::InboundOutEvent::InboundEvent</span> { <span class="ident">id</span>, <span class="ident">message</span> } =&gt; {
                 <span class="ident">handle_inbound_event</span>(<span class="ident">message</span>, <span class="ident">peer_id</span>, <span class="ident">connection</span>, <span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">registrations</span>)
             }
-            <span class="ident">handler::InboundOutEvent::OutboundEvent</span> { <span class="ident">message</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">void::unreachable</span>(<span class="ident">message</span>),
-            <span class="ident">handler::InboundOutEvent::InboundError</span> { <span class="ident">error</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">handler::InboundOutEvent::OutboundEvent</span> { <span class="ident">message</span>, .. } =&gt; <span class="ident">void::unreachable</span>(<span class="ident">message</span>),
+            <span class="ident">handler::InboundOutEvent::InboundError</span> { <span class="ident">error</span>, .. } =&gt; {
                 <span class="macro">log::warn!</span>(<span class="string">&quot;Connection with peer {} failed: {}&quot;</span>, <span class="ident">peer_id</span>, <span class="ident">error</span>);
 
                 <span class="macro">vec!</span>[<span class="ident">NetworkBehaviourAction::CloseConnection</span> {
@@ -901,7 +901,7 @@
                     <span class="ident">connection</span>: <span class="ident">CloseConnection::One</span>(<span class="ident">connection</span>),
                 }]
             }
-            <span class="ident">handler::InboundOutEvent::OutboundError</span> { <span class="ident">error</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">void::unreachable</span>(<span class="ident">error</span>),
+            <span class="ident">handler::InboundOutEvent::OutboundError</span> { <span class="ident">error</span>, .. } =&gt; <span class="ident">void::unreachable</span>(<span class="ident">error</span>),
         };
 
         <span class="self">self</span>.<span class="ident">events</span>.<span class="ident">extend</span>(<span class="ident">new_events</span>);
@@ -911,7 +911,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
         <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">PollParameters</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">NetworkBehaviourAction</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::OutEvent</span>, <span class="ident"><span class="self">Self</span>::ProtocolsHandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">NetworkBehaviourAction</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::OutEvent</span>, <span class="ident"><span class="self">Self</span>::ProtocolsHandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Poll::Ready</span>(<span class="ident">ExpiredRegistration</span>(<span class="ident">registration</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">registrations</span>.<span class="ident">poll</span>(<span class="ident">cx</span>) {
             <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="ident">NetworkBehaviourAction::GenerateEvent</span>(
                 <span class="ident">Event::RegistrationExpired</span>(<span class="ident">registration</span>),
@@ -932,11 +932,11 @@
     <span class="ident">connection</span>: <span class="ident">ConnectionId</span>,
     <span class="ident">id</span>: <span class="ident">InboundSubstreamId</span>,
     <span class="ident">registrations</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registrations</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NetworkBehaviourAction</span><span class="op">&lt;</span><span class="ident">Event</span>, <span class="ident">SubstreamProtocolsHandler</span><span class="op">&lt;</span><span class="ident">inbound::Stream</span>, <span class="ident">Void</span>, ()<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">NetworkBehaviourAction</span><span class="op">&lt;</span><span class="ident">Event</span>, <span class="ident">SubstreamProtocolsHandler</span><span class="op">&lt;</span><span class="ident">inbound::Stream</span>, <span class="ident">Void</span>, ()<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">event</span> {
         <span class="comment">// bad registration</span>
         <span class="ident">inbound::OutEvent::RegistrationRequested</span>(<span class="ident">registration</span>)
-            <span class="kw">if</span> <span class="ident">registration</span>.<span class="ident">record</span>.<span class="ident">peer_id</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">peer_id</span> <span class="op">=</span><span class="op">&gt;</span>
+            <span class="kw">if</span> <span class="ident">registration</span>.<span class="ident">record</span>.<span class="ident">peer_id</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">peer_id</span> =&gt;
         {
             <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ErrorCode::NotAuthorized</span>;
 
@@ -956,11 +956,11 @@
                 }),
             ]
         }
-        <span class="ident">inbound::OutEvent::RegistrationRequested</span>(<span class="ident">registration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">inbound::OutEvent::RegistrationRequested</span>(<span class="ident">registration</span>) =&gt; {
             <span class="kw">let</span> <span class="ident">namespace</span> <span class="op">=</span> <span class="ident">registration</span>.<span class="ident">namespace</span>.<span class="ident">clone</span>();
 
             <span class="kw">match</span> <span class="ident">registrations</span>.<span class="ident">add</span>(<span class="ident">registration</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">registration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">registration</span>) =&gt; {
                     <span class="macro">vec!</span>[
                         <span class="ident">NetworkBehaviourAction::NotifyHandler</span> {
                             <span class="ident">peer_id</span>,
@@ -978,7 +978,7 @@
                         }),
                     ]
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">TtlOutOfRange::TooLong</span> { .. }) <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">TtlOutOfRange::TooShort</span> { .. }) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="ident">TtlOutOfRange::TooLong</span> { .. }) <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">TtlOutOfRange::TooShort</span> { .. }) =&gt; {
                     <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ErrorCode::InvalidTtl</span>;
 
                     <span class="macro">vec!</span>[
@@ -1003,8 +1003,8 @@
             <span class="ident">namespace</span>,
             <span class="ident">cookie</span>,
             <span class="ident">limit</span>,
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">registrations</span>.<span class="ident">get</span>(<span class="ident">namespace</span>, <span class="ident">cookie</span>, <span class="ident">limit</span>) {
-            <span class="prelude-val">Ok</span>((<span class="ident">registrations</span>, <span class="ident">cookie</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; <span class="kw">match</span> <span class="ident">registrations</span>.<span class="ident">get</span>(<span class="ident">namespace</span>, <span class="ident">cookie</span>, <span class="ident">limit</span>) {
+            <span class="prelude-val">Ok</span>((<span class="ident">registrations</span>, <span class="ident">cookie</span>)) =&gt; {
                 <span class="kw">let</span> <span class="ident">discovered</span> <span class="op">=</span> <span class="ident">registrations</span>.<span class="ident">cloned</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
                 <span class="macro">vec!</span>[
@@ -1025,7 +1025,7 @@
                     }),
                 ]
             }
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ErrorCode::InvalidCookie</span>;
 
                 <span class="macro">vec!</span>[
@@ -1044,7 +1044,7 @@
                 ]
             }
         },
-        <span class="ident">inbound::OutEvent::UnregisterRequested</span>(<span class="ident">namespace</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">inbound::OutEvent::UnregisterRequested</span>(<span class="ident">namespace</span>) =&gt; {
             <span class="ident">registrations</span>.<span class="ident">remove</span>(<span class="ident">namespace</span>.<span class="ident">clone</span>(), <span class="ident">peer_id</span>);
 
             <span class="macro">vec!</span>[<span class="ident">NetworkBehaviourAction::GenerateEvent</span>(
@@ -1061,7 +1061,7 @@
 <span class="kw">struct</span> <span class="ident">RegistrationId</span>(<span class="ident">u64</span>);
 
 <span class="kw">impl</span> <span class="ident">RegistrationId</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">rand::random</span>())
     }
 }
@@ -1087,13 +1087,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Registrations</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">Registrations::with_config</span>(<span class="ident">Config::default</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Registrations</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_config</span>(<span class="ident">config</span>: <span class="ident">Config</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_config</span>(<span class="ident">config</span>: <span class="ident">Config</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">registrations_for_peer</span>: <span class="ident">Default::default</span>(),
             <span class="ident">registrations</span>: <span class="ident">Default::default</span>(),
@@ -1107,7 +1107,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">new_registration</span>: <span class="ident">NewRegistration</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Registration</span>, <span class="ident">TtlOutOfRange</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Registration</span>, <span class="ident">TtlOutOfRange</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ttl</span> <span class="op">=</span> <span class="ident">new_registration</span>.<span class="ident">effective_ttl</span>();
         <span class="kw">if</span> <span class="ident">ttl</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">max_ttl</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">TtlOutOfRange::TooLong</span> {
@@ -1175,18 +1175,18 @@
         <span class="ident">discover_namespace</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Namespace</span><span class="op">&gt;</span>,
         <span class="ident">cookie</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cookie</span><span class="op">&gt;</span>,
         <span class="ident">limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">Registration</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span>, <span class="ident">Cookie</span>), <span class="ident">CookieNamespaceMismatch</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">Registration</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span>, <span class="ident">Cookie</span>), <span class="ident">CookieNamespaceMismatch</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">cookie_namespace</span> <span class="op">=</span> <span class="ident">cookie</span>.<span class="ident">as_ref</span>().<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">cookie</span><span class="op">|</span> <span class="ident">cookie</span>.<span class="ident">namespace</span>());
 
         <span class="kw">match</span> (<span class="ident">discover_namespace</span>.<span class="ident">as_ref</span>(), <span class="ident">cookie_namespace</span>) {
             <span class="comment">// discover all namespace but cookie is specific to a namespace? =&gt; bad</span>
-            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CookieNamespaceMismatch</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CookieNamespaceMismatch</span>),
             <span class="comment">// discover for a namespace but cookie is for a different namesapce? =&gt; bad</span>
-            (<span class="prelude-val">Some</span>(<span class="ident">namespace</span>), <span class="prelude-val">Some</span>(<span class="ident">cookie_namespace</span>)) <span class="kw">if</span> <span class="ident">namespace</span> <span class="op">!</span><span class="op">=</span> <span class="ident">cookie_namespace</span> <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="prelude-val">Some</span>(<span class="ident">namespace</span>), <span class="prelude-val">Some</span>(<span class="ident">cookie_namespace</span>)) <span class="kw">if</span> <span class="ident">namespace</span> <span class="op">!</span><span class="op">=</span> <span class="ident">cookie_namespace</span> =&gt; {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CookieNamespaceMismatch</span>)
             }
             <span class="comment">// every other combination is fine</span>
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="kw">_</span> =&gt; {}
         }
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reggos_of_last_discover</span> <span class="op">=</span> <span class="ident">cookie</span>
@@ -1204,11 +1204,11 @@
                     }
 
                     <span class="kw">match</span> <span class="ident">discover_namespace</span>.<span class="ident">as_ref</span>() {
-                        <span class="prelude-val">Some</span>(<span class="ident">discover_namespace</span>) <span class="kw">if</span> <span class="ident">discover_namespace</span> <span class="op">=</span><span class="op">=</span> <span class="ident">namespace</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">discover_namespace</span>) <span class="kw">if</span> <span class="ident">discover_namespace</span> <span class="op">==</span> <span class="ident">namespace</span> =&gt; {
                             <span class="prelude-val">Some</span>(<span class="ident">registration_id</span>)
                         }
-                        <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-                        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">registration_id</span>),
+                        <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+                        <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">registration_id</span>),
                     }
                 }
             })
@@ -1232,7 +1232,7 @@
         <span class="prelude-val">Ok</span>((<span class="ident">registrations</span>, <span class="ident">new_cookie</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">ExpiredRegistration</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">ExpiredRegistration</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">expired_registration</span> <span class="op">=</span> <span class="macro">ready!</span>(<span class="self">self</span>.<span class="ident">next_expiry</span>.<span class="ident">poll_next_unpin</span>(<span class="ident">cx</span>)).<span class="ident">expect</span>(
             <span class="string">&quot;This stream should never finish because it is initialised with a pending future&quot;</span>,
         );
@@ -1248,8 +1248,8 @@
         <span class="self">self</span>.<span class="ident">registrations_for_peer</span>
             .<span class="ident">remove_by_right</span>(<span class="kw-2">&amp;</span><span class="ident">expired_registration</span>);
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">registrations</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">expired_registration</span>) {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">poll</span>(<span class="ident">cx</span>),
-            <span class="prelude-val">Some</span>(<span class="ident">registration</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="ident">ExpiredRegistration</span>(<span class="ident">registration</span>)),
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">poll</span>(<span class="ident">cx</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">registration</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="ident">ExpiredRegistration</span>(<span class="ident">registration</span>)),
         }
     }
 }
@@ -1481,13 +1481,13 @@
         <span class="macro">assert_eq!</span>(<span class="ident">discover2</span>.<span class="ident">count</span>(), <span class="number">1</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">new_dummy_registration</span>(<span class="ident">namespace</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NewRegistration</span> {
+    <span class="kw">fn</span> <span class="ident">new_dummy_registration</span>(<span class="ident">namespace</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="ident">NewRegistration</span> {
         <span class="kw">let</span> <span class="ident">identity</span> <span class="op">=</span> <span class="ident">identity::Keypair::generate_ed25519</span>();
 
         <span class="ident">new_registration</span>(<span class="ident">namespace</span>, <span class="ident">identity</span>, <span class="prelude-val">None</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">new_dummy_registration_with_ttl</span>(<span class="ident">namespace</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">ttl</span>: <span class="ident">Ttl</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NewRegistration</span> {
+    <span class="kw">fn</span> <span class="ident">new_dummy_registration_with_ttl</span>(<span class="ident">namespace</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">ttl</span>: <span class="ident">Ttl</span>) -&gt; <span class="ident">NewRegistration</span> {
         <span class="kw">let</span> <span class="ident">identity</span> <span class="op">=</span> <span class="ident">identity::Keypair::generate_ed25519</span>();
 
         <span class="ident">new_registration</span>(<span class="ident">namespace</span>, <span class="ident">identity</span>, <span class="prelude-val">Some</span>(<span class="ident">ttl</span>))
@@ -1497,7 +1497,7 @@
         <span class="ident">namespace</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
         <span class="ident">identity</span>: <span class="ident">identity::Keypair</span>,
         <span class="ident">ttl</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ttl</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NewRegistration</span> {
+    ) -&gt; <span class="ident">NewRegistration</span> {
         <span class="ident">NewRegistration::new</span>(
             <span class="ident">Namespace::from_static</span>(<span class="ident">namespace</span>),
             <span class="ident">PeerRecord::new</span>(<span class="ident">identity</span>, <span class="macro">vec!</span>[<span class="string">&quot;/ip4/127.0.0.1/tcp/1234&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()]).<span class="ident">unwrap</span>(),
@@ -1507,7 +1507,7 @@
 
     <span class="doccomment">/// Defines utility functions that make the tests more readable.</span>
     <span class="kw">impl</span> <span class="ident">Registrations</span> {
-        <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">next_event</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExpiredRegistration</span> {
+        <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">next_event</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">ExpiredRegistration</span> {
             <span class="ident">futures::future::poll_fn</span>(<span class="op">|</span><span class="ident">cx</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">poll</span>(<span class="ident">cx</span>)).<span class="kw">await</span>
         }
 
@@ -1519,7 +1519,7 @@
         }
 
         <span class="doccomment">/// Polls [`Registrations`] for at most `seconds` and panics if doesn&#39;t return an event within that time.</span>
-        <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">next_event_in_at_most</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">seconds</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExpiredRegistration</span> {
+        <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">next_event_in_at_most</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">seconds</span>: <span class="ident">u64</span>) -&gt; <span class="ident">ExpiredRegistration</span> {
             <span class="ident">tokio::time::timeout</span>(<span class="ident">Duration::from_secs</span>(<span class="ident">seconds</span>), <span class="self">self</span>.<span class="ident">next_event</span>())
                 .<span class="kw">await</span>
                 .<span class="ident">unwrap</span>()

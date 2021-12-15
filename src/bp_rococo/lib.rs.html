@@ -229,7 +229,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WeightToFee</span>;
 <span class="kw">impl</span> <span class="ident">WeightToFeePolynomial</span> <span class="kw">for</span> <span class="ident">WeightToFee</span> {
 	<span class="kw">type</span> <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">Balance</span>;
-	<span class="kw">fn</span> <span class="ident">polynomial</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WeightToFeeCoefficients</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">polynomial</span>() -&gt; <span class="ident">WeightToFeeCoefficients</span><span class="op">&lt;</span><span class="ident">Balance</span><span class="op">&gt;</span> {
 		<span class="kw">const</span> <span class="ident">CENTS</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="number">1_000_000_000_000</span> <span class="op">/</span> <span class="number">100</span>;
 		<span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">CENTS</span>;
 		<span class="kw">let</span> <span class="ident">q</span> <span class="op">=</span> <span class="number">10</span> <span class="op">*</span> <span class="ident">Balance::from</span>(<span class="ident">ExtrinsicBaseWeight::get</span>());
@@ -244,7 +244,7 @@
 
 <span class="comment">// We use this to get the account on Rococo (target) which is derived from Wococo&#39;s (source)</span>
 <span class="comment">// account.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_account_from_wococo_id</span>(<span class="ident">id</span>: <span class="ident">bp_runtime::SourceAccount</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountId</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_account_from_wococo_id</span>(<span class="ident">id</span>: <span class="ident">bp_runtime::SourceAccount</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span>) -&gt; <span class="ident">AccountId</span> {
 	<span class="kw">let</span> <span class="ident">encoded_id</span> <span class="op">=</span> <span class="ident">bp_runtime::derive_account_id</span>(<span class="ident">bp_runtime::WOCOCO_CHAIN_ID</span>, <span class="ident">id</span>);
 	<span class="ident">AccountIdConverter::convert</span>(<span class="ident">encoded_id</span>)
 }
@@ -296,9 +296,9 @@
 	<span class="doccomment">/// Rococo runtime itself.</span>
 	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">RococoFinalityApi</span> {
 		<span class="doccomment">/// Returns number and hash of the best finalized header known to the bridge module.</span>
-		<span class="kw">fn</span> <span class="ident">best_finalized</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">BlockNumber</span>, <span class="ident">Hash</span>);
+		<span class="kw">fn</span> <span class="ident">best_finalized</span>() -&gt; (<span class="ident">BlockNumber</span>, <span class="ident">Hash</span>);
 		<span class="doccomment">/// Returns true if the header is known to the runtime.</span>
-		<span class="kw">fn</span> <span class="ident">is_known_header</span>(<span class="ident">hash</span>: <span class="ident">Hash</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+		<span class="kw">fn</span> <span class="ident">is_known_header</span>(<span class="ident">hash</span>: <span class="ident">Hash</span>) -&gt; <span class="ident">bool</span>;
 	}
 
 	<span class="doccomment">/// Outbound message lane API for messages that are sent to Rococo chain.</span>
@@ -318,7 +318,7 @@
 		<span class="kw">fn</span> <span class="ident">estimate_message_delivery_and_dispatch_fee</span>(
 			<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
 			<span class="ident">payload</span>: <span class="ident">OutboundPayload</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OutboundMessageFee</span><span class="op">&gt;</span>;
+		) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OutboundMessageFee</span><span class="op">&gt;</span>;
 		<span class="doccomment">/// Returns dispatch weight, encoded payload size and delivery+dispatch fee of all</span>
 		<span class="doccomment">/// messages in given inclusive range.</span>
 		<span class="doccomment">///</span>
@@ -328,11 +328,11 @@
 			<span class="ident">lane</span>: <span class="ident">LaneId</span>,
 			<span class="ident">begin</span>: <span class="ident">MessageNonce</span>,
 			<span class="ident">end</span>: <span class="ident">MessageNonce</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MessageDetails</span><span class="op">&lt;</span><span class="ident">OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+		) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MessageDetails</span><span class="op">&lt;</span><span class="ident">OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 		<span class="doccomment">/// Returns nonce of the latest message, received by bridged chain.</span>
-		<span class="kw">fn</span> <span class="ident">latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span>;
+		<span class="kw">fn</span> <span class="ident">latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span>;
 		<span class="doccomment">/// Returns nonce of the latest message, generated by given lane.</span>
-		<span class="kw">fn</span> <span class="ident">latest_generated_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span>;
+		<span class="kw">fn</span> <span class="ident">latest_generated_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span>;
 	}
 
 	<span class="doccomment">/// Inbound message lane API for messages sent by Rococo chain.</span>
@@ -341,11 +341,11 @@
 	<span class="doccomment">/// Rococo runtime itself.</span>
 	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FromRococoInboundLaneApi</span> {
 		<span class="doccomment">/// Returns nonce of the latest message, received by given lane.</span>
-		<span class="kw">fn</span> <span class="ident">latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span>;
+		<span class="kw">fn</span> <span class="ident">latest_received_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span>;
 		<span class="doccomment">/// Nonce of the latest message that has been confirmed to the bridged chain.</span>
-		<span class="kw">fn</span> <span class="ident">latest_confirmed_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span>;
+		<span class="kw">fn</span> <span class="ident">latest_confirmed_nonce</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">MessageNonce</span>;
 		<span class="doccomment">/// State of the unrewarded relayers set at given lane.</span>
-		<span class="kw">fn</span> <span class="ident">unrewarded_relayers_state</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UnrewardedRelayersState</span>;
+		<span class="kw">fn</span> <span class="ident">unrewarded_relayers_state</span>(<span class="ident">lane</span>: <span class="ident">LaneId</span>) -&gt; <span class="ident">UnrewardedRelayersState</span>;
 	}
 }
 </code></pre></div>

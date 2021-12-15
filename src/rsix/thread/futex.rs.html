@@ -73,7 +73,7 @@
     <span class="ident">utime</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Timespec</span>,
     <span class="ident">uaddr2</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>,
     <span class="ident">val3</span>: <span class="ident">u32</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::futex</span>(<span class="ident">uaddr</span>, <span class="ident">op</span>, <span class="ident">flags</span>, <span class="ident">val</span>, <span class="ident">utime</span>, <span class="ident">uaddr2</span>, <span class="ident">val3</span>)
 }
 </code></pre></div>

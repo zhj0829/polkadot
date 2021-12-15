@@ -196,7 +196,7 @@
 <span class="comment">// The call below is only valid because the name System is enforced</span>
 <span class="comment">// at runtime construction level for the system pallet.</span>
 <span class="macro">frame_support::generate_storage_alias!</span>(
-	<span class="ident">System</span>, <span class="ident">UpgradedToU32RefCount</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Value</span><span class="op">&lt;</span>
+	<span class="ident">System</span>, <span class="ident">UpgradedToU32RefCount</span> =&gt; <span class="ident">Value</span><span class="op">&lt;</span>
 		<span class="ident">bool</span>,
 		<span class="ident">ValueQuery</span>
 	<span class="op">&gt;</span>
@@ -207,7 +207,7 @@
 <span class="comment">// The call below is only valid because the name System is enforced</span>
 <span class="comment">// at runtime construction level for the system pallet.</span>
 <span class="macro">frame_support::generate_storage_alias!</span>(
-	<span class="ident">System</span>, <span class="ident">UpgradedToTripleRefCount</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Value</span><span class="op">&lt;</span>
+	<span class="ident">System</span>, <span class="ident">UpgradedToTripleRefCount</span> =&gt; <span class="ident">Value</span><span class="op">&lt;</span>
 		<span class="ident">bool</span>,
 		<span class="ident">ValueQuery</span>
 	<span class="op">&gt;</span>
@@ -218,14 +218,14 @@
 <span class="comment">// The call below is only valid because the name System is enforced</span>
 <span class="comment">// at runtime construction level for the system pallet.</span>
 <span class="macro">frame_support::generate_storage_alias!</span>(
-	<span class="ident">System</span>, <span class="ident">Account</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Map</span><span class="op">&lt;</span>
+	<span class="ident">System</span>, <span class="ident">Account</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span> =&gt; <span class="ident">Map</span><span class="op">&lt;</span>
 		(<span class="ident">Blake2_128Concat</span>, <span class="ident">T::AccountId</span>),
 		<span class="ident">AccountInfo</span><span class="op">&lt;</span><span class="ident">T::Index</span>, <span class="ident">T::AccountData</span><span class="op">&gt;</span>
 	<span class="op">&gt;</span>
 );
 
 <span class="doccomment">/// Migrate from unique `u8` reference counting to triple `u32` reference counting.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_from_single_u8_to_triple_ref_count</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_from_single_u8_to_triple_ref_count</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span>() -&gt; <span class="ident">Weight</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">translated</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 	<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::translate</span>::<span class="op">&lt;</span>(<span class="ident">T::Index</span>, <span class="ident">u8</span>, <span class="ident">T::AccountData</span>), <span class="kw">_</span><span class="op">&gt;</span>(<span class="op">|</span><span class="ident">_key</span>, (<span class="ident">nonce</span>, <span class="ident">rc</span>, <span class="ident">data</span>)<span class="op">|</span> {
 		<span class="ident">translated</span> <span class="op">=</span> <span class="ident">translated</span> <span class="op">+</span> <span class="number">1</span>;
@@ -242,7 +242,7 @@
 }
 
 <span class="doccomment">/// Migrate from unique `u32` reference counting to triple `u32` reference counting.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_from_single_to_triple_ref_count</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_from_single_to_triple_ref_count</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span>() -&gt; <span class="ident">Weight</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">translated</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 	<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::translate</span>::<span class="op">&lt;</span>(<span class="ident">T::Index</span>, <span class="ident">RefCount</span>, <span class="ident">T::AccountData</span>), <span class="kw">_</span><span class="op">&gt;</span>(
 		<span class="op">|</span><span class="ident">_key</span>, (<span class="ident">nonce</span>, <span class="ident">consumers</span>, <span class="ident">data</span>)<span class="op">|</span> {
@@ -260,7 +260,7 @@
 }
 
 <span class="doccomment">/// Migrate from dual `u32` reference counting to triple `u32` reference counting.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_from_dual_to_triple_ref_count</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_from_dual_to_triple_ref_count</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">V2ToV3</span><span class="op">&gt;</span>() -&gt; <span class="ident">Weight</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">translated</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 	<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::translate</span>::<span class="op">&lt;</span>(<span class="ident">T::Index</span>, <span class="ident">RefCount</span>, <span class="ident">RefCount</span>, <span class="ident">T::AccountData</span>), <span class="kw">_</span><span class="op">&gt;</span>(
 		<span class="op">|</span><span class="ident">_key</span>, (<span class="ident">nonce</span>, <span class="ident">consumers</span>, <span class="ident">providers</span>, <span class="ident">data</span>)<span class="op">|</span> {

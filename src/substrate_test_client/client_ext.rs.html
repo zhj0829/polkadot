@@ -241,31 +241,31 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">id</span>: <span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">justification</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Justification</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Returns hash of the genesis block.</span>
-	<span class="kw">fn</span> <span class="ident">genesis_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span>;
+	<span class="kw">fn</span> <span class="ident">genesis_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span>;
 }
 
 <span class="doccomment">/// Extension trait for a test client around block importing.</span>
 <span class="attribute">#[<span class="ident">async_trait::async_trait</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ClientBlockImportExt</span><span class="op">&lt;</span><span class="ident">Block</span>: <span class="ident">BlockT</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
 	<span class="doccomment">/// Import block to the chain. No finality.</span>
-	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="ident">BlockOrigin</span>, <span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="ident">BlockOrigin</span>, <span class="ident">block</span>: <span class="ident">Block</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Import a block and make it our best block if possible.</span>
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import_as_best</span>(
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Import a block and finalize it.</span>
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import_as_final</span>(
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Import block with justification(s), finalizes block.</span>
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import_justified</span>(
@@ -273,7 +273,7 @@
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
 		<span class="ident">justifications</span>: <span class="ident">Justifications</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">E</span>, <span class="ident">RA</span>, <span class="ident">Block</span><span class="op">&gt;</span> <span class="ident">ClientExt</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">E</span>, <span class="ident">Block</span>, <span class="ident">RA</span><span class="op">&gt;</span>
@@ -287,11 +287,11 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">id</span>: <span class="ident">BlockId</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">justification</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Justification</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	) -&gt; <span class="ident">sp_blockchain::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="ident">Finalizer::finalize_block</span>(<span class="self">self</span>, <span class="ident">id</span>, <span class="ident">justification</span>, <span class="bool-val">true</span>)
 	}
 
-	<span class="kw">fn</span> <span class="ident">genesis_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span> {
+	<span class="kw">fn</span> <span class="ident">genesis_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span> {
 		<span class="self">self</span>.<span class="ident">block_hash</span>(<span class="number">0u32</span>.<span class="ident">into</span>()).<span class="ident">unwrap</span>().<span class="ident">unwrap</span>()
 	}
 }
@@ -304,7 +304,7 @@
 	<span class="ident">Transaction</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">T</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
 {
-	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="ident">BlockOrigin</span>, <span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="ident">BlockOrigin</span>, <span class="ident">block</span>: <span class="ident">Block</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">extrinsics</span>);
@@ -317,7 +317,7 @@
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">extrinsics</span>);
@@ -330,7 +330,7 @@
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">extrinsics</span>);
@@ -345,7 +345,7 @@
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
 		<span class="ident">justifications</span>: <span class="ident">Justifications</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">justifications</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">justifications</span>);
@@ -366,7 +366,7 @@
 	<span class="ident">E</span>: <span class="ident">Send</span>,
 	<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">BlockImport</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Transaction</span>: <span class="ident">Send</span>,
 {
-	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="ident">BlockOrigin</span>, <span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="ident">BlockOrigin</span>, <span class="ident">block</span>: <span class="ident">Block</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">extrinsics</span>);
@@ -379,7 +379,7 @@
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">extrinsics</span>);
@@ -392,7 +392,7 @@
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">extrinsics</span>);
@@ -407,7 +407,7 @@
 		<span class="ident">origin</span>: <span class="ident">BlockOrigin</span>,
 		<span class="ident">block</span>: <span class="ident">Block</span>,
 		<span class="ident">justifications</span>: <span class="ident">Justifications</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> (<span class="ident">header</span>, <span class="ident">extrinsics</span>) <span class="op">=</span> <span class="ident">block</span>.<span class="ident">deconstruct</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">BlockImportParams::new</span>(<span class="ident">origin</span>, <span class="ident">header</span>);
 		<span class="ident">import</span>.<span class="ident">justifications</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">justifications</span>);

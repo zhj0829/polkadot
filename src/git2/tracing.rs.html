@@ -114,27 +114,27 @@
 
 <span class="kw">impl</span> <span class="ident">Binding</span> <span class="kw">for</span> <span class="ident">TraceLevel</span> {
     <span class="kw">type</span> <span class="ident">Raw</span> <span class="op">=</span> <span class="ident">raw::git_trace_level_t</span>;
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">raw::git_trace_level_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">raw::git_trace_level_t</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">raw::GIT_TRACE_NONE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::None</span>,
-            <span class="ident">raw::GIT_TRACE_FATAL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Fatal</span>,
-            <span class="ident">raw::GIT_TRACE_ERROR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Error</span>,
-            <span class="ident">raw::GIT_TRACE_WARN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Warn</span>,
-            <span class="ident">raw::GIT_TRACE_INFO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Info</span>,
-            <span class="ident">raw::GIT_TRACE_DEBUG</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Debug</span>,
-            <span class="ident">raw::GIT_TRACE_TRACE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Trace</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unknown git trace level&quot;</span>),
+            <span class="ident">raw::GIT_TRACE_NONE</span> =&gt; <span class="ident"><span class="self">Self</span>::None</span>,
+            <span class="ident">raw::GIT_TRACE_FATAL</span> =&gt; <span class="ident"><span class="self">Self</span>::Fatal</span>,
+            <span class="ident">raw::GIT_TRACE_ERROR</span> =&gt; <span class="ident"><span class="self">Self</span>::Error</span>,
+            <span class="ident">raw::GIT_TRACE_WARN</span> =&gt; <span class="ident"><span class="self">Self</span>::Warn</span>,
+            <span class="ident">raw::GIT_TRACE_INFO</span> =&gt; <span class="ident"><span class="self">Self</span>::Info</span>,
+            <span class="ident">raw::GIT_TRACE_DEBUG</span> =&gt; <span class="ident"><span class="self">Self</span>::Debug</span>,
+            <span class="ident">raw::GIT_TRACE_TRACE</span> =&gt; <span class="ident"><span class="self">Self</span>::Trace</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unknown git trace level&quot;</span>),
         }
     }
-    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">raw::git_trace_level_t</span> {
+    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">raw::git_trace_level_t</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_NONE</span>,
-            <span class="ident"><span class="self">Self</span>::Fatal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_FATAL</span>,
-            <span class="ident"><span class="self">Self</span>::Error</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_ERROR</span>,
-            <span class="ident"><span class="self">Self</span>::Warn</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_WARN</span>,
-            <span class="ident"><span class="self">Self</span>::Info</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_INFO</span>,
-            <span class="ident"><span class="self">Self</span>::Debug</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_DEBUG</span>,
-            <span class="ident"><span class="self">Self</span>::Trace</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw::GIT_TRACE_TRACE</span>,
+            <span class="ident"><span class="self">Self</span>::None</span> =&gt; <span class="ident">raw::GIT_TRACE_NONE</span>,
+            <span class="ident"><span class="self">Self</span>::Fatal</span> =&gt; <span class="ident">raw::GIT_TRACE_FATAL</span>,
+            <span class="ident"><span class="self">Self</span>::Error</span> =&gt; <span class="ident">raw::GIT_TRACE_ERROR</span>,
+            <span class="ident"><span class="self">Self</span>::Warn</span> =&gt; <span class="ident">raw::GIT_TRACE_WARN</span>,
+            <span class="ident"><span class="self">Self</span>::Info</span> =&gt; <span class="ident">raw::GIT_TRACE_INFO</span>,
+            <span class="ident"><span class="self">Self</span>::Debug</span> =&gt; <span class="ident">raw::GIT_TRACE_DEBUG</span>,
+            <span class="ident"><span class="self">Self</span>::Trace</span> =&gt; <span class="ident">raw::GIT_TRACE_TRACE</span>,
         }
     }
 }
@@ -144,7 +144,7 @@
 <span class="kw">static</span> <span class="ident">CALLBACK</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
 
 <span class="doccomment">///</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">trace_set</span>(<span class="ident">level</span>: <span class="ident">TraceLevel</span>, <span class="ident">cb</span>: <span class="ident">TracingCb</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">trace_set</span>(<span class="ident">level</span>: <span class="ident">TraceLevel</span>, <span class="ident">cb</span>: <span class="ident">TracingCb</span>) -&gt; <span class="ident">bool</span> {
     <span class="ident">CALLBACK</span>.<span class="ident">store</span>(<span class="ident">cb</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">Ordering::SeqCst</span>);
 
     <span class="kw">unsafe</span> {

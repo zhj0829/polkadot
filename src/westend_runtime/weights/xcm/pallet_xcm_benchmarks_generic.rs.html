@@ -182,38 +182,38 @@
 	<span class="comment">// Storage: XcmPallet SafeXcmVersion (r:1 w:0)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueueHeads (r:1 w:1)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueues (r:1 w:1)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">query_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">query_holding</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">39_278_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">buy_execution</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">buy_execution</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_922_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
 	<span class="comment">// Storage: XcmPallet Queries (r:1 w:0)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">query_response</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">query_response</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">20_625_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">transact</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">transact</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">22_198_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">refund_surplus</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">refund_surplus</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">6_122_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_error_handler</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_error_handler</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_758_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_appendix</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set_appendix</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_764_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clear_error</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clear_error</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_679_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">descend_origin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">descend_origin</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">7_206_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clear_origin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clear_origin</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_738_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
 	<span class="comment">// Storage: XcmPallet SupportedVersion (r:1 w:0)</span>
@@ -221,18 +221,18 @@
 	<span class="comment">// Storage: XcmPallet SafeXcmVersion (r:1 w:0)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueueHeads (r:1 w:1)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueues (r:1 w:1)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">report_error</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">report_error</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">31_512_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: XcmPallet AssetTraps (r:1 w:1)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">claim_asset</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">claim_asset</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">13_594_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">trap</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">trap</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_745_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 	}
 	<span class="comment">// Storage: XcmPallet VersionNotifyTargets (r:1 w:1)</span>
@@ -241,13 +241,13 @@
 	<span class="comment">// Storage: XcmPallet SafeXcmVersion (r:1 w:0)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueueHeads (r:1 w:1)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueues (r:1 w:1)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">subscribe_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">subscribe_version</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">38_138_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">4</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: XcmPallet VersionNotifyTargets (r:0 w:1)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">unsubscribe_version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">unsubscribe_version</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">9_127_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
@@ -256,7 +256,7 @@
 	<span class="comment">// Storage: XcmPallet SafeXcmVersion (r:1 w:0)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueueHeads (r:1 w:1)</span>
 	<span class="comment">// Storage: Dmp DownwardMessageQueues (r:1 w:1)</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initiate_reserve_withdraw</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initiate_reserve_withdraw</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">41_443_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))

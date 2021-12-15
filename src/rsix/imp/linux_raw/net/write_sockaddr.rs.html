@@ -79,15 +79,15 @@
 <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 <span class="kw">use</span> <span class="ident">std::net</span>::{<span class="ident">SocketAddrV4</span>, <span class="ident">SocketAddrV6</span>};
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">match</span> <span class="ident">addr</span> {
-        <span class="ident">SocketAddr::V4</span>(<span class="ident">v4</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">write_sockaddr_v4</span>(<span class="ident">v4</span>, <span class="ident">storage</span>),
-        <span class="ident">SocketAddr::V6</span>(<span class="ident">v6</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">write_sockaddr_v6</span>(<span class="ident">v6</span>, <span class="ident">storage</span>),
-        <span class="ident">SocketAddr::Unix</span>(<span class="ident">unix</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">write_sockaddr_unix</span>(<span class="ident">unix</span>, <span class="ident">storage</span>),
+        <span class="ident">SocketAddr::V4</span>(<span class="ident">v4</span>) =&gt; <span class="ident">write_sockaddr_v4</span>(<span class="ident">v4</span>, <span class="ident">storage</span>),
+        <span class="ident">SocketAddr::V6</span>(<span class="ident">v6</span>) =&gt; <span class="ident">write_sockaddr_v6</span>(<span class="ident">v6</span>, <span class="ident">storage</span>),
+        <span class="ident">SocketAddr::Unix</span>(<span class="ident">unix</span>) =&gt; <span class="ident">write_sockaddr_unix</span>(<span class="ident">unix</span>, <span class="ident">storage</span>),
     }
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">encode_sockaddr_v4</span>(<span class="ident">v4</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">linux_raw_sys::general::sockaddr_in</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">encode_sockaddr_v4</span>(<span class="ident">v4</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV4</span>) -&gt; <span class="ident">linux_raw_sys::general::sockaddr_in</span> {
     <span class="ident">linux_raw_sys::general::sockaddr_in</span> {
         <span class="ident">sin_family</span>: <span class="ident">linux_raw_sys::general::AF_INET</span> <span class="kw">as</span> <span class="kw">_</span>,
         <span class="ident">sin_port</span>: <span class="ident">u16::to_be</span>(<span class="ident">v4</span>.<span class="ident">port</span>()),
@@ -98,13 +98,13 @@
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr_v4</span>(<span class="ident">v4</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV4</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr_v4</span>(<span class="ident">v4</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV4</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">encode_sockaddr_v4</span>(<span class="ident">v4</span>);
     <span class="ident">std::ptr::write</span>(<span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>(), <span class="ident">encoded</span>);
     <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in</span><span class="op">&gt;</span>()
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">encode_sockaddr_v6</span>(<span class="ident">v6</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV6</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">linux_raw_sys::general::sockaddr_in6</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">encode_sockaddr_v6</span>(<span class="ident">v6</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV6</span>) -&gt; <span class="ident">linux_raw_sys::general::sockaddr_in6</span> {
     <span class="ident">linux_raw_sys::general::sockaddr_in6</span> {
         <span class="ident">sin6_family</span>: <span class="ident">linux_raw_sys::general::AF_INET6</span> <span class="kw">as</span> <span class="kw">_</span>,
         <span class="ident">sin6_port</span>: <span class="ident">u16::to_be</span>(<span class="ident">v6</span>.<span class="ident">port</span>()),
@@ -118,7 +118,7 @@
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr_v6</span>(<span class="ident">v6</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV6</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr_v6</span>(<span class="ident">v6</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrV6</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">encode_sockaddr_v6</span>(<span class="ident">v6</span>);
     <span class="ident">std::ptr::write</span>(<span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>(), <span class="ident">encoded</span>);
     <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">linux_raw_sys::general::sockaddr_in6</span><span class="op">&gt;</span>()
@@ -126,7 +126,7 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">encode_sockaddr_unix</span>(
     <span class="ident">unix</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrUnix</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">linux_raw_sys::general::sockaddr_un</span> {
+) -&gt; <span class="ident">linux_raw_sys::general::sockaddr_un</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">linux_raw_sys::general::sockaddr_un</span> {
         <span class="ident">sun_family</span>: <span class="ident">linux_raw_sys::general::AF_UNIX</span> <span class="kw">as</span> <span class="kw">_</span>,
         <span class="ident">sun_path</span>: [<span class="number">0</span>; <span class="number">108_usize</span>],
@@ -139,7 +139,7 @@
     <span class="ident">encoded</span>
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr_unix</span>(<span class="ident">unix</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrUnix</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_sockaddr_unix</span>(<span class="ident">unix</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddrUnix</span>, <span class="ident">storage</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">SocketAddrStorage</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">let</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">encode_sockaddr_unix</span>(<span class="ident">unix</span>);
     <span class="ident">std::ptr::write</span>(<span class="ident">storage</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>(), <span class="ident">encoded</span>);
     <span class="ident"><span class="kw">super</span>::offsetof_sun_path</span>() <span class="op">+</span> <span class="ident">unix</span>.<span class="ident">path</span>().<span class="ident">to_bytes</span>().<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>

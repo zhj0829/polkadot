@@ -537,13 +537,13 @@
 	<span class="kw">type</span> <span class="ident">Relayer</span>: <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">PartialEq</span>;
 
 	<span class="doccomment">/// Lane id.</span>
-	<span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LaneId</span>;
+	<span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">LaneId</span>;
 	<span class="doccomment">/// Return maximal number of unrewarded relayer entries in inbound lane.</span>
-	<span class="kw">fn</span> <span class="ident">max_unrewarded_relayer_entries</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span>;
+	<span class="kw">fn</span> <span class="ident">max_unrewarded_relayer_entries</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MessageNonce</span>;
 	<span class="doccomment">/// Return maximal number of unconfirmed messages in inbound lane.</span>
-	<span class="kw">fn</span> <span class="ident">max_unconfirmed_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageNonce</span>;
+	<span class="kw">fn</span> <span class="ident">max_unconfirmed_messages</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MessageNonce</span>;
 	<span class="doccomment">/// Get lane data from the storage.</span>
-	<span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Relayer</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Relayer</span><span class="op">&gt;</span>;
 	<span class="doccomment">/// Update lane data in the storage.</span>
 	<span class="kw">fn</span> <span class="ident">set_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="ident">InboundLaneData</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Relayer</span><span class="op">&gt;</span>);
 }
@@ -571,7 +571,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">InboundLaneStorage</span><span class="op">&gt;</span> <span class="ident">InboundLane</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Create new inbound lane backed by given storage.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">storage</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">storage</span>: <span class="ident">S</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">InboundLane</span> { <span class="ident">storage</span> }
 	}
 
@@ -579,7 +579,7 @@
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">receive_state_update</span>(
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">outbound_lane_data</span>: <span class="ident">OutboundLaneData</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageNonce</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MessageNonce</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">data</span>();
 		<span class="kw">let</span> <span class="ident">last_delivered_nonce</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">last_delivered_nonce</span>();
 
@@ -606,14 +606,14 @@
 		<span class="comment">// Note: There will be max. 1 record to update as we don&#39;t allow messages from relayers to</span>
 		<span class="comment">// overlap.</span>
 		<span class="kw">match</span> <span class="ident">data</span>.<span class="ident">relayers</span>.<span class="ident">front_mut</span>() {
-			<span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">messages</span>.<span class="ident">begin</span> <span class="op">&lt;</span> <span class="ident">new_confirmed_nonce</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">messages</span>.<span class="ident">begin</span> <span class="op">&lt;</span> <span class="ident">new_confirmed_nonce</span> =&gt; {
 				<span class="ident">entry</span>.<span class="ident">messages</span>.<span class="ident">dispatch_results</span> <span class="op">=</span> <span class="ident">entry</span>
 					.<span class="ident">messages</span>
 					.<span class="ident">dispatch_results</span>
 					.<span class="ident">split_off</span>((<span class="ident">new_confirmed_nonce</span> <span class="op">+</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">entry</span>.<span class="ident">messages</span>.<span class="ident">begin</span>) <span class="kw">as</span> <span class="kw">_</span>);
 				<span class="ident">entry</span>.<span class="ident">messages</span>.<span class="ident">begin</span> <span class="op">=</span> <span class="ident">new_confirmed_nonce</span> <span class="op">+</span> <span class="number">1</span>;
 			},
-			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {},
+			<span class="kw">_</span> =&gt; {},
 		}
 
 		<span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">set_data</span>(<span class="ident">data</span>);
@@ -627,9 +627,9 @@
 		<span class="ident">relayer_at_this_chain</span>: <span class="kw-2">&amp;</span><span class="ident">AccountId</span>,
 		<span class="ident">nonce</span>: <span class="ident">MessageNonce</span>,
 		<span class="ident">message_data</span>: <span class="ident">DispatchMessageData</span><span class="op">&lt;</span><span class="ident">P::DispatchPayload</span>, <span class="ident">S::MessageFee</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ReceivalResult</span> {
+	) -&gt; <span class="ident">ReceivalResult</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">storage</span>.<span class="ident">data</span>();
-		<span class="kw">let</span> <span class="ident">is_correct_message</span> <span class="op">=</span> <span class="ident">nonce</span> <span class="op">=</span><span class="op">=</span> <span class="ident">data</span>.<span class="ident">last_delivered_nonce</span>() <span class="op">+</span> <span class="number">1</span>;
+		<span class="kw">let</span> <span class="ident">is_correct_message</span> <span class="op">=</span> <span class="ident">nonce</span> <span class="op">==</span> <span class="ident">data</span>.<span class="ident">last_delivered_nonce</span>() <span class="op">+</span> <span class="number">1</span>;
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">is_correct_message</span> {
 			<span class="kw">return</span> <span class="ident">ReceivalResult::InvalidNonce</span>
 		}
@@ -656,11 +656,11 @@
 
 		<span class="comment">// now let&#39;s update inbound lane storage</span>
 		<span class="kw">let</span> <span class="ident">push_new</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">relayers</span>.<span class="ident">back_mut</span>() {
-			<span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">relayer</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">relayer_at_bridged_chain</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">relayer</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">relayer_at_bridged_chain</span> =&gt; {
 				<span class="ident">entry</span>.<span class="ident">messages</span>.<span class="ident">note_dispatched_message</span>(<span class="ident">dispatch_result</span>.<span class="ident">dispatch_result</span>);
 				<span class="bool-val">false</span>
 			},
-			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+			<span class="kw">_</span> =&gt; <span class="bool-val">true</span>,
 		};
 		<span class="kw">if</span> <span class="ident">push_new</span> {
 			<span class="ident">data</span>.<span class="ident">relayers</span>.<span class="ident">push_back</span>(<span class="ident">UnrewardedRelayer</span> {

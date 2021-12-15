@@ -161,7 +161,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="kw">in</span>:<span class="macro-nonterminal">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">output</span> <span class="op">=</span> [{ <span class="bool-val">true</span> }]
@@ -184,7 +184,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="kw">in</span>:<span class="macro-nonterminal">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">output</span> <span class="op">=</span> [{ <span class="bool-val">false</span> }]
@@ -207,7 +207,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ , }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is_comma</span> <span class="op">=</span> [{ <span class="bool-val">true</span> }]
@@ -217,7 +217,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">tt</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is_comma</span> <span class="op">=</span> [{ <span class="bool-val">false</span> }]
@@ -243,7 +243,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ident</span>:<span class="ident">ident</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is_ident</span> <span class="op">=</span> [{ <span class="bool-val">true</span> }]
@@ -253,7 +253,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">tt</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is_ident</span> <span class="op">=</span> [{ <span class="bool-val">false</span> }]
@@ -277,7 +277,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime</span>:<span class="ident">lifetime</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is_lifetime</span> <span class="op">=</span> [{ <span class="bool-val">true</span> }]
@@ -287,7 +287,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">tt</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">is_lifetime</span> <span class="op">=</span> [{ <span class="bool-val">false</span> }]

@@ -66,7 +66,7 @@
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">AuthorityDiscoveryId</span>, <span class="ident">ValidatorId</span>};
 
 <span class="doccomment">/// Get mock keystore with `Ferdie` key.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_ferdie_keystore</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SyncCryptoStorePtr</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_ferdie_keystore</span>() -&gt; <span class="ident">SyncCryptoStorePtr</span> {
 	<span class="kw">let</span> <span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">LocalKeystore::in_memory</span>());
 	<span class="ident">SyncCryptoStore::sr25519_generate_new</span>(
 		<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">keystore</span>,

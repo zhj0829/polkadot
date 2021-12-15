@@ -52,23 +52,23 @@
 <span class="kw">impl</span> <span class="ident">LocalVars</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">put</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="ident">Json</span>) {
         <span class="kw">match</span> <span class="ident">key</span> {
-            <span class="string">&quot;first&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">first</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
-            <span class="string">&quot;last&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">last</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
-            <span class="string">&quot;index&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
-            <span class="string">&quot;key&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">key</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="string">&quot;first&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">first</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
+            <span class="string">&quot;last&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">last</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
+            <span class="string">&quot;index&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">index</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
+            <span class="string">&quot;key&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">key</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>),
+            <span class="kw">_</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">extra</span>.<span class="ident">insert</span>(<span class="ident">key</span>.<span class="ident">to_owned</span>(), <span class="ident">value</span>);
             }
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Json</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Json</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">key</span> {
-            <span class="string">&quot;first&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">first</span>.<span class="ident">as_ref</span>(),
-            <span class="string">&quot;last&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">last</span>.<span class="ident">as_ref</span>(),
-            <span class="string">&quot;index&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">index</span>.<span class="ident">as_ref</span>(),
-            <span class="string">&quot;key&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">extra</span>.<span class="ident">get</span>(<span class="ident">key</span>),
+            <span class="string">&quot;first&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">first</span>.<span class="ident">as_ref</span>(),
+            <span class="string">&quot;last&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">last</span>.<span class="ident">as_ref</span>(),
+            <span class="string">&quot;index&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">index</span>.<span class="ident">as_ref</span>(),
+            <span class="string">&quot;key&quot;</span> =&gt; <span class="self">self</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(),
+            <span class="kw">_</span> =&gt; <span class="self">self</span>.<span class="ident">extra</span>.<span class="ident">get</span>(<span class="ident">key</span>),
         }
     }
 }

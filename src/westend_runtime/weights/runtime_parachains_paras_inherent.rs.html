@@ -240,7 +240,7 @@
 	<span class="comment">// Storage: ParaInherent OnChainVotes (r:0 w:1)</span>
 	<span class="comment">// Storage: Hrmp HrmpWatermarks (r:0 w:1)</span>
 	<span class="comment">// Storage: Paras Heads (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">enter_variable_disputes</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">enter_variable_disputes</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">199_341_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 2_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">312_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -272,7 +272,7 @@
 	<span class="comment">// Storage: ParaInherent OnChainVotes (r:0 w:1)</span>
 	<span class="comment">// Storage: Hrmp HrmpWatermarks (r:0 w:1)</span>
 	<span class="comment">// Storage: Paras Heads (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">enter_bitfields</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">enter_bitfields</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">241_955_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">22</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">15</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -304,7 +304,7 @@
 	<span class="comment">// Storage: ParaInherent OnChainVotes (r:0 w:1)</span>
 	<span class="comment">// Storage: Hrmp HrmpWatermarks (r:0 w:1)</span>
 	<span class="comment">// Storage: Paras Heads (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">enter_backed_candidates_variable</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">enter_backed_candidates_variable</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">312_340_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 25_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">49_112_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -338,7 +338,7 @@
 	<span class="comment">// Storage: ParaInherent OnChainVotes (r:0 w:1)</span>
 	<span class="comment">// Storage: Hrmp HrmpWatermarks (r:0 w:1)</span>
 	<span class="comment">// Storage: Paras Heads (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">enter_backed_candidate_code_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">enter_backed_candidate_code_upgrade</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">42_008_483_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">25</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">14</span> <span class="kw">as</span> <span class="ident">Weight</span>))

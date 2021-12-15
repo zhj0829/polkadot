@@ -212,17 +212,17 @@
 
 	<span class="kw">use</span> <span class="ident">pallet_bags_list_remote_tests</span>::<span class="kw-2">*</span>;
 	<span class="kw">match</span> <span class="ident">options</span>.<span class="ident">runtime</span> {
-		<span class="ident">Runtime::Polkadot</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sp_core::crypto::set_default_ss58_version</span>(
+		<span class="ident">Runtime::Polkadot</span> =&gt; <span class="ident">sp_core::crypto::set_default_ss58_version</span>(
 			<span class="op">&lt;</span><span class="ident">polkadot_runtime::Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::SS58Prefix::get</span>()
 				.<span class="ident">try_into</span>()
 				.<span class="ident">unwrap</span>(),
 		),
-		<span class="ident">Runtime::Kusama</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sp_core::crypto::set_default_ss58_version</span>(
+		<span class="ident">Runtime::Kusama</span> =&gt; <span class="ident">sp_core::crypto::set_default_ss58_version</span>(
 			<span class="op">&lt;</span><span class="ident">kusama_runtime::Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::SS58Prefix::get</span>()
 				.<span class="ident">try_into</span>()
 				.<span class="ident">unwrap</span>(),
 		),
-		<span class="ident">Runtime::Westend</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sp_core::crypto::set_default_ss58_version</span>(
+		<span class="ident">Runtime::Westend</span> =&gt; <span class="ident">sp_core::crypto::set_default_ss58_version</span>(
 			<span class="op">&lt;</span><span class="ident">westend_runtime::Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::SS58Prefix::get</span>()
 				.<span class="ident">try_into</span>()
 				.<span class="ident">unwrap</span>(),
@@ -230,17 +230,17 @@
 	};
 
 	<span class="kw">match</span> (<span class="ident">options</span>.<span class="ident">runtime</span>, <span class="ident">options</span>.<span class="ident">command</span>) {
-		(<span class="ident">Runtime::Kusama</span>, <span class="ident">Command::CheckMigration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Kusama</span>, <span class="ident">Command::CheckMigration</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">kusama_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">kusama_runtime_constants::currency::UNITS</span>;
 			<span class="ident">migration::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">UNITS</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="string">&quot;KSM&quot;</span>, <span class="ident">options</span>.<span class="ident">uri</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		},
-		(<span class="ident">Runtime::Kusama</span>, <span class="ident">Command::SanityCheck</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Kusama</span>, <span class="ident">Command::SanityCheck</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">kusama_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">kusama_runtime_constants::currency::UNITS</span>;
 			<span class="ident">sanity_check::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">UNITS</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="string">&quot;KSM&quot;</span>, <span class="ident">options</span>.<span class="ident">uri</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		},
-		(<span class="ident">Runtime::Kusama</span>, <span class="ident">Command::Snapshot</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Kusama</span>, <span class="ident">Command::Snapshot</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">kusama_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">kusama_runtime_constants::currency::UNITS</span>;
 			<span class="ident">snapshot::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(
@@ -251,17 +251,17 @@
 			.<span class="kw">await</span>;
 		},
 
-		(<span class="ident">Runtime::Westend</span>, <span class="ident">Command::CheckMigration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Westend</span>, <span class="ident">Command::CheckMigration</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">westend_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">westend_runtime_constants::currency::UNITS</span>;
 			<span class="ident">migration::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">UNITS</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="string">&quot;WND&quot;</span>, <span class="ident">options</span>.<span class="ident">uri</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		},
-		(<span class="ident">Runtime::Westend</span>, <span class="ident">Command::SanityCheck</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Westend</span>, <span class="ident">Command::SanityCheck</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">westend_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">westend_runtime_constants::currency::UNITS</span>;
 			<span class="ident">sanity_check::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">UNITS</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="string">&quot;WND&quot;</span>, <span class="ident">options</span>.<span class="ident">uri</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		},
-		(<span class="ident">Runtime::Westend</span>, <span class="ident">Command::Snapshot</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Westend</span>, <span class="ident">Command::Snapshot</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">westend_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">westend_runtime_constants::currency::UNITS</span>;
 			<span class="ident">snapshot::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(
@@ -272,17 +272,17 @@
 			.<span class="kw">await</span>;
 		},
 
-		(<span class="ident">Runtime::Polkadot</span>, <span class="ident">Command::CheckMigration</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Polkadot</span>, <span class="ident">Command::CheckMigration</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">polkadot_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">polkadot_runtime_constants::currency::UNITS</span>;
 			<span class="ident">migration::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">UNITS</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="string">&quot;DOT&quot;</span>, <span class="ident">options</span>.<span class="ident">uri</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		},
-		(<span class="ident">Runtime::Polkadot</span>, <span class="ident">Command::SanityCheck</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Polkadot</span>, <span class="ident">Command::SanityCheck</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">polkadot_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">polkadot_runtime_constants::currency::UNITS</span>;
 			<span class="ident">sanity_check::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">UNITS</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="string">&quot;DOT&quot;</span>, <span class="ident">options</span>.<span class="ident">uri</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		},
-		(<span class="ident">Runtime::Polkadot</span>, <span class="ident">Command::Snapshot</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		(<span class="ident">Runtime::Polkadot</span>, <span class="ident">Command::Snapshot</span>) =&gt; {
 			<span class="kw">use</span> <span class="ident">polkadot_runtime</span>::{<span class="ident">Block</span>, <span class="ident">Runtime</span>};
 			<span class="kw">use</span> <span class="ident">polkadot_runtime_constants::currency::UNITS</span>;
 			<span class="ident">snapshot::execute</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(

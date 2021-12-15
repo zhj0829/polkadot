@@ -38,7 +38,7 @@
     <span class="ident">oflags</span>: <span class="ident">OFlags</span>,
     <span class="ident">mode</span>: <span class="ident">Mode</span>,
     <span class="ident">resolve</span>: <span class="ident">ResolveFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::openat2</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">oflags</span>, <span class="ident">mode</span>, <span class="ident">resolve</span>))
 }

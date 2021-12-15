@@ -2002,7 +2002,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">sp_runtime::BuildStorage</span> <span class="kw">for</span> <span class="ident">RococoGenesisExt</span> {
-	<span class="kw">fn</span> <span class="ident">assimilate_storage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">storage</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sp_core::storage::Storage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">assimilate_storage</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">storage</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sp_core::storage::Storage</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="ident">sp_state_machine::BasicExternalities::execute_with_storage</span>(<span class="ident">storage</span>, <span class="op">|</span><span class="op">|</span> {
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">length</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">session_length_in_blocks</span>.<span class="ident">as_ref</span>() {
 				<span class="ident">rococo_runtime_constants::time::EpochDurationInBlocks::set</span>(<span class="ident">length</span>);
@@ -2012,24 +2012,24 @@
 	}
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="ident">PolkadotChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/polkadot.json&quot;</span>)[..])
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="ident">KusamaChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/kusama.json&quot;</span>)[..])
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="ident">WestendChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/westend.json&quot;</span>)[..])
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="ident">RococoChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/rococo.json&quot;</span>)[..])
 }
 
 <span class="doccomment">/// This is a temporary testnet that uses the same runtime as rococo.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="ident">RococoChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/wococo.json&quot;</span>)[..])
 }
 
@@ -2041,7 +2041,7 @@
 	<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>
 ))]</span>
 <span class="kw">fn</span> <span class="ident">default_parachains_host_configuration</span>(
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span><span class="op">&lt;</span>
+) -&gt; <span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span><span class="op">&lt;</span>
 	<span class="ident">polkadot_primitives::v1::BlockNumber</span>,
 <span class="op">&gt;</span> {
 	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">MAX_CODE_SIZE</span>, <span class="ident">MAX_POV_SIZE</span>};
@@ -2090,7 +2090,7 @@
 	<span class="ident">para_validator</span>: <span class="ident">ValidatorId</span>,
 	<span class="ident">para_assignment</span>: <span class="ident">AssignmentId</span>,
 	<span class="ident">authority_discovery</span>: <span class="ident">AuthorityDiscoveryId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot::SessionKeys</span> {
+) -&gt; <span class="ident">polkadot::SessionKeys</span> {
 	<span class="ident">polkadot::SessionKeys</span> {
 		<span class="ident">babe</span>,
 		<span class="ident">grandpa</span>,
@@ -2109,7 +2109,7 @@
 	<span class="ident">para_validator</span>: <span class="ident">ValidatorId</span>,
 	<span class="ident">para_assignment</span>: <span class="ident">AssignmentId</span>,
 	<span class="ident">authority_discovery</span>: <span class="ident">AuthorityDiscoveryId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">kusama::SessionKeys</span> {
+) -&gt; <span class="ident">kusama::SessionKeys</span> {
 	<span class="ident">kusama::SessionKeys</span> {
 		<span class="ident">babe</span>,
 		<span class="ident">grandpa</span>,
@@ -2128,7 +2128,7 @@
 	<span class="ident">para_validator</span>: <span class="ident">ValidatorId</span>,
 	<span class="ident">para_assignment</span>: <span class="ident">AssignmentId</span>,
 	<span class="ident">authority_discovery</span>: <span class="ident">AuthorityDiscoveryId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westend::SessionKeys</span> {
+) -&gt; <span class="ident">westend::SessionKeys</span> {
 	<span class="ident">westend::SessionKeys</span> {
 		<span class="ident">babe</span>,
 		<span class="ident">grandpa</span>,
@@ -2148,7 +2148,7 @@
 	<span class="ident">para_assignment</span>: <span class="ident">AssignmentId</span>,
 	<span class="ident">authority_discovery</span>: <span class="ident">AuthorityDiscoveryId</span>,
 	<span class="ident">beefy</span>: <span class="ident">BeefyId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_runtime::SessionKeys</span> {
+) -&gt; <span class="ident">rococo_runtime::SessionKeys</span> {
 	<span class="ident">rococo_runtime::SessionKeys</span> {
 		<span class="ident">babe</span>,
 		<span class="ident">grandpa</span>,
@@ -2161,7 +2161,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">polkadot_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">polkadot_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">polkadot::GenesisConfig</span> {
 	<span class="comment">// subkey inspect &quot;$SECRET&quot;</span>
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
@@ -2248,7 +2248,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">westend_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westend::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">westend_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">westend::GenesisConfig</span> {
 	<span class="kw">use</span> <span class="ident">hex_literal::hex</span>;
 	<span class="kw">use</span> <span class="ident">sp_core::crypto::UncheckedInto</span>;
 
@@ -2432,7 +2432,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">kusama_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">kusama::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">kusama_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">kusama::GenesisConfig</span> {
 	<span class="kw">use</span> <span class="ident">hex_literal::hex</span>;
 	<span class="kw">use</span> <span class="ident">sp_core::crypto::UncheckedInto</span>;
 
@@ -2628,7 +2628,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">rococo_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_runtime::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">rococo_staging_testnet_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
 	<span class="kw">use</span> <span class="ident">hex_literal::hex</span>;
 	<span class="kw">use</span> <span class="ident">sp_core::crypto::UncheckedInto</span>;
 
@@ -2943,7 +2943,7 @@
 
 <span class="doccomment">/// Polkadot staging testnet config.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_staging_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_staging_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">polkadot::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Polkadot development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">boot_nodes</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
@@ -2965,7 +2965,7 @@
 
 <span class="doccomment">/// Staging testnet config.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_staging_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_staging_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">kusama::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Kusama development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">boot_nodes</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
@@ -2987,7 +2987,7 @@
 
 <span class="doccomment">/// Westend staging testnet config.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_staging_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_staging_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">westend::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Westend development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">boot_nodes</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
@@ -3009,7 +3009,7 @@
 
 <span class="doccomment">/// Rococo staging testnet config.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_staging_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_staging_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Rococo development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">boot_nodes</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
@@ -3033,14 +3033,14 @@
 }
 
 <span class="doccomment">/// Helper function to generate a crypto pair from seed</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span> {
 	<span class="ident">TPublic::Pair::from_string</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;//{}&quot;</span>, <span class="ident">seed</span>), <span class="prelude-val">None</span>)
 		.<span class="ident">expect</span>(<span class="string">&quot;static values are valid; qed&quot;</span>)
 		.<span class="ident">public</span>()
 }
 
 <span class="doccomment">/// Helper function to generate an account ID from seed</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_account_id_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountId</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_account_id_from_seed</span><span class="op">&lt;</span><span class="ident">TPublic</span>: <span class="ident">Public</span><span class="op">&gt;</span>(<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">AccountId</span>
 <span class="kw">where</span>
 	<span class="ident">AccountPublic</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">TPublic::Pair</span> <span class="kw">as</span> <span class="ident">Pair</span><span class="op">&gt;</span><span class="ident">::Public</span><span class="op">&gt;</span>,
 {
@@ -3050,7 +3050,7 @@
 <span class="doccomment">/// Helper function to generate stash, controller and session key from seed</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_authority_keys_from_seed</span>(
 	<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (
+) -&gt; (
 	<span class="ident">AccountId</span>,
 	<span class="ident">AccountId</span>,
 	<span class="ident">BabeId</span>,
@@ -3068,7 +3068,7 @@
 <span class="doccomment">/// Helper function to generate stash, controller and session key from seed</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_authority_keys_from_seed_no_beefy</span>(
 	<span class="ident">seed</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (
+) -&gt; (
 	<span class="ident">AccountId</span>,
 	<span class="ident">AccountId</span>,
 	<span class="ident">BabeId</span>,
@@ -3090,7 +3090,7 @@
 	)
 }
 
-<span class="kw">fn</span> <span class="ident">testnet_accounts</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">testnet_accounts</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> {
 	<span class="macro">vec!</span>[
 		<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
 		<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Bob&quot;</span>),
@@ -3123,7 +3123,7 @@
 	)<span class="op">&gt;</span>,
 	<span class="ident">_root_key</span>: <span class="ident">AccountId</span>,
 	<span class="ident">endowed_accounts</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot::GenesisConfig</span> {
+) -&gt; <span class="ident">polkadot::GenesisConfig</span> {
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">endowed_accounts</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">testnet_accounts</span>);
 
 	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">DOT</span>;
@@ -3209,7 +3209,7 @@
 	)<span class="op">&gt;</span>,
 	<span class="ident">_root_key</span>: <span class="ident">AccountId</span>,
 	<span class="ident">endowed_accounts</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">kusama::GenesisConfig</span> {
+) -&gt; <span class="ident">kusama::GenesisConfig</span> {
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">endowed_accounts</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">testnet_accounts</span>);
 
 	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">KSM</span>;
@@ -3296,7 +3296,7 @@
 	)<span class="op">&gt;</span>,
 	<span class="ident">root_key</span>: <span class="ident">AccountId</span>,
 	<span class="ident">endowed_accounts</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westend::GenesisConfig</span> {
+) -&gt; <span class="ident">westend::GenesisConfig</span> {
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">endowed_accounts</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">testnet_accounts</span>);
 
 	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">DOT</span>;
@@ -3377,7 +3377,7 @@
 	)<span class="op">&gt;</span>,
 	<span class="ident">root_key</span>: <span class="ident">AccountId</span>,
 	<span class="ident">endowed_accounts</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_runtime::GenesisConfig</span> {
+) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">endowed_accounts</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">testnet_accounts</span>);
 
 	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">DOT</span>;
@@ -3452,7 +3452,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">polkadot_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">polkadot_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">polkadot::GenesisConfig</span> {
 	<span class="ident">polkadot_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[<span class="ident">get_authority_keys_from_seed_no_beefy</span>(<span class="string">&quot;Alice&quot;</span>)],
@@ -3462,7 +3462,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">kusama_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">kusama::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">kusama_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">kusama::GenesisConfig</span> {
 	<span class="ident">kusama_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[<span class="ident">get_authority_keys_from_seed_no_beefy</span>(<span class="string">&quot;Alice&quot;</span>)],
@@ -3472,7 +3472,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">westend_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westend::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">westend_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">westend::GenesisConfig</span> {
 	<span class="ident">westend_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[<span class="ident">get_authority_keys_from_seed_no_beefy</span>(<span class="string">&quot;Alice&quot;</span>)],
@@ -3482,7 +3482,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">rococo_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_runtime::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">rococo_development_config_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
 	<span class="ident">rococo_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[<span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Alice&quot;</span>)],
@@ -3493,7 +3493,7 @@
 
 <span class="doccomment">/// Polkadot development config (single validator Alice)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">polkadot::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Polkadot development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">PolkadotChainSpec::from_genesis</span>(
@@ -3511,7 +3511,7 @@
 
 <span class="doccomment">/// Kusama development config (single validator Alice)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">kusama::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Kusama development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">KusamaChainSpec::from_genesis</span>(
@@ -3529,7 +3529,7 @@
 
 <span class="doccomment">/// Westend development config (single validator Alice)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">westend::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Westend development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">WestendChainSpec::from_genesis</span>(
@@ -3547,7 +3547,7 @@
 
 <span class="doccomment">/// Rococo development config (single validator Alice)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Rococo development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">RococoChainSpec::from_genesis</span>(
@@ -3569,7 +3569,7 @@
 
 <span class="doccomment">/// Wococo development config (single validator Alice)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_development_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">const</span> <span class="ident">WOCOCO_DEV_PROTOCOL_ID</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;woco&quot;</span>;
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Wococo development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
@@ -3591,7 +3591,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">polkadot_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">polkadot_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">polkadot::GenesisConfig</span> {
 	<span class="ident">polkadot_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[
@@ -3605,7 +3605,7 @@
 
 <span class="doccomment">/// Polkadot local testnet config (multivalidator Alice + Bob)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_local_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">polkadot::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Polkadot development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">PolkadotChainSpec::from_genesis</span>(
@@ -3622,7 +3622,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">kusama_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">kusama::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">kusama_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">kusama::GenesisConfig</span> {
 	<span class="ident">kusama_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[
@@ -3636,7 +3636,7 @@
 
 <span class="doccomment">/// Kusama local testnet config (multivalidator Alice + Bob)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_local_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kusama_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">KusamaChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">kusama::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Kusama development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">KusamaChainSpec::from_genesis</span>(
@@ -3653,7 +3653,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">westend_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westend::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">westend_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">westend::GenesisConfig</span> {
 	<span class="ident">westend_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[
@@ -3667,7 +3667,7 @@
 
 <span class="doccomment">/// Westend local testnet config (multivalidator Alice + Bob)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_local_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">westend_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WestendChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">westend::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Westend development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">WestendChainSpec::from_genesis</span>(
@@ -3684,7 +3684,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">rococo_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_runtime::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">rococo_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
 	<span class="ident">rococo_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[<span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Alice&quot;</span>), <span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Bob&quot;</span>)],
@@ -3695,7 +3695,7 @@
 
 <span class="doccomment">/// Rococo local testnet config (multivalidator Alice + Bob)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_local_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Rococo development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">RococoChainSpec::from_genesis</span>(
@@ -3717,7 +3717,7 @@
 
 <span class="doccomment">/// Wococo is a temporary testnet that uses almost the same runtime as rococo.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">wococo_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rococo_runtime::GenesisConfig</span> {
+<span class="kw">fn</span> <span class="ident">wococo_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
 	<span class="ident">rococo_testnet_genesis</span>(
 		<span class="ident">wasm_binary</span>,
 		<span class="macro">vec!</span>[
@@ -3733,7 +3733,7 @@
 
 <span class="doccomment">/// Wococo local testnet config (multivalidator Alice + Bob + Charlie + Dave)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_local_testnet_config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Wococo development wasm not available&quot;</span>)<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">RococoChainSpec::from_genesis</span>(

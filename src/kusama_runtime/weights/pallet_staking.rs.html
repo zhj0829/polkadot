@@ -463,7 +463,7 @@
 	<span class="comment">// Storage: Staking HistoryDepth (r:1 w:0)</span>
 	<span class="comment">// Storage: Balances Locks (r:1 w:1)</span>
 	<span class="comment">// Storage: Staking Payee (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">bond</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">bond</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">66_934_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">4</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -473,7 +473,7 @@
 	<span class="comment">// Storage: Balances Locks (r:1 w:1)</span>
 	<span class="comment">// Storage: BagsList ListNodes (r:3 w:3)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">bond_extra</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">bond_extra</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">106_496_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">8</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">7</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -487,7 +487,7 @@
 	<span class="comment">// Storage: BagsList ListNodes (r:3 w:3)</span>
 	<span class="comment">// Storage: Staking Bonded (r:1 w:0)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">unbond</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">unbond</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">115_916_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">12</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">8</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -496,7 +496,7 @@
 	<span class="comment">// Storage: Staking CurrentEra (r:1 w:0)</span>
 	<span class="comment">// Storage: Balances Locks (r:1 w:1)</span>
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">withdraw_unbonded_update</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">withdraw_unbonded_update</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">47_633_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">25_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -516,7 +516,7 @@
 	<span class="comment">// Storage: System Account (r:1 w:1)</span>
 	<span class="comment">// Storage: Balances Locks (r:1 w:1)</span>
 	<span class="comment">// Storage: Staking Payee (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">withdraw_unbonded_kill</span>(<span class="ident">_s</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">withdraw_unbonded_kill</span>(<span class="ident">_s</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">94_253_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">13</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">11</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -531,14 +531,14 @@
 	<span class="comment">// Storage: BagsList ListBags (r:1 w:1)</span>
 	<span class="comment">// Storage: BagsList CounterForListNodes (r:1 w:1)</span>
 	<span class="comment">// Storage: Staking CounterForValidators (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">validate</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">validate</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">63_555_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">11</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">8</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking Ledger (r:1 w:0)</span>
 	<span class="comment">// Storage: Staking Nominators (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">kick</span>(<span class="ident">k</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">kick</span>(<span class="ident">k</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">9_518_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 11_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">16_662_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">k</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -557,7 +557,7 @@
 	<span class="comment">// Storage: BagsList ListNodes (r:2 w:2)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:1 w:1)</span>
 	<span class="comment">// Storage: BagsList CounterForListNodes (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">nominate</span>(<span class="ident">n</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">nominate</span>(<span class="ident">n</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">74_049_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 16_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">5_118_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">n</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -572,47 +572,47 @@
 	<span class="comment">// Storage: BagsList ListNodes (r:2 w:2)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:1 w:1)</span>
 	<span class="comment">// Storage: BagsList CounterForListNodes (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">chill</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">chill</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">62_972_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">8</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking Ledger (r:1 w:0)</span>
 	<span class="comment">// Storage: Staking Payee (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_payee</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_payee</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">10_848_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking Bonded (r:1 w:1)</span>
 	<span class="comment">// Storage: Staking Ledger (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">set_controller</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_controller</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">23_892_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">3</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking ValidatorCount (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_validator_count</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_validator_count</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">2_279_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking ForceEra (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">force_no_eras</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">force_no_eras</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">2_614_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking ForceEra (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">force_new_era</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">force_new_era</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">2_592_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking ForceEra (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">force_new_era_always</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">force_new_era_always</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">2_572_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 	<span class="comment">// Storage: Staking Invulnerables (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_invulnerables</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_invulnerables</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">2_700_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 0</span>
 			.<span class="ident">saturating_add</span>((<span class="number">57_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -631,7 +631,7 @@
 	<span class="comment">// Storage: Staking Ledger (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking Payee (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking SpanSlash (r:0 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">force_unstake</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">force_unstake</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">90_113_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 1_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">2_230_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -640,7 +640,7 @@
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>((<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="ident">Weight</span>)))
 	}
 	<span class="comment">// Storage: Staking UnappliedSlashes (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">cancel_deferred_slash</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">cancel_deferred_slash</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">2_809_466_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 181_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">16_204_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -657,7 +657,7 @@
 	<span class="comment">// Storage: Staking ErasValidatorPrefs (r:1 w:0)</span>
 	<span class="comment">// Storage: Staking Payee (r:2 w:0)</span>
 	<span class="comment">// Storage: System Account (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">payout_stakers_dead_controller</span>(<span class="ident">n</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">payout_stakers_dead_controller</span>(<span class="ident">n</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">113_536_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 16_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">45_494_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">n</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -677,7 +677,7 @@
 	<span class="comment">// Storage: Staking Payee (r:2 w:0)</span>
 	<span class="comment">// Storage: System Account (r:2 w:2)</span>
 	<span class="comment">// Storage: Balances Locks (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">payout_stakers_alive_staked</span>(<span class="ident">n</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">payout_stakers_alive_staked</span>(<span class="ident">n</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">134_960_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 25_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">58_130_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">n</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -692,7 +692,7 @@
 	<span class="comment">// Storage: BagsList ListNodes (r:3 w:3)</span>
 	<span class="comment">// Storage: Staking Bonded (r:1 w:0)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">rebond</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">rebond</span>(<span class="ident">l</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">103_717_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 4_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">65_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">l</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -708,7 +708,7 @@
 	<span class="comment">// Storage: Staking ErasStakers (r:0 w:2)</span>
 	<span class="comment">// Storage: Staking ErasTotalStake (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking ErasStartSessionIndex (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_history_depth</span>(<span class="ident">e</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_history_depth</span>(<span class="ident">e</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 69_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">31_059_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">e</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -729,7 +729,7 @@
 	<span class="comment">// Storage: Staking Ledger (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking Payee (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking SpanSlash (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">reap_stash</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">reap_stash</span>(<span class="ident">s</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">93_312_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 1_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">2_226_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -754,7 +754,7 @@
 	<span class="comment">// Storage: Staking ErasStakers (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking ErasTotalStake (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking ErasStartSessionIndex (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">new_era</span>(<span class="ident">v</span>: <span class="ident">u32</span>, <span class="ident">n</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">new_era</span>(<span class="ident">v</span>: <span class="ident">u32</span>, <span class="ident">n</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 724_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">300_240_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -774,7 +774,7 @@
 	<span class="comment">// Storage: Staking SlashingSpans (r:21 w:0)</span>
 	<span class="comment">// Storage: Staking Nominators (r:1001 w:0)</span>
 	<span class="comment">// Storage: System BlockWeight (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">get_npos_voters</span>(<span class="ident">v</span>: <span class="ident">u32</span>, <span class="ident">n</span>: <span class="ident">u32</span>, <span class="ident">s</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">get_npos_voters</span>(<span class="ident">v</span>: <span class="ident">u32</span>, <span class="ident">n</span>: <span class="ident">u32</span>, <span class="ident">s</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 83_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">23_656_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -790,7 +790,7 @@
 	}
 	<span class="comment">// Storage: Staking Validators (r:501 w:0)</span>
 	<span class="comment">// Storage: System BlockWeight (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">get_npos_targets</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">get_npos_targets</span>(<span class="ident">v</span>: <span class="ident">u32</span>, ) -&gt; <span class="ident">Weight</span> {
 		(<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			<span class="comment">// Standard Error: 27_000</span>
 			.<span class="ident">saturating_add</span>((<span class="number">9_398_000</span> <span class="kw">as</span> <span class="ident">Weight</span>).<span class="ident">saturating_mul</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -804,7 +804,7 @@
 	<span class="comment">// Storage: Staking MaxNominatorsCount (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking MinNominatorBond (r:0 w:1)</span>
 	<span class="comment">// Storage: Staking MinCommission (r:0 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">set_staking_configs</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">set_staking_configs</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">5_996_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
@@ -818,7 +818,7 @@
 	<span class="comment">// Storage: BagsList ListNodes (r:2 w:2)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:1 w:1)</span>
 	<span class="comment">// Storage: BagsList CounterForListNodes (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">chill_other</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">chill_other</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">76_568_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">11</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))

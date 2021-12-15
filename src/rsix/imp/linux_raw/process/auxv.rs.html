@@ -183,40 +183,40 @@
 <span class="kw">use</span> <span class="ident">std::slice</span>;
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">page_size</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">page_size</span>() -&gt; <span class="ident">usize</span> {
     <span class="ident">auxv</span>().<span class="ident">page_size</span>
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">linux_hwcap</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="ident">usize</span>) {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">linux_hwcap</span>() -&gt; (<span class="ident">usize</span>, <span class="ident">usize</span>) {
     <span class="kw">let</span> <span class="ident">auxv</span> <span class="op">=</span> <span class="ident">auxv</span>();
     (<span class="ident">auxv</span>.<span class="ident">hwcap</span>, <span class="ident">auxv</span>.<span class="ident">hwcap2</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">linux_execfn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">linux_execfn</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span> {
     <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">auxv</span>().<span class="ident">execfn</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_char</span>) }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">exe_phdrs</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>, <span class="ident">usize</span>) {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">exe_phdrs</span>() -&gt; (<span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>, <span class="ident">usize</span>) {
     <span class="kw">let</span> <span class="ident">auxv</span> <span class="op">=</span> <span class="ident">auxv</span>();
     (<span class="ident">auxv</span>.<span class="ident">phdr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span>, <span class="ident">auxv</span>.<span class="ident">phnum</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>) <span class="kw">fn</span> <span class="ident">exe_phdrs_slice</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">Elf_Phdr</span>] {
+<span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>) <span class="kw">fn</span> <span class="ident">exe_phdrs_slice</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">Elf_Phdr</span>] {
     <span class="kw">let</span> (<span class="ident">ptr</span>, <span class="ident">len</span>) <span class="op">=</span> <span class="ident">exe_phdrs</span>();
     <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Elf_Phdr</span>, <span class="ident">len</span>) }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>) <span class="kw">fn</span> <span class="ident">sysinfo_ehdr</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>) <span class="kw">fn</span> <span class="ident">sysinfo_ehdr</span>() -&gt; <span class="ident">usize</span> {
     <span class="ident">auxv</span>().<span class="ident">sysinfo_ehdr</span>
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">auxv</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Auxv</span> {
+<span class="kw">fn</span> <span class="ident">auxv</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Auxv</span> {
     <span class="comment">// Safety: `AUXV` is initialized from the `.init_array` so it&#39;s ready</span>
     <span class="comment">// before any user code calls this.</span>
     <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="ident">AUXV</span> }
@@ -303,16 +303,16 @@
     <span class="kw">loop</span> {
         <span class="kw">let</span> <span class="ident">Elf_auxv_t</span> { <span class="ident">a_type</span>, <span class="ident">a_val</span> } <span class="op">=</span> <span class="kw-2">*</span><span class="ident">auxp</span>;
         <span class="kw">match</span> <span class="ident">a_type</span> <span class="kw">as</span> <span class="kw">_</span> {
-            <span class="ident">AT_PAGESZ</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">page_size</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_HWCAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">hwcap</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_HWCAP2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">hwcap2</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_SYSINFO_EHDR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">sysinfo_ehdr</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_PHDR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">phdr</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_PHNUM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">phnum</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_PHENT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">a_val</span>, <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Elf_Phdr</span><span class="op">&gt;</span>()),
-            <span class="ident">AT_EXECFN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AUXV</span>.<span class="ident">execfn</span> <span class="op">=</span> <span class="ident">a_val</span>,
-            <span class="ident">AT_NULL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
+            <span class="ident">AT_PAGESZ</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">page_size</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_HWCAP</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">hwcap</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_HWCAP2</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">hwcap2</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_SYSINFO_EHDR</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">sysinfo_ehdr</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_PHDR</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">phdr</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_PHNUM</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">phnum</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_PHENT</span> =&gt; <span class="macro">assert_eq!</span>(<span class="ident">a_val</span>, <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Elf_Phdr</span><span class="op">&gt;</span>()),
+            <span class="ident">AT_EXECFN</span> =&gt; <span class="ident">AUXV</span>.<span class="ident">execfn</span> <span class="op">=</span> <span class="ident">a_val</span>,
+            <span class="ident">AT_NULL</span> =&gt; <span class="kw">break</span>,
+            <span class="kw">_</span> =&gt; (),
         }
         <span class="ident">auxp</span> <span class="op">=</span> <span class="ident">auxp</span>.<span class="ident">add</span>(<span class="number">1</span>);
     }

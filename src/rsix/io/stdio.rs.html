@@ -231,7 +231,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/stdin.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/stdin.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stdin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stdin</span>() -&gt; <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="ident">BorrowedFd::borrow_raw_fd</span>(<span class="ident">imp::io::STDIN_FILENO</span> <span class="kw">as</span> <span class="ident">RawFd</span>)
 }
 
@@ -260,7 +260,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/stdin.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/stdin.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">take_stdin</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFd</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">take_stdin</span>() -&gt; <span class="ident">OwnedFd</span> {
     <span class="ident">OwnedFd::from</span>(<span class="ident">io_lifetimes::OwnedFd::from_raw_fd</span>(
         <span class="ident">imp::io::STDIN_FILENO</span> <span class="kw">as</span> <span class="ident">RawFd</span>,
     ))
@@ -292,7 +292,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/stdout.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/stdout.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stdout</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stdout</span>() -&gt; <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="ident">BorrowedFd::borrow_raw_fd</span>(<span class="ident">imp::io::STDOUT_FILENO</span> <span class="kw">as</span> <span class="ident">RawFd</span>)
 }
 
@@ -321,7 +321,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/stdout.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/stdout.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">take_stdout</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFd</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">take_stdout</span>() -&gt; <span class="ident">OwnedFd</span> {
     <span class="ident">OwnedFd::from</span>(<span class="ident">io_lifetimes::OwnedFd::from_raw_fd</span>(
         <span class="ident">imp::io::STDOUT_FILENO</span> <span class="kw">as</span> <span class="ident">RawFd</span>,
     ))
@@ -352,7 +352,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/stderr.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/stderr.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stderr</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">stderr</span>() -&gt; <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="ident">BorrowedFd::borrow_raw_fd</span>(<span class="ident">imp::io::STDERR_FILENO</span> <span class="kw">as</span> <span class="ident">RawFd</span>)
 }
 
@@ -381,7 +381,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/stderr.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man3/stderr.3.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">take_stderr</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFd</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">take_stderr</span>() -&gt; <span class="ident">OwnedFd</span> {
     <span class="ident">OwnedFd::from</span>(<span class="ident">io_lifetimes::OwnedFd::from_raw_fd</span>(
         <span class="ident">imp::io::STDERR_FILENO</span> <span class="kw">as</span> <span class="ident">RawFd</span>,
     ))

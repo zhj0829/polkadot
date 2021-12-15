@@ -257,7 +257,7 @@
 	<span class="ident">CIDP</span>: <span class="ident">CreateInherentDataProviders</span><span class="op">&lt;</span><span class="ident">B</span>, ()<span class="op">&gt;</span>,
 {
 	<span class="kw">let</span> <span class="ident">future</span> <span class="op">=</span> <span class="kw">async</span> {
-		<span class="kw">if</span> <span class="ident">pool</span>.<span class="ident">status</span>().<span class="ident">ready</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">create_empty</span> {
+		<span class="kw">if</span> <span class="ident">pool</span>.<span class="ident">status</span>().<span class="ident">ready</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">create_empty</span> {
 			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EmptyTransactionPool</span>)
 		}
 
@@ -265,10 +265,10 @@
 		<span class="comment">// use the parent_hash supplied via `EngineCommand`</span>
 		<span class="comment">// or fetch the best_block.</span>
 		<span class="kw">let</span> <span class="ident">parent</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">parent_hash</span> {
-			<span class="prelude-val">Some</span>(<span class="ident">hash</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">client</span>
+			<span class="prelude-val">Some</span>(<span class="ident">hash</span>) =&gt; <span class="ident">client</span>
 				.<span class="ident">header</span>(<span class="ident">BlockId::Hash</span>(<span class="ident">hash</span>))<span class="question-mark">?</span>
 				.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Error::BlockNotFound</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">hash</span>)))<span class="question-mark">?</span>,
-			<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">select_chain</span>.<span class="ident">best_chain</span>().<span class="kw">await</span><span class="question-mark">?</span>,
+			<span class="prelude-val">None</span> =&gt; <span class="ident">select_chain</span>.<span class="ident">best_chain</span>().<span class="kw">await</span><span class="question-mark">?</span>,
 		};
 
 		<span class="kw">let</span> <span class="ident">inherent_data_providers</span> <span class="op">=</span> <span class="ident">create_inherent_data_providers</span>
@@ -300,7 +300,7 @@
 			.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">Error::StringError</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">err</span>)))
 			.<span class="kw">await</span><span class="question-mark">?</span>;
 
-		<span class="kw">if</span> <span class="ident">proposal</span>.<span class="ident">block</span>.<span class="ident">extrinsics</span>().<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">inherents_len</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">create_empty</span> {
+		<span class="kw">if</span> <span class="ident">proposal</span>.<span class="ident">block</span>.<span class="ident">extrinsics</span>().<span class="ident">len</span>() <span class="op">==</span> <span class="ident">inherents_len</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">create_empty</span> {
 			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EmptyTransactionPool</span>)
 		}
 
@@ -318,9 +318,9 @@
 		}
 
 		<span class="kw">match</span> <span class="ident">block_import</span>.<span class="ident">import_block</span>(<span class="ident">params</span>, <span class="ident">HashMap::new</span>()).<span class="kw">await</span><span class="question-mark">?</span> {
-			<span class="ident">ImportResult::Imported</span>(<span class="ident">aux</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">ImportResult::Imported</span>(<span class="ident">aux</span>) =&gt;
 				<span class="prelude-val">Ok</span>(<span class="ident">CreatedBlock</span> { <span class="ident">hash</span>: <span class="op">&lt;</span><span class="ident">B</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Header::hash</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>), <span class="ident">aux</span> }),
-			<span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">other</span>.<span class="ident">into</span>()),
+			<span class="ident">other</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">other</span>.<span class="ident">into</span>()),
 		}
 	};
 

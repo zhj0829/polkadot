@@ -181,21 +181,21 @@
 	<span class="kw">pub</span> <span class="ident">variant</span>: <span class="ident">NemesisVariant</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">run_cmd</span>(<span class="ident">run</span>: <span class="ident">RunCmd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cli</span> {
+<span class="kw">fn</span> <span class="ident">run_cmd</span>(<span class="ident">run</span>: <span class="ident">RunCmd</span>) -&gt; <span class="ident">Cli</span> {
 	<span class="ident">Cli</span> { <span class="ident">subcommand</span>: <span class="prelude-val">None</span>, <span class="ident">run</span> }
 }
 
 <span class="kw">impl</span> <span class="ident">MalusCli</span> {
 	<span class="doccomment">/// Launch a malus node.</span>
-	<span class="kw">fn</span> <span class="ident">launch</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">launch</span>(<span class="self">self</span>) -&gt; <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="self">self</span>.<span class="ident">variant</span> {
-			<span class="ident">NemesisVariant::BackGarbageCandidate</span>(<span class="ident">cmd</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">NemesisVariant::BackGarbageCandidate</span>(<span class="ident">cmd</span>) =&gt;
 				<span class="ident">polkadot_cli::run_node</span>(<span class="ident">run_cmd</span>(<span class="ident">cmd</span>), <span class="ident">BackGarbageCandidate</span>)<span class="question-mark">?</span>,
-			<span class="ident">NemesisVariant::SuggestGarbageCandidate</span>(<span class="ident">cmd</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">NemesisVariant::SuggestGarbageCandidate</span>(<span class="ident">cmd</span>) =&gt;
 				<span class="ident">polkadot_cli::run_node</span>(<span class="ident">run_cmd</span>(<span class="ident">cmd</span>), <span class="ident">SuggestGarbageCandidate</span>)<span class="question-mark">?</span>,
-			<span class="ident">NemesisVariant::DisputeAncestor</span>(<span class="ident">cmd</span>) <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">NemesisVariant::DisputeAncestor</span>(<span class="ident">cmd</span>) =&gt;
 				<span class="ident">polkadot_cli::run_node</span>(<span class="ident">run_cmd</span>(<span class="ident">cmd</span>), <span class="ident">DisputeValidCandidates</span>)<span class="question-mark">?</span>,
-			<span class="ident">NemesisVariant::PvfPrepareWorker</span>(<span class="ident">cmd</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">NemesisVariant::PvfPrepareWorker</span>(<span class="ident">cmd</span>) =&gt; {
 				<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;android&quot;</span>)]</span>
 				{
 					<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;PVF preparation workers are not supported under this platform&quot;</span>)
@@ -207,7 +207,7 @@
 					<span class="ident">polkadot_node_core_pvf::prepare_worker_entrypoint</span>(<span class="kw-2">&amp;</span><span class="ident">cmd</span>.<span class="ident">socket_path</span>);
 				}
 			},
-			<span class="ident">NemesisVariant::PvfExecuteWorker</span>(<span class="ident">cmd</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">NemesisVariant::PvfExecuteWorker</span>(<span class="ident">cmd</span>) =&gt; {
 				<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;android&quot;</span>)]</span>
 				{
 					<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;PVF execution workers are not supported under this platform&quot;</span>).<span class="ident">into</span>()
@@ -223,7 +223,7 @@
 	}
 }
 
-<span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 	<span class="ident">color_eyre::install</span>()<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">MalusCli::from_args</span>();
 	<span class="ident">cli</span>.<span class="ident">launch</span>()<span class="question-mark">?</span>;
@@ -245,7 +245,7 @@
 		<span class="macro">assert_matches::assert_matches!</span>(<span class="ident">cli</span>, <span class="ident">MalusCli</span> {
 			<span class="ident">variant</span>: <span class="ident">NemesisVariant::DisputeAncestor</span>(<span class="ident">run</span>),
 			..
-		} <span class="op">=</span><span class="op">&gt;</span> {
+		} =&gt; {
 			<span class="macro">assert!</span>(<span class="ident">run</span>.<span class="ident">base</span>.<span class="ident">bob</span>);
 		});
 	}

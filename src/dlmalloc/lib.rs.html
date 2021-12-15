@@ -207,33 +207,33 @@
     <span class="doccomment">/// allocate this segment and so should not try to deallocate or merge with others.</span>
     <span class="doccomment">/// This function can return a `std::ptr::null_mut()` when allocation fails (other values of</span>
     <span class="doccomment">/// the triple will be ignored).</span>
-    <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">usize</span>, <span class="ident">u32</span>);
+    <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">usize</span>, <span class="ident">u32</span>);
 
     <span class="doccomment">/// Remaps system memory region at `ptr` with size `oldsize` to a potential new location with</span>
     <span class="doccomment">/// size `newsize`. `can_move` indicates if the location is allowed to move to a completely new</span>
     <span class="doccomment">/// location, or that it is only allowed to change in size. Returns a pointer to the new</span>
     <span class="doccomment">/// location in memory.</span>
     <span class="doccomment">/// This function can return a `std::ptr::null_mut()` to signal an error.</span>
-    <span class="kw">fn</span> <span class="ident">remap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
+    <span class="kw">fn</span> <span class="ident">remap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
 
     <span class="doccomment">/// Frees a part of a memory chunk. The original memory chunk starts at `ptr` with size `oldsize`</span>
     <span class="doccomment">/// and is turned into a memory region starting at the same address but with `newsize` bytes.</span>
     <span class="doccomment">/// Returns `true` iff the access memory region could be freed.</span>
-    <span class="kw">fn</span> <span class="ident">free_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">free_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span>;
 
     <span class="doccomment">/// Frees an entire memory region. Returns `true` iff the operation succeeded. When `false` is</span>
     <span class="doccomment">/// returned, the `dlmalloc` may re-use the location on future allocation requests</span>
-    <span class="kw">fn</span> <span class="ident">free</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">free</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span>;
 
     <span class="doccomment">/// Indicates if the system can release a part of memory. For the `flags` argument, see</span>
     <span class="doccomment">/// `Allocator::alloc`</span>
-    <span class="kw">fn</span> <span class="ident">can_release_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">flags</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">can_release_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">flags</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span>;
 
     <span class="doccomment">/// Indicates whether newly allocated regions contain zeros.</span>
-    <span class="kw">fn</span> <span class="ident">allocates_zeros</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">allocates_zeros</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 
     <span class="doccomment">/// Returns the page size. Must be a power of two</span>
-    <span class="kw">fn</span> <span class="ident">page_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>;
+    <span class="kw">fn</span> <span class="ident">page_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span>;
 }
 
 <span class="doccomment">/// An allocator instance</span>
@@ -257,14 +257,14 @@
 
 <span class="kw">impl</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a new instance of an allocator</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">System</span><span class="op">&gt;</span> {
         <span class="ident">Dlmalloc</span>(<span class="ident">dlmalloc::Dlmalloc::new</span>(<span class="ident">System::new</span>()))
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a new instance of an allocator</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_with_allocator</span>(<span class="ident">sys_allocator</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_with_allocator</span>(<span class="ident">sys_allocator</span>: <span class="ident">A</span>) -&gt; <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Dlmalloc</span>(<span class="ident">dlmalloc::Dlmalloc::new</span>(<span class="ident">sys_allocator</span>))
     }
 }
@@ -278,7 +278,7 @@
     <span class="doccomment">/// Safety and contracts are largely governed by the `GlobalAlloc::alloc`</span>
     <span class="doccomment">/// method contracts.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">malloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">malloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">if</span> <span class="ident">align</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">malloc_alignment</span>() {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">malloc</span>(<span class="ident">size</span>)
         } <span class="kw">else</span> {
@@ -289,7 +289,7 @@
     <span class="doccomment">/// Same as `malloc`, except if the allocation succeeds it&#39;s guaranteed to</span>
     <span class="doccomment">/// point to `size` bytes of zeros.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">calloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">calloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">malloc</span>(<span class="ident">size</span>, <span class="ident">align</span>);
         <span class="kw">if</span> <span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">calloc_must_clear</span>(<span class="ident">ptr</span>) {
             <span class="ident">ptr::write_bytes</span>(<span class="ident">ptr</span>, <span class="number">0</span>, <span class="ident">size</span>);
@@ -324,7 +324,7 @@
         <span class="ident">old_size</span>: <span class="ident">usize</span>,
         <span class="ident">old_align</span>: <span class="ident">usize</span>,
         <span class="ident">new_size</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    ) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">if</span> <span class="ident">old_align</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">malloc_alignment</span>() {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">realloc</span>(<span class="ident">ptr</span>, <span class="ident">new_size</span>)
         } <span class="kw">else</span> {

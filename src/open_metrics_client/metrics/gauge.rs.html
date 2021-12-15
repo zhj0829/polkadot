@@ -225,7 +225,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">A</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Gauge</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">value</span>: <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">clone</span>(),
             <span class="ident">phantom</span>: <span class="ident">PhantomData</span>,
@@ -234,7 +234,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">A</span>: <span class="ident">Default</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Gauge</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">value</span>: <span class="ident">Arc::new</span>(<span class="ident">A::default</span>()),
             <span class="ident">phantom</span>: <span class="ident">PhantomData</span>,
@@ -244,22 +244,22 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">A</span>: <span class="ident">Atomic</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Gauge</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Increase the [`Gauge`] by 1, returning the previous value.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">N</span> {
         <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">inc</span>()
     }
 
     <span class="doccomment">/// Increase the [`Gauge`] by `v`, returning the previous value.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) -&gt; <span class="ident">N</span> {
         <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">inc_by</span>(<span class="ident">v</span>)
     }
 
     <span class="doccomment">/// Sets the [`Gauge`] to `v`, returning the previous value.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) -&gt; <span class="ident">N</span> {
         <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">set</span>(<span class="ident">v</span>)
     }
 
     <span class="doccomment">/// Get the current value of the [`Gauge`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">N</span> {
         <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">get</span>()
     }
 
@@ -267,82 +267,82 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This should only be used for advanced use-cases which are not directly</span>
     <span class="doccomment">/// supported by the library.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">A</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">A</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value</span>
     }
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Atomic</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span>;
+    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">N</span>;
 
-    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span>;
+    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) -&gt; <span class="ident">N</span>;
 
-    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span>;
+    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">N</span>) -&gt; <span class="ident">N</span>;
 
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">N</span>;
+    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">N</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">Atomic</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AtomicU64</span> {
-    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">inc_by</span>(<span class="number">1</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">fetch_add</span>(<span class="ident">v</span>, <span class="ident">Ordering::Relaxed</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">swap</span>(<span class="ident">v</span>, <span class="ident">Ordering::Relaxed</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Atomic</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AtomicU32</span> {
-    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">inc_by</span>(<span class="number">1</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">fetch_add</span>(<span class="ident">v</span>, <span class="ident">Ordering::Relaxed</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">swap</span>(<span class="ident">v</span>, <span class="ident">Ordering::Relaxed</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Atomic</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AtomicU64</span> {
-    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
+    <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f64</span> {
         <span class="self">self</span>.<span class="ident">inc_by</span>(<span class="number">1.0</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
+    <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_u64</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">old_f64</span>;
         <span class="kw">loop</span> {
             <span class="ident">old_f64</span> <span class="op">=</span> <span class="ident">f64::from_bits</span>(<span class="ident">old_u64</span>);
             <span class="kw">let</span> <span class="ident">new</span> <span class="op">=</span> <span class="ident">f64::to_bits</span>(<span class="ident">old_f64</span> <span class="op">+</span> <span class="ident">v</span>);
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange_weak</span>(<span class="ident">old_u64</span>, <span class="ident">new</span>, <span class="ident">Ordering::Relaxed</span>, <span class="ident">Ordering::Relaxed</span>) {
-                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">old_u64</span> <span class="op">=</span> <span class="ident">x</span>,
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">break</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; <span class="ident">old_u64</span> <span class="op">=</span> <span class="ident">x</span>,
             }
         }
 
         <span class="ident">old_f64</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
+    <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">f64</span>) -&gt; <span class="ident">f64</span> {
         <span class="ident">f64::from_bits</span>(<span class="self">self</span>.<span class="ident">swap</span>(<span class="ident">f64::to_bits</span>(<span class="ident">v</span>), <span class="ident">Ordering::Relaxed</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f64</span> {
+    <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f64</span> {
         <span class="ident">f64::from_bits</span>(<span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>))
     }
 }

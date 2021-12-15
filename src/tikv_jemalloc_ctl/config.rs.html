@@ -26,7 +26,7 @@
 </pre><pre class="rust"><code><span class="doccomment">//! `jemalloc`&#39;s build-time configuration.</span>
 
 <span class="macro">option!</span> {
-    <span class="ident">malloc_conf</span>[ <span class="ident">str</span>: <span class="string">b&quot;config.malloc_conf\0&quot;</span>, <span class="ident">str</span>: <span class="number">2</span> ] <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">|</span>
+    <span class="ident">malloc_conf</span>[ <span class="ident">str</span>: <span class="string">b&quot;config.malloc_conf\0&quot;</span>, <span class="ident">str</span>: <span class="number">2</span> ] =&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">|</span>
     <span class="ident">ops</span>: <span class="ident">r</span> <span class="op">|</span>
     <span class="ident">docs</span>:
     <span class="doccomment">/// Default run-time options specified during `jemalloc`&#39;s build configuration.</span>

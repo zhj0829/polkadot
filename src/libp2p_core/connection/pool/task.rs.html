@@ -369,7 +369,7 @@
     <span class="ident">TTrans</span>: <span class="ident">Transport</span>,
 {
     <span class="kw">match</span> <span class="ident">futures::future::select</span>(<span class="ident">drop_receiver</span>, <span class="ident">Box::pin</span>(<span class="ident">dial</span>)).<span class="kw">await</span> {
-        <span class="ident">Either::Left</span>((<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Either::Left</span>((<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>), <span class="kw">_</span>)) =&gt; {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                 .<span class="ident">send</span>(<span class="ident">PendingConnectionEvent::PendingFailed</span> {
                     <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -377,8 +377,8 @@
                 })
                 .<span class="kw">await</span>;
         }
-        <span class="ident">Either::Left</span>((<span class="prelude-val">Ok</span>(<span class="ident">v</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">void::unreachable</span>(<span class="ident">v</span>),
-        <span class="ident">Either::Right</span>((<span class="prelude-val">Ok</span>((<span class="ident">address</span>, <span class="ident">output</span>, <span class="ident">errors</span>)), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Either::Left</span>((<span class="prelude-val">Ok</span>(<span class="ident">v</span>), <span class="kw">_</span>)) =&gt; <span class="ident">void::unreachable</span>(<span class="ident">v</span>),
+        <span class="ident">Either::Right</span>((<span class="prelude-val">Ok</span>((<span class="ident">address</span>, <span class="ident">output</span>, <span class="ident">errors</span>)), <span class="kw">_</span>)) =&gt; {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                 .<span class="ident">send</span>(<span class="ident">PendingConnectionEvent::ConnectionEstablished</span> {
                     <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -387,7 +387,7 @@
                 })
                 .<span class="kw">await</span>;
         }
-        <span class="ident">Either::Right</span>((<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Either::Right</span>((<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>)) =&gt; {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                 .<span class="ident">send</span>(<span class="ident">PendingConnectionEvent::PendingFailed</span> {
                     <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -408,7 +408,7 @@
     <span class="ident">TFut</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TTrans::Output</span>, <span class="ident">TTrans::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">match</span> <span class="ident">futures::future::select</span>(<span class="ident">drop_receiver</span>, <span class="ident">Box::pin</span>(<span class="ident">future</span>)).<span class="kw">await</span> {
-        <span class="ident">Either::Left</span>((<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Either::Left</span>((<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>), <span class="kw">_</span>)) =&gt; {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                 .<span class="ident">send</span>(<span class="ident">PendingConnectionEvent::PendingFailed</span> {
                     <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -416,8 +416,8 @@
                 })
                 .<span class="kw">await</span>;
         }
-        <span class="ident">Either::Left</span>((<span class="prelude-val">Ok</span>(<span class="ident">v</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">void::unreachable</span>(<span class="ident">v</span>),
-        <span class="ident">Either::Right</span>((<span class="prelude-val">Ok</span>(<span class="ident">output</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Either::Left</span>((<span class="prelude-val">Ok</span>(<span class="ident">v</span>), <span class="kw">_</span>)) =&gt; <span class="ident">void::unreachable</span>(<span class="ident">v</span>),
+        <span class="ident">Either::Right</span>((<span class="prelude-val">Ok</span>(<span class="ident">output</span>), <span class="kw">_</span>)) =&gt; {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                 .<span class="ident">send</span>(<span class="ident">PendingConnectionEvent::ConnectionEstablished</span> {
                     <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -426,7 +426,7 @@
                 })
                 .<span class="kw">await</span>;
         }
-        <span class="ident">Either::Right</span>((<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Either::Right</span>((<span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>)) =&gt; {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                 .<span class="ident">send</span>(<span class="ident">PendingConnectionEvent::PendingFailed</span> {
                     <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -457,9 +457,9 @@
         )
         .<span class="kw">await</span>
         {
-            <span class="ident">Either::Left</span>((<span class="prelude-val">Some</span>(<span class="ident">command</span>), <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">command</span> {
-                <span class="ident">Command::NotifyHandler</span>(<span class="ident">event</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">connection</span>.<span class="ident">inject_event</span>(<span class="ident">event</span>),
-                <span class="ident">Command::Close</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Either::Left</span>((<span class="prelude-val">Some</span>(<span class="ident">command</span>), <span class="kw">_</span>)) =&gt; <span class="kw">match</span> <span class="ident">command</span> {
+                <span class="ident">Command::NotifyHandler</span>(<span class="ident">event</span>) =&gt; <span class="ident">connection</span>.<span class="ident">inject_event</span>(<span class="ident">event</span>),
+                <span class="ident">Command::Close</span> =&gt; {
                     <span class="ident">command_receiver</span>.<span class="ident">close</span>();
                     <span class="kw">let</span> (<span class="ident">handler</span>, <span class="ident">closing_muxer</span>) <span class="op">=</span> <span class="ident">connection</span>.<span class="ident">close</span>();
 
@@ -477,11 +477,11 @@
             },
 
             <span class="comment">// The manager has disappeared; abort.</span>
-            <span class="ident">Either::Left</span>((<span class="prelude-val">None</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>,
+            <span class="ident">Either::Left</span>((<span class="prelude-val">None</span>, <span class="kw">_</span>)) =&gt; <span class="kw">return</span>,
 
-            <span class="ident">Either::Right</span>((<span class="ident">event</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Either::Right</span>((<span class="ident">event</span>, <span class="kw">_</span>)) =&gt; {
                 <span class="kw">match</span> <span class="ident">event</span> {
-                    <span class="prelude-val">Ok</span>(<span class="ident">connection::Event::Handler</span>(<span class="ident">event</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">connection::Event::Handler</span>(<span class="ident">event</span>)) =&gt; {
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                             .<span class="ident">send</span>(<span class="ident">EstablishedConnectionEvent::Notify</span> {
                                 <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -490,7 +490,7 @@
                             })
                             .<span class="kw">await</span>;
                     }
-                    <span class="prelude-val">Ok</span>(<span class="ident">connection::Event::AddressChange</span>(<span class="ident">new_address</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">connection::Event::AddressChange</span>(<span class="ident">new_address</span>)) =&gt; {
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">events</span>
                             .<span class="ident">send</span>(<span class="ident">EstablishedConnectionEvent::AddressChange</span> {
                                 <span class="ident">id</span>: <span class="ident">connection_id</span>,
@@ -499,7 +499,7 @@
                             })
                             .<span class="kw">await</span>;
                     }
-                    <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
                         <span class="ident">command_receiver</span>.<span class="ident">close</span>();
                         <span class="kw">let</span> (<span class="ident">handler</span>, <span class="ident">_closing_muxer</span>) <span class="op">=</span> <span class="ident">connection</span>.<span class="ident">close</span>();
                         <span class="comment">// Terminate the task with the error, dropping the connection.</span>

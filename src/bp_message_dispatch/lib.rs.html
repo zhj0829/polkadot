@@ -185,7 +185,7 @@
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// This function must: (1) be instant and (2) return correct upper bound</span>
 	<span class="doccomment">/// of dispatch weight.</span>
-	<span class="kw">fn</span> <span class="ident">dispatch_weight</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">dispatch_weight</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Message</span>) -&gt; <span class="ident">Weight</span>;
 
 	<span class="doccomment">/// Dispatches the message internally.</span>
 	<span class="doccomment">///</span>
@@ -200,13 +200,13 @@
 	<span class="doccomment">/// the whole message).</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Returns unspent dispatch weight.</span>
-	<span class="kw">fn</span> <span class="ident">dispatch</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">AccountId</span>, <span class="ident">Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
+	<span class="kw">fn</span> <span class="ident">dispatch</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">AccountId</span>, <span class="ident">Weight</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
 		<span class="ident">source_chain</span>: <span class="ident">ChainId</span>,
 		<span class="ident">target_chain</span>: <span class="ident">ChainId</span>,
 		<span class="ident">id</span>: <span class="ident">BridgeMessageId</span>,
 		<span class="ident">message</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Message</span>, ()<span class="op">&gt;</span>,
 		<span class="ident">pay_dispatch_fee</span>: <span class="ident">P</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageDispatchResult</span>;
+	) -&gt; <span class="ident">MessageDispatchResult</span>;
 }
 
 <span class="doccomment">/// Origin of a Call when it is dispatched on the target chain.</span>
@@ -278,7 +278,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">SourceChainAccountId</span>, <span class="ident">TargetChainAccountPublic</span>, <span class="ident">TargetChainSignature</span><span class="op">&gt;</span> <span class="ident">Size</span>
 	<span class="kw">for</span> <span class="ident">MessagePayload</span><span class="op">&lt;</span><span class="ident">SourceChainAccountId</span>, <span class="ident">TargetChainAccountPublic</span>, <span class="ident">TargetChainSignature</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>
 {
-	<span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+	<span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
 		<span class="self">self</span>.<span class="ident">call</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="kw">_</span>
 	}
 }

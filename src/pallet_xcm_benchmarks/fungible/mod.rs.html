@@ -86,7 +86,7 @@
 		<span class="kw">type</span> <span class="ident">TrustedTeleporter</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">xcm::latest::MultiLocation</span>, <span class="ident">xcm::latest::MultiAsset</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// Give me a fungible asset that your asset transactor is going to accept.</span>
-		<span class="kw">fn</span> <span class="ident">get_multi_asset</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">xcm::latest::MultiAsset</span>;
+		<span class="kw">fn</span> <span class="ident">get_multi_asset</span>() -&gt; <span class="ident">xcm::latest::MultiAsset</span>;
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::pallet</span>]</span>

@@ -138,7 +138,7 @@
 <span class="kw">impl</span> <span class="ident">MembarrierQuery</span> {
     <span class="doccomment">/// Test whether this query result contains the given command.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cmd</span>: <span class="ident">MembarrierCommand</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cmd</span>: <span class="ident">MembarrierCommand</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// Safety: `MembarrierCommand` is an enum that only contains values</span>
         <span class="comment">// also valid in `MembarrierQuery`.</span>
         <span class="self">self</span>.<span class="ident">contains</span>(<span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::from_bits_unchecked</span>(<span class="ident">cmd</span> <span class="kw">as</span> <span class="kw">_</span>) })
@@ -158,7 +158,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/membarrier.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;MEMBARRIER_CMD_QUERY&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">membarrier_query</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MembarrierQuery</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">membarrier_query</span>() -&gt; <span class="ident">MembarrierQuery</span> {
     <span class="ident">imp::syscalls::membarrier_query</span>()
 }
 
@@ -169,7 +169,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/membarrier.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">membarrier</span>(<span class="ident">cmd</span>: <span class="ident">MembarrierCommand</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">membarrier</span>(<span class="ident">cmd</span>: <span class="ident">MembarrierCommand</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::membarrier</span>(<span class="ident">cmd</span>)
 }
 
@@ -181,7 +181,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/membarrier.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">membarrier_cpu</span>(<span class="ident">cmd</span>: <span class="ident">MembarrierCommand</span>, <span class="ident">cpu</span>: <span class="ident">Cpuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">membarrier_cpu</span>(<span class="ident">cmd</span>: <span class="ident">MembarrierCommand</span>, <span class="ident">cpu</span>: <span class="ident">Cpuid</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::membarrier_cpu</span>(<span class="ident">cmd</span>, <span class="ident">cpu</span>)
 }
 </code></pre></div>

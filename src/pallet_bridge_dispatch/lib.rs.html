@@ -1232,21 +1232,21 @@
 		<span class="ident">T::EncodedCall</span>,
 	<span class="op">&gt;</span>;
 
-	<span class="kw">fn</span> <span class="ident">dispatch_weight</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Message</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bp_message_dispatch::Weight</span> {
+	<span class="kw">fn</span> <span class="ident">dispatch_weight</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Message</span>) -&gt; <span class="ident">bp_message_dispatch::Weight</span> {
 		<span class="ident">message</span>.<span class="ident">weight</span>
 	}
 
-	<span class="kw">fn</span> <span class="ident">dispatch</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">T::AccountId</span>, <span class="ident">bp_message_dispatch::Weight</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
+	<span class="kw">fn</span> <span class="ident">dispatch</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">T::AccountId</span>, <span class="ident">bp_message_dispatch::Weight</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span><span class="op">&gt;</span>(
 		<span class="ident">source_chain</span>: <span class="ident">ChainId</span>,
 		<span class="ident">target_chain</span>: <span class="ident">ChainId</span>,
 		<span class="ident">id</span>: <span class="ident">T::BridgeMessageId</span>,
 		<span class="ident">message</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Message</span>, ()<span class="op">&gt;</span>,
 		<span class="ident">pay_dispatch_fee</span>: <span class="ident">P</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageDispatchResult</span> {
+	) -&gt; <span class="ident">MessageDispatchResult</span> {
 		<span class="comment">// emit special even if message has been rejected by external component</span>
 		<span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">message</span> {
-			<span class="prelude-val">Ok</span>(<span class="ident">message</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">message</span>,
-			<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Ok</span>(<span class="ident">message</span>) =&gt; <span class="ident">message</span>,
+			<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
 				<span class="macro">log::trace!</span>(
 					<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-dispatch&quot;</span>,
 					<span class="string">&quot;Message {:?}/{:?}: rejected before actual dispatch&quot;</span>,
@@ -1289,8 +1289,8 @@
 
 		<span class="comment">// now that we have spec version checked, let&#39;s decode the call</span>
 		<span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">message</span>.<span class="ident">call</span>.<span class="ident">into</span>() {
-			<span class="prelude-val">Ok</span>(<span class="ident">call</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">call</span>,
-			<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Ok</span>(<span class="ident">call</span>) =&gt; <span class="ident">call</span>,
+			<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
 				<span class="macro">log::trace!</span>(
 					<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-dispatch&quot;</span>,
 					<span class="string">&quot;Failed to decode Call from message {:?}/{:?}&quot;</span>,
@@ -1304,14 +1304,14 @@
 
 		<span class="comment">// prepare dispatch origin</span>
 		<span class="kw">let</span> <span class="ident">origin_account</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">message</span>.<span class="ident">origin</span> {
-			<span class="ident">CallOrigin::SourceRoot</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">CallOrigin::SourceRoot</span> =&gt; {
 				<span class="kw">let</span> <span class="ident">hex_id</span> <span class="op">=</span>
 					<span class="ident">derive_account_id</span>::<span class="op">&lt;</span><span class="ident">T::SourceChainAccountId</span><span class="op">&gt;</span>(<span class="ident">source_chain</span>, <span class="ident">SourceAccount::Root</span>);
 				<span class="kw">let</span> <span class="ident">target_id</span> <span class="op">=</span> <span class="ident">T::AccountIdConverter::convert</span>(<span class="ident">hex_id</span>);
 				<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-dispatch&quot;</span>, <span class="string">&quot;Root Account: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">target_id</span>);
 				<span class="ident">target_id</span>
 			},
-			<span class="ident">CallOrigin::TargetAccount</span>(<span class="ident">source_account_id</span>, <span class="ident">target_public</span>, <span class="ident">target_signature</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">CallOrigin::TargetAccount</span>(<span class="ident">source_account_id</span>, <span class="ident">target_public</span>, <span class="ident">target_signature</span>) =&gt; {
 				<span class="kw">let</span> <span class="ident">digest</span> <span class="op">=</span> <span class="ident">account_ownership_digest</span>(
 					<span class="kw-2">&amp;</span><span class="ident">call</span>,
 					<span class="ident">source_account_id</span>,
@@ -1337,7 +1337,7 @@
 				<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-dispatch&quot;</span>, <span class="string">&quot;Target Account: {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">target_account</span>);
 				<span class="ident">target_account</span>
 			},
-			<span class="ident">CallOrigin::SourceAccount</span>(<span class="ident">source_account_id</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">CallOrigin::SourceAccount</span>(<span class="ident">source_account_id</span>) =&gt; {
 				<span class="kw">let</span> <span class="ident">hex_id</span> <span class="op">=</span>
 					<span class="ident">derive_account_id</span>(<span class="ident">source_chain</span>, <span class="ident">SourceAccount::Account</span>(<span class="ident">source_account_id</span>));
 				<span class="kw">let</span> <span class="ident">target_id</span> <span class="op">=</span> <span class="ident">T::AccountIdConverter::convert</span>(<span class="ident">hex_id</span>);
@@ -1384,7 +1384,7 @@
 
 		<span class="comment">// pay dispatch fee right before dispatch</span>
 		<span class="kw">let</span> <span class="ident">pay_dispatch_fee_at_target_chain</span> <span class="op">=</span>
-			<span class="ident">message</span>.<span class="ident">dispatch_fee_payment</span> <span class="op">=</span><span class="op">=</span> <span class="ident">DispatchFeePayment::AtTargetChain</span>;
+			<span class="ident">message</span>.<span class="ident">dispatch_fee_payment</span> <span class="op">==</span> <span class="ident">DispatchFeePayment::AtTargetChain</span>;
 		<span class="kw">if</span> <span class="ident">pay_dispatch_fee_at_target_chain</span> <span class="op">&amp;&amp;</span>
 			<span class="ident">pay_dispatch_fee</span>(<span class="kw-2">&amp;</span><span class="ident">origin_account</span>, <span class="ident">message</span>.<span class="ident">weight</span>).<span class="ident">is_err</span>()
 		{
@@ -1454,23 +1454,23 @@
 		<span class="ident">TargetChainSignature</span>,
 		<span class="ident">Call</span>,
 	<span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SourceChainAccountId</span><span class="op">&gt;</span>, <span class="ident">BadOrigin</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SourceChainAccountId</span><span class="op">&gt;</span>, <span class="ident">BadOrigin</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">SourceChainAccountId</span>: <span class="ident">PartialEq</span> <span class="op">+</span> <span class="ident">Clone</span>,
 {
 	<span class="kw">match</span> <span class="ident">message</span>.<span class="ident">origin</span> {
-		<span class="ident">CallOrigin::SourceRoot</span> <span class="op">=</span><span class="op">&gt;</span> {
-			<span class="macro">ensure!</span>(<span class="ident">sender_origin</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Root</span>, <span class="ident">BadOrigin</span>);
+		<span class="ident">CallOrigin::SourceRoot</span> =&gt; {
+			<span class="macro">ensure!</span>(<span class="ident">sender_origin</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Root</span>, <span class="ident">BadOrigin</span>);
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 		},
-		<span class="ident">CallOrigin::TargetAccount</span>(<span class="kw-2">ref</span> <span class="ident">source_account_id</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-			<span class="macro">ensure!</span>(<span class="ident">sender_origin</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Signed</span>(<span class="ident">source_account_id</span>.<span class="ident">clone</span>()), <span class="ident">BadOrigin</span>);
+		<span class="ident">CallOrigin::TargetAccount</span>(<span class="kw-2">ref</span> <span class="ident">source_account_id</span>, <span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
+			<span class="macro">ensure!</span>(<span class="ident">sender_origin</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Signed</span>(<span class="ident">source_account_id</span>.<span class="ident">clone</span>()), <span class="ident">BadOrigin</span>);
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">source_account_id</span>.<span class="ident">clone</span>()))
 		},
-		<span class="ident">CallOrigin::SourceAccount</span>(<span class="kw-2">ref</span> <span class="ident">source_account_id</span>) <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="ident">CallOrigin::SourceAccount</span>(<span class="kw-2">ref</span> <span class="ident">source_account_id</span>) =&gt; {
 			<span class="macro">ensure!</span>(
-				<span class="ident">sender_origin</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Signed</span>(<span class="ident">source_account_id</span>.<span class="ident">clone</span>()) <span class="op">|</span><span class="op">|</span>
-					<span class="ident">sender_origin</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Root</span>,
+				<span class="ident">sender_origin</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Signed</span>(<span class="ident">source_account_id</span>.<span class="ident">clone</span>()) <span class="op">|</span><span class="op">|</span>
+					<span class="ident">sender_origin</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">RawOrigin::Root</span>,
 				<span class="ident">BadOrigin</span>
 			);
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">source_account_id</span>.<span class="ident">clone</span>()))
@@ -1489,7 +1489,7 @@
 	<span class="ident">target_spec_version</span>: <span class="ident">SpecVersion</span>,
 	<span class="ident">source_chain_id</span>: <span class="ident">ChainId</span>,
 	<span class="ident">target_chain_id</span>: <span class="ident">ChainId</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Call</span>: <span class="ident">Encode</span>,
 	<span class="ident">AccountId</span>: <span class="ident">Encode</span>,
@@ -1534,7 +1534,7 @@
 	<span class="kw">impl</span> <span class="ident">IdentifyAccount</span> <span class="kw">for</span> <span class="ident">TestAccountPublic</span> {
 		<span class="kw">type</span> <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">AccountId</span>;
 
-		<span class="kw">fn</span> <span class="ident">into_account</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountId</span> {
+		<span class="kw">fn</span> <span class="ident">into_account</span>(<span class="self">self</span>) -&gt; <span class="ident">AccountId</span> {
 			<span class="self">self</span>.<span class="number">0</span>
 		}
 	}
@@ -1545,15 +1545,15 @@
 	<span class="kw">impl</span> <span class="ident">Verify</span> <span class="kw">for</span> <span class="ident">TestSignature</span> {
 		<span class="kw">type</span> <span class="ident">Signer</span> <span class="op">=</span> <span class="ident">TestAccountPublic</span>;
 
-		<span class="kw">fn</span> <span class="ident">verify</span><span class="op">&lt;</span><span class="ident">L</span>: <span class="ident">sp_runtime::traits::Lazy</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_msg</span>: <span class="ident">L</span>, <span class="ident">signer</span>: <span class="kw-2">&amp;</span><span class="ident">AccountId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-			<span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">signer</span>
+		<span class="kw">fn</span> <span class="ident">verify</span><span class="op">&lt;</span><span class="ident">L</span>: <span class="ident">sp_runtime::traits::Lazy</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_msg</span>: <span class="ident">L</span>, <span class="ident">signer</span>: <span class="kw-2">&amp;</span><span class="ident">AccountId</span>) -&gt; <span class="ident">bool</span> {
+			<span class="self">self</span>.<span class="number">0</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">signer</span>
 		}
 	}
 
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AccountIdConverter</span>;
 
 	<span class="kw">impl</span> <span class="ident">sp_runtime::traits::Convert</span><span class="op">&lt;</span><span class="ident">H256</span>, <span class="ident">AccountId</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AccountIdConverter</span> {
-		<span class="kw">fn</span> <span class="ident">convert</span>(<span class="ident">hash</span>: <span class="ident">H256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccountId</span> {
+		<span class="kw">fn</span> <span class="ident">convert</span>(<span class="ident">hash</span>: <span class="ident">H256</span>) -&gt; <span class="ident">AccountId</span> {
 			<span class="ident">hash</span>.<span class="ident">to_low_u64_ne</span>()
 		}
 	}
@@ -1624,7 +1624,7 @@
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EncodedCall</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>);
 
 	<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">EncodedCall</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Call</span>, ()<span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">call</span>: <span class="ident">EncodedCall</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Call</span>, ()<span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">call</span>: <span class="ident">EncodedCall</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Call</span>, ()<span class="op">&gt;</span> {
 			<span class="ident">Call::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="ident">call</span>.<span class="number">0</span>[..]).<span class="ident">map_err</span>(<span class="ident">drop</span>)
 		}
 	}
@@ -1632,7 +1632,7 @@
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestCallFilter</span>;
 
 	<span class="kw">impl</span> <span class="ident">Contains</span><span class="op">&lt;</span><span class="ident">Call</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TestCallFilter</span> {
-		<span class="kw">fn</span> <span class="ident">contains</span>(<span class="ident">call</span>: <span class="kw-2">&amp;</span><span class="ident">Call</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+		<span class="kw">fn</span> <span class="ident">contains</span>(<span class="ident">call</span>: <span class="kw-2">&amp;</span><span class="ident">Call</span>) -&gt; <span class="ident">bool</span> {
 			<span class="op">!</span><span class="macro">matches!</span>(<span class="kw-2">*</span><span class="ident">call</span>, <span class="ident">Call::System</span>(<span class="ident">frame_system::Call::fill_block</span> { .. }))
 		}
 	}
@@ -1640,7 +1640,7 @@
 	<span class="kw">const</span> <span class="ident">TEST_SPEC_VERSION</span>: <span class="ident">SpecVersion</span> <span class="op">=</span> <span class="number">0</span>;
 	<span class="kw">const</span> <span class="ident">TEST_WEIGHT</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
 
-	<span class="kw">fn</span> <span class="ident">new_test_ext</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_io::TestExternalities</span> {
+	<span class="kw">fn</span> <span class="ident">new_test_ext</span>() -&gt; <span class="ident">sp_io::TestExternalities</span> {
 		<span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">frame_system::GenesisConfig::default</span>().<span class="ident">build_storage</span>::<span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
 		<span class="ident">sp_io::TestExternalities::new</span>(<span class="ident">t</span>)
 	}
@@ -1648,7 +1648,7 @@
 	<span class="kw">fn</span> <span class="ident">prepare_message</span>(
 		<span class="ident">origin</span>: <span class="ident">CallOrigin</span><span class="op">&lt;</span><span class="ident">AccountId</span>, <span class="ident">TestAccountPublic</span>, <span class="ident">TestSignature</span><span class="op">&gt;</span>,
 		<span class="ident">call</span>: <span class="ident">Call</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
+	) -&gt; <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
 		<span class="ident">AccountId</span>,
 		<span class="op">&lt;</span><span class="ident">TestRuntime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::BridgeMessageId</span>,
 	<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Message</span> {
@@ -1663,7 +1663,7 @@
 
 	<span class="kw">fn</span> <span class="ident">prepare_root_message</span>(
 		<span class="ident">call</span>: <span class="ident">Call</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
+	) -&gt; <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
 		<span class="ident">AccountId</span>,
 		<span class="op">&lt;</span><span class="ident">TestRuntime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::BridgeMessageId</span>,
 	<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Message</span> {
@@ -1672,7 +1672,7 @@
 
 	<span class="kw">fn</span> <span class="ident">prepare_target_message</span>(
 		<span class="ident">call</span>: <span class="ident">Call</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
+	) -&gt; <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
 		<span class="ident">AccountId</span>,
 		<span class="op">&lt;</span><span class="ident">TestRuntime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::BridgeMessageId</span>,
 	<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Message</span> {
@@ -1682,7 +1682,7 @@
 
 	<span class="kw">fn</span> <span class="ident">prepare_source_message</span>(
 		<span class="ident">call</span>: <span class="ident">Call</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
+	) -&gt; <span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">TestRuntime</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">MessageDispatch</span><span class="op">&lt;</span>
 		<span class="ident">AccountId</span>,
 		<span class="op">&lt;</span><span class="ident">TestRuntime</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::BridgeMessageId</span>,
 	<span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Message</span> {

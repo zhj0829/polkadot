@@ -121,7 +121,7 @@
 	<span class="comment">// Storage: Staking Ledger (r:1 w:0)</span>
 	<span class="comment">// Storage: BagsList ListNodes (r:4 w:4)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">rebag_non_terminal</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">rebag_non_terminal</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">64_070_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">7</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -130,7 +130,7 @@
 	<span class="comment">// Storage: Staking Ledger (r:1 w:0)</span>
 	<span class="comment">// Storage: BagsList ListNodes (r:3 w:3)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:2 w:2)</span>
-	<span class="kw">fn</span> <span class="ident">rebag_terminal</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">rebag_terminal</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">62_283_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">7</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">5</span> <span class="kw">as</span> <span class="ident">Weight</span>))
@@ -140,7 +140,7 @@
 	<span class="comment">// Storage: Staking Ledger (r:2 w:0)</span>
 	<span class="comment">// Storage: BagsList CounterForListNodes (r:1 w:1)</span>
 	<span class="comment">// Storage: BagsList ListBags (r:1 w:1)</span>
-	<span class="kw">fn</span> <span class="ident">put_in_front_of</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+	<span class="kw">fn</span> <span class="ident">put_in_front_of</span>() -&gt; <span class="ident">Weight</span> {
 		(<span class="number">73_854_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">10</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))

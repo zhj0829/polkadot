@@ -689,7 +689,7 @@
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">block</span>: <span class="ident">Block</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
+    ) -&gt; <span class="ident">fmt::Result</span>;
 
     <span class="doccomment">/// Write the given `inst` to `w`.</span>
     <span class="kw">fn</span> <span class="ident">write_instruction</span>(
@@ -699,15 +699,15 @@
         <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">inst</span>: <span class="ident">Inst</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
+    ) -&gt; <span class="ident">fmt::Result</span>;
 
     <span class="doccomment">/// Write the preamble to `w`. By default, this uses `write_entity_definition`.</span>
-    <span class="kw">fn</span> <span class="ident">write_preamble</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_preamble</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">super_preamble</span>(<span class="ident">w</span>, <span class="ident">func</span>)
     }
 
     <span class="doccomment">/// Default impl of `write_preamble`</span>
-    <span class="kw">fn</span> <span class="ident">super_preamble</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">super_preamble</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
         <span class="kw">for</span> (<span class="ident">ss</span>, <span class="ident">slot</span>) <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">stack_slots</span>.<span class="ident">iter</span>() {
@@ -773,7 +773,7 @@
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">entity</span>: <span class="ident">AnyEntity</span>,
         <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Display</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    ) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">super_entity_definition</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">entity</span>, <span class="ident">value</span>)
     }
 
@@ -785,7 +785,7 @@
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">entity</span>: <span class="ident">AnyEntity</span>,
         <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Display</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    ) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">w</span>, <span class="string">&quot;    {} = {}&quot;</span>, <span class="ident">entity</span>, <span class="ident">value</span>)
     }
 }
@@ -801,7 +801,7 @@
         <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">inst</span>: <span class="ident">Inst</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    ) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">write_instruction</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">aliases</span>, <span class="ident">inst</span>, <span class="ident">indent</span>)
     }
 
@@ -811,19 +811,19 @@
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">block</span>: <span class="ident">Block</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    ) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">write_block_header</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">block</span>, <span class="ident">indent</span>)
     }
 }
 
 <span class="doccomment">/// Write `func` to `w` as equivalent text.</span>
 <span class="doccomment">/// Use `isa` to emit ISA-dependent annotations.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_function</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_function</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="ident">fmt::Result</span> {
     <span class="ident">decorate_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PlainWriter</span>, <span class="ident">w</span>, <span class="ident">func</span>)
 }
 
 <span class="doccomment">/// Create a reverse-alias map from a value to all aliases having that value as a direct target</span>
-<span class="kw">fn</span> <span class="ident">alias_map</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">alias_map</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases</span> <span class="op">=</span> <span class="ident">SecondaryMap</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="kw">for</span> <span class="ident">v</span> <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">values</span>() {
         <span class="comment">// VADFS returns the immediate target of an alias</span>
@@ -841,7 +841,7 @@
     <span class="ident">func_w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FW</span>,
     <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+) -&gt; <span class="ident">fmt::Result</span> {
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;function &quot;</span>)<span class="question-mark">?</span>;
     <span class="ident">write_spec</span>(<span class="ident">w</span>, <span class="ident">func</span>)<span class="question-mark">?</span>;
     <span class="macro">writeln!</span>(<span class="ident">w</span>, <span class="string">&quot; {{&quot;</span>)<span class="question-mark">?</span>;
@@ -861,7 +861,7 @@
 <span class="comment">//</span>
 <span class="comment">// Function spec.</span>
 
-<span class="kw">fn</span> <span class="ident">write_spec</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+<span class="kw">fn</span> <span class="ident">write_spec</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) -&gt; <span class="ident">fmt::Result</span> {
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}{}&quot;</span>, <span class="ident">func</span>.<span class="ident">name</span>, <span class="ident">func</span>.<span class="ident">signature</span>)
 }
 
@@ -869,7 +869,7 @@
 <span class="comment">//</span>
 <span class="comment">// Basic blocks</span>
 
-<span class="kw">fn</span> <span class="ident">write_arg</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">arg</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+<span class="kw">fn</span> <span class="ident">write_arg</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">arg</span>: <span class="ident">Value</span>) -&gt; <span class="ident">fmt::Result</span> {
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}: {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg</span>))
 }
 
@@ -884,14 +884,14 @@
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
     <span class="ident">block</span>: <span class="ident">Block</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+) -&gt; <span class="ident">fmt::Result</span> {
     <span class="comment">// The `indent` is the instruction indentation. block headers are 4 spaces out from that.</span>
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{1:0$}{2}&quot;</span>, <span class="ident">indent</span> <span class="op">-</span> <span class="number">4</span>, <span class="string">&quot;&quot;</span>, <span class="ident">block</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>).<span class="ident">iter</span>().<span class="ident">cloned</span>();
     <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">next</span>() {
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="macro">writeln!</span>(<span class="ident">w</span>, <span class="string">&quot;:&quot;</span>),
-        <span class="prelude-val">Some</span>(<span class="ident">arg</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="macro">writeln!</span>(<span class="ident">w</span>, <span class="string">&quot;:&quot;</span>),
+        <span class="prelude-val">Some</span>(<span class="ident">arg</span>) =&gt; {
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;(&quot;</span>)<span class="question-mark">?</span>;
             <span class="ident">write_arg</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">arg</span>)<span class="question-mark">?</span>;
         }
@@ -910,7 +910,7 @@
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
     <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">block</span>: <span class="ident">Block</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+) -&gt; <span class="ident">fmt::Result</span> {
     <span class="comment">// Indent all instructions if any srclocs are present.</span>
     <span class="kw">let</span> <span class="ident">indent</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">func</span>.<span class="ident">srclocs</span>.<span class="ident">is_empty</span>() { <span class="number">4</span> } <span class="kw">else</span> { <span class="number">36</span> };
 
@@ -935,7 +935,7 @@
 <span class="comment">// Polymorphic instructions may need a suffix indicating the value of the controlling type variable</span>
 <span class="comment">// if it can&#39;t be trivially inferred.</span>
 <span class="comment">//</span>
-<span class="kw">fn</span> <span class="ident">type_suffix</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">type_suffix</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">inst_data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>];
     <span class="kw">let</span> <span class="ident">constraints</span> <span class="op">=</span> <span class="ident">inst_data</span>.<span class="ident">opcode</span>().<span class="ident">constraints</span>();
 
@@ -948,10 +948,10 @@
     <span class="kw">if</span> <span class="ident">constraints</span>.<span class="ident">use_typevar_operand</span>() {
         <span class="kw">let</span> <span class="ident">ctrl_var</span> <span class="op">=</span> <span class="ident">inst_data</span>.<span class="ident">typevar_operand</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_lists</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">def_block</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">ctrl_var</span>) {
-            <span class="ident">ValueDef::Result</span>(<span class="ident">instr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">instr</span>),
-            <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">block</span>),
+            <span class="ident">ValueDef::Result</span>(<span class="ident">instr</span>, <span class="kw">_</span>) =&gt; <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">instr</span>),
+            <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">block</span>),
         };
-        <span class="kw">if</span> <span class="ident">def_block</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">def_block</span> <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">inst</span>) {
+        <span class="kw">if</span> <span class="ident">def_block</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">def_block</span> <span class="op">==</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">inst</span>) {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
     }
@@ -970,7 +970,7 @@
     <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">target</span>: <span class="ident">Value</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+) -&gt; <span class="ident">fmt::Result</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">todo_stack</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">target</span>];
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">target</span>) <span class="op">=</span> <span class="ident">todo_stack</span>.<span class="ident">pop</span>() {
         <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">a</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">aliases</span>[<span class="ident">target</span>] {
@@ -988,7 +988,7 @@
     <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">inst</span>: <span class="ident">Inst</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+) -&gt; <span class="ident">fmt::Result</span> {
     <span class="comment">// Prefix containing source location, encoding, and value locations.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="number">16</span>);
 
@@ -1019,8 +1019,8 @@
     <span class="kw">let</span> <span class="ident">opcode</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>();
 
     <span class="kw">match</span> <span class="ident">type_suffix</span>(<span class="ident">func</span>, <span class="ident">inst</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">suf</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}.{}&quot;</span>, <span class="ident">opcode</span>, <span class="ident">suf</span>)<span class="question-mark">?</span>,
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">opcode</span>)<span class="question-mark">?</span>,
+        <span class="prelude-val">Some</span>(<span class="ident">suf</span>) =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}.{}&quot;</span>, <span class="ident">opcode</span>, <span class="ident">suf</span>)<span class="question-mark">?</span>,
+        <span class="prelude-val">None</span> =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">opcode</span>)<span class="question-mark">?</span>,
     }
 
     <span class="ident">write_operands</span>(<span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>, <span class="ident">inst</span>)<span class="question-mark">?</span>;
@@ -1034,55 +1034,55 @@
 }
 
 <span class="doccomment">/// Write the operands of `inst` to `w` with a prepended space.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_operands</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">dfg</span>: <span class="kw-2">&amp;</span><span class="ident">DataFlowGraph</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_operands</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">dfg</span>: <span class="kw-2">&amp;</span><span class="ident">DataFlowGraph</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) -&gt; <span class="ident">fmt::Result</span> {
     <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">dfg</span>.<span class="ident">value_lists</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir::instructions::InstructionData</span>::<span class="kw-2">*</span>;
     <span class="kw">match</span> <span class="ident">dfg</span>[<span class="ident">inst</span>] {
-        <span class="ident">AtomicRmw</span> { <span class="ident">op</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">op</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
-        <span class="ident">AtomicCas</span> { <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">args</span>[<span class="number">2</span>]),
-        <span class="ident">LoadNoOffset</span> { <span class="ident">flags</span>, <span class="ident">arg</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}&quot;</span>, <span class="ident">flags</span>, <span class="ident">arg</span>),
-        <span class="ident">StoreNoOffset</span> { <span class="ident">flags</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}, {}&quot;</span>, <span class="ident">flags</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
-        <span class="ident">Unary</span> { <span class="ident">arg</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">arg</span>),
-        <span class="ident">UnaryImm</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
-        <span class="ident">UnaryIeee32</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
-        <span class="ident">UnaryIeee64</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
-        <span class="ident">UnaryBool</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
-        <span class="ident">UnaryGlobalValue</span> { <span class="ident">global_value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">global_value</span>),
+        <span class="ident">AtomicRmw</span> { <span class="ident">op</span>, <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">op</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
+        <span class="ident">AtomicCas</span> { <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">args</span>[<span class="number">2</span>]),
+        <span class="ident">LoadNoOffset</span> { <span class="ident">flags</span>, <span class="ident">arg</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}&quot;</span>, <span class="ident">flags</span>, <span class="ident">arg</span>),
+        <span class="ident">StoreNoOffset</span> { <span class="ident">flags</span>, <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}, {}&quot;</span>, <span class="ident">flags</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
+        <span class="ident">Unary</span> { <span class="ident">arg</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">arg</span>),
+        <span class="ident">UnaryImm</span> { <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
+        <span class="ident">UnaryIeee32</span> { <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
+        <span class="ident">UnaryIeee64</span> { <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
+        <span class="ident">UnaryBool</span> { <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">imm</span>),
+        <span class="ident">UnaryGlobalValue</span> { <span class="ident">global_value</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">global_value</span>),
         <span class="ident">UnaryConst</span> {
             <span class="ident">constant_handle</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">constant_handle</span>),
-        <span class="ident">Binary</span> { <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
-        <span class="ident">BinaryImm8</span> { <span class="ident">arg</span>, <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
-        <span class="ident">BinaryImm64</span> { <span class="ident">arg</span>, <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
-        <span class="ident">Ternary</span> { <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">args</span>[<span class="number">2</span>]),
-        <span class="ident">MultiAry</span> { <span class="kw-2">ref</span> <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">constant_handle</span>),
+        <span class="ident">Binary</span> { <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
+        <span class="ident">BinaryImm8</span> { <span class="ident">arg</span>, <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
+        <span class="ident">BinaryImm64</span> { <span class="ident">arg</span>, <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
+        <span class="ident">Ternary</span> { <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">args</span>[<span class="number">2</span>]),
+        <span class="ident">MultiAry</span> { <span class="kw-2">ref</span> <span class="ident">args</span>, .. } =&gt; {
             <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">is_empty</span>() {
                 <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;&quot;</span>)
             } <span class="kw">else</span> {
                 <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">DisplayValues</span>(<span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>)))
             }
         }
-        <span class="ident">NullAry</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; &quot;</span>),
-        <span class="ident">TernaryImm8</span> { <span class="ident">imm</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">imm</span>),
-        <span class="ident">Shuffle</span> { <span class="ident">mask</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">NullAry</span> { .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; &quot;</span>),
+        <span class="ident">TernaryImm8</span> { <span class="ident">imm</span>, <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">imm</span>),
+        <span class="ident">Shuffle</span> { <span class="ident">mask</span>, <span class="ident">args</span>, .. } =&gt; {
             <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">immediates</span>.<span class="ident">get</span>(<span class="ident">mask</span>).<span class="ident">expect</span>(
                 <span class="string">&quot;Expected the shuffle mask to already be inserted into the immediates table&quot;</span>,
             );
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">data</span>)
         }
-        <span class="ident">IntCompare</span> { <span class="ident">cond</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
-        <span class="ident">IntCompareImm</span> { <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
-        <span class="ident">IntCond</span> { <span class="ident">cond</span>, <span class="ident">arg</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>),
-        <span class="ident">FloatCompare</span> { <span class="ident">cond</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
-        <span class="ident">FloatCond</span> { <span class="ident">cond</span>, <span class="ident">arg</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>),
-        <span class="ident">IntSelect</span> { <span class="ident">cond</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">IntCompare</span> { <span class="ident">cond</span>, <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
+        <span class="ident">IntCompareImm</span> { <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
+        <span class="ident">IntCond</span> { <span class="ident">cond</span>, <span class="ident">arg</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>),
+        <span class="ident">FloatCompare</span> { <span class="ident">cond</span>, <span class="ident">args</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
+        <span class="ident">FloatCond</span> { <span class="ident">cond</span>, <span class="ident">arg</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>),
+        <span class="ident">IntSelect</span> { <span class="ident">cond</span>, <span class="ident">args</span>, .. } =&gt; {
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">args</span>[<span class="number">2</span>])
         }
         <span class="ident">Jump</span> {
             <span class="ident">destination</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">destination</span>)<span class="question-mark">?</span>;
             <span class="ident">write_block_args</span>(<span class="ident">w</span>, <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>))
         }
@@ -1090,7 +1090,7 @@
             <span class="ident">destination</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">destination</span>)<span class="question-mark">?</span>;
             <span class="ident">write_block_args</span>(<span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>[<span class="number">1</span>..])
@@ -1100,7 +1100,7 @@
             <span class="ident">destination</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">destination</span>)<span class="question-mark">?</span>;
             <span class="ident">write_block_args</span>(<span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>[<span class="number">1</span>..])
@@ -1110,7 +1110,7 @@
             <span class="ident">destination</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">destination</span>)<span class="question-mark">?</span>;
             <span class="ident">write_block_args</span>(<span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>[<span class="number">1</span>..])
@@ -1120,7 +1120,7 @@
             <span class="ident">destination</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">destination</span>)<span class="question-mark">?</span>;
             <span class="ident">write_block_args</span>(<span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>[<span class="number">2</span>..])
@@ -1130,13 +1130,13 @@
             <span class="ident">destination</span>,
             <span class="ident">table</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">destination</span>, <span class="ident">table</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">destination</span>, <span class="ident">table</span>),
         <span class="ident">Call</span> {
             <span class="ident">func_ref</span>, <span class="kw-2">ref</span> <span class="ident">args</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}({})&quot;</span>, <span class="ident">func_ref</span>, <span class="ident">DisplayValues</span>(<span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>))),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}({})&quot;</span>, <span class="ident">func_ref</span>, <span class="ident">DisplayValues</span>(<span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>))),
         <span class="ident">CallIndirect</span> {
             <span class="ident">sig_ref</span>, <span class="kw-2">ref</span> <span class="ident">args</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(
                 <span class="ident">w</span>,
@@ -1146,27 +1146,27 @@
                 <span class="ident">DisplayValues</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>[<span class="number">1</span>..])
             )
         }
-        <span class="ident">FuncAddr</span> { <span class="ident">func_ref</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">func_ref</span>),
+        <span class="ident">FuncAddr</span> { <span class="ident">func_ref</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">func_ref</span>),
         <span class="ident">StackLoad</span> {
             <span class="ident">stack_slot</span>, <span class="ident">offset</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}{}&quot;</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}{}&quot;</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>),
         <span class="ident">StackStore</span> {
             <span class="ident">arg</span>,
             <span class="ident">stack_slot</span>,
             <span class="ident">offset</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}{}&quot;</span>, <span class="ident">arg</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>),
-        <span class="ident">HeapAddr</span> { <span class="ident">heap</span>, <span class="ident">arg</span>, <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">heap</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
-        <span class="ident">TableAddr</span> { <span class="ident">table</span>, <span class="ident">arg</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">table</span>, <span class="ident">arg</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}{}&quot;</span>, <span class="ident">arg</span>, <span class="ident">stack_slot</span>, <span class="ident">offset</span>),
+        <span class="ident">HeapAddr</span> { <span class="ident">heap</span>, <span class="ident">arg</span>, <span class="ident">imm</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">heap</span>, <span class="ident">arg</span>, <span class="ident">imm</span>),
+        <span class="ident">TableAddr</span> { <span class="ident">table</span>, <span class="ident">arg</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">table</span>, <span class="ident">arg</span>),
         <span class="ident">Load</span> {
             <span class="ident">flags</span>, <span class="ident">arg</span>, <span class="ident">offset</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}{}&quot;</span>, <span class="ident">flags</span>, <span class="ident">arg</span>, <span class="ident">offset</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}{}&quot;</span>, <span class="ident">flags</span>, <span class="ident">arg</span>, <span class="ident">offset</span>),
         <span class="ident">LoadComplex</span> {
             <span class="ident">flags</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             <span class="ident">offset</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(
                 <span class="ident">w</span>,
@@ -1181,13 +1181,13 @@
             <span class="ident">args</span>,
             <span class="ident">offset</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}, {}{}&quot;</span>, <span class="ident">flags</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">offset</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{} {}, {}{}&quot;</span>, <span class="ident">flags</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">offset</span>),
         <span class="ident">StoreComplex</span> {
             <span class="ident">flags</span>,
             <span class="kw-2">ref</span> <span class="ident">args</span>,
             <span class="ident">offset</span>,
             ..
-        } <span class="op">=</span><span class="op">&gt;</span> {
+        } =&gt; {
             <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>);
             <span class="macro">write!</span>(
                 <span class="ident">w</span>,
@@ -1198,19 +1198,19 @@
                 <span class="ident">offset</span>
             )
         }
-        <span class="ident">Trap</span> { <span class="ident">code</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">code</span>),
-        <span class="ident">CondTrap</span> { <span class="ident">arg</span>, <span class="ident">code</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">code</span>),
+        <span class="ident">Trap</span> { <span class="ident">code</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">code</span>),
+        <span class="ident">CondTrap</span> { <span class="ident">arg</span>, <span class="ident">code</span>, .. } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">code</span>),
         <span class="ident">IntCondTrap</span> {
             <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">code</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">code</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">code</span>),
         <span class="ident">FloatCondTrap</span> {
             <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">code</span>, ..
-        } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">code</span>),
+        } =&gt; <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {} {}, {}&quot;</span>, <span class="ident">cond</span>, <span class="ident">arg</span>, <span class="ident">code</span>),
     }
 }
 
 <span class="doccomment">/// Write block args using optional parantheses.</span>
-<span class="kw">fn</span> <span class="ident">write_block_args</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">Value</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+<span class="kw">fn</span> <span class="ident">write_block_args</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">Value</span>]) -&gt; <span class="ident">fmt::Result</span> {
     <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">is_empty</span>() {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
@@ -1222,9 +1222,9 @@
 <span class="kw">struct</span> <span class="ident">DisplayValues</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Value</span>]);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayValues</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">val</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">i</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">val</span>)<span class="question-mark">?</span>;
             } <span class="kw">else</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;, {}&quot;</span>, <span class="ident">val</span>)<span class="question-mark">?</span>;
@@ -1237,9 +1237,9 @@
 <span class="kw">struct</span> <span class="ident">DisplayValuesWithDelimiter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Value</span>], <span class="ident">char</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayValuesWithDelimiter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">val</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">i</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">val</span>)<span class="question-mark">?</span>;
             } <span class="kw">else</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}{}&quot;</span>, <span class="self">self</span>.<span class="number">1</span>, <span class="ident">val</span>)<span class="question-mark">?</span>;

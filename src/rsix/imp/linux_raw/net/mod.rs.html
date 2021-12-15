@@ -39,7 +39,7 @@
 
 <span class="doccomment">/// Return the offset of the `sun_path` field of `sockaddr_un`.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">offsetof_sun_path</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">offsetof_sun_path</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="ident">linux_raw_sys::general::sockaddr_un</span> {
         <span class="ident">sun_family</span>: <span class="number">0_u16</span>,
         <span class="ident">sun_path</span>: [<span class="number">0</span>; <span class="number">108</span>],

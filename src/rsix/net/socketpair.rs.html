@@ -37,7 +37,7 @@
     <span class="ident">type_</span>: <span class="ident">SocketType</span>,
     <span class="ident">flags</span>: <span class="ident">SocketFlags</span>,
     <span class="ident">protocol</span>: <span class="ident">Protocol</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">OwnedFd</span>, <span class="ident">OwnedFd</span>)<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">OwnedFd</span>, <span class="ident">OwnedFd</span>)<span class="op">&gt;</span> {
     <span class="ident">imp::syscalls::socketpair</span>(<span class="ident">domain</span>, <span class="ident">type_</span>, <span class="ident">flags</span>, <span class="ident">protocol</span>)
 }
 </code></pre></div>

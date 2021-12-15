@@ -186,13 +186,13 @@
 	<span class="macro">syn::custom_keyword!</span>(<span class="ident">tokens</span>);
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">match_and_insert</span>(<span class="ident">input</span>: <span class="ident">proc_macro::TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">proc_macro::TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">match_and_insert</span>(<span class="ident">input</span>: <span class="ident">proc_macro::TokenStream</span>) -&gt; <span class="ident">proc_macro::TokenStream</span> {
 	<span class="kw">let</span> <span class="ident">MatchAndInsertDef</span> { <span class="ident">pattern</span>, <span class="ident">tokens</span>, <span class="ident">target</span> } <span class="op">=</span>
 		<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MatchAndInsertDef</span>);
 
 	<span class="kw">match</span> <span class="ident">expand_in_stream</span>(<span class="kw-2">&amp;</span><span class="ident">pattern</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-val">Some</span>(<span class="ident">tokens</span>), <span class="ident">target</span>) {
-		<span class="prelude-val">Ok</span>(<span class="ident">stream</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">stream</span>.<span class="ident">into</span>(),
-		<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">err</span>.<span class="ident">to_compile_error</span>().<span class="ident">into</span>(),
+		<span class="prelude-val">Ok</span>(<span class="ident">stream</span>) =&gt; <span class="ident">stream</span>.<span class="ident">into</span>(),
+		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="ident">err</span>.<span class="ident">to_compile_error</span>().<span class="ident">into</span>(),
 	}
 }
 
@@ -207,7 +207,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">syn::parse::Parse</span> <span class="kw">for</span> <span class="ident">MatchAndInsertDef</span> {
-	<span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">syn::parse::ParseStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">syn::parse::ParseStream</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">target</span>;
 		<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">keyword::target</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 		<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="macro">syn::Token!</span>[<span class="op">=</span>]<span class="op">&gt;</span>()<span class="question-mark">?</span>;
@@ -251,7 +251,7 @@
 	<span class="ident">pattern</span>: <span class="kw-2">&amp;</span>[<span class="ident">TokenTree</span>],
 	<span class="ident">tokens</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span>,
 	<span class="ident">stream</span>: <span class="ident">TokenStream</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
 	<span class="macro">assert!</span>(
 		<span class="ident">tokens</span>.<span class="ident">is_some</span>(),
 		<span class="string">&quot;`tokens` must be some, Option is used because `tokens` is used only once&quot;</span>
@@ -268,26 +268,26 @@
 
 	<span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>) <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">next</span>() {
 		<span class="kw">match</span> <span class="ident">token</span> {
-			<span class="ident">TokenTree::Group</span>(<span class="ident">group</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">TokenTree::Group</span>(<span class="ident">group</span>) =&gt; {
 				<span class="ident">match_cursor</span> <span class="op">=</span> <span class="number">0</span>;
 				<span class="kw">let</span> <span class="ident">group_stream</span> <span class="op">=</span> <span class="ident">group</span>.<span class="ident">stream</span>();
 				<span class="kw">match</span> <span class="ident">expand_in_stream</span>(<span class="ident">pattern</span>, <span class="ident">tokens</span>, <span class="ident">group_stream</span>) {
-					<span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; {
 						<span class="ident">extended</span>.<span class="ident">extend</span>(<span class="ident">once</span>(<span class="ident">TokenTree::Group</span>(<span class="ident">Group::new</span>(<span class="ident">group</span>.<span class="ident">delimiter</span>(), <span class="ident">s</span>))));
 						<span class="ident">extended</span>.<span class="ident">extend</span>(<span class="ident">stream</span>);
 						<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">extended</span>)
 					},
-					<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
 						<span class="ident">extended</span>.<span class="ident">extend</span>(<span class="ident">once</span>(<span class="ident">TokenTree::Group</span>(<span class="ident">group</span>)));
 					},
 				}
 			},
-			<span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">other</span> =&gt; {
 				<span class="ident">advance_match_cursor</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>, <span class="ident">pattern</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">match_cursor</span>);
 
 				<span class="ident">extended</span>.<span class="ident">extend</span>(<span class="ident">once</span>(<span class="ident">other</span>));
 
-				<span class="kw">if</span> <span class="ident">match_cursor</span> <span class="op">=</span><span class="op">=</span> <span class="ident">pattern</span>.<span class="ident">len</span>() {
+				<span class="kw">if</span> <span class="ident">match_cursor</span> <span class="op">==</span> <span class="ident">pattern</span>.<span class="ident">len</span>() {
 					<span class="ident">extended</span>
 						.<span class="ident">extend</span>(<span class="ident">once</span>(<span class="ident">tokens</span>.<span class="ident">take</span>().<span class="ident">expect</span>(<span class="string">&quot;tokens is used to replace only once&quot;</span>)));
 					<span class="ident">extended</span>.<span class="ident">extend</span>(<span class="ident">stream</span>);
@@ -305,9 +305,9 @@
 	<span class="kw">use</span> <span class="ident">TokenTree</span>::{<span class="ident">Ident</span>, <span class="ident">Punct</span>};
 
 	<span class="kw">let</span> <span class="ident">does_match_other_pattern</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">other</span>, <span class="kw-2">&amp;</span><span class="ident">pattern</span>[<span class="kw-2">*</span><span class="ident">match_cursor</span>]) {
-		(<span class="ident">Ident</span>(<span class="ident">i1</span>), <span class="ident">Ident</span>(<span class="ident">i2</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">i2</span>,
-		(<span class="ident">Punct</span>(<span class="ident">p1</span>), <span class="ident">Punct</span>(<span class="ident">p2</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">p1</span>.<span class="ident">as_char</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">p2</span>.<span class="ident">as_char</span>(),
-		<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+		(<span class="ident">Ident</span>(<span class="ident">i1</span>), <span class="ident">Ident</span>(<span class="ident">i2</span>)) =&gt; <span class="ident">i1</span> <span class="op">==</span> <span class="ident">i2</span>,
+		(<span class="ident">Punct</span>(<span class="ident">p1</span>), <span class="ident">Punct</span>(<span class="ident">p2</span>)) =&gt; <span class="ident">p1</span>.<span class="ident">as_char</span>() <span class="op">==</span> <span class="ident">p2</span>.<span class="ident">as_char</span>(),
+		<span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
 	};
 
 	<span class="kw">if</span> <span class="ident">does_match_other_pattern</span> {

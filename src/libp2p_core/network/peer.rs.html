@@ -604,12 +604,12 @@
     <span class="ident">TTrans::Error</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Connected</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Connected&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;peer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">finish</span>(),
-            <span class="ident">Peer::Dialing</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Dialing&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;peer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">finish</span>(),
-            <span class="ident">Peer::Disconnected</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Disconnected&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;peer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">finish</span>(),
-            <span class="ident">Peer::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Local&quot;</span>).<span class="ident">finish</span>(),
+            <span class="ident">Peer::Connected</span>(<span class="ident">p</span>) =&gt; <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Connected&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;peer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">finish</span>(),
+            <span class="ident">Peer::Dialing</span>(<span class="ident">p</span>) =&gt; <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Dialing&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;peer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">finish</span>(),
+            <span class="ident">Peer::Disconnected</span>(<span class="ident">p</span>) =&gt; <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Disconnected&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;peer&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">finish</span>(),
+            <span class="ident">Peer::Local</span> =&gt; <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Local&quot;</span>).<span class="ident">finish</span>(),
         }
     }
 }
@@ -620,8 +620,8 @@
     <span class="ident">TTrans::Error</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">peer_id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">network</span>.<span class="ident">local_peer_id</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">if</span> <span class="ident">peer_id</span> <span class="op">==</span> <span class="ident">network</span>.<span class="ident">local_peer_id</span> {
             <span class="kw">return</span> <span class="ident">Peer::Local</span>;
         }
 
@@ -636,15 +636,15 @@
         <span class="ident"><span class="self">Self</span>::disconnected</span>(<span class="ident">network</span>, <span class="ident">peer_id</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">disconnected</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">disconnected</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Peer::Disconnected</span>(<span class="ident">DisconnectedPeer</span> { <span class="ident">network</span>, <span class="ident">peer_id</span> })
     }
 
-    <span class="kw">fn</span> <span class="ident">connected</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">connected</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Peer::Connected</span>(<span class="ident">ConnectedPeer</span> { <span class="ident">network</span>, <span class="ident">peer_id</span> })
     }
 
-    <span class="kw">fn</span> <span class="ident">dialing</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">dialing</span>(<span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>, <span class="ident">peer_id</span>: <span class="ident">PeerId</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Peer::Dialing</span>(<span class="ident">DialingPeer</span> { <span class="ident">network</span>, <span class="ident">peer_id</span> })
     }
 }
@@ -663,31 +663,31 @@
     <span class="doccomment">/// Checks whether the peer is currently connected.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `true` iff [`Peer::into_connected`] returns `Some`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_connected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_connected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Connected</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Peer::Dialing</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">peer</span>.<span class="ident">is_connected</span>(),
-            <span class="ident">Peer::Disconnected</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-            <span class="ident">Peer::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">Peer::Connected</span>(..) =&gt; <span class="bool-val">true</span>,
+            <span class="ident">Peer::Dialing</span>(<span class="ident">peer</span>) =&gt; <span class="ident">peer</span>.<span class="ident">is_connected</span>(),
+            <span class="ident">Peer::Disconnected</span>(..) =&gt; <span class="bool-val">false</span>,
+            <span class="ident">Peer::Local</span> =&gt; <span class="bool-val">false</span>,
         }
     }
 
     <span class="doccomment">/// Checks whether the peer is currently being dialed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `true` iff [`Peer::into_dialing`] returns `Some`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_dialing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_dialing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Dialing</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Peer::Connected</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">peer</span>.<span class="ident">is_dialing</span>(),
-            <span class="ident">Peer::Disconnected</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-            <span class="ident">Peer::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">Peer::Dialing</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">true</span>,
+            <span class="ident">Peer::Connected</span>(<span class="ident">peer</span>) =&gt; <span class="ident">peer</span>.<span class="ident">is_dialing</span>(),
+            <span class="ident">Peer::Disconnected</span>(..) =&gt; <span class="bool-val">false</span>,
+            <span class="ident">Peer::Local</span> =&gt; <span class="bool-val">false</span>,
         }
     }
 
     <span class="doccomment">/// Checks whether the peer is currently disconnected.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `true` iff [`Peer::into_disconnected`] returns `Some`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_disconnected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_disconnected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident">Peer::Disconnected</span>(..))
     }
 
@@ -702,16 +702,16 @@
         <span class="self">self</span>,
         <span class="ident">addresses</span>: <span class="ident">I</span>,
         <span class="ident">handler</span>: <span class="ident">THandler</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">ConnectionId</span>, <span class="ident">DialingPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>), <span class="ident">DialError</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">ConnectionId</span>, <span class="ident">DialingPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>), <span class="ident">DialError</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Multiaddr</span><span class="op">&gt;</span>,
         <span class="ident">I::IntoIter</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
         <span class="kw">let</span> (<span class="ident">peer_id</span>, <span class="ident">network</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Connected</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">p</span>.<span class="ident">peer_id</span>, <span class="ident">p</span>.<span class="ident">network</span>),
-            <span class="ident">Peer::Dialing</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">p</span>.<span class="ident">peer_id</span>, <span class="ident">p</span>.<span class="ident">network</span>),
-            <span class="ident">Peer::Disconnected</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">p</span>.<span class="ident">peer_id</span>, <span class="ident">p</span>.<span class="ident">network</span>),
-            <span class="ident">Peer::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">DialError::LocalPeerId</span> { <span class="ident">handler</span> }),
+            <span class="ident">Peer::Connected</span>(<span class="ident">p</span>) =&gt; (<span class="ident">p</span>.<span class="ident">peer_id</span>, <span class="ident">p</span>.<span class="ident">network</span>),
+            <span class="ident">Peer::Dialing</span>(<span class="ident">p</span>) =&gt; (<span class="ident">p</span>.<span class="ident">peer_id</span>, <span class="ident">p</span>.<span class="ident">network</span>),
+            <span class="ident">Peer::Disconnected</span>(<span class="ident">p</span>) =&gt; (<span class="ident">p</span>.<span class="ident">peer_id</span>, <span class="ident">p</span>.<span class="ident">network</span>),
+            <span class="ident">Peer::Local</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">DialError::LocalPeerId</span> { <span class="ident">handler</span> }),
         };
 
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">network</span>.<span class="ident">dial_peer</span>(<span class="ident">DialingOpts</span> {
@@ -726,33 +726,33 @@
     <span class="doccomment">/// Converts the peer into a `ConnectedPeer`, if an established connection exists.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Succeeds if the there is at least one established connection to the peer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_connected</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ConnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_connected</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ConnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Connected</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">peer</span>),
-            <span class="ident">Peer::Dialing</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">peer</span>.<span class="ident">into_connected</span>(),
-            <span class="ident">Peer::Disconnected</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">Peer::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">Peer::Connected</span>(<span class="ident">peer</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">peer</span>),
+            <span class="ident">Peer::Dialing</span>(<span class="ident">peer</span>) =&gt; <span class="ident">peer</span>.<span class="ident">into_connected</span>(),
+            <span class="ident">Peer::Disconnected</span>(..) =&gt; <span class="prelude-val">None</span>,
+            <span class="ident">Peer::Local</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 
     <span class="doccomment">/// Converts the peer into a `DialingPeer`, if a dialing attempt exists.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Succeeds if the there is at least one pending outgoing connection to the peer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_dialing</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_dialing</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Dialing</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">peer</span>),
-            <span class="ident">Peer::Connected</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">peer</span>.<span class="ident">into_dialing</span>(),
-            <span class="ident">Peer::Disconnected</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">Peer::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">Peer::Dialing</span>(<span class="ident">peer</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">peer</span>),
+            <span class="ident">Peer::Connected</span>(<span class="ident">peer</span>) =&gt; <span class="ident">peer</span>.<span class="ident">into_dialing</span>(),
+            <span class="ident">Peer::Disconnected</span>(..) =&gt; <span class="prelude-val">None</span>,
+            <span class="ident">Peer::Local</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 
     <span class="doccomment">/// Converts the peer into a `DisconnectedPeer`, if neither an established connection</span>
     <span class="doccomment">/// nor a dialing attempt exists.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_disconnected</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DisconnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_disconnected</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DisconnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Peer::Disconnected</span>(<span class="ident">peer</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">peer</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">Peer::Disconnected</span>(<span class="ident">peer</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">peer</span>),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 }
@@ -775,12 +775,12 @@
     <span class="op">&lt;</span><span class="ident">TTrans</span> <span class="kw">as</span> <span class="ident">Transport</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>
     }
 
     <span class="doccomment">/// Returns the `ConnectedPeer` into a `Peer`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_peer</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Peer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_peer</span>(<span class="self">self</span>) -&gt; <span class="ident">Peer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
         <span class="ident">Peer::Connected</span>(<span class="self">self</span>)
     }
 
@@ -788,25 +788,25 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connection</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">id</span>: <span class="ident">ConnectionId</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EstablishedConnection</span><span class="op">&lt;</span><span class="ident">THandlerInEvent</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">EstablishedConnection</span><span class="op">&lt;</span><span class="ident">THandlerInEvent</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">pool</span>.<span class="ident">get_established</span>(<span class="ident">id</span>)
     }
 
     <span class="doccomment">/// The number of established connections to the peer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_connections</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_connections</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">pool</span>.<span class="ident">num_peer_established</span>(<span class="self">self</span>.<span class="ident">peer_id</span>)
     }
 
     <span class="doccomment">/// Checks whether there is an ongoing dialing attempt to the peer.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `true` iff [`ConnectedPeer::into_dialing`] returns `Some`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_dialing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_dialing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">is_dialing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>)
     }
 
     <span class="doccomment">/// Converts this peer into a [`DialingPeer`], if there is an ongoing</span>
     <span class="doccomment">/// dialing attempt, `None` otherwise.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_dialing</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_dialing</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">is_dialing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">DialingPeer</span> {
                 <span class="ident">network</span>: <span class="self">self</span>.<span class="ident">network</span>,
@@ -820,20 +820,20 @@
     <span class="doccomment">/// Gets an iterator over all established connections to the peer.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connections</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EstablishedConnectionIter</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ConnectionId</span><span class="op">&gt;</span>, <span class="ident">THandlerInEvent</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    ) -&gt; <span class="ident">EstablishedConnectionIter</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ConnectionId</span><span class="op">&gt;</span>, <span class="ident">THandlerInEvent</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">pool</span>.<span class="ident">iter_peer_established</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>)
     }
 
     <span class="doccomment">/// Obtains some established connection to the peer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_connection</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EstablishedConnection</span><span class="op">&lt;</span><span class="ident">THandlerInEvent</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_connection</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">EstablishedConnection</span><span class="op">&lt;</span><span class="ident">THandlerInEvent</span><span class="op">&lt;</span><span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">connections</span>()
             .<span class="ident">into_first</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;By `Peer::new` and the definition of `ConnectedPeer`.&quot;</span>)
     }
 
     <span class="doccomment">/// Disconnects from the peer, closing all connections.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DisconnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="self">self</span>) -&gt; <span class="ident">DisconnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>);
         <span class="ident">DisconnectedPeer</span> {
             <span class="ident">network</span>: <span class="self">self</span>.<span class="ident">network</span>,
@@ -848,7 +848,7 @@
     <span class="ident">TTrans::Error</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ConnectedPeer&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;peer_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>)
             .<span class="ident">field</span>(
@@ -882,18 +882,18 @@
     <span class="ident">TTrans::Error</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>
     }
 
     <span class="doccomment">/// Returns the `DialingPeer` into a `Peer`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_peer</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Peer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_peer</span>(<span class="self">self</span>) -&gt; <span class="ident">Peer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
         <span class="ident">Peer::Dialing</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Disconnects from this peer, closing all established connections and</span>
     <span class="doccomment">/// aborting all dialing attempts.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DisconnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="self">self</span>) -&gt; <span class="ident">DisconnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>);
         <span class="ident">DisconnectedPeer</span> {
             <span class="ident">network</span>: <span class="self">self</span>.<span class="ident">network</span>,
@@ -904,12 +904,12 @@
     <span class="doccomment">/// Checks whether there is an established connection to the peer.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `true` iff [`DialingPeer::into_connected`] returns `Some`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_connected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_connected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">pool</span>.<span class="ident">is_connected</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>)
     }
 
     <span class="doccomment">/// Converts the peer into a `ConnectedPeer`, if an established connection exists.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_connected</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ConnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_connected</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ConnectedPeer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_connected</span>() {
             <span class="prelude-val">Some</span>(<span class="ident">ConnectedPeer</span> {
                 <span class="ident">peer_id</span>: <span class="self">self</span>.<span class="ident">peer_id</span>,
@@ -922,7 +922,7 @@
 
     <span class="doccomment">/// Obtains a dialing attempt to the peer by connection ID of</span>
     <span class="doccomment">/// the current connection attempt.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attempt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">id</span>: <span class="ident">ConnectionId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attempt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">id</span>: <span class="ident">ConnectionId</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="ident">DialingAttempt</span> {
             <span class="ident">peer_id</span>: <span class="self">self</span>.<span class="ident">peer_id</span>,
             <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">network</span>.<span class="ident">pool</span>.<span class="ident">get_outgoing</span>(<span class="ident">id</span>)<span class="question-mark">?</span>,
@@ -930,14 +930,14 @@
     }
 
     <span class="doccomment">/// Gets an iterator over all dialing (i.e. pending outgoing) connections to the peer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attempts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DialingAttemptIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span>, <span class="ident">TTrans</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attempts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">DialingAttemptIter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span>, <span class="ident">TTrans</span><span class="op">&gt;</span> {
         <span class="ident">DialingAttemptIter::new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">network</span>)
     }
 
     <span class="doccomment">/// Obtains some dialing connection to the peer.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// At least one dialing connection is guaranteed to exist on a `DialingPeer`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_attempt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_attempt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">attempts</span>()
             .<span class="ident">into_first</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;By `Peer::new` and the definition of `DialingPeer`.&quot;</span>)
@@ -950,7 +950,7 @@
     <span class="ident">TTrans::Error</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DialingPeer&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;peer_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>)
             .<span class="ident">field</span>(
@@ -982,7 +982,7 @@
     <span class="ident">TTrans</span>: <span class="ident">Transport</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;DisconnectedPeer&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;peer_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>)
             .<span class="ident">finish</span>()
@@ -994,12 +994,12 @@
     <span class="ident">TTrans</span>: <span class="ident">Transport</span>,
     <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>,
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>
     }
 
     <span class="doccomment">/// Returns the `DisconnectedPeer` into a `Peer`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_peer</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Peer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_peer</span>(<span class="self">self</span>) -&gt; <span class="ident">Peer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
         <span class="ident">Peer::Disconnected</span>(<span class="self">self</span>)
     }
 }
@@ -1014,12 +1014,12 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span><span class="op">&gt;</span> <span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">THandler</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns the ID of the current connection attempt.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ConnectionId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ConnectionId</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">id</span>()
     }
 
     <span class="doccomment">/// Returns the (expected) peer ID of the dialing attempt.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peer_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peer_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">PeerId</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">peer_id</span>
     }
 
@@ -1045,7 +1045,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">THandler</span>: <span class="ident">IntoConnectionHandler</span>, <span class="ident">TTrans</span>: <span class="ident">Transport</span><span class="op">&gt;</span>
     <span class="ident">DialingAttemptIter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">THandler</span>, <span class="ident">TTrans</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">peer_id</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PeerId</span>, <span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">peer_id</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PeerId</span>, <span class="ident">network</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Network</span><span class="op">&lt;</span><span class="ident">TTrans</span>, <span class="ident">THandler</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">connections</span> <span class="op">=</span> <span class="ident">network</span>.<span class="ident">dialing_attempts</span>(<span class="kw-2">*</span><span class="ident">peer_id</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">id</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">id</span>).<span class="ident">collect</span>();
         <span class="self">Self</span> {
             <span class="ident">pool</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">network</span>.<span class="ident">pool</span>,
@@ -1056,7 +1056,7 @@
 
     <span class="doccomment">/// Obtains the next dialing connection, if any.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">connection_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">connections</span>.<span class="ident">pop_front</span>()<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">get_outgoing</span>(<span class="ident">connection_id</span>)<span class="question-mark">?</span>;
@@ -1068,7 +1068,7 @@
     }
 
     <span class="doccomment">/// Returns the first connection, if any, consuming the iterator.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_first</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_first</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DialingAttempt</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">THandler</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     {

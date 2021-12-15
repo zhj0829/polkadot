@@ -44,7 +44,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/fcntl.h.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;AT_FDCWD&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cwd</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cwd</span>() -&gt; <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">at_fdcwd</span> <span class="op">=</span> <span class="ident">imp::io::AT_FDCWD</span> <span class="kw">as</span> <span class="ident">RawFd</span>;
 
     <span class="comment">// # Safety</span>

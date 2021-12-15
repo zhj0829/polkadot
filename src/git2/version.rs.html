@@ -106,14 +106,14 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">flag_test</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">features</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">flag</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">features</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">flag</span>:<span class="ident">expr</span>) =&gt; {
         (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">features</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&amp;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">flag</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     };
 }
 
 <span class="kw">impl</span> <span class="ident">Version</span> {
     <span class="doccomment">/// Returns a [`Version`] which provides information about libgit2.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Version</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() -&gt; <span class="ident">Version</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Version</span> {
             <span class="ident">major</span>: <span class="number">0</span>,
             <span class="ident">minor</span>: <span class="number">0</span>,
@@ -130,23 +130,23 @@
     <span class="doccomment">/// Returns the version of libgit2.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The return value is a tuple of `(major, minor, rev)`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">libgit2_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">u32</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">libgit2_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">u32</span>) {
         (<span class="self">self</span>.<span class="ident">major</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="self">self</span>.<span class="ident">minor</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="self">self</span>.<span class="ident">rev</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
     <span class="doccomment">/// Returns the version of the libgit2-sys crate.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">crate_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">crate_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>)
     }
 
     <span class="doccomment">/// Returns true if this was built with the vendored version of libgit2.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vendored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vendored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">raw::vendored</span>()
     }
 
     <span class="doccomment">/// Returns true if libgit2 was built thread-aware and can be safely used</span>
     <span class="doccomment">/// from multiple threads.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">threads</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">threads</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">flag_test!</span>(<span class="self">self</span>.<span class="ident">features</span>, <span class="ident">raw::GIT_FEATURE_THREADS</span>)
     }
 
@@ -154,7 +154,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Custom TLS streams may still be added by the user to support HTTPS</span>
     <span class="doccomment">/// regardless of this.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">https</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">https</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">flag_test!</span>(<span class="self">self</span>.<span class="ident">features</span>, <span class="ident">raw::GIT_FEATURE_HTTPS</span>)
     }
 
@@ -162,19 +162,19 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// A custom transport may still be added by the user to support libssh2</span>
     <span class="doccomment">/// regardless of this.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ssh</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ssh</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">flag_test!</span>(<span class="self">self</span>.<span class="ident">features</span>, <span class="ident">raw::GIT_FEATURE_SSH</span>)
     }
 
     <span class="doccomment">/// Returns true if libgit2 was built with support for sub-second</span>
     <span class="doccomment">/// resolution in file modification times.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nsec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nsec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">flag_test!</span>(<span class="self">self</span>.<span class="ident">features</span>, <span class="ident">raw::GIT_FEATURE_NSEC</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Version</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Version&quot;</span>);
         <span class="ident">f</span>.<span class="ident">field</span>(<span class="string">&quot;major&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">major</span>)
             .<span class="ident">field</span>(<span class="string">&quot;minor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">minor</span>)

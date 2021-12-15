@@ -418,12 +418,12 @@
 };
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clock_gettime</span>(<span class="ident">which_clock</span>: <span class="ident">ClockId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__kernel_timespec</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clock_gettime</span>(<span class="ident">which_clock</span>: <span class="ident">ClockId</span>) -&gt; <span class="ident">__kernel_timespec</span> {
     <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="op">&lt;</span><span class="ident">__kernel_timespec</span><span class="op">&gt;</span><span class="ident">::uninit</span>();
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident">CLOCK_GETTIME</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">init_clock_gettime</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident">init_clock_gettime</span>(),
         };
         <span class="kw">let</span> <span class="ident">r0</span> <span class="op">=</span> <span class="ident">callee</span>(<span class="ident">which_clock</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">result</span>.<span class="ident">as_mut_ptr</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">r0</span>, <span class="number">0</span>);
@@ -432,25 +432,25 @@
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clock_gettime_dynamic</span>(<span class="ident">which_clock</span>: <span class="ident">DynamicClockId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Timespec</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clock_gettime_dynamic</span>(<span class="ident">which_clock</span>: <span class="ident">DynamicClockId</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Timespec</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">which_clock</span> {
-        <span class="ident">DynamicClockId::Known</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">id</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>,
+        <span class="ident">DynamicClockId::Known</span>(<span class="ident">id</span>) =&gt; <span class="ident">id</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>,
 
-        <span class="ident">DynamicClockId::Dynamic</span>(<span class="ident">fd</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">DynamicClockId::Dynamic</span>(<span class="ident">fd</span>) =&gt; {
             <span class="comment">// See `FD_TO_CLOCKID` in Linux&#39;s `clock_gettime` documentation.</span>
             <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::io::AsRawFd</span>;
             <span class="kw">const</span> <span class="ident">CLOCKFD</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">3</span>;
             ((<span class="op">!</span><span class="ident">fd</span>.<span class="ident">as_raw_fd</span>() <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>) <span class="op">|</span> <span class="ident">CLOCKFD</span>) <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>
         }
 
-        <span class="ident">DynamicClockId::RealtimeAlarm</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">DynamicClockId::RealtimeAlarm</span> =&gt; {
             <span class="ident">linux_raw_sys::v5_4::general::CLOCK_REALTIME_ALARM</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>
         }
-        <span class="ident">DynamicClockId::Tai</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">linux_raw_sys::v5_4::general::CLOCK_TAI</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>,
-        <span class="ident">DynamicClockId::Boottime</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">DynamicClockId::Tai</span> =&gt; <span class="ident">linux_raw_sys::v5_4::general::CLOCK_TAI</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>,
+        <span class="ident">DynamicClockId::Boottime</span> =&gt; {
             <span class="ident">linux_raw_sys::v5_4::general::CLOCK_BOOTTIME</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>
         }
-        <span class="ident">DynamicClockId::BoottimeAlarm</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">DynamicClockId::BoottimeAlarm</span> =&gt; {
             <span class="ident">linux_raw_sys::v5_4::general::CLOCK_BOOTTIME_ALARM</span> <span class="kw">as</span> <span class="ident">__kernel_clockid_t</span>
         }
     };
@@ -459,13 +459,13 @@
         <span class="kw">const</span> <span class="ident">EINVAL</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="op">-</span>(<span class="ident">linux_raw_sys::errno::EINVAL</span> <span class="kw">as</span> <span class="ident">c_int</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">timespec</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="op">&lt;</span><span class="ident">Timespec</span><span class="op">&gt;</span><span class="ident">::uninit</span>();
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident">CLOCK_GETTIME</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">init_clock_gettime</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident">init_clock_gettime</span>(),
         };
         <span class="kw">match</span> <span class="ident">callee</span>(<span class="ident">id</span>, <span class="ident">timespec</span>.<span class="ident">as_mut_ptr</span>()) {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> (),
-            <span class="ident">EINVAL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::INVAL</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">id</span>, <span class="ident">timespec</span>.<span class="ident">as_mut_ptr</span>())<span class="question-mark">?</span>,
+            <span class="number">0</span> =&gt; (),
+            <span class="ident">EINVAL</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::INVAL</span>),
+            <span class="kw">_</span> =&gt; <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">id</span>, <span class="ident">timespec</span>.<span class="ident">as_mut_ptr</span>())<span class="question-mark">?</span>,
         }
         <span class="prelude-val">Ok</span>(<span class="ident">timespec</span>.<span class="ident">assume_init</span>())
     }
@@ -478,10 +478,10 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">syscall0</span>(<span class="ident">nr</span>: <span class="ident">SyscallNumber</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">syscall0</span>(<span class="ident">nr</span>: <span class="ident">SyscallNumber</span>) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall0</span>(<span class="ident">callee</span>, <span class="ident">nr</span>)
     }
@@ -491,10 +491,10 @@
     <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">syscall1</span>(
         <span class="ident">nr</span>: <span class="ident">SyscallNumber</span>,
         <span class="ident">a0</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A0</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall1</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>)
     }
@@ -503,10 +503,10 @@
     <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::imp::linux_raw</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">syscall1_noreturn</span>(
         <span class="ident">nr</span>: <span class="ident">SyscallNumber</span>,
         <span class="ident">a0</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A0</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    ) -&gt; <span class="op">!</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall1_noreturn</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>)
     }
@@ -517,10 +517,10 @@
         <span class="ident">nr</span>: <span class="ident">SyscallNumber</span>,
         <span class="ident">a0</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A0</span><span class="op">&gt;</span>,
         <span class="ident">a1</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A1</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall2</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>, <span class="ident">a1</span>)
     }
@@ -532,10 +532,10 @@
         <span class="ident">a0</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A0</span><span class="op">&gt;</span>,
         <span class="ident">a1</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A1</span><span class="op">&gt;</span>,
         <span class="ident">a2</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A2</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall3</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>, <span class="ident">a1</span>, <span class="ident">a2</span>)
     }
@@ -548,10 +548,10 @@
         <span class="ident">a1</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A1</span><span class="op">&gt;</span>,
         <span class="ident">a2</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A2</span><span class="op">&gt;</span>,
         <span class="ident">a3</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A3</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall4</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>, <span class="ident">a1</span>, <span class="ident">a2</span>, <span class="ident">a3</span>)
     }
@@ -565,10 +565,10 @@
         <span class="ident">a2</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A2</span><span class="op">&gt;</span>,
         <span class="ident">a3</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A3</span><span class="op">&gt;</span>,
         <span class="ident">a4</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A4</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall5</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>, <span class="ident">a1</span>, <span class="ident">a2</span>, <span class="ident">a3</span>, <span class="ident">a4</span>)
     }
@@ -583,10 +583,10 @@
         <span class="ident">a3</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A3</span><span class="op">&gt;</span>,
         <span class="ident">a4</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A4</span><span class="op">&gt;</span>,
         <span class="ident">a5</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A5</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">callee</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">transmute</span>(<span class="ident"><span class="kw">super</span>::SYSCALL</span>.<span class="ident">load</span>(<span class="ident">Relaxed</span>)) {
-            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">callee</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">callee</span>) =&gt; <span class="ident">callee</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident"><span class="kw">super</span>::init_syscall</span>(),
         };
         <span class="ident">asm::indirect_syscall6</span>(<span class="ident">callee</span>, <span class="ident">nr</span>, <span class="ident">a0</span>, <span class="ident">a1</span>, <span class="ident">a2</span>, <span class="ident">a3</span>, <span class="ident">a4</span>, <span class="ident">a5</span>)
     }
@@ -601,7 +601,7 @@
     };
 }
 
-<span class="kw">type</span> <span class="ident">ClockGettimeType</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="ident">c_int</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+<span class="kw">type</span> <span class="ident">ClockGettimeType</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(<span class="ident">c_int</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) -&gt; <span class="ident">c_int</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type</span> <span class="ident">SyscallType</span> <span class="op">=</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>(
     <span class="ident">SyscallNumber</span>,
@@ -611,9 +611,9 @@
     <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A3</span><span class="op">&gt;</span>,
     <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A4</span><span class="op">&gt;</span>,
     <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A5</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>;
+) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>;
 
-<span class="kw">fn</span> <span class="ident">init_clock_gettime</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClockGettimeType</span> {
+<span class="kw">fn</span> <span class="ident">init_clock_gettime</span>() -&gt; <span class="ident">ClockGettimeType</span> {
     <span class="ident">init</span>();
     <span class="comment">// Safety: Load the function address from static storage that we</span>
     <span class="comment">// just initialized.</span>
@@ -621,7 +621,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">init_syscall</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SyscallType</span> {
+<span class="kw">fn</span> <span class="ident">init_syscall</span>() -&gt; <span class="ident">SyscallType</span> {
     <span class="ident">init</span>();
     <span class="comment">// Safety: Load the function address from static storage that we</span>
     <span class="comment">// just initialized.</span>
@@ -632,22 +632,22 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>)]</span>
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">SYSCALL</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>: <span class="ident">c_int</span>, <span class="ident">res</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>: <span class="ident">c_int</span>, <span class="ident">res</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) -&gt; <span class="ident">c_int</span> {
     <span class="kw">match</span> <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>, <span class="ident">res</span>) {
-        <span class="prelude-val">Ok</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
-        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">raw_os_error</span>().<span class="ident">wrapping_neg</span>(),
+        <span class="prelude-val">Ok</span>(()) =&gt; <span class="number">0</span>,
+        <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>.<span class="ident">raw_os_error</span>().<span class="ident">wrapping_neg</span>(),
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>: <span class="ident">c_int</span>, <span class="ident">res</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>: <span class="ident">c_int</span>, <span class="ident">res</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">r0</span> <span class="op">=</span> <span class="ident">syscall2</span>(
         <span class="ident">nr</span>(<span class="ident">__NR_clock_gettime64</span>),
         <span class="ident">pass_usize</span>(<span class="ident">clockid</span> <span class="kw">as</span> <span class="ident">usize</span>),
         <span class="ident">void_star</span>(<span class="ident">res</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">c_void</span><span class="op">&gt;</span>()),
     );
     <span class="kw">match</span> <span class="ident">ret</span>(<span class="ident">r0</span>) {
-        <span class="prelude-val">Err</span>(<span class="ident">io::Error::NOSYS</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Err</span>(<span class="ident">io::Error::NOSYS</span>) =&gt; {
             <span class="comment">// Ordinarily rsix doesn&#39;t like to emulate system calls, but in</span>
             <span class="comment">// the case of time APIs, it&#39;s specific to Linux, specific to</span>
             <span class="comment">// 32-bit architectures *and* specific to old kernel versions, and</span>
@@ -660,7 +660,7 @@
                 <span class="ident">out</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">old_result</span>),
             );
             <span class="kw">match</span> <span class="ident">ret</span>(<span class="ident">r0</span>) {
-                <span class="prelude-val">Ok</span>(()) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(()) =&gt; {
                     <span class="kw">let</span> <span class="ident">old_result</span> <span class="op">=</span> <span class="ident">old_result</span>.<span class="ident">assume_init</span>();
                     <span class="kw-2">*</span><span class="ident">res</span> <span class="op">=</span> <span class="ident">Timespec</span> {
                         <span class="ident">tv_sec</span>: <span class="ident">old_result</span>.<span class="ident">tv_sec</span>.<span class="ident">into</span>(),
@@ -668,15 +668,15 @@
                     };
                     <span class="prelude-val">Ok</span>(())
                 }
-                <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">otherwise</span>,
+                <span class="ident">otherwise</span> =&gt; <span class="ident">otherwise</span>,
             }
         }
-        <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">otherwise</span>,
+        <span class="ident">otherwise</span> =&gt; <span class="ident">otherwise</span>,
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>: <span class="ident">c_int</span>, <span class="ident">res</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_rsix_clock_gettime_via_syscall</span>(<span class="ident">clockid</span>: <span class="ident">c_int</span>, <span class="ident">res</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Timespec</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">ret</span>(<span class="ident">syscall2</span>(
         <span class="ident">nr</span>(<span class="ident">__NR_clock_gettime</span>),
         <span class="ident">pass_usize</span>(<span class="ident">clockid</span> <span class="kw">as</span> <span class="ident">usize</span>),
@@ -694,7 +694,7 @@
     <span class="ident">_a3</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A3</span><span class="op">&gt;</span>,
     <span class="ident">_a4</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A4</span><span class="op">&gt;</span>,
     <span class="ident">_a5</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A5</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span> {
     <span class="macro">asm!</span>(<span class="string">&quot;int $$0x80&quot;</span>, <span class="string">&quot;ret&quot;</span>, <span class="ident">options</span>(<span class="ident">noreturn</span>))
 }
 
@@ -708,7 +708,7 @@
         <span class="ident">_a3</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A3</span><span class="op">&gt;</span>,
         <span class="ident">_a4</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A4</span><span class="op">&gt;</span>,
         <span class="ident">_a5</span>: <span class="ident">ArgReg</span><span class="op">&lt;</span><span class="ident">A5</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="ident">RetReg</span><span class="op">&lt;</span><span class="ident">R0</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">fn</span> <span class="ident">minimal_init</span>() {

@@ -346,9 +346,9 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">STORAGE_VERSION</span>: <span class="ident">StorageVersion</span> <span class="op">=</span> <span class="ident">StorageVersion::new</span>(<span class="number">2</span>);
 
 <span class="doccomment">/// Migrates the pallet storage to the most recent version, checking and setting the `StorageVersion`.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_to_latest</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_to_latest</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>() -&gt; <span class="ident">Weight</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span> <span class="op">=</span> <span class="number">0</span>;
-	<span class="kw">if</span> <span class="ident">StorageVersion::get</span>::<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+	<span class="kw">if</span> <span class="ident">StorageVersion::get</span>::<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">1</span> {
 		<span class="ident">weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">migrate_to_v2</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 		<span class="ident">StorageVersion::new</span>(<span class="number">2</span>).<span class="ident">put</span>::<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 	}
@@ -406,7 +406,7 @@
 	}
 
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+		<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
 			<span class="self">Self</span> {
 				<span class="ident">group_rotation_frequency</span>: <span class="number">1u32</span>.<span class="ident">into</span>(),
 				<span class="ident">chain_availability_period</span>: <span class="number">1u32</span>.<span class="ident">into</span>(),
@@ -454,14 +454,14 @@
 	}
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_to_v2</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migrate_to_v2</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>() -&gt; <span class="ident">Weight</span> {
 	<span class="comment">// Unusual formatting is justified:</span>
 	<span class="comment">// - make it easier to verify that fields assign what they supposed to assign.</span>
 	<span class="comment">// - this code is transient and will be removed after all migrations are done.</span>
 	<span class="comment">// - this code is important enough to optimize for legibility sacrificing consistency.</span>
 	<span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
 	<span class="kw">let</span> <span class="ident">translate</span> <span class="op">=</span>
-		<span class="op">|</span><span class="ident">pre</span>: <span class="ident">v1::HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">configuration::HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
+		<span class="op">|</span><span class="ident">pre</span>: <span class="ident">v1::HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">|</span> -&gt; <span class="ident">configuration::HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
 	{
 		<span class="ident"><span class="kw">super</span>::HostConfiguration</span> {
 

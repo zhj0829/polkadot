@@ -190,7 +190,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blake2b_64</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blake2b_64</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::blake2b_64</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -199,7 +199,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blake2b_256</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blake2b_256</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::blake2b_256</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -208,7 +208,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blake2b_512</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blake2b_512</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::blake2b_512</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -217,7 +217,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">twox_64</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">twox_64</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::twox_64</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -226,7 +226,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">twox_128</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">twox_128</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::twox_128</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -235,7 +235,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keccak_256</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keccak_256</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::keccak_256</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -244,7 +244,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keccak_512</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keccak_512</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::keccak_512</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 
@@ -253,7 +253,7 @@
 <span class="doccomment">/// Input can be identifier (name of identifier as bytes is used), byte string or</span>
 <span class="doccomment">/// array of bytes.</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sha2_256</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sha2_256</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
 	<span class="ident">impls::sha2_256</span>(<span class="macro">syn::parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">MultipleInputBytes</span>).<span class="ident">concatenated</span>())
 }
 </code></pre></div>

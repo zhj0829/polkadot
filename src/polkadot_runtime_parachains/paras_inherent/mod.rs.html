@@ -1122,7 +1122,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">DisputedBitfield</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DisputedBitfield</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inner</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inner</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span>(<span class="ident">inner</span>)
 	}
 }
@@ -1130,7 +1130,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">impl</span> <span class="ident">DisputedBitfield</span> {
 	<span class="doccomment">/// Create a new bitfield, where each bit is set to `false`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zeros</span>(<span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zeros</span>(<span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident"><span class="self">Self</span>::from</span>(<span class="ident">BitVec</span>::<span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::repeat</span>(<span class="bool-val">false</span>, <span class="ident">n</span>))
 	}
 }
@@ -1183,7 +1183,7 @@
 
 	<span class="attribute">#[<span class="ident">pallet::hooks</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Hooks</span><span class="op">&lt;</span><span class="ident">BlockNumberFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">on_initialize</span>(<span class="kw">_</span>: <span class="ident">T::BlockNumber</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+		<span class="kw">fn</span> <span class="ident">on_initialize</span>(<span class="kw">_</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
 			<span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>) <span class="comment">// in `on_finalize`.</span>
 		}
 
@@ -1200,7 +1200,7 @@
 		<span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">MakeFatalError</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 		<span class="kw">const</span> <span class="ident">INHERENT_IDENTIFIER</span>: <span class="ident">InherentIdentifier</span> <span class="op">=</span> <span class="ident">PARACHAINS_INHERENT_IDENTIFIER</span>;
 
-		<span class="kw">fn</span> <span class="ident">create_inherent</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">InherentData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Call</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">create_inherent</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">InherentData</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Call</span><span class="op">&gt;</span> {
 			<span class="kw">let</span> <span class="ident">inherent_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::create_inherent_inner</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
 			<span class="comment">// Sanity check: session changes can invalidate an inherent,</span>
 			<span class="comment">// and we _really_ don&#39;t want that to happen.</span>
@@ -1211,8 +1211,8 @@
 			<span class="comment">// in all the logic in this module this check should be removed to optimize performance.</span>
 
 			<span class="kw">let</span> <span class="ident">inherent_data</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident"><span class="self">Self</span>::enter_inner</span>(<span class="ident">inherent_data</span>.<span class="ident">clone</span>(), <span class="ident">FullCheck::Skip</span>) {
-				<span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inherent_data</span>,
-				<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="ident">inherent_data</span>,
+				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
 					<span class="macro">log::error!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="string">&quot;dropping paras inherent data because they produced \
@@ -1232,7 +1232,7 @@
 			<span class="prelude-val">Some</span>(<span class="ident">Call::enter</span> { <span class="ident">data</span>: <span class="ident">inherent_data</span> })
 		}
 
-		<span class="kw">fn</span> <span class="ident">is_inherent</span>(<span class="ident">call</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Call</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+		<span class="kw">fn</span> <span class="ident">is_inherent</span>(<span class="ident">call</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Call</span>) -&gt; <span class="ident">bool</span> {
 			<span class="macro">matches!</span>(<span class="ident">call</span>, <span class="ident">Call::enter</span> { .. })
 		}
 	}
@@ -1244,7 +1244,7 @@
 	<span class="doccomment">/// free due to candidate that became available.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">collect_all_freed_cores</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>(
 		<span class="ident">freed_concluded</span>: <span class="ident">I</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">CoreIndex</span>, <span class="ident">FreedReason</span><span class="op">&gt;</span>
+	) -&gt; <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">CoreIndex</span>, <span class="ident">FreedReason</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">I</span>: <span class="ident">core::iter::IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">CoreIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span>,
 		<span class="ident">T</span>: <span class="ident">Config</span>,
@@ -1280,7 +1280,7 @@
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enter</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">data</span>: <span class="ident">ParachainsInherentData</span><span class="op">&lt;</span><span class="ident">T::Header</span><span class="op">&gt;</span>,
-		) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
+		) -&gt; <span class="ident">DispatchResultWithPostInfo</span> {
 			<span class="ident">ensure_none</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 
 			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">Included</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::exists</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::TooManyInclusionInherents</span>);
@@ -1295,7 +1295,7 @@
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">enter_inner</span>(
 		<span class="ident">data</span>: <span class="ident">ParachainsInherentData</span><span class="op">&lt;</span><span class="ident">T::Header</span><span class="op">&gt;</span>,
 		<span class="ident">full_check</span>: <span class="ident">FullCheck</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DispatchResultWithPostInfo</span> {
+	) -&gt; <span class="ident">DispatchResultWithPostInfo</span> {
 		<span class="kw">let</span> <span class="ident">ParachainsInherentData</span> {
 			<span class="ident">bitfields</span>: <span class="kw-2">mut</span> <span class="ident">signed_bitfields</span>,
 			<span class="kw-2">mut</span> <span class="ident">backed_candidates</span>,
@@ -1317,7 +1317,7 @@
 		<span class="comment">// Check that the submitted parent header indeed corresponds to the previous block hash.</span>
 		<span class="kw">let</span> <span class="ident">parent_hash</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::parent_hash</span>();
 		<span class="macro">ensure!</span>(
-			<span class="ident">parent_header_hash</span>.<span class="ident">as_ref</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">parent_hash</span>.<span class="ident">as_ref</span>(),
+			<span class="ident">parent_header_hash</span>.<span class="ident">as_ref</span>() <span class="op">==</span> <span class="ident">parent_hash</span>.<span class="ident">as_ref</span>(),
 			<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidParentHeader</span>,
 		);
 
@@ -1346,7 +1346,7 @@
 
 			<span class="kw">if</span> <span class="ident">disputes_weight</span> <span class="op">&gt;</span> <span class="ident">max_block_weight</span> {
 				<span class="comment">// if disputes are by themselves overweight already, trim the disputes.</span>
-				<span class="macro">debug_assert!</span>(<span class="ident">candidate_weight</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">bitfields_weight</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);
+				<span class="macro">debug_assert!</span>(<span class="ident">candidate_weight</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">bitfields_weight</span> <span class="op">==</span> <span class="number">0</span>);
 
 				<span class="kw">let</span> <span class="ident">entropy</span> <span class="op">=</span> <span class="ident">compute_entropy</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">parent_hash</span>);
 				<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rand_chacha::ChaChaRng::from_seed</span>(<span class="ident">entropy</span>.<span class="ident">into</span>());
@@ -1368,7 +1368,7 @@
 		<span class="kw">let</span> <span class="ident">disputed_bitfield</span> <span class="op">=</span> {
 			<span class="kw">let</span> <span class="ident">new_current_dispute_sets</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">disputes</span>
 				.<span class="ident">iter</span>()
-				.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">session</span> <span class="op">=</span><span class="op">=</span> <span class="ident">current_session</span>)
+				.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">session</span> <span class="op">==</span> <span class="ident">current_session</span>)
 				.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> (<span class="ident">s</span>.<span class="ident">session</span>, <span class="ident">s</span>.<span class="ident">candidate_hash</span>))
 				.<span class="ident">collect</span>();
 
@@ -1439,7 +1439,7 @@
 		<span class="kw">let</span> <span class="ident">backed_candidates</span> <span class="op">=</span> <span class="ident">sanitize_backed_candidates</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 			<span class="ident">parent_hash</span>,
 			<span class="ident">backed_candidates</span>,
-			<span class="kw">move</span> <span class="op">|</span><span class="ident">_candidate_index</span>: <span class="ident">usize</span>, <span class="ident">backed_candidate</span>: <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+			<span class="kw">move</span> <span class="op">|</span><span class="ident">_candidate_index</span>: <span class="ident">usize</span>, <span class="ident">backed_candidate</span>: <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span><span class="op">|</span> -&gt; <span class="ident">bool</span> {
 				<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::DisputesHandler::concluded_invalid</span>(<span class="ident">current_session</span>, <span class="ident">backed_candidate</span>.<span class="ident">hash</span>())
 				<span class="comment">// `fn process_candidates` does the verification checks</span>
 			},
@@ -1481,16 +1481,16 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Create the `ParachainsInherentData` that gets passed to [`Self::enter`] in [`Self::create_inherent`].</span>
 	<span class="doccomment">/// This code is pulled out of [`Self::create_inherent`] so it can be unit tested.</span>
-	<span class="kw">fn</span> <span class="ident">create_inherent_inner</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">InherentData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ParachainsInherentData</span><span class="op">&lt;</span><span class="ident">T::Header</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">create_inherent_inner</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">InherentData</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ParachainsInherentData</span><span class="op">&lt;</span><span class="ident">T::Header</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">ParachainsInherentData</span>::<span class="op">&lt;</span><span class="ident">T::Header</span><span class="op">&gt;</span> {
 			<span class="ident">bitfields</span>,
 			<span class="ident">backed_candidates</span>,
 			<span class="kw-2">mut</span> <span class="ident">disputes</span>,
 			<span class="ident">parent_header</span>,
 		} <span class="op">=</span> <span class="kw">match</span> <span class="ident">data</span>.<span class="ident">get_data</span>(<span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::INHERENT_IDENTIFIER</span>) {
-			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">d</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">d</span>,
-			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
-			<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">d</span>)) =&gt; <span class="ident">d</span>,
+			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
+			<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
 				<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;ParachainsInherentData failed to decode&quot;</span>);
 				<span class="kw">return</span> <span class="prelude-val">None</span>
 			},
@@ -1544,7 +1544,7 @@
 				<span class="comment">// concluded longer ago have already had any corresponding cores cleaned up.</span>
 				<span class="kw">let</span> <span class="ident">current_concluded_invalid_disputes</span> <span class="op">=</span> <span class="ident">disputes</span>
 					.<span class="ident">iter</span>()
-					.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">dss</span><span class="op">|</span> <span class="ident">dss</span>.<span class="ident">session</span> <span class="op">=</span><span class="op">=</span> <span class="ident">current_session</span>)
+					.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">dss</span><span class="op">|</span> <span class="ident">dss</span>.<span class="ident">session</span> <span class="op">==</span> <span class="ident">current_session</span>)
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">dss</span><span class="op">|</span> (<span class="ident">dss</span>.<span class="ident">session</span>, <span class="ident">dss</span>.<span class="ident">candidate_hash</span>))
 					.<span class="ident">filter</span>(<span class="op">|</span>(<span class="ident">session</span>, <span class="ident">candidate</span>)<span class="op">|</span> {
 						<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::DisputesHandler::concluded_invalid</span>(<span class="kw-2">*</span><span class="ident">session</span>, <span class="kw-2">*</span><span class="ident">candidate</span>)
@@ -1617,7 +1617,7 @@
 					<span class="ident">backed_candidates</span>,
 					<span class="kw">move</span> <span class="op">|</span><span class="ident">candidate_idx</span>: <span class="ident">usize</span>,
 					      <span class="ident">backed_candidate</span>: <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Hash</span><span class="op">&gt;</span><span class="op">|</span>
-					      <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+					      -&gt; <span class="ident">bool</span> {
 						<span class="comment">// never include a concluded-invalid candidate</span>
 						<span class="ident">concluded_invalid_disputes</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">backed_candidate</span>.<span class="ident">hash</span>()) <span class="op">|</span><span class="op">|</span>
 							<span class="comment">// Instead of checking the candidates with code upgrades twice</span>
@@ -1665,7 +1665,7 @@
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">create_disputed_bitfield</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">I</span><span class="op">&gt;</span>(
 	<span class="ident">expected_bits</span>: <span class="ident">usize</span>,
 	<span class="ident">freed_cores</span>: <span class="ident">I</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DisputedBitfield</span>
+) -&gt; <span class="ident">DisputedBitfield</span>
 <span class="kw">where</span>
 	<span class="ident">I</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CoreIndex</span><span class="op">&gt;</span>,
 {
@@ -1686,13 +1686,13 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Returns the weight of all selected items from `selectables`</span>
 <span class="doccomment">/// as well as their indices in ascending order.</span>
-<span class="kw">fn</span> <span class="ident">random_sel</span><span class="op">&lt;</span><span class="ident">X</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">X</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span><span class="op">&gt;</span>(
+<span class="kw">fn</span> <span class="ident">random_sel</span><span class="op">&lt;</span><span class="ident">X</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">X</span>) -&gt; <span class="ident">Weight</span><span class="op">&gt;</span>(
 	<span class="ident">rng</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rand_chacha::ChaChaRng</span>,
 	<span class="ident">selectables</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">X</span><span class="op">&gt;</span>,
 	<span class="kw-2">mut</span> <span class="ident">preferred_indices</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 	<span class="ident">weight_fn</span>: <span class="ident">F</span>,
 	<span class="ident">weight_limit</span>: <span class="ident">Weight</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Weight</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+) -&gt; (<span class="ident">Weight</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
 	<span class="kw">if</span> <span class="ident">selectables</span>.<span class="ident">is_empty</span>() {
 		<span class="kw">return</span> (<span class="number">0</span> <span class="kw">as</span> <span class="ident">Weight</span>, <span class="ident">Vec::new</span>())
 	}
@@ -1755,7 +1755,7 @@
 	<span class="ident">disputes</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MultiDisputeStatementSet</span>,
 	<span class="ident">max_block_weight</span>: <span class="ident">Weight</span>,
 	<span class="ident">rng</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rand_chacha::ChaChaRng</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+) -&gt; <span class="ident">Weight</span> {
 	<span class="comment">// include as many disputes as possible, always</span>
 	<span class="kw">let</span> <span class="ident">remaining_weight</span> <span class="op">=</span> <span class="ident">limit_disputes</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">disputes</span>, <span class="ident">max_block_weight</span>, <span class="ident">rng</span>);
 
@@ -1841,7 +1841,7 @@
 	<span class="ident">session_index</span>: <span class="ident">SessionIndex</span>,
 	<span class="ident">validators</span>: <span class="kw-2">&amp;</span>[<span class="ident">ValidatorId</span>],
 	<span class="ident">full_check</span>: <span class="ident">FullCheck</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UncheckedSignedAvailabilityBitfields</span> {
+) -&gt; <span class="ident">UncheckedSignedAvailabilityBitfields</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bitfields</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">unchecked_bitfields</span>.<span class="ident">len</span>());
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidatorIndex</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -1936,13 +1936,13 @@
 <span class="doccomment">/// The returned `Vec` is sorted according to the occupied core index.</span>
 <span class="kw">fn</span> <span class="ident">sanitize_backed_candidates</span><span class="op">&lt;</span>
 	<span class="ident">T</span>: <span class="ident"><span class="kw">crate</span>::inclusion::Config</span>,
-	<span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
+	<span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span>,
 <span class="op">&gt;</span>(
 	<span class="ident">relay_parent</span>: <span class="ident">T::Hash</span>,
 	<span class="kw-2">mut</span> <span class="ident">backed_candidates</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="kw-2">mut</span> <span class="ident">candidate_has_concluded_invalid_dispute_or_is_invalid</span>: <span class="ident">F</span>,
 	<span class="ident">scheduled</span>: <span class="kw-2">&amp;</span>[<span class="ident">CoreAssignment</span>],
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">T::Hash</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="comment">// Remove any candidates that were concluded invalid.</span>
 	<span class="comment">// This does not assume sorting.</span>
 	<span class="ident">backed_candidates</span>.<span class="ident">indexed_retain</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">idx</span>, <span class="ident">backed_candidate</span><span class="op">|</span> {
@@ -1960,7 +1960,7 @@
 
 	<span class="ident">backed_candidates</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">backed_candidate</span><span class="op">|</span> {
 		<span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>();
-		<span class="ident">desc</span>.<span class="ident">relay_parent</span> <span class="op">=</span><span class="op">=</span> <span class="ident">relay_parent</span> <span class="op">&amp;&amp;</span>
+		<span class="ident">desc</span>.<span class="ident">relay_parent</span> <span class="op">==</span> <span class="ident">relay_parent</span> <span class="op">&amp;&amp;</span>
 			<span class="ident">scheduled_paras_to_core_idx</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">desc</span>.<span class="ident">para_id</span>).<span class="ident">is_some</span>()
 	});
 
@@ -1982,7 +1982,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// In the odd case none is available, uses the `parent_hash` and</span>
 <span class="doccomment">/// a const value, while emitting a warning.</span>
-<span class="kw">fn</span> <span class="ident">compute_entropy</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>(<span class="ident">parent_hash</span>: <span class="ident">T::Hash</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="number">32</span>] {
+<span class="kw">fn</span> <span class="ident">compute_entropy</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>(<span class="ident">parent_hash</span>: <span class="ident">T::Hash</span>) -&gt; [<span class="ident">u8</span>; <span class="number">32</span>] {
 	<span class="kw">const</span> <span class="ident">CANDIDATE_SEED_SUBJECT</span>: [<span class="ident">u8</span>; <span class="number">32</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;candidate-seed-selection-subject&quot;</span>;
 	<span class="kw">let</span> <span class="ident">vrf_random</span> <span class="op">=</span> <span class="ident">CurrentBlockRandomness</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::random</span>(<span class="kw-2">&amp;</span><span class="ident">CANDIDATE_SEED_SUBJECT</span>[..]).<span class="number">0</span>;
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">entropy</span>: [<span class="ident">u8</span>; <span class="number">32</span>] <span class="op">=</span> <span class="ident">CANDIDATE_SEED_SUBJECT</span>.<span class="ident">clone</span>();
@@ -2004,7 +2004,7 @@
 	<span class="ident">disputes</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MultiDisputeStatementSet</span>,
 	<span class="ident">remaining_weight</span>: <span class="ident">Weight</span>,
 	<span class="ident">rng</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rand_chacha::ChaChaRng</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Weight</span> {
+) -&gt; <span class="ident">Weight</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining_weight</span> <span class="op">=</span> <span class="ident">remaining_weight</span>;
 	<span class="kw">let</span> <span class="ident">disputes_weight</span> <span class="op">=</span> <span class="ident">dispute_statements_weight</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">disputes</span>);
 	<span class="kw">if</span> <span class="ident">disputes_weight</span> <span class="op">&gt;</span> <span class="ident">remaining_weight</span> {
@@ -2016,12 +2016,12 @@
 			<span class="kw">let</span> <span class="ident">b_local_block</span> <span class="op">=</span> <span class="ident">T::DisputesHandler::included_state</span>(<span class="ident">b</span>.<span class="ident">session</span>, <span class="ident">b</span>.<span class="ident">candidate_hash</span>);
 			<span class="kw">match</span> (<span class="ident">a_local_block</span>, <span class="ident">b_local_block</span>) {
 				<span class="comment">// Prioritize local disputes over remote disputes.</span>
-				(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Ordering::Greater</span>,
-				(<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Ordering::Less</span>,
+				(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="ident">Ordering::Greater</span>,
+				(<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) =&gt; <span class="ident">Ordering::Less</span>,
 				<span class="comment">// For local disputes, prioritize those that occur at an earlier height.</span>
-				(<span class="prelude-val">Some</span>(<span class="ident">a_height</span>), <span class="prelude-val">Some</span>(<span class="ident">b_height</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">a_height</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b_height</span>),
+				(<span class="prelude-val">Some</span>(<span class="ident">a_height</span>), <span class="prelude-val">Some</span>(<span class="ident">b_height</span>)) =&gt; <span class="ident">a_height</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b_height</span>),
 				<span class="comment">// Prioritize earlier remote disputes using session as rough proxy.</span>
-				(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">a</span>.<span class="ident">session</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>.<span class="ident">session</span>),
+				(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="ident">a</span>.<span class="ident">session</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>.<span class="ident">session</span>),
 			}
 		});
 

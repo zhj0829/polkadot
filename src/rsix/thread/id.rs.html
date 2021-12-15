@@ -23,7 +23,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/gettid.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gettid</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pid</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gettid</span>() -&gt; <span class="ident">Pid</span> {
     <span class="ident">imp::syscalls::gettid</span>()
 }
 </code></pre></div>

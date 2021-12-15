@@ -781,38 +781,38 @@
 <span class="kw">impl</span> <span class="ident">FileType</span> {
     <span class="doccomment">/// Construct a `FileType` from the `st_mode` field of a `Stat`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_raw_mode</span>(<span class="ident">st_mode</span>: <span class="ident">RawMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_raw_mode</span>(<span class="ident">st_mode</span>: <span class="ident">RawMode</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">st_mode</span> <span class="op">&amp;</span> <span class="ident">linux_raw_sys::general::S_IFMT</span> {
-            <span class="ident">linux_raw_sys::general::S_IFREG</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::RegularFile</span>,
-            <span class="ident">linux_raw_sys::general::S_IFDIR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Directory</span>,
-            <span class="ident">linux_raw_sys::general::S_IFLNK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Symlink</span>,
-            <span class="ident">linux_raw_sys::general::S_IFIFO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Fifo</span>,
-            <span class="ident">linux_raw_sys::general::S_IFSOCK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Socket</span>,
-            <span class="ident">linux_raw_sys::general::S_IFCHR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::CharacterDevice</span>,
-            <span class="ident">linux_raw_sys::general::S_IFBLK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::BlockDevice</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Unknown</span>,
+            <span class="ident">linux_raw_sys::general::S_IFREG</span> =&gt; <span class="ident"><span class="self">Self</span>::RegularFile</span>,
+            <span class="ident">linux_raw_sys::general::S_IFDIR</span> =&gt; <span class="ident"><span class="self">Self</span>::Directory</span>,
+            <span class="ident">linux_raw_sys::general::S_IFLNK</span> =&gt; <span class="ident"><span class="self">Self</span>::Symlink</span>,
+            <span class="ident">linux_raw_sys::general::S_IFIFO</span> =&gt; <span class="ident"><span class="self">Self</span>::Fifo</span>,
+            <span class="ident">linux_raw_sys::general::S_IFSOCK</span> =&gt; <span class="ident"><span class="self">Self</span>::Socket</span>,
+            <span class="ident">linux_raw_sys::general::S_IFCHR</span> =&gt; <span class="ident"><span class="self">Self</span>::CharacterDevice</span>,
+            <span class="ident">linux_raw_sys::general::S_IFBLK</span> =&gt; <span class="ident"><span class="self">Self</span>::BlockDevice</span>,
+            <span class="kw">_</span> =&gt; <span class="ident"><span class="self">Self</span>::Unknown</span>,
         }
     }
 
     <span class="doccomment">/// Construct a `FileType` from the `st_mode` field of a `Stat`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_mode</span>(<span class="ident">st_mode</span>: <span class="ident">Mode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_mode</span>(<span class="ident">st_mode</span>: <span class="ident">Mode</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_raw_mode</span>(<span class="ident">st_mode</span>.<span class="ident">bits</span>())
     }
 
     <span class="doccomment">/// Construct a `FileType` from the `d_type` field of a `dirent`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_dirent_d_type</span>(<span class="ident">d_type</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_dirent_d_type</span>(<span class="ident">d_type</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">d_type</span> <span class="kw">as</span> <span class="ident">u32</span> {
-            <span class="ident">linux_raw_sys::general::DT_REG</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::RegularFile</span>,
-            <span class="ident">linux_raw_sys::general::DT_DIR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Directory</span>,
-            <span class="ident">linux_raw_sys::general::DT_LNK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Symlink</span>,
-            <span class="ident">linux_raw_sys::general::DT_SOCK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Socket</span>,
-            <span class="ident">linux_raw_sys::general::DT_FIFO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Fifo</span>,
-            <span class="ident">linux_raw_sys::general::DT_CHR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::CharacterDevice</span>,
-            <span class="ident">linux_raw_sys::general::DT_BLK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::BlockDevice</span>,
+            <span class="ident">linux_raw_sys::general::DT_REG</span> =&gt; <span class="ident"><span class="self">Self</span>::RegularFile</span>,
+            <span class="ident">linux_raw_sys::general::DT_DIR</span> =&gt; <span class="ident"><span class="self">Self</span>::Directory</span>,
+            <span class="ident">linux_raw_sys::general::DT_LNK</span> =&gt; <span class="ident"><span class="self">Self</span>::Symlink</span>,
+            <span class="ident">linux_raw_sys::general::DT_SOCK</span> =&gt; <span class="ident"><span class="self">Self</span>::Socket</span>,
+            <span class="ident">linux_raw_sys::general::DT_FIFO</span> =&gt; <span class="ident"><span class="self">Self</span>::Fifo</span>,
+            <span class="ident">linux_raw_sys::general::DT_CHR</span> =&gt; <span class="ident"><span class="self">Self</span>::CharacterDevice</span>,
+            <span class="ident">linux_raw_sys::general::DT_BLK</span> =&gt; <span class="ident"><span class="self">Self</span>::BlockDevice</span>,
             <span class="comment">// linux_raw_sys::general::DT_UNKNOWN |</span>
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Unknown</span>,
+            <span class="kw">_</span> =&gt; <span class="ident"><span class="self">Self</span>::Unknown</span>,
         }
     }
 }

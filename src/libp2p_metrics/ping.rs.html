@@ -139,15 +139,15 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">libp2p_ping::PingFailure</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FailureLabels</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">failure</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_ping::PingFailure</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">failure</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_ping::PingFailure</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">failure</span> {
-            <span class="ident">libp2p_ping::PingFailure::Timeout</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">FailureLabels</span> {
+            <span class="ident">libp2p_ping::PingFailure::Timeout</span> =&gt; <span class="ident">FailureLabels</span> {
                 <span class="ident">reason</span>: <span class="ident">Failure::Timeout</span>,
             },
-            <span class="ident">libp2p_ping::PingFailure::Unsupported</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">FailureLabels</span> {
+            <span class="ident">libp2p_ping::PingFailure::Unsupported</span> =&gt; <span class="ident">FailureLabels</span> {
                 <span class="ident">reason</span>: <span class="ident">Failure::Unsupported</span>,
             },
-            <span class="ident">libp2p_ping::PingFailure::Other</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">FailureLabels</span> {
+            <span class="ident">libp2p_ping::PingFailure::Other</span> { .. } =&gt; <span class="ident">FailureLabels</span> {
                 <span class="ident">reason</span>: <span class="ident">Failure::Other</span>,
             },
         }
@@ -168,7 +168,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Metrics</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registry</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registry</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">sub_registry</span> <span class="op">=</span> <span class="ident">registry</span>.<span class="ident">sub_registry_with_prefix</span>(<span class="string">&quot;ping&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">rtt</span> <span class="op">=</span> <span class="ident">Histogram::new</span>(<span class="ident">exponential_buckets</span>(<span class="number">0.001</span>, <span class="number">2.0</span>, <span class="number">12</span>));
@@ -204,13 +204,13 @@
 <span class="kw">impl</span> <span class="ident"><span class="kw">super</span>::Recorder</span><span class="op">&lt;</span><span class="ident">libp2p_ping::PingEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident"><span class="kw">super</span>::Metrics</span> {
     <span class="kw">fn</span> <span class="ident">record</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">libp2p_ping::PingEvent</span>) {
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">event</span>.<span class="ident">result</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">libp2p_ping::PingSuccess::Pong</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">libp2p_ping::PingSuccess::Pong</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">ping</span>.<span class="ident">pong_received</span>.<span class="ident">inc</span>();
             }
-            <span class="prelude-val">Ok</span>(<span class="ident">libp2p_ping::PingSuccess::Ping</span> { <span class="ident">rtt</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">libp2p_ping::PingSuccess::Ping</span> { <span class="ident">rtt</span> }) =&gt; {
                 <span class="self">self</span>.<span class="ident">ping</span>.<span class="ident">rtt</span>.<span class="ident">observe</span>(<span class="ident">rtt</span>.<span class="ident">as_secs_f64</span>());
             }
-            <span class="prelude-val">Err</span>(<span class="ident">failure</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">failure</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">ping</span>.<span class="ident">failure</span>.<span class="ident">get_or_create</span>(<span class="kw-2">&amp;</span><span class="ident">failure</span>.<span class="ident">into</span>()).<span class="ident">inc</span>();
             }
         }

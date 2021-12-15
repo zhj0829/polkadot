@@ -145,7 +145,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">error_unexpected</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">+</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::private_unexpected!</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>)<span class="op">*</span>
         }
@@ -155,7 +155,7 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">private_unexpected</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> {};
+    () =&gt; {};
 }
 
 <span class="doccomment">/// Fail due to an unexpected end of input.</span>
@@ -181,7 +181,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">error_eof</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> {
+    () =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::private_eof!</span> {}
     };
 }
@@ -189,7 +189,7 @@
 <span class="attribute">#[<span class="macro-nonterminal">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">private_eof</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">never</span>:<span class="ident">tt</span>) <span class="op">=</span><span class="op">&gt;</span> {};
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">never</span>:<span class="ident">tt</span>) =&gt; {};
 }
 
 <span class="doccomment">/// Fail due to an unexpected input token, faulting the last token.</span>
@@ -214,7 +214,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">error_unexpected_last</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">+</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::private_unexpected_last!</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>)<span class="op">*</span>
         }
@@ -224,13 +224,13 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">private_unexpected_last</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">last</span>:<span class="ident">tt</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">last</span>:<span class="ident">tt</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::error_unexpected!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">last</span>
         }
     };
 
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">skip</span>:<span class="ident">tt</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">skip</span>:<span class="ident">tt</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::private_unexpected_last!</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="op">*</span>
         }
@@ -240,13 +240,13 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">private_unexpected_close_empty_square_brackets</span> {
-    ([<span class="kw">_</span>]) <span class="op">=</span><span class="op">&gt;</span> {};
+    ([<span class="kw">_</span>]) =&gt; {};
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">private_unexpected_close_square_bracket_after_ty_semicolon</span> {
-    ([<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>; <span class="kw">_</span>]) <span class="op">=</span><span class="op">&gt;</span> {};
+    ([<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>; <span class="kw">_</span>]) =&gt; {};
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tt_call" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

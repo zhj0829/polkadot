@@ -239,7 +239,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">Argument</span> {
-	<span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">label</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">scope</span> <span class="op">=</span> <span class="number">0usize</span>;
@@ -248,7 +248,7 @@
 		<span class="comment">// or the nearest comma token that&#39;s not contained</span>
 		<span class="comment">// inside angle brackets.</span>
 		<span class="kw">let</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="ident">iter::from_fn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-			<span class="kw">if</span> <span class="ident">scope</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="macro">Token!</span>[,]) {
+			<span class="kw">if</span> <span class="ident">scope</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="macro">Token!</span>[,]) {
 				<span class="kw">return</span> <span class="prelude-val">None</span>;
 			}
 
@@ -267,12 +267,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">Resource</span> {
-	<span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Ok</span>(<span class="ident">Resource</span> { <span class="ident">name</span>: <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>, <span class="ident">assign</span>: <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>, <span class="ident">value</span>: <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span> })
 	}
 }
 
-<span class="kw">fn</span> <span class="ident">parenthesized</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">parenthesized</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">content</span>;
 
 	<span class="macro">syn::parenthesized!</span>(<span class="ident">content</span> <span class="kw">in</span> <span class="ident">input</span>);
@@ -283,7 +283,7 @@
 <span class="kw">impl</span> <span class="ident">AttributeMeta</span> {
 	<span class="doccomment">/// Parses `Attribute` with plain `TokenStream` into a more robust `AttributeMeta` with</span>
 	<span class="doccomment">/// a collection `Arguments`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">attr</span>: <span class="ident">Attribute</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">AttributeMeta</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">attr</span>: <span class="ident">Attribute</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">AttributeMeta</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">attr</span>.<span class="ident">path</span>;
 		<span class="kw">let</span> <span class="ident">arguments</span> <span class="op">=</span> <span class="ident">parenthesized</span>.<span class="ident">parse2</span>(<span class="ident">attr</span>.<span class="ident">tokens</span>)<span class="question-mark">?</span>;
 
@@ -293,7 +293,7 @@
 	<span class="doccomment">/// Attempt to get a list of `Argument`s from a list of names in order.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Errors if there is an argument with a name that&#39;s not on the list, or if there is a duplicate definition.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">retain</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">allowed</span>: [<span class="kw-2">&amp;</span><span class="ident">str</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span>[<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Argument</span>, <span class="ident">MissingArgument</span><span class="op">&gt;</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">retain</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">allowed</span>: [<span class="kw-2">&amp;</span><span class="ident">str</span>; <span class="ident">N</span>]) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span>[<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Argument</span>, <span class="ident">MissingArgument</span><span class="op">&gt;</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
 		<span class="macro">assert!</span>(
 			<span class="ident">N</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>,
 			<span class="string">&quot;Calling `AttributeMeta::retain` with an empty `allowed` list, this is a bug, please report it&quot;</span>
@@ -302,7 +302,7 @@
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: [<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Argument</span>, <span class="kw">_</span><span class="op">&gt;</span>; <span class="ident">N</span>] <span class="op">=</span> <span class="ident">allowed</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="prelude-val">Err</span>(<span class="ident">MissingArgument</span>(<span class="self">self</span>.<span class="ident">path</span>.<span class="ident">span</span>(), <span class="ident">name</span>)));
 
 		<span class="kw">for</span> <span class="ident">argument</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">arguments</span> {
-			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">idx</span>) <span class="op">=</span> <span class="ident">allowed</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">probe</span><span class="op">|</span> <span class="ident">argument</span>.<span class="ident">label</span> <span class="op">=</span><span class="op">=</span> <span class="ident">probe</span>) {
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">idx</span>) <span class="op">=</span> <span class="ident">allowed</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">probe</span><span class="op">|</span> <span class="ident">argument</span>.<span class="ident">label</span> <span class="op">==</span> <span class="ident">probe</span>) {
 				<span class="comment">// If this position in the `result` array already contains an argument,</span>
 				<span class="comment">// it means we got a duplicate definition</span>
 				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">old</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">result</span>[<span class="ident">idx</span>] {
@@ -328,7 +328,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">MissingArgument</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">Span</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>);
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">MissingArgument</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+	<span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
 		<span class="kw">let</span> <span class="ident">MissingArgument</span>(<span class="kw">_</span>, <span class="ident">missing</span>) <span class="op">=</span> <span class="self">self</span>;
 
 		<span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Missing argument `{}`&quot;</span>, <span class="ident">missing</span>)
@@ -336,14 +336,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">MissingArgument</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">missing</span>: <span class="ident">MissingArgument</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">missing</span>: <span class="ident">MissingArgument</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">Error::new</span>(<span class="ident">missing</span>.<span class="number">0</span>, <span class="ident">missing</span>)
 	}
 }
 
 <span class="kw">impl</span> <span class="ident">Argument</span> {
 	<span class="doccomment">/// Asserts that the argument is just a simple `flag` without any value present</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flag</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flag</span>(<span class="self">self</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">tokens</span>.<span class="ident">is_empty</span>() {
 			<span class="prelude-val">Ok</span>(())
 		} <span class="kw">else</span> {
@@ -352,8 +352,8 @@
 	}
 
 	<span class="doccomment">/// Asserts that the argument is `key = value` pair and parses the value into `T`</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-		<span class="kw">fn</span> <span class="ident">value_parser</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&gt;</span>(<span class="ident">stream</span>: <span class="ident">ParseStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">value_parser</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&gt;</span>(<span class="ident">stream</span>: <span class="ident">ParseStream</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 			<span class="ident">stream</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="macro">Token!</span>[<span class="op">=</span>]<span class="op">&gt;</span>()<span class="question-mark">?</span>;
 			<span class="ident">stream</span>.<span class="ident">parse</span>()
 		}
@@ -361,7 +361,7 @@
 		<span class="ident">value_parser</span>.<span class="ident">parse2</span>(<span class="self">self</span>.<span class="ident">tokens</span>)
 	}
 
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">group</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span><span class="op">&gt;</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">group</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">T</span>: <span class="ident">Parse</span>,
 	{
@@ -369,14 +369,14 @@
 	}
 
 	<span class="doccomment">/// Asserts that the argument is `key = &quot;string&quot;` and gets the value of the string</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">string</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">string</span>(<span class="self">self</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">value</span>::<span class="op">&lt;</span><span class="ident">syn::LitStr</span><span class="op">&gt;</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">lit</span><span class="op">|</span> <span class="ident">lit</span>.<span class="ident">value</span>())
 	}
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">optional</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">arg</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Argument</span>, <span class="ident">MissingArgument</span><span class="op">&gt;</span>, <span class="ident">transform</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">optional</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">arg</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Argument</span>, <span class="ident">MissingArgument</span><span class="op">&gt;</span>, <span class="ident">transform</span>: <span class="ident">F</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-	<span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">Argument</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+	<span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">Argument</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
 	<span class="ident">arg</span>.<span class="ident">ok</span>().<span class="ident">map</span>(<span class="ident">transform</span>).<span class="ident">transpose</span>()
 }

@@ -251,7 +251,7 @@
     <span class="doccomment">/// let borrowed_fd: BorrowedFd&lt;&#39;_&gt; = f.as_fd();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">as_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// A trait to borrow the handle from an underlying object.</span>
@@ -272,7 +272,7 @@
     <span class="doccomment">/// let borrowed_handle: BorrowedHandle&lt;&#39;_&gt; = f.as_handle();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">as_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedHandle</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedHandle</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// A trait to borrow the socket from an underlying object.</span>
@@ -280,7 +280,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsSocket</span> {
     <span class="doccomment">/// Borrows the socket.</span>
-    <span class="kw">fn</span> <span class="ident">as_socket</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedSocket</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_socket</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedSocket</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// A trait to express the ability to consume an object and acquire ownership</span>
@@ -301,7 +301,7 @@
     <span class="doccomment">/// let owned_fd: OwnedFd = f.into_fd();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">into_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFd</span>;
+    <span class="kw">fn</span> <span class="ident">into_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedFd</span>;
 }
 
 <span class="doccomment">/// A trait to express the ability to consume an object and acquire ownership</span>
@@ -322,7 +322,7 @@
     <span class="doccomment">/// let owned_handle: OwnedHandle = f.into_handle();</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">into_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedHandle</span>;
+    <span class="kw">fn</span> <span class="ident">into_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedHandle</span>;
 }
 
 <span class="doccomment">/// A trait to express the ability to consume an object and acquire ownership</span>
@@ -330,7 +330,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IntoSocket</span> {
     <span class="doccomment">/// Consumes this object, returning the underlying socket.</span>
-    <span class="kw">fn</span> <span class="ident">into_socket</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedSocket</span>;
+    <span class="kw">fn</span> <span class="ident">into_socket</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedSocket</span>;
 }
 
 <span class="doccomment">/// A trait to express the ability to construct an object from a file</span>
@@ -352,7 +352,7 @@
     <span class="doccomment">/// let f = File::from_fd(owned_fd);</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">owned</span>: <span class="ident">OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">owned</span>: <span class="ident">OwnedFd</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given file descriptor</span>
     <span class="doccomment">/// converted from `into_owned`.</span>
@@ -370,7 +370,7 @@
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_fd</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFd</span><span class="op">&gt;</span>(<span class="ident">into_owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">fn</span> <span class="ident">from_into_fd</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoFd</span><span class="op">&gt;</span>(<span class="ident">into_owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
@@ -396,7 +396,7 @@
     <span class="doccomment">/// let f = File::from_handle(owned_handle);</span>
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from_handle</span>(<span class="ident">owned</span>: <span class="ident">OwnedHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_handle</span>(<span class="ident">owned</span>: <span class="ident">OwnedHandle</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given handle converted</span>
     <span class="doccomment">/// from `into_owned`.</span>
@@ -414,7 +414,7 @@
     <span class="doccomment">/// # Ok::&lt;(), io::Error&gt;(())</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_handle</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoHandle</span><span class="op">&gt;</span>(<span class="ident">into_owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">fn</span> <span class="ident">from_into_handle</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoHandle</span><span class="op">&gt;</span>(<span class="ident">into_owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
@@ -426,12 +426,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FromSocket</span> {
     <span class="doccomment">/// Constructs a new instance of `Self` from the given socket.</span>
-    <span class="kw">fn</span> <span class="ident">from_socket</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocket</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_socket</span>(<span class="ident">owned</span>: <span class="ident">OwnedSocket</span>) -&gt; <span class="self">Self</span>;
 
     <span class="doccomment">/// Constructs a new instance of `Self` from the given socket converted</span>
     <span class="doccomment">/// from `into_owned`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_into_socket</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocket</span><span class="op">&gt;</span>(<span class="ident">into_owned</span>: <span class="ident">Owned</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">fn</span> <span class="ident">from_into_socket</span><span class="op">&lt;</span><span class="ident">Owned</span>: <span class="ident">IntoSocket</span><span class="op">&gt;</span>(<span class="ident">into_owned</span>: <span class="ident">Owned</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {

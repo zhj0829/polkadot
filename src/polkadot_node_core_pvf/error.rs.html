@@ -187,7 +187,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">PrepareError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ValidationError</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">PrepareError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">PrepareError</span>) -&gt; <span class="self">Self</span> {
 		<span class="comment">// Here we need to classify the errors into two errors: deterministic and non-deterministic.</span>
 		<span class="comment">//</span>
 		<span class="comment">// Non-deterministic errors can happen spuriously. Typically, they occur due to resource</span>
@@ -203,17 +203,17 @@
 		<span class="comment">// All non-deterministic errors are qualified as `InternalError`s and will not trigger</span>
 		<span class="comment">// disputes.</span>
 		<span class="kw">match</span> <span class="ident">error</span> {
-			<span class="ident">PrepareError::Prevalidation</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValidationError::InvalidCandidate</span>(
+			<span class="ident">PrepareError::Prevalidation</span>(<span class="ident">err</span>) =&gt; <span class="ident">ValidationError::InvalidCandidate</span>(
 				<span class="ident">InvalidCandidate::PrepareError</span>(<span class="macro">format!</span>(<span class="string">&quot;prevalidation: {}&quot;</span>, <span class="ident">err</span>)),
 			),
-			<span class="ident">PrepareError::Preparation</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValidationError::InvalidCandidate</span>(
+			<span class="ident">PrepareError::Preparation</span>(<span class="ident">err</span>) =&gt; <span class="ident">ValidationError::InvalidCandidate</span>(
 				<span class="ident">InvalidCandidate::PrepareError</span>(<span class="macro">format!</span>(<span class="string">&quot;preparation: {}&quot;</span>, <span class="ident">err</span>)),
 			),
-			<span class="ident">PrepareError::Panic</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValidationError::InvalidCandidate</span>(
+			<span class="ident">PrepareError::Panic</span>(<span class="ident">err</span>) =&gt; <span class="ident">ValidationError::InvalidCandidate</span>(
 				<span class="ident">InvalidCandidate::PrepareError</span>(<span class="macro">format!</span>(<span class="string">&quot;panic: {}&quot;</span>, <span class="ident">err</span>)),
 			),
-			<span class="ident">PrepareError::TimedOut</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValidationError::InternalError</span>(<span class="string">&quot;prepare: timeout&quot;</span>.<span class="ident">to_owned</span>()),
-			<span class="ident">PrepareError::DidNotMakeIt</span> <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">PrepareError::TimedOut</span> =&gt; <span class="ident">ValidationError::InternalError</span>(<span class="string">&quot;prepare: timeout&quot;</span>.<span class="ident">to_owned</span>()),
+			<span class="ident">PrepareError::DidNotMakeIt</span> =&gt;
 				<span class="ident">ValidationError::InternalError</span>(<span class="string">&quot;prepare: did not make it&quot;</span>.<span class="ident">to_owned</span>()),
 		}
 	}

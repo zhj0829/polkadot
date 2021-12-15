@@ -198,7 +198,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Used to configure `VMContext` initialization and store the right pointer</span>
     <span class="doccomment">/// in the `VMContext`.</span>
-    <span class="kw">fn</span> <span class="ident">vminterrupts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VMInterrupts</span>;
+    <span class="kw">fn</span> <span class="ident">vminterrupts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VMInterrupts</span>;
 
     <span class="doccomment">/// Returns the externref management structures necessary for this store.</span>
     <span class="doccomment">///</span>
@@ -207,7 +207,7 @@
     <span class="doccomment">/// module information for gc requests.</span>
     <span class="kw">fn</span> <span class="ident">externref_activations_table</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VMExternRefActivationsTable</span>, <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">ModuleInfoLookup</span>);
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VMExternRefActivationsTable</span>, <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">ModuleInfoLookup</span>);
 
     <span class="doccomment">/// Callback invoked to allow the store&#39;s resource limiter to reject a</span>
     <span class="doccomment">/// memory grow operation.</span>
@@ -216,7 +216,7 @@
         <span class="ident">current</span>: <span class="ident">usize</span>,
         <span class="ident">desired</span>: <span class="ident">usize</span>,
         <span class="ident">maximum</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Callback invoked to notify the store&#39;s resource limiter that a memory</span>
     <span class="doccomment">/// grow operation has failed.</span>
     <span class="kw">fn</span> <span class="ident">memory_grow_failed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">Error</span>);
@@ -227,14 +227,14 @@
         <span class="ident">current</span>: <span class="ident">u32</span>,
         <span class="ident">desired</span>: <span class="ident">u32</span>,
         <span class="ident">maximum</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Callback invoked to notify the store&#39;s resource limiter that a table</span>
     <span class="doccomment">/// grow operation has failed.</span>
     <span class="kw">fn</span> <span class="ident">table_grow_failed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">Error</span>);
     <span class="doccomment">/// Callback invoked whenever fuel runs out by a wasm instance. If an error</span>
     <span class="doccomment">/// is returned that&#39;s raised as a trap. Otherwise wasm execution will</span>
     <span class="doccomment">/// continue as normal.</span>
-    <span class="kw">fn</span> <span class="ident">out_of_gas</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">out_of_gas</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="wasmtime_runtime" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

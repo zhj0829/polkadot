@@ -155,7 +155,7 @@
 
 <span class="kw">impl</span> <span class="ident">AsFd</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">as_fd</span>()
     }
 }
@@ -163,7 +163,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">io_lifetimes_use_std</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">io_lifetimes::OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">owned_fd</span>: <span class="ident">OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">owned_fd</span>: <span class="ident">OwnedFd</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// Safety: We use `as_fd().as_raw_fd()` to extract the raw file</span>
         <span class="comment">// descriptor from `self.inner`, and then `forget` `self` so</span>
         <span class="comment">// that they remain valid until the new `OwnedFd` acquires them.</span>
@@ -176,7 +176,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">io_lifetimes_use_std</span>))]</span>
 <span class="kw">impl</span> <span class="ident">IntoFd</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io_lifetimes::OwnedFd</span> {
+    <span class="kw">fn</span> <span class="ident">into_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">io_lifetimes::OwnedFd</span> {
         <span class="comment">// Safety: We use `as_fd().as_raw_fd()` to extract the raw file</span>
         <span class="comment">// descriptor from `self.inner`, and then `forget` `self` so</span>
         <span class="comment">// that they remain valid until the new `OwnedFd` acquires them.</span>
@@ -189,7 +189,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">io_lifetimes_use_std</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">io_lifetimes::OwnedFd</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">owned_fd</span>: <span class="ident">io_lifetimes::OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">owned_fd</span>: <span class="ident">io_lifetimes::OwnedFd</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inner</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">owned_fd</span>),
         }
@@ -199,7 +199,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">io_lifetimes_use_std</span>))]</span>
 <span class="kw">impl</span> <span class="ident">FromFd</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">owned_fd</span>: <span class="ident">io_lifetimes::OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">owned_fd</span>: <span class="ident">io_lifetimes::OwnedFd</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inner</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">owned_fd</span>),
         }
@@ -209,7 +209,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">io_lifetimes_use_std</span>))]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">io_lifetimes::OwnedFd</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">fd</span>: <span class="ident">io_lifetimes::OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">fd</span>: <span class="ident">io_lifetimes::OwnedFd</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_fd</span>(<span class="ident">fd</span>)
     }
 }
@@ -217,21 +217,21 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">io_lifetimes_use_std</span>))]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">io_lifetimes::OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">fd</span>: <span class="ident">OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">fd</span>: <span class="ident">OwnedFd</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">fd</span>.<span class="ident">into_fd</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">AsRawFd</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawFd</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">RawFd</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">as_raw_fd</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawFd</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">RawFd</span> {
         <span class="kw">let</span> <span class="ident">raw_fd</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">as_fd</span>().<span class="ident">as_raw_fd</span>();
         <span class="ident">forget</span>(<span class="self">self</span>);
         <span class="ident">raw_fd</span>
@@ -240,7 +240,7 @@
 
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">raw_fd</span>: <span class="ident">RawFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">raw_fd</span>: <span class="ident">RawFd</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inner</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">io_lifetimes::OwnedFd::from_raw_fd</span>(<span class="ident">raw_fd</span>)),
         }
@@ -260,7 +260,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">OwnedFd</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }

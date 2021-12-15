@@ -600,10 +600,10 @@
     <span class="kw">type</span> <span class="ident">OpenInfo</span>;
 
     <span class="kw">fn</span> <span class="ident">upgrade</span>(<span class="ident">open_info</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>)
-        <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident">PassthroughProtocol</span>, <span class="ident"><span class="self">Self</span>::OpenInfo</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">substream</span>: <span class="ident">NegotiatedSubstream</span>, <span class="ident">info</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::OutEvent</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
+        -&gt; <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident">PassthroughProtocol</span>, <span class="ident"><span class="self">Self</span>::OpenInfo</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">substream</span>: <span class="ident">NegotiatedSubstream</span>, <span class="ident">info</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>) -&gt; <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) -&gt; <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::OutEvent</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// The result of advancing a [`SubstreamHandler`].</span>
@@ -623,20 +623,20 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TState</span>, <span class="ident">TEvent</span><span class="op">&gt;</span> <span class="ident">Next</span><span class="op">&lt;</span><span class="ident">TState</span>, <span class="ident">TEvent</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_state</span><span class="op">&lt;</span><span class="ident">TNextState</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
-        <span class="ident">map</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="ident">TState</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TNextState</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Next</span><span class="op">&lt;</span><span class="ident">TNextState</span>, <span class="ident">TEvent</span><span class="op">&gt;</span> {
+        <span class="ident">map</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="ident">TState</span>) -&gt; <span class="ident">TNextState</span>,
+    ) -&gt; <span class="ident">Next</span><span class="op">&lt;</span><span class="ident">TNextState</span>, <span class="ident">TEvent</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Next::EmitEvent</span> { <span class="ident">event</span>, <span class="ident">next_state</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::EmitEvent</span> {
+            <span class="ident">Next::EmitEvent</span> { <span class="ident">event</span>, <span class="ident">next_state</span> } =&gt; <span class="ident">Next::EmitEvent</span> {
                 <span class="ident">event</span>,
                 <span class="ident">next_state</span>: <span class="ident">map</span>(<span class="ident">next_state</span>),
             },
-            <span class="ident">Next::Pending</span> { <span class="ident">next_state</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Pending</span> {
+            <span class="ident">Next::Pending</span> { <span class="ident">next_state</span> } =&gt; <span class="ident">Next::Pending</span> {
                 <span class="ident">next_state</span>: <span class="ident">map</span>(<span class="ident">next_state</span>),
             },
-            <span class="ident">Next::Continue</span> { <span class="ident">next_state</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Pending</span> {
+            <span class="ident">Next::Continue</span> { <span class="ident">next_state</span> } =&gt; <span class="ident">Next::Pending</span> {
                 <span class="ident">next_state</span>: <span class="ident">map</span>(<span class="ident">next_state</span>),
             },
-            <span class="ident">Next::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Next::Done</span>,
+            <span class="ident">Next::Done</span> =&gt; <span class="ident">Next::Done</span>,
         }
     }
 }
@@ -645,7 +645,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InboundSubstreamId</span>(<span class="ident">u64</span>);
 
 <span class="kw">impl</span> <span class="ident">InboundSubstreamId</span> {
-    <span class="kw">fn</span> <span class="ident">fetch_and_increment</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">fetch_and_increment</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">next_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
         <span class="self">self</span>.<span class="number">0</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
@@ -654,7 +654,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">InboundSubstreamId</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -663,7 +663,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OutboundSubstreamId</span>(<span class="ident">u64</span>);
 
 <span class="kw">impl</span> <span class="ident">OutboundSubstreamId</span> {
-    <span class="kw">fn</span> <span class="ident">fetch_and_increment</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">fetch_and_increment</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">next_id</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
         <span class="self">self</span>.<span class="number">0</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
@@ -672,7 +672,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">OutboundSubstreamId</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -682,7 +682,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PassthroughProtocol</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>]) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">ident</span>: <span class="prelude-val">Some</span>(<span class="ident">ident</span>) }
     }
 }
@@ -691,7 +691,7 @@
     <span class="kw">type</span> <span class="ident">Info</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> [<span class="ident">u8</span>];
     <span class="kw">type</span> <span class="ident">InfoIter</span> <span class="op">=</span> <span class="ident">std::option::IntoIter</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Info</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">protocol_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::InfoIter</span> {
+    <span class="kw">fn</span> <span class="ident">protocol_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::InfoIter</span> {
         <span class="self">self</span>.<span class="ident">ident</span>.<span class="ident">into_iter</span>()
     }
 }
@@ -701,10 +701,10 @@
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Void</span>;
     <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Output</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">upgrade_inbound</span>(<span class="self">self</span>, <span class="ident">socket</span>: <span class="ident">C</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::Info</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Future</span> {
+    <span class="kw">fn</span> <span class="ident">upgrade_inbound</span>(<span class="self">self</span>, <span class="ident">socket</span>: <span class="ident">C</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::Info</span>) -&gt; <span class="ident"><span class="self">Self</span>::Future</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">ident</span> {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">future::ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">socket</span>)).<span class="ident">boxed</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">future::pending</span>().<span class="ident">boxed</span>(),
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="ident">future::ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">socket</span>)).<span class="ident">boxed</span>(),
+            <span class="prelude-val">None</span> =&gt; <span class="ident">future::pending</span>().<span class="ident">boxed</span>(),
         }
     }
 }
@@ -714,10 +714,10 @@
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Void</span>;
     <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Output</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">upgrade_outbound</span>(<span class="self">self</span>, <span class="ident">socket</span>: <span class="ident">C</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::Info</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Future</span> {
+    <span class="kw">fn</span> <span class="ident">upgrade_outbound</span>(<span class="self">self</span>, <span class="ident">socket</span>: <span class="ident">C</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::Info</span>) -&gt; <span class="ident"><span class="self">Self</span>::Future</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">ident</span> {
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">future::ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">socket</span>)).<span class="ident">boxed</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">future::pending</span>().<span class="ident">boxed</span>(),
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="ident">future::ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">socket</span>)).<span class="ident">boxed</span>(),
+            <span class="prelude-val">None</span> =&gt; <span class="ident">future::pending</span>().<span class="ident">boxed</span>(),
         }
     }
 }
@@ -737,7 +737,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TInboundSubstream</span>, <span class="ident">TOutboundSubstream</span>, <span class="ident">TOutboundOpenInfo</span><span class="op">&gt;</span>
     <span class="ident">SubstreamProtocolsHandler</span><span class="op">&lt;</span><span class="ident">TInboundSubstream</span>, <span class="ident">TOutboundSubstream</span>, <span class="ident">TOutboundOpenInfo</span><span class="op">&gt;</span>
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">initial_keep_alive</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">initial_keep_alive</span>: <span class="ident">Duration</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inbound_substreams</span>: <span class="ident">Default::default</span>(),
             <span class="ident">outbound_substreams</span>: <span class="ident">Default::default</span>(),
@@ -752,7 +752,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TOutboundSubstream</span>, <span class="ident">TOutboundOpenInfo</span><span class="op">&gt;</span>
     <span class="ident">SubstreamProtocolsHandler</span><span class="op">&lt;</span><span class="ident">void::Void</span>, <span class="ident">TOutboundSubstream</span>, <span class="ident">TOutboundOpenInfo</span><span class="op">&gt;</span>
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_outbound_only</span>(<span class="ident">initial_keep_alive</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_outbound_only</span>(<span class="ident">initial_keep_alive</span>: <span class="ident">Duration</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inbound_substreams</span>: <span class="ident">Default::default</span>(),
             <span class="ident">outbound_substreams</span>: <span class="ident">Default::default</span>(),
@@ -767,7 +767,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TInboundSubstream</span>, <span class="ident">TOutboundOpenInfo</span><span class="op">&gt;</span>
     <span class="ident">SubstreamProtocolsHandler</span><span class="op">&lt;</span><span class="ident">TInboundSubstream</span>, <span class="ident">void::Void</span>, <span class="ident">TOutboundOpenInfo</span><span class="op">&gt;</span>
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_inbound_only</span>(<span class="ident">initial_keep_alive</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_inbound_only</span>(<span class="ident">initial_keep_alive</span>: <span class="ident">Duration</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inbound_substreams</span>: <span class="ident">Default::default</span>(),
             <span class="ident">outbound_substreams</span>: <span class="ident">Default::default</span>(),
@@ -785,7 +785,7 @@
 <span class="kw">fn</span> <span class="ident">poll_substreams</span><span class="op">&lt;</span><span class="ident">TId</span>, <span class="ident">TSubstream</span>, <span class="ident">TError</span>, <span class="ident">TOutEvent</span><span class="op">&gt;</span>(
     <span class="ident">substreams</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">TId</span>, <span class="ident">TSubstream</span><span class="op">&gt;</span>,
     <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TId</span>, <span class="ident">TOutEvent</span>), (<span class="ident">TId</span>, <span class="ident">TError</span>)<span class="op">&gt;</span><span class="op">&gt;</span>
+) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TId</span>, <span class="ident">TOutEvent</span>), (<span class="ident">TId</span>, <span class="ident">TError</span>)<span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">TSubstream</span>: <span class="ident">SubstreamHandler</span><span class="op">&lt;</span><span class="ident">OutEvent</span> <span class="op">=</span> <span class="ident">TOutEvent</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TError</span><span class="op">&gt;</span>,
     <span class="ident">TId</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">fmt::Display</span>,
@@ -799,19 +799,19 @@
 
         <span class="kw">let</span> (<span class="ident">next_state</span>, <span class="ident">poll</span>) <span class="op">=</span> <span class="lifetime">&#39;loop_handler</span>: <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="ident">handler</span>.<span class="ident">advance</span>(<span class="ident">cx</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">Next::EmitEvent</span> { <span class="ident">next_state</span>, <span class="ident">event</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">Next::EmitEvent</span> { <span class="ident">next_state</span>, <span class="ident">event</span> }) =&gt; {
                     <span class="kw">break</span> (<span class="ident">next_state</span>, <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">event</span>))))
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">Next::Pending</span> { <span class="ident">next_state</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span> (<span class="ident">next_state</span>, <span class="ident">Poll::Pending</span>),
-                <span class="prelude-val">Ok</span>(<span class="ident">Next::Continue</span> { <span class="ident">next_state</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">Next::Pending</span> { <span class="ident">next_state</span> }) =&gt; <span class="kw">break</span> (<span class="ident">next_state</span>, <span class="ident">Poll::Pending</span>),
+                <span class="prelude-val">Ok</span>(<span class="ident">Next::Continue</span> { <span class="ident">next_state</span> }) =&gt; {
                     <span class="ident">handler</span> <span class="op">=</span> <span class="ident">next_state</span>;
                     <span class="kw">continue</span> <span class="lifetime">&#39;loop_handler</span>;
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">Next::Done</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">Next::Done</span>) =&gt; {
                     <span class="macro">log::debug!</span>(<span class="string">&quot;Substream handler {} finished&quot;</span>, <span class="ident">id</span>);
                     <span class="kw">continue</span> <span class="lifetime">&#39;loop_substreams</span>;
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>((<span class="ident">id</span>, <span class="ident">e</span>))),
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>((<span class="ident">id</span>, <span class="ident">e</span>))),
             }
         };
 
@@ -912,7 +912,7 @@
     <span class="kw">type</span> <span class="ident">InboundOpenInfo</span> <span class="op">=</span> ();
     <span class="kw">type</span> <span class="ident">OutboundOpenInfo</span> <span class="op">=</span> <span class="ident">TOutboundOpenInfo</span>;
 
-    <span class="kw">fn</span> <span class="ident">listen_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::InboundProtocol</span>, <span class="ident"><span class="self">Self</span>::InboundOpenInfo</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">listen_protocol</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::InboundProtocol</span>, <span class="ident"><span class="self">Self</span>::InboundOpenInfo</span><span class="op">&gt;</span> {
         <span class="ident">TInboundSubstreamHandler::upgrade</span>(())
     }
 
@@ -940,27 +940,27 @@
 
     <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) {
         <span class="kw">match</span> <span class="ident">event</span> {
-            <span class="ident">InEvent::NewSubstream</span> { <span class="ident">open_info</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">new_substreams</span>.<span class="ident">push_back</span>(<span class="ident">open_info</span>),
-            <span class="ident">InEvent::NotifyInboundSubstream</span> { <span class="ident">id</span>, <span class="ident">message</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">InEvent::NewSubstream</span> { <span class="ident">open_info</span> } =&gt; <span class="self">self</span>.<span class="ident">new_substreams</span>.<span class="ident">push_back</span>(<span class="ident">open_info</span>),
+            <span class="ident">InEvent::NotifyInboundSubstream</span> { <span class="ident">id</span>, <span class="ident">message</span> } =&gt; {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">inbound_substreams</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
-                    <span class="prelude-val">Some</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">handler</span>) =&gt; {
                         <span class="kw">let</span> <span class="ident">new_handler</span> <span class="op">=</span> <span class="ident">handler</span>.<span class="ident">inject_event</span>(<span class="ident">message</span>);
 
                         <span class="self">self</span>.<span class="ident">inbound_substreams</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">new_handler</span>);
                     }
-                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">None</span> =&gt; {
                         <span class="macro">log::debug!</span>(<span class="string">&quot;Substream with ID {} not found&quot;</span>, <span class="ident">id</span>);
                     }
                 }
             }
-            <span class="ident">InEvent::NotifyOutboundSubstream</span> { <span class="ident">id</span>, <span class="ident">message</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">InEvent::NotifyOutboundSubstream</span> { <span class="ident">id</span>, <span class="ident">message</span> } =&gt; {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">outbound_substreams</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
-                    <span class="prelude-val">Some</span>(<span class="ident">handler</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">handler</span>) =&gt; {
                         <span class="kw">let</span> <span class="ident">new_handler</span> <span class="op">=</span> <span class="ident">handler</span>.<span class="ident">inject_event</span>(<span class="ident">message</span>);
 
                         <span class="self">self</span>.<span class="ident">outbound_substreams</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">new_handler</span>);
                     }
-                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">None</span> =&gt; {
                         <span class="macro">log::debug!</span>(<span class="string">&quot;Substream with ID {} not found&quot;</span>, <span class="ident">id</span>);
                     }
                 }
@@ -976,7 +976,7 @@
         <span class="comment">// TODO: Handle upgrade errors properly</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">connection_keep_alive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">KeepAlive</span> {
+    <span class="kw">fn</span> <span class="ident">connection_keep_alive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">KeepAlive</span> {
         <span class="comment">// Rudimentary keep-alive handling, to be extended as needed as this abstraction is used more by other protocols.</span>
 
         <span class="kw">if</span> <span class="ident">Instant::now</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">initial_keep_alive_deadline</span> {
@@ -996,7 +996,7 @@
     <span class="kw">fn</span> <span class="ident">poll</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span>
+    ) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span>
         <span class="ident">ProtocolsHandlerEvent</span><span class="op">&lt;</span>
             <span class="ident"><span class="self">Self</span>::OutboundProtocol</span>,
             <span class="ident"><span class="self">Self</span>::OutboundOpenInfo</span>,
@@ -1011,35 +1011,35 @@
         }
 
         <span class="kw">match</span> <span class="ident">poll_substreams</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">inbound_substreams</span>, <span class="ident">cx</span>) {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">message</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">message</span>))) =&gt; {
                 <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="ident">ProtocolsHandlerEvent::Custom</span>(<span class="ident">OutEvent::InboundEvent</span> {
                     <span class="ident">id</span>,
                     <span class="ident">message</span>,
                 }))
             }
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>((<span class="ident">id</span>, <span class="ident">error</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>((<span class="ident">id</span>, <span class="ident">error</span>))) =&gt; {
                 <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="ident">ProtocolsHandlerEvent::Custom</span>(<span class="ident">OutEvent::InboundError</span> {
                     <span class="ident">id</span>,
                     <span class="ident">error</span>,
                 }))
             }
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Poll::Pending</span> =&gt; {}
         }
 
         <span class="kw">match</span> <span class="ident">poll_substreams</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">outbound_substreams</span>, <span class="ident">cx</span>) {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">message</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">message</span>))) =&gt; {
                 <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="ident">ProtocolsHandlerEvent::Custom</span>(<span class="ident">OutEvent::OutboundEvent</span> {
                     <span class="ident">id</span>,
                     <span class="ident">message</span>,
                 }))
             }
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>((<span class="ident">id</span>, <span class="ident">error</span>))) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>((<span class="ident">id</span>, <span class="ident">error</span>))) =&gt; {
                 <span class="kw">return</span> <span class="ident">Poll::Ready</span>(<span class="ident">ProtocolsHandlerEvent::Custom</span>(<span class="ident">OutEvent::OutboundError</span> {
                     <span class="ident">id</span>,
                     <span class="ident">error</span>,
                 }))
             }
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Poll::Pending</span> =&gt; {}
         }
 
         <span class="ident">Poll::Pending</span>
@@ -1054,24 +1054,24 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">TOutEvent</span>, <span class="ident">TError</span><span class="op">&gt;</span> <span class="ident">FutureSubstream</span><span class="op">&lt;</span><span class="ident">TOutEvent</span>, <span class="ident">TError</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">future</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TOutEvent</span>, <span class="ident">TError</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">future</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TOutEvent</span>, <span class="ident">TError</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">future</span>: <span class="ident">future</span>.<span class="ident">boxed</span>().<span class="ident">fuse</span>(),
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TOutEvent</span><span class="op">&gt;</span>, <span class="ident">TError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TOutEvent</span><span class="op">&gt;</span>, <span class="ident">TError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">future</span>.<span class="ident">is_terminated</span>() {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Next::Done</span>);
         }
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">future</span>.<span class="ident">poll_unpin</span>(<span class="ident">cx</span>) {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">event</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Next::EmitEvent</span> {
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">event</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Next::EmitEvent</span> {
                 <span class="ident">event</span>,
                 <span class="ident">next_state</span>: <span class="self">self</span>,
             }),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Next::Pending</span> { <span class="ident">next_state</span>: <span class="self">self</span> }),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">error</span>)) =&gt; <span class="prelude-val">Err</span>(<span class="ident">error</span>),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Next::Pending</span> { <span class="ident">next_state</span>: <span class="self">self</span> }),
         }
     }
 }
@@ -1082,21 +1082,21 @@
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">void::Void</span>;
     <span class="kw">type</span> <span class="ident">OpenInfo</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="ident">NegotiatedSubstream</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="ident">NegotiatedSubstream</span>, <span class="kw">_</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>) -&gt; <span class="self">Self</span> {
         <span class="macro">unreachable!</span>(<span class="string">&quot;we should never yield a substream&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">inject_event</span>(<span class="self">self</span>, <span class="ident">event</span>: <span class="ident"><span class="self">Self</span>::InEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">void::unreachable</span>(<span class="ident">event</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::OutEvent</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">advance</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Next</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::OutEvent</span><span class="op">&gt;</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="ident">void::unreachable</span>(<span class="self">self</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">upgrade</span>(
         <span class="ident">open_info</span>: <span class="ident"><span class="self">Self</span>::OpenInfo</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident">PassthroughProtocol</span>, <span class="ident"><span class="self">Self</span>::OpenInfo</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">SubstreamProtocol</span><span class="op">&lt;</span><span class="ident">PassthroughProtocol</span>, <span class="ident"><span class="self">Self</span>::OpenInfo</span><span class="op">&gt;</span> {
         <span class="ident">SubstreamProtocol::new</span>(<span class="ident">PassthroughProtocol</span> { <span class="ident">ident</span>: <span class="prelude-val">None</span> }, <span class="ident">open_info</span>)
     }
 }

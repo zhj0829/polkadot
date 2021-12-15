@@ -1893,22 +1893,22 @@
     <span class="ident">flags</span>: <span class="ident">u32</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">align_up</span>(<span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">alignment</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">align_up</span>(<span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">alignment</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
     <span class="macro">debug_assert!</span>(<span class="ident">alignment</span>.<span class="ident">is_power_of_two</span>());
     (<span class="ident">a</span> <span class="op">+</span> (<span class="ident">alignment</span> <span class="op">-</span> <span class="number">1</span>)) <span class="op">&amp;</span> <span class="op">!</span>(<span class="ident">alignment</span> <span class="op">-</span> <span class="number">1</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">left_bits</span>(<span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">fn</span> <span class="ident">left_bits</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
     (<span class="ident">x</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>) <span class="op">|</span> (<span class="op">!</span>(<span class="ident">x</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>)).<span class="ident">wrapping_add</span>(<span class="number">1</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">least_bit</span>(<span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">fn</span> <span class="ident">least_bit</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
     <span class="ident">x</span> <span class="op">&amp;</span> (<span class="op">!</span><span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">leftshift_for_tree_index</span>(<span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">fn</span> <span class="ident">leftshift_for_tree_index</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">x</span> <span class="kw">as</span> <span class="ident">usize</span>;
-    <span class="kw">if</span> <span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="ident">NTREEBINS</span> <span class="op">-</span> <span class="number">1</span> {
+    <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="ident">NTREEBINS</span> <span class="op">-</span> <span class="number">1</span> {
         <span class="number">0</span>
     } <span class="kw">else</span> {
         (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> ((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="op">+</span> <span class="ident">TREEBIN_SHIFT</span> <span class="op">-</span> <span class="number">2</span>)) <span class="kw">as</span> <span class="ident">u32</span>
@@ -1916,7 +1916,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">system_allocator</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">system_allocator</span>: <span class="ident">A</span>) -&gt; <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
         <span class="ident">Dlmalloc</span> {
             <span class="ident">smallmap</span>: <span class="number">0</span>,
             <span class="ident">treemap</span>: <span class="number">0</span>,
@@ -1944,46 +1944,46 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Dlmalloc</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span> {
     <span class="comment">// TODO: can we get rid of this?</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">malloc_alignment</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">malloc_alignment</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">2</span>
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">chunk_overhead</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">chunk_overhead</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">mmap_chunk_overhead</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">mmap_chunk_overhead</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="number">2</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">min_large_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">min_large_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">TREEBIN_SHIFT</span>
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">max_small_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">max_small_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">min_large_size</span>() <span class="op">-</span> <span class="number">1</span>
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">max_small_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">max_small_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">max_small_size</span>() <span class="op">-</span> (<span class="self">self</span>.<span class="ident">malloc_alignment</span>() <span class="op">-</span> <span class="number">1</span>) <span class="op">-</span> <span class="self">self</span>.<span class="ident">chunk_overhead</span>()
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">min_chunk_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">min_chunk_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">align_up</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Chunk</span><span class="op">&gt;</span>(), <span class="self">self</span>.<span class="ident">malloc_alignment</span>())
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">min_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">min_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">min_chunk_size</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">chunk_overhead</span>() <span class="op">-</span> <span class="number">1</span>
     }
 
     <span class="comment">// TODO: dox</span>
-    <span class="kw">fn</span> <span class="ident">max_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">max_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="comment">// min_sys_alloc_space: the largest `X` such that</span>
         <span class="comment">//   pad_request(X - 1)        -- minus 1, because requests of exactly</span>
         <span class="comment">//                                `max_request` will not be honored</span>
@@ -2001,52 +2001,52 @@
         <span class="ident">cmp::min</span>((<span class="op">!</span><span class="self">self</span>.<span class="ident">min_chunk_size</span>() <span class="op">+</span> <span class="number">1</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>, <span class="ident">min_sys_alloc_space</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">pad_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">amt</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">pad_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">amt</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">align_up</span>(<span class="ident">amt</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">chunk_overhead</span>(), <span class="self">self</span>.<span class="ident">malloc_alignment</span>())
     }
 
-    <span class="kw">fn</span> <span class="ident">small_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">small_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">u32</span> {
         (<span class="ident">size</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">SMALLBIN_SHIFT</span>) <span class="kw">as</span> <span class="ident">u32</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">small_index2size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">small_index2size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) -&gt; <span class="ident">usize</span> {
         (<span class="ident">idx</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">SMALLBIN_SHIFT</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">is_small</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">s</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_small</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">s</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">s</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">SMALLBIN_SHIFT</span> <span class="op">&lt;</span> <span class="ident">NSMALLBINS</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">is_aligned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">a</span> <span class="op">&amp;</span> (<span class="self">self</span>.<span class="ident">malloc_alignment</span>() <span class="op">-</span> <span class="number">1</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">fn</span> <span class="ident">is_aligned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
+        <span class="ident">a</span> <span class="op">&amp;</span> (<span class="self">self</span>.<span class="ident">malloc_alignment</span>() <span class="op">-</span> <span class="number">1</span>) <span class="op">==</span> <span class="number">0</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">align_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">align_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">align_offset_usize</span>(<span class="ident">addr</span> <span class="kw">as</span> <span class="ident">usize</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">align_offset_usize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">align_offset_usize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">align_up</span>(<span class="ident">addr</span>, <span class="self">self</span>.<span class="ident">malloc_alignment</span>()) <span class="op">-</span> (<span class="ident">addr</span> <span class="kw">as</span> <span class="ident">usize</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">top_foot_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">top_foot_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">align_offset_usize</span>(<span class="ident">Chunk::mem_offset</span>() <span class="kw">as</span> <span class="ident">usize</span>)
             <span class="op">+</span> <span class="self">self</span>.<span class="ident">pad_request</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Segment</span><span class="op">&gt;</span>())
             <span class="op">+</span> <span class="self">self</span>.<span class="ident">min_chunk_size</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">mmap_foot_pad</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">mmap_foot_pad</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="number">4</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">align_as_chunk</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">fn</span> <span class="ident">align_as_chunk</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="ident">Chunk::to_mem</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>);
             <span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="self">self</span>.<span class="ident">align_offset</span>(<span class="ident">chunk</span>) <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">request2size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">request2size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="ident">req</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">min_request</span>() {
             <span class="self">self</span>.<span class="ident">min_chunk_size</span>()
         } <span class="kw">else</span> {
@@ -2054,7 +2054,7 @@
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">overhead_for</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">overhead_for</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="ident">Chunk::mmapped</span>(<span class="ident">p</span>) {
             <span class="self">self</span>.<span class="ident">mmap_chunk_overhead</span>()
         } <span class="kw">else</span> {
@@ -2062,11 +2062,11 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">calloc_must_clear</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">calloc_must_clear</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) -&gt; <span class="ident">bool</span> {
         <span class="op">!</span><span class="self">self</span>.<span class="ident">system_allocator</span>.<span class="ident">allocates_zeros</span>() <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">Chunk::mmapped</span>(<span class="ident">Chunk::from_mem</span>(<span class="ident">ptr</span>))
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">malloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">malloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">check_malloc_state</span>();
 
         <span class="kw">let</span> <span class="ident">nb</span>;
@@ -2183,7 +2183,7 @@
     }
 
     <span class="doccomment">/// allocates system resources</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sys_alloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sys_alloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">check_malloc_state</span>();
         <span class="comment">// keep in sync with max_request</span>
         <span class="kw">let</span> <span class="ident">asize</span> <span class="op">=</span> <span class="ident">align_up</span>(
@@ -2220,7 +2220,7 @@
             }
             <span class="kw">if</span> <span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>()
                 <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">Segment::is_extern</span>(<span class="ident">sp</span>)
-                <span class="op">&amp;&amp;</span> <span class="ident">Segment::sys_flags</span>(<span class="ident">sp</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">flags</span>
+                <span class="op">&amp;&amp;</span> <span class="ident">Segment::sys_flags</span>(<span class="ident">sp</span>) <span class="op">==</span> <span class="ident">flags</span>
                 <span class="op">&amp;&amp;</span> <span class="ident">Segment::holds</span>(<span class="ident">sp</span>, <span class="self">self</span>.<span class="ident">top</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>)
             {
                 (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">size</span> <span class="op">+</span><span class="op">=</span> <span class="ident">tsize</span>;
@@ -2233,7 +2233,7 @@
                 <span class="kw">while</span> <span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">base</span> <span class="op">!</span><span class="op">=</span> <span class="ident">tbase</span>.<span class="ident">offset</span>(<span class="ident">tsize</span> <span class="kw">as</span> <span class="ident">isize</span>) {
                     <span class="ident">sp</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">next</span>;
                 }
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">Segment::is_extern</span>(<span class="ident">sp</span>) <span class="op">&amp;&amp;</span> <span class="ident">Segment::sys_flags</span>(<span class="ident">sp</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">flags</span> {
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">Segment::is_extern</span>(<span class="ident">sp</span>) <span class="op">&amp;&amp;</span> <span class="ident">Segment::sys_flags</span>(<span class="ident">sp</span>) <span class="op">==</span> <span class="ident">flags</span> {
                     <span class="kw">let</span> <span class="ident">oldbase</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">base</span>;
                     (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">base</span> <span class="op">=</span> <span class="ident">tbase</span>;
                     (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">size</span> <span class="op">+</span><span class="op">=</span> <span class="ident">tsize</span>;
@@ -2262,7 +2262,7 @@
         <span class="kw">return</span> <span class="ident">ptr::null_mut</span>();
     }
 
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">realloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">oldmem</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">bytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">realloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">oldmem</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">bytes</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">if</span> <span class="ident">bytes</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">max_request</span>() {
             <span class="kw">return</span> <span class="ident">ptr::null_mut</span>();
         }
@@ -2282,7 +2282,7 @@
         <span class="kw">return</span> <span class="ident">ptr</span>;
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_realloc_chunk</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">nb</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_realloc_chunk</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">nb</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         <span class="kw">let</span> <span class="ident">oldsize</span> <span class="op">=</span> <span class="ident">Chunk::size</span>(<span class="ident">p</span>);
         <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">Chunk::plus_offset</span>(<span class="ident">p</span>, <span class="ident">oldsize</span>);
 
@@ -2297,7 +2297,7 @@
                 <span class="self">self</span>.<span class="ident">dispose_chunk</span>(<span class="ident">r</span>, <span class="ident">rsize</span>);
             }
             <span class="ident">p</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">top</span> {
             <span class="comment">// extend into top</span>
             <span class="kw">if</span> <span class="ident">oldsize</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">nb</span> {
                 <span class="kw">return</span> <span class="ident">ptr::null_mut</span>();
@@ -2310,7 +2310,7 @@
             <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="ident">newtop</span>;
             <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">=</span> <span class="ident">newtopsize</span>;
             <span class="ident">p</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
             <span class="comment">// extend into dv</span>
             <span class="kw">let</span> <span class="ident">dvs</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">dvsize</span>;
             <span class="kw">if</span> <span class="ident">oldsize</span> <span class="op">+</span> <span class="ident">dvs</span> <span class="op">&lt;</span> <span class="ident">nb</span> {
@@ -2356,7 +2356,7 @@
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">mmap_resize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">oldp</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">nb</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">mmap_resize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">oldp</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">nb</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         <span class="kw">let</span> <span class="ident">oldsize</span> <span class="op">=</span> <span class="ident">Chunk::size</span>(<span class="ident">oldp</span>);
         <span class="comment">// Can&#39;t shrink mmap regions below a small size</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_small</span>(<span class="ident">nb</span>) {
@@ -2393,13 +2393,13 @@
         <span class="kw">return</span> <span class="ident">newp</span>;
     }
 
-    <span class="kw">fn</span> <span class="ident">mmap_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">mmap_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">align_up</span>(<span class="ident">a</span>, <span class="self">self</span>.<span class="ident">system_allocator</span>.<span class="ident">page_size</span>())
     }
 
     <span class="comment">// Only call this with power-of-two alignment and alignment &gt;</span>
     <span class="comment">// `self.malloc_alignment()`</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">memalign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">alignment</span>: <span class="ident">usize</span>, <span class="ident">bytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">memalign</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">alignment</span>: <span class="ident">usize</span>, <span class="ident">bytes</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">if</span> <span class="ident">alignment</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">min_chunk_size</span>() {
             <span class="ident">alignment</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">min_chunk_size</span>();
         }
@@ -2483,7 +2483,7 @@
             <span class="ident">p</span> <span class="op">=</span> <span class="ident">prev</span>;
             <span class="kw">if</span> <span class="ident">p</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
                 <span class="self">self</span>.<span class="ident">unlink_chunk</span>(<span class="ident">p</span>, <span class="ident">prevsize</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">next</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">=</span><span class="op">=</span> <span class="ident">INUSE</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">next</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">==</span> <span class="ident">INUSE</span> {
                 <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="ident">psize</span>;
                 <span class="ident">Chunk::set_free_with_pinuse</span>(<span class="ident">p</span>, <span class="ident">psize</span>, <span class="ident">next</span>);
                 <span class="kw">return</span>;
@@ -2492,17 +2492,17 @@
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">Chunk::cinuse</span>(<span class="ident">next</span>) {
             <span class="comment">// consolidate forward</span>
-            <span class="kw">if</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> {
+            <span class="kw">if</span> <span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">top</span> {
                 <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">psize</span>;
                 <span class="kw">let</span> <span class="ident">tsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">topsize</span>;
                 <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="ident">p</span>;
                 (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">=</span> <span class="ident">tsize</span> <span class="op">|</span> <span class="ident">PINUSE</span>;
-                <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+                <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                     <span class="self">self</span>.<span class="ident">dv</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
                     <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="number">0</span>;
                 }
                 <span class="kw">return</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                 <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">psize</span>;
                 <span class="kw">let</span> <span class="ident">dsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">dvsize</span>;
                 <span class="self">self</span>.<span class="ident">dv</span> <span class="op">=</span> <span class="ident">p</span>;
@@ -2513,7 +2513,7 @@
                 <span class="ident">psize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">nsize</span>;
                 <span class="self">self</span>.<span class="ident">unlink_chunk</span>(<span class="ident">next</span>, <span class="ident">nsize</span>);
                 <span class="ident">Chunk::set_size_and_pinuse_of_free_chunk</span>(<span class="ident">p</span>, <span class="ident">psize</span>);
-                <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+                <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                     <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="ident">psize</span>;
                     <span class="kw">return</span>;
                 }
@@ -2544,7 +2544,7 @@
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prepend_alloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">newbase</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldbase</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prepend_alloc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">newbase</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldbase</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">align_as_chunk</span>(<span class="ident">newbase</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">oldfirst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">align_as_chunk</span>(<span class="ident">oldbase</span>);
         <span class="kw">let</span> <span class="ident">psize</span> <span class="op">=</span> <span class="ident">oldfirst</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">-</span> <span class="ident">p</span> <span class="kw">as</span> <span class="ident">usize</span>;
@@ -2557,13 +2557,13 @@
         <span class="macro">debug_assert!</span>(<span class="ident">qsize</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">min_chunk_size</span>());
 
         <span class="comment">// consolidate the remainder with the first chunk of the old base</span>
-        <span class="kw">if</span> <span class="ident">oldfirst</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> {
+        <span class="kw">if</span> <span class="ident">oldfirst</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">top</span> {
             <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">qsize</span>;
             <span class="kw">let</span> <span class="ident">tsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">topsize</span>;
             <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="ident">q</span>;
             (<span class="kw-2">*</span><span class="ident">q</span>).<span class="ident">head</span> <span class="op">=</span> <span class="ident">tsize</span> <span class="op">|</span> <span class="ident">PINUSE</span>;
             <span class="self">self</span>.<span class="ident">check_top_chunk</span>(<span class="ident">q</span>);
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">oldfirst</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">oldfirst</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
             <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">qsize</span>;
             <span class="kw">let</span> <span class="ident">dsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">dvsize</span>;
             <span class="self">self</span>.<span class="ident">dv</span> <span class="op">=</span> <span class="ident">q</span>;
@@ -2649,7 +2649,7 @@
         <span class="self">self</span>.<span class="ident">check_malloc_state</span>();
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">segment_holding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">segment_holding</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sp</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">seg</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Segment</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>;
         <span class="kw">while</span> <span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>() {
             <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">sp</span>).<span class="ident">base</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">ptr</span> <span class="op">&amp;&amp;</span> <span class="ident">ptr</span> <span class="op">&lt;</span> <span class="ident">Segment::top</span>(<span class="ident">sp</span>) {
@@ -2660,7 +2660,7 @@
         <span class="ident">ptr::null_mut</span>()
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">tmalloc_small</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">tmalloc_small</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">let</span> <span class="ident">leastbit</span> <span class="op">=</span> <span class="ident">least_bit</span>(<span class="self">self</span>.<span class="ident">treemap</span>);
         <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">leastbit</span>.<span class="ident">trailing_zeros</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">treebin_at</span>(<span class="ident">i</span>);
@@ -2694,7 +2694,7 @@
         <span class="ident">Chunk::to_mem</span>(<span class="ident">vc</span>)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">tmalloc_large</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">tmalloc_large</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rsize</span> <span class="op">=</span> <span class="op">!</span><span class="ident">size</span> <span class="op">+</span> <span class="number">1</span>;
         <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compute_tree_index</span>(<span class="ident">size</span>);
@@ -2710,7 +2710,7 @@
                 <span class="kw">if</span> <span class="ident">csize</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">size</span> <span class="op">&amp;&amp;</span> <span class="ident">csize</span> <span class="op">-</span> <span class="ident">size</span> <span class="op">&lt;</span> <span class="ident">rsize</span> {
                     <span class="ident">v</span> <span class="op">=</span> <span class="ident">t</span>;
                     <span class="ident">rsize</span> <span class="op">=</span> <span class="ident">csize</span> <span class="op">-</span> <span class="ident">size</span>;
-                    <span class="kw">if</span> <span class="ident">rsize</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                    <span class="kw">if</span> <span class="ident">rsize</span> <span class="op">==</span> <span class="number">0</span> {
                         <span class="kw">break</span>;
                     }
                 }
@@ -2768,19 +2768,19 @@
         <span class="ident">Chunk::to_mem</span>(<span class="ident">vc</span>)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">smallbin_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">smallbin_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         <span class="macro">debug_assert!</span>(((<span class="ident">idx</span> <span class="op">*</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">smallbins</span>.<span class="ident">len</span>());
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">smallbins</span>.<span class="ident">get_unchecked_mut</span>((<span class="ident">idx</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> <span class="number">2</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">treebin_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">treebin_at</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
         <span class="macro">debug_assert!</span>((<span class="ident">idx</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">treebins</span>.<span class="ident">len</span>());
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">treebins</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">idx</span> <span class="kw">as</span> <span class="ident">usize</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">compute_tree_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">compute_tree_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">size</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TREEBIN_SHIFT</span>;
-        <span class="kw">if</span> <span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">x</span> <span class="op">&gt;</span> <span class="number">0xffff</span> {
             <span class="ident">NTREEBINS</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">1</span>
@@ -2795,7 +2795,7 @@
         <span class="macro">debug_assert!</span>(<span class="ident">next</span> <span class="op">!</span><span class="op">=</span> <span class="ident">head</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">next</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ptr</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="ident">Chunk::size</span>(<span class="ident">next</span>), <span class="self">self</span>.<span class="ident">small_index2size</span>(<span class="ident">idx</span>));
-        <span class="kw">if</span> <span class="ident">head</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ptr</span> {
+        <span class="kw">if</span> <span class="ident">head</span> <span class="op">==</span> <span class="ident">ptr</span> {
             <span class="self">self</span>.<span class="ident">clear_smallmap</span>(<span class="ident">idx</span>);
         } <span class="kw">else</span> {
             (<span class="kw-2">*</span><span class="ident">ptr</span>).<span class="ident">next</span> <span class="op">=</span> <span class="ident">head</span>;
@@ -2882,7 +2882,7 @@
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">smallmap_is_marked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">smallmap_is_marked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">smallmap</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -2894,7 +2894,7 @@
         <span class="self">self</span>.<span class="ident">smallmap</span> <span class="op">&amp;=</span> <span class="op">!</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>);
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">treemap_is_marked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">treemap_is_marked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">treemap</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -2921,7 +2921,7 @@
         <span class="macro">debug_assert!</span>(<span class="ident">chunk</span> <span class="op">!</span><span class="op">=</span> <span class="ident">b</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">chunk</span> <span class="op">!</span><span class="op">=</span> <span class="ident">f</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="ident">Chunk::size</span>(<span class="ident">chunk</span>), <span class="self">self</span>.<span class="ident">small_index2size</span>(<span class="ident">idx</span>));
-        <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">f</span> {
+        <span class="kw">if</span> <span class="ident">b</span> <span class="op">==</span> <span class="ident">f</span> {
             <span class="self">self</span>.<span class="ident">clear_smallmap</span>(<span class="ident">idx</span>);
         } <span class="kw">else</span> {
             (<span class="kw-2">*</span><span class="ident">f</span>).<span class="ident">next</span> <span class="op">=</span> <span class="ident">b</span>;
@@ -2964,13 +2964,13 @@
         }
 
         <span class="kw">let</span> <span class="ident">h</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">treebin_at</span>((<span class="kw-2">*</span><span class="ident">chunk</span>).<span class="ident">index</span>);
-        <span class="kw">if</span> <span class="ident">chunk</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">h</span> {
+        <span class="kw">if</span> <span class="ident">chunk</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">h</span> {
             <span class="kw-2">*</span><span class="ident">h</span> <span class="op">=</span> <span class="ident">r</span>;
             <span class="kw">if</span> <span class="ident">r</span>.<span class="ident">is_null</span>() {
                 <span class="self">self</span>.<span class="ident">clear_treemap</span>((<span class="kw-2">*</span><span class="ident">chunk</span>).<span class="ident">index</span>);
             }
         } <span class="kw">else</span> {
-            <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">xp</span>).<span class="ident">child</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">chunk</span> {
+            <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">xp</span>).<span class="ident">child</span>[<span class="number">0</span>] <span class="op">==</span> <span class="ident">chunk</span> {
                 (<span class="kw-2">*</span><span class="ident">xp</span>).<span class="ident">child</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">r</span>;
             } <span class="kw">else</span> {
                 (<span class="kw-2">*</span><span class="ident">xp</span>).<span class="ident">child</span>[<span class="number">1</span>] <span class="op">=</span> <span class="ident">r</span>;
@@ -3017,7 +3017,7 @@
             <span class="ident">p</span> <span class="op">=</span> <span class="ident">prev</span>;
             <span class="kw">if</span> <span class="ident">p</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
                 <span class="self">self</span>.<span class="ident">unlink_chunk</span>(<span class="ident">p</span>, <span class="ident">prevsize</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">next</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">=</span><span class="op">=</span> <span class="ident">INUSE</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">next</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">==</span> <span class="ident">INUSE</span> {
                 <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="ident">psize</span>;
                 <span class="ident">Chunk::set_free_with_pinuse</span>(<span class="ident">p</span>, <span class="ident">psize</span>, <span class="ident">next</span>);
                 <span class="kw">return</span>;
@@ -3026,12 +3026,12 @@
 
         <span class="comment">// Consolidate forward if we can</span>
         <span class="kw">if</span> <span class="op">!</span><span class="ident">Chunk::cinuse</span>(<span class="ident">next</span>) {
-            <span class="kw">if</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> {
+            <span class="kw">if</span> <span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">top</span> {
                 <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">psize</span>;
                 <span class="kw">let</span> <span class="ident">tsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">topsize</span>;
                 <span class="self">self</span>.<span class="ident">top</span> <span class="op">=</span> <span class="ident">p</span>;
                 (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">=</span> <span class="ident">tsize</span> <span class="op">|</span> <span class="ident">PINUSE</span>;
-                <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+                <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                     <span class="self">self</span>.<span class="ident">dv</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
                     <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="number">0</span>;
                 }
@@ -3039,7 +3039,7 @@
                     <span class="self">self</span>.<span class="ident">sys_trim</span>(<span class="number">0</span>);
                 }
                 <span class="kw">return</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                 <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">psize</span>;
                 <span class="kw">let</span> <span class="ident">dsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">dvsize</span>;
                 <span class="self">self</span>.<span class="ident">dv</span> <span class="op">=</span> <span class="ident">p</span>;
@@ -3050,7 +3050,7 @@
                 <span class="ident">psize</span> <span class="op">+</span><span class="op">=</span> <span class="ident">nsize</span>;
                 <span class="self">self</span>.<span class="ident">unlink_chunk</span>(<span class="ident">next</span>, <span class="ident">nsize</span>);
                 <span class="ident">Chunk::set_size_and_pinuse_of_free_chunk</span>(<span class="ident">p</span>, <span class="ident">psize</span>);
-                <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+                <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                     <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="ident">psize</span>;
                     <span class="kw">return</span>;
                 }
@@ -3066,17 +3066,17 @@
             <span class="self">self</span>.<span class="ident">insert_large_chunk</span>(<span class="ident">p</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>, <span class="ident">psize</span>);
             <span class="self">self</span>.<span class="ident">check_free_chunk</span>(<span class="ident">p</span>);
             <span class="self">self</span>.<span class="ident">release_checks</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">release_checks</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">release_checks</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="self">self</span>.<span class="ident">release_unused_segments</span>();
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">should_trim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">should_trim</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">size</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">trim_check</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sys_trim</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">pad</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sys_trim</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">pad</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">released</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">if</span> <span class="ident">pad</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">max_request</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">top</span>.<span class="ident">is_null</span>() {
             <span class="ident">pad</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top_foot_size</span>();
@@ -3112,7 +3112,7 @@
 
             <span class="ident">released</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">release_unused_segments</span>();
 
-            <span class="kw">if</span> <span class="ident">released</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">trim_check</span> {
+            <span class="kw">if</span> <span class="ident">released</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">topsize</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">trim_check</span> {
                 <span class="self">self</span>.<span class="ident">trim_check</span> <span class="op">=</span> <span class="ident">usize::max_value</span>();
             }
         }
@@ -3120,7 +3120,7 @@
         <span class="ident">released</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">has_segment_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">has_segment_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sp</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">seg</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Segment</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>;
         <span class="kw">while</span> <span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>() {
             <span class="kw">if</span> <span class="ident">Segment::holds</span>(<span class="ident">ptr</span>, <span class="ident">sp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) {
@@ -3132,7 +3132,7 @@
     }
 
     <span class="doccomment">/// Unmap and unlink any mapped segments that don&#39;t contain used chunks</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_unused_segments</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">release_unused_segments</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">released</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nsegs</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">seg</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>;
@@ -3153,7 +3153,7 @@
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">Chunk::inuse</span>(<span class="ident">p</span>) <span class="op">&amp;&amp;</span> <span class="ident">chunk_top</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">top</span> {
                     <span class="kw">let</span> <span class="ident">tp</span> <span class="op">=</span> <span class="ident">p</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>;
                     <span class="macro">debug_assert!</span>(<span class="ident">Segment::holds</span>(<span class="ident">sp</span>, <span class="ident">sp</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>));
-                    <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">dv</span> {
+                    <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">dv</span> {
                         <span class="self">self</span>.<span class="ident">dv</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
                         <span class="self">self</span>.<span class="ident">dvsize</span> <span class="op">=</span> <span class="number">0</span>;
                     } <span class="kw">else</span> {
@@ -3189,7 +3189,7 @@
             <span class="kw">return</span>;
         }
         <span class="macro">debug_assert!</span>(
-            <span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Chunk::fencepost_head</span>()
+            <span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">==</span> <span class="ident">Chunk::fencepost_head</span>()
         );
         <span class="macro">debug_assert!</span>(<span class="ident">p</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">least_addr</span>);
     }
@@ -3202,7 +3202,7 @@
         <span class="kw">let</span> <span class="ident">sz</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="op">!</span><span class="ident">INUSE</span>;
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">sp</span>.<span class="ident">is_null</span>());
         <span class="macro">debug_assert!</span>(
-            <span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Chunk::fencepost_head</span>()
+            <span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">==</span> <span class="ident">Chunk::fencepost_head</span>()
         );
         <span class="macro">debug_assert!</span>(<span class="ident">p</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">least_addr</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="ident">sz</span>, <span class="self">self</span>.<span class="ident">topsize</span>);
@@ -3235,7 +3235,7 @@
         <span class="self">self</span>.<span class="ident">check_any_chunk</span>(<span class="ident">p</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">Chunk::inuse</span>(<span class="ident">p</span>));
         <span class="macro">debug_assert!</span>(<span class="ident">Chunk::pinuse</span>(<span class="ident">Chunk::next</span>(<span class="ident">p</span>)));
-        <span class="macro">debug_assert!</span>(<span class="ident">Chunk::mmapped</span>(<span class="ident">p</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::pinuse</span>(<span class="ident">p</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::next</span>(<span class="ident">Chunk::prev</span>(<span class="ident">p</span>)) <span class="op">=</span><span class="op">=</span> <span class="ident">p</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">Chunk::mmapped</span>(<span class="ident">p</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::pinuse</span>(<span class="ident">p</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::next</span>(<span class="ident">Chunk::prev</span>(<span class="ident">p</span>)) <span class="op">==</span> <span class="ident">p</span>);
         <span class="kw">if</span> <span class="ident">Chunk::mmapped</span>(<span class="ident">p</span>) {
             <span class="self">self</span>.<span class="ident">check_mmapped_chunk</span>(<span class="ident">p</span>);
         }
@@ -3249,7 +3249,7 @@
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">sz</span> <span class="op">+</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">prev_foot</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">mmap_foot_pad</span>();
         <span class="macro">debug_assert!</span>(<span class="ident">Chunk::mmapped</span>(<span class="ident">p</span>));
         <span class="macro">debug_assert!</span>(
-            <span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Chunk::fencepost_head</span>()
+            <span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">head</span> <span class="op">==</span> <span class="ident">Chunk::fencepost_head</span>()
         );
         <span class="macro">debug_assert!</span>(<span class="ident">p</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">least_addr</span>);
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">is_small</span>(<span class="ident">sz</span>));
@@ -3277,7 +3277,7 @@
                 <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">is_aligned</span>(<span class="ident">Chunk::to_mem</span>(<span class="ident">p</span>) <span class="kw">as</span> <span class="ident">usize</span>));
                 <span class="macro">debug_assert_eq!</span>((<span class="kw-2">*</span><span class="ident">next</span>).<span class="ident">prev_foot</span>, <span class="ident">sz</span>);
                 <span class="macro">debug_assert!</span>(<span class="ident">Chunk::pinuse</span>(<span class="ident">p</span>));
-                <span class="macro">debug_assert!</span>(<span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::inuse</span>(<span class="ident">next</span>));
+                <span class="macro">debug_assert!</span>(<span class="ident">next</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">top</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::inuse</span>(<span class="ident">next</span>));
                 <span class="macro">debug_assert_eq!</span>((<span class="kw-2">*</span>(<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">next</span>).<span class="ident">prev</span>, <span class="ident">p</span>);
                 <span class="macro">debug_assert_eq!</span>((<span class="kw-2">*</span>(<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">prev</span>).<span class="ident">next</span>, <span class="ident">p</span>);
             } <span class="kw">else</span> {
@@ -3320,8 +3320,8 @@
         }
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">smallbin_at</span>(<span class="ident">idx</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">b</span>).<span class="ident">next</span>;
-        <span class="kw">let</span> <span class="ident">empty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">smallmap</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span> {
+        <span class="kw">let</span> <span class="ident">empty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">smallmap</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>) <span class="op">==</span> <span class="number">0</span>;
+        <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="ident">b</span> {
             <span class="macro">debug_assert!</span>(<span class="ident">empty</span>)
         }
         <span class="kw">if</span> <span class="op">!</span><span class="ident">empty</span> {
@@ -3329,7 +3329,7 @@
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Chunk::size</span>(<span class="ident">p</span>);
                 <span class="self">self</span>.<span class="ident">check_free_chunk</span>(<span class="ident">p</span>);
                 <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">small_index</span>(<span class="ident">size</span>), <span class="ident">idx</span>);
-                <span class="macro">debug_assert!</span>((<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::size</span>((<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">next</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">Chunk::size</span>(<span class="ident">p</span>));
+                <span class="macro">debug_assert!</span>((<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">next</span> <span class="op">==</span> <span class="ident">b</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Chunk::size</span>((<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">next</span>) <span class="op">==</span> <span class="ident">Chunk::size</span>(<span class="ident">p</span>));
                 <span class="kw">let</span> <span class="ident">q</span> <span class="op">=</span> <span class="ident">Chunk::next</span>(<span class="ident">p</span>);
                 <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">q</span>).<span class="ident">head</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Chunk::fencepost_head</span>() {
                     <span class="self">self</span>.<span class="ident">check_inuse_chunk</span>(<span class="ident">q</span>);
@@ -3345,7 +3345,7 @@
         }
         <span class="kw">let</span> <span class="ident">tb</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">treebin_at</span>(<span class="ident">idx</span>);
         <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">tb</span>;
-        <span class="kw">let</span> <span class="ident">empty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">treemap</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">empty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">treemap</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">idx</span>) <span class="op">==</span> <span class="number">0</span>;
         <span class="kw">if</span> <span class="ident">t</span>.<span class="ident">is_null</span>() {
             <span class="macro">debug_assert!</span>(<span class="ident">empty</span>);
         }
@@ -3365,7 +3365,7 @@
         <span class="macro">debug_assert_eq!</span>(<span class="ident">tindex</span>, <span class="ident">idx</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">tsize</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">min_large_size</span>());
         <span class="macro">debug_assert!</span>(<span class="ident">tsize</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">min_size_for_tree_index</span>(<span class="ident">idx</span>));
-        <span class="macro">debug_assert!</span>(<span class="ident">idx</span> <span class="op">=</span><span class="op">=</span> <span class="ident">NTREEBINS</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">tsize</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">min_size_for_tree_index</span>(<span class="ident">idx</span> <span class="op">+</span> <span class="number">1</span>));
+        <span class="macro">debug_assert!</span>(<span class="ident">idx</span> <span class="op">==</span> <span class="ident">NTREEBINS</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">tsize</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">min_size_for_tree_index</span>(<span class="ident">idx</span> <span class="op">+</span> <span class="number">1</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">t</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">head</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>::<span class="op">&lt;</span><span class="ident">TreeChunk</span><span class="op">&gt;</span>();
@@ -3388,9 +3388,9 @@
                 <span class="ident">head</span> <span class="op">=</span> <span class="ident">u</span>;
                 <span class="macro">debug_assert!</span>((<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span> <span class="op">!</span><span class="op">=</span> <span class="ident">u</span>);
                 <span class="macro">debug_assert!</span>(
-                    (<span class="kw-2">*</span>(<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span>).<span class="ident">child</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">u</span>
-                        <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span>(<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span>).<span class="ident">child</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">u</span>
-                        <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span>((<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">u</span>
+                    (<span class="kw-2">*</span>(<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span>).<span class="ident">child</span>[<span class="number">0</span>] <span class="op">==</span> <span class="ident">u</span>
+                        <span class="op">|</span><span class="op">|</span> (<span class="kw-2">*</span>(<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span>).<span class="ident">child</span>[<span class="number">1</span>] <span class="op">==</span> <span class="ident">u</span>
+                        <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span>((<span class="kw-2">*</span><span class="ident">u</span>).<span class="ident">parent</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) <span class="op">==</span> <span class="ident">u</span>
                 );
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">left</span>.<span class="ident">is_null</span>() {
                     <span class="macro">debug_assert_eq!</span>((<span class="kw-2">*</span><span class="ident">left</span>).<span class="ident">parent</span>, <span class="ident">u</span>);
@@ -3410,19 +3410,19 @@
             }
 
             <span class="ident">u</span> <span class="op">=</span> <span class="ident">TreeChunk::prev</span>(<span class="ident">u</span>);
-            <span class="kw">if</span> <span class="ident">u</span> <span class="op">=</span><span class="op">=</span> <span class="ident">t</span> {
+            <span class="kw">if</span> <span class="ident">u</span> <span class="op">==</span> <span class="ident">t</span> {
                 <span class="kw">break</span>;
             }
         }
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">head</span>.<span class="ident">is_null</span>());
     }
 
-    <span class="kw">fn</span> <span class="ident">min_size_for_tree_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">min_size_for_tree_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">u32</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="ident">idx</span> <span class="kw">as</span> <span class="ident">usize</span>;
         (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> ((<span class="ident">idx</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="op">+</span> <span class="ident">TREEBIN_SHIFT</span>)) <span class="op">|</span> ((<span class="ident">idx</span> <span class="op">&amp;</span> <span class="number">1</span>) <span class="op">&lt;</span><span class="op">&lt;</span> ((<span class="ident">idx</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>) <span class="op">+</span> <span class="ident">TREEBIN_SHIFT</span> <span class="op">-</span> <span class="number">1</span>))
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">bin_find</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">chunk</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">bin_find</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">chunk</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Chunk::size</span>(<span class="ident">chunk</span>);
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_small</span>(<span class="ident">size</span>) {
             <span class="kw">let</span> <span class="ident">sidx</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">small_index</span>(<span class="ident">size</span>);
@@ -3432,11 +3432,11 @@
             }
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">b</span>;
             <span class="kw">loop</span> {
-                <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="ident">chunk</span> {
+                <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="ident">chunk</span> {
                     <span class="kw">return</span> <span class="bool-val">true</span>;
                 }
                 <span class="ident">p</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">p</span>).<span class="ident">prev</span>;
-                <span class="kw">if</span> <span class="ident">p</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span> {
+                <span class="kw">if</span> <span class="ident">p</span> <span class="op">==</span> <span class="ident">b</span> {
                     <span class="kw">return</span> <span class="bool-val">false</span>;
                 }
             }
@@ -3457,18 +3457,18 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">u</span> <span class="op">=</span> <span class="ident">t</span>;
             <span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="ident">chunk</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>;
             <span class="kw">loop</span> {
-                <span class="kw">if</span> <span class="ident">u</span> <span class="op">=</span><span class="op">=</span> <span class="ident">chunk</span> {
+                <span class="kw">if</span> <span class="ident">u</span> <span class="op">==</span> <span class="ident">chunk</span> {
                     <span class="kw">return</span> <span class="bool-val">true</span>;
                 }
                 <span class="ident">u</span> <span class="op">=</span> <span class="ident">TreeChunk::prev</span>(<span class="ident">u</span>);
-                <span class="kw">if</span> <span class="ident">u</span> <span class="op">=</span><span class="op">=</span> <span class="ident">t</span> {
+                <span class="kw">if</span> <span class="ident">u</span> <span class="op">==</span> <span class="ident">t</span> {
                     <span class="kw">return</span> <span class="bool-val">false</span>;
                 }
             }
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">traverse_and_check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">traverse_and_check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="number">0</span>
     }
 }
@@ -3480,27 +3480,27 @@
 <span class="kw">const</span> <span class="ident">FLAG_BITS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">PINUSE</span> <span class="op">|</span> <span class="ident">CINUSE</span> <span class="op">|</span> <span class="ident">FLAG4</span>;
 
 <span class="kw">impl</span> <span class="ident">Chunk</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">fencepost_head</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">fencepost_head</span>() -&gt; <span class="ident">usize</span> {
         <span class="ident">INUSE</span> <span class="op">|</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>()
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">usize</span> {
         (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="op">!</span><span class="ident">FLAG_BITS</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         (<span class="ident">me</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(((<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="op">!</span><span class="ident">FLAG_BITS</span>) <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prev</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prev</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         (<span class="ident">me</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="op">-</span>((<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">prev_foot</span> <span class="kw">as</span> <span class="ident">isize</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cinuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cinuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">CINUSE</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pinuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pinuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">PINUSE</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -3508,12 +3508,12 @@
         (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;=</span> <span class="op">!</span><span class="ident">PINUSE</span>;
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">inuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">!</span><span class="op">=</span> <span class="ident">PINUSE</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">mmapped</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">mmapped</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="ident">bool</span> {
+        (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">head</span> <span class="op">&amp;</span> <span class="ident">INUSE</span> <span class="op">==</span> <span class="number">0</span>
     }
 
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_inuse</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
@@ -3547,29 +3547,29 @@
         (<span class="kw-2">*</span><span class="ident">next</span>).<span class="ident">prev_foot</span> <span class="op">=</span> <span class="ident">size</span>;
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">plus_offset</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">plus_offset</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">offset</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         (<span class="ident">me</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">minus_offset</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">minus_offset</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>, <span class="ident">offset</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         (<span class="ident">me</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="op">-</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">isize</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">to_mem</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">to_mem</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         (<span class="ident">me</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="ident">Chunk::mem_offset</span>())
     }
 
-    <span class="kw">fn</span> <span class="ident">mem_offset</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">isize</span> {
+    <span class="kw">fn</span> <span class="ident">mem_offset</span>() -&gt; <span class="ident">isize</span> {
         <span class="number">2</span> <span class="op">*</span> (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">isize</span>)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_mem</span>(<span class="ident">mem</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_mem</span>(<span class="ident">mem</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         <span class="ident">mem</span>.<span class="ident">offset</span>(<span class="op">-</span><span class="number">2</span> <span class="op">*</span> (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">isize</span>)) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">TreeChunk</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">leftmost_child</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">leftmost_child</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
         <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">child</span>[<span class="number">0</span>];
         <span class="kw">if</span> <span class="ident">left</span>.<span class="ident">is_null</span>() {
             (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">child</span>[<span class="number">1</span>]
@@ -3578,15 +3578,15 @@
         }
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">chunk</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">chunk</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Chunk</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="kw-2">*</span><span class="ident">me</span>).<span class="ident">chunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
         (<span class="kw-2">*</span><span class="ident">TreeChunk::chunk</span>(<span class="ident">me</span>)).<span class="ident">next</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prev</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">prev</span>(<span class="ident">me</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span> {
         (<span class="kw-2">*</span><span class="ident">TreeChunk::chunk</span>(<span class="ident">me</span>)).<span class="ident">prev</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TreeChunk</span>
     }
 }
@@ -3594,23 +3594,23 @@
 <span class="kw">const</span> <span class="ident">EXTERN</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;
 
 <span class="kw">impl</span> <span class="ident">Segment</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">is_extern</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">is_extern</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) -&gt; <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="ident">seg</span>).<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">EXTERN</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">can_release_part</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span>(<span class="ident">system_allocator</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">can_release_part</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span>(<span class="ident">system_allocator</span>: <span class="kw-2">&amp;</span><span class="ident">A</span>, <span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">system_allocator</span>.<span class="ident">can_release_part</span>((<span class="kw-2">*</span><span class="ident">seg</span>).<span class="ident">flags</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sys_flags</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sys_flags</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw-2">*</span><span class="ident">seg</span>).<span class="ident">flags</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">holds</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>, <span class="ident">addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">holds</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>, <span class="ident">addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) -&gt; <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="ident">seg</span>).<span class="ident">base</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">addr</span> <span class="op">&amp;&amp;</span> <span class="ident">addr</span> <span class="op">&lt;</span> <span class="ident">Segment::top</span>(<span class="ident">seg</span>)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="ident">seg</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Segment</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         (<span class="kw-2">*</span><span class="ident">seg</span>).<span class="ident">base</span>.<span class="ident">offset</span>((<span class="kw-2">*</span><span class="ident">seg</span>).<span class="ident">size</span> <span class="kw">as</span> <span class="ident">isize</span>)
     }
 }

@@ -118,41 +118,41 @@
 <span class="doccomment">/// indexing or transfer.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * `progress` - the progress being made so far.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">IndexerProgress</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">IndexerProgress</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Number of objects in the packfile being downloaded</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">total_objects</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
     <span class="doccomment">/// Received objects that have been hashed</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indexed_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indexed_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">indexed_objects</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
     <span class="doccomment">/// Objects which have been downloaded</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">received_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">received_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">received_objects</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
     <span class="doccomment">/// Locally-available objects that have been injected in order to fix a thin</span>
     <span class="doccomment">/// pack.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_objects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">local_objects</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
     <span class="doccomment">/// Number of deltas in the packfile being downloaded</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_deltas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">total_deltas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">total_deltas</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
     <span class="doccomment">/// Received deltas that have been hashed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indexed_deltas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indexed_deltas</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">indexed_deltas</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
     <span class="doccomment">/// Size of the packfile received up to now</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">received_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">received_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>()).<span class="ident">received_bytes</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
 
     <span class="doccomment">/// Convert this to an owned version of `Progress`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_owned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_owned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
         <span class="ident">Progress</span> {
             <span class="ident">raw</span>: <span class="ident">ProgressState::Owned</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">raw</span>() }),
             <span class="ident">_marker</span>: <span class="ident">marker::PhantomData</span>,
@@ -162,17 +162,17 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Binding</span> <span class="kw">for</span> <span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Raw</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_indexer_progress</span>;
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_indexer_progress</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_indexer_progress</span>) -&gt; <span class="ident">Progress</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Progress</span> {
             <span class="ident">raw</span>: <span class="ident">ProgressState::Borrowed</span>(<span class="ident">raw</span>),
             <span class="ident">_marker</span>: <span class="ident">marker::PhantomData</span>,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_indexer_progress</span> {
+    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">raw::git_indexer_progress</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">raw</span> {
-            <span class="ident">ProgressState::Borrowed</span>(<span class="ident">raw</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw</span>,
-            <span class="ident">ProgressState::Owned</span>(<span class="kw-2">ref</span> <span class="ident">raw</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
+            <span class="ident">ProgressState::Borrowed</span>(<span class="ident">raw</span>) =&gt; <span class="ident">raw</span>,
+            <span class="ident">ProgressState::Owned</span>(<span class="kw-2">ref</span> <span class="ident">raw</span>) =&gt; <span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
         }
     }
 }

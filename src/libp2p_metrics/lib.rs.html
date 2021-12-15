@@ -131,7 +131,7 @@
     <span class="doccomment">/// let mut registry = Registry::default();</span>
     <span class="doccomment">/// let metrics = Metrics::new(&amp;mut registry);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registry</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">registry</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Registry</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">sub_registry</span> <span class="op">=</span> <span class="ident">registry</span>.<span class="ident">sub_registry_with_prefix</span>(<span class="string">&quot;libp2p&quot;</span>);
         <span class="self">Self</span> {
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;identify&quot;</span>)]</span>

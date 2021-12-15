@@ -359,15 +359,15 @@
 		<span class="ident">submitter</span>: <span class="kw-2">&amp;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span>,
 		<span class="ident">fee</span>: <span class="kw-2">&amp;</span><span class="ident">Currency::Balance</span>,
 		<span class="ident">relayer_fund_account</span>: <span class="kw-2">&amp;</span><span class="ident">T::AccountId</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::account_exists</span>(<span class="ident">relayer_fund_account</span>) {
 			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;The relayer fund account must exist for the message lanes pallet to work correctly.&quot;</span>);
 		}
 
 		<span class="kw">let</span> <span class="ident">root_account</span> <span class="op">=</span> <span class="ident">RootAccount::get</span>();
 		<span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">submitter</span> {
-			<span class="ident">Sender::Signed</span>(<span class="ident">submitter</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">submitter</span>,
-			<span class="ident">Sender::Root</span> <span class="op">|</span> <span class="ident">Sender::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">root_account</span>
+			<span class="ident">Sender::Signed</span>(<span class="ident">submitter</span>) =&gt; <span class="ident">submitter</span>,
+			<span class="ident">Sender::Root</span> <span class="op">|</span> <span class="ident">Sender::None</span> =&gt; <span class="ident">root_account</span>
 				.<span class="ident">as_ref</span>()
 				.<span class="ident">ok_or</span>(<span class="string">&quot;Sending messages using Root or None origin is disallowed.&quot;</span>)<span class="question-mark">?</span>,
 		};
@@ -407,7 +407,7 @@
 	<span class="ident">lane_id</span>: <span class="ident">LaneId</span>,
 	<span class="ident">messages_relayers</span>: <span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">UnrewardedRelayer</span><span class="op">&lt;</span><span class="ident">T::AccountId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">received_range</span>: <span class="kw-2">&amp;</span><span class="ident">RangeInclusive</span><span class="op">&lt;</span><span class="ident">MessageNonce</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RelayersRewards</span><span class="op">&lt;</span><span class="ident">T::AccountId</span>, <span class="ident">T::OutboundMessageFee</span><span class="op">&gt;</span>
+) -&gt; <span class="ident">RelayersRewards</span><span class="op">&lt;</span><span class="ident">T::AccountId</span>, <span class="ident">T::OutboundMessageFee</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">T</span>: <span class="ident">frame_system::Config</span> <span class="op">+</span> <span class="ident"><span class="kw">crate</span>::Config</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>,
 	<span class="ident">I</span>: <span class="lifetime">&#39;static</span>,
@@ -501,13 +501,13 @@
 	);
 
 	<span class="kw">match</span> <span class="ident">pay_result</span> {
-		<span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">log::trace!</span>(
+		<span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">log::trace!</span>(
 			<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
 			<span class="string">&quot;Rewarded relayer {:?} with {:?}&quot;</span>,
 			<span class="ident">relayer_account</span>,
 			<span class="ident">reward</span>,
 		),
-		<span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">log::trace!</span>(
+		<span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; <span class="macro">log::trace!</span>(
 			<span class="ident">target</span>: <span class="string">&quot;runtime::bridge-messages&quot;</span>,
 			<span class="string">&quot;Failed to pay relayer {:?} reward {:?}: {:?}&quot;</span>,
 			<span class="ident">relayer_account</span>,
@@ -530,7 +530,7 @@
 	<span class="kw">const</span> <span class="ident">RELAYER_3</span>: <span class="ident">TestAccountId</span> <span class="op">=</span> <span class="number">3</span>;
 	<span class="kw">const</span> <span class="ident">RELAYERS_FUND_ACCOUNT</span>: <span class="ident">TestAccountId</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::mock::ENDOWED_ACCOUNT</span>;
 
-	<span class="kw">fn</span> <span class="ident">relayers_rewards</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RelayersRewards</span><span class="op">&lt;</span><span class="ident">TestAccountId</span>, <span class="ident">TestBalance</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">relayers_rewards</span>() -&gt; <span class="ident">RelayersRewards</span><span class="op">&lt;</span><span class="ident">TestAccountId</span>, <span class="ident">TestBalance</span><span class="op">&gt;</span> {
 		<span class="macro">vec!</span>[
 			(<span class="ident">RELAYER_1</span>, <span class="ident">RelayerRewards</span> { <span class="ident">reward</span>: <span class="number">100</span>, <span class="ident">messages</span>: <span class="number">2</span> }),
 			(<span class="ident">RELAYER_2</span>, <span class="ident">RelayerRewards</span> { <span class="ident">reward</span>: <span class="number">100</span>, <span class="ident">messages</span>: <span class="number">3</span> }),

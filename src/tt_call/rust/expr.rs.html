@@ -45,7 +45,7 @@
     {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">input</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::private_parse_expr!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">input</span>)<span class="op">*</span> }]
@@ -59,7 +59,7 @@
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">tokens</span> <span class="op">=</span> [{ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span> }]
         <span class="ident">_tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::tt_return!</span> {
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>
             <span class="ident">expr</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>)<span class="op">*</span> }]
@@ -72,7 +72,7 @@
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">caller</span>:<span class="ident">tt</span>
         <span class="ident">tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">unexpected</span>:<span class="ident">tt</span>)<span class="op">+</span> }]
         <span class="ident">_tokens</span> <span class="op">=</span> [{ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">dup</span>:<span class="ident">tt</span>)<span class="op">*</span> }]
-    } <span class="op">=</span><span class="op">&gt;</span> {
+    } =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::error_unexpected!</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">unexpected</span>)<span class="op">*</span>
         }

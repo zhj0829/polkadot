@@ -430,7 +430,7 @@
 }
 
 <span class="comment">// Straight from the ELF specification.</span>
-<span class="kw">fn</span> <span class="ident">elf_hash</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">fn</span> <span class="ident">elf_hash</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">h</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="kw">for</span> <span class="ident">b</span> <span class="kw">in</span> <span class="ident">name</span>.<span class="ident">to_bytes</span>() {
         <span class="ident">h</span> <span class="op">=</span> (<span class="ident">h</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>).<span class="ident">wrapping_add</span>(<span class="ident">u32::from</span>(<span class="kw-2">*</span><span class="ident">b</span>));
@@ -444,8 +444,8 @@
 }
 
 <span class="doccomment">/// Cast `value` to a pointer type, doing some checks for validity.</span>
-<span class="kw">fn</span> <span class="ident">make_pointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">value</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">value</span>.<span class="ident">checked_add</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">value</span> <span class="op">%</span> <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+<span class="kw">fn</span> <span class="ident">make_pointer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">if</span> <span class="ident">value</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">value</span>.<span class="ident">checked_add</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()).<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">value</span> <span class="op">%</span> <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
 
@@ -457,7 +457,7 @@
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `base` must be a valid pointer to an ELF image in memory.</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_from_sysinfo_ehdr</span>(<span class="ident">base</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vdso</span><span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_from_sysinfo_ehdr</span>(<span class="ident">base</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vdso</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vdso</span> <span class="op">=</span> <span class="ident">Vdso</span> {
         <span class="ident">load_addr</span>: <span class="ident">base</span>,
         <span class="ident">load_end</span>: <span class="ident">base</span>,
@@ -477,7 +477,7 @@
         <span class="kw">static</span> <span class="ident">__ehdr_start</span>: <span class="ident">c_void</span>;
     }
     <span class="kw">let</span> <span class="ident">ehdr_start</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">__ehdr_start</span>;
-    <span class="kw">if</span> <span class="ident">base</span> <span class="op">=</span><span class="op">=</span> (<span class="ident">ehdr_start</span> <span class="kw">as</span> <span class="ident">usize</span>) {
+    <span class="kw">if</span> <span class="ident">base</span> <span class="op">==</span> (<span class="ident">ehdr_start</span> <span class="kw">as</span> <span class="ident">usize</span>) {
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
 
@@ -520,7 +520,7 @@
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
     <span class="comment">// We don&#39;t currently support extra-large numbers of segments.</span>
-    <span class="kw">if</span> <span class="ident">hdr</span>.<span class="ident">e_phnum</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PN_XNUM</span> {
+    <span class="kw">if</span> <span class="ident">hdr</span>.<span class="ident">e_phnum</span> <span class="op">==</span> <span class="ident">PN_XNUM</span> {
         <span class="kw">return</span> <span class="prelude-val">None</span>;
     }
 
@@ -567,7 +567,7 @@
             <span class="comment">// segments into memory.</span>
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
-        <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PT_LOAD</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">found_vaddr</span> {
+        <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">==</span> <span class="ident">PT_LOAD</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">found_vaddr</span> {
             <span class="comment">// The segment should be readable and executable, because it</span>
             <span class="comment">// contains the symbol table and the function bodies.</span>
             <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_flags</span> <span class="op">&amp;</span> (<span class="ident">PF_R</span> <span class="op">|</span> <span class="ident">PF_X</span>) <span class="op">!</span><span class="op">=</span> (<span class="ident">PF_R</span> <span class="op">|</span> <span class="ident">PF_X</span>) {
@@ -576,7 +576,7 @@
             <span class="ident">found_vaddr</span> <span class="op">=</span> <span class="bool-val">true</span>;
             <span class="ident">vdso</span>.<span class="ident">load_end</span> <span class="op">=</span> <span class="ident">base</span>.<span class="ident">checked_add</span>(<span class="ident">phdr</span>.<span class="ident">p_offset</span>.<span class="ident">checked_add</span>(<span class="ident">phdr</span>.<span class="ident">p_memsz</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             <span class="ident">vdso</span>.<span class="ident">load_offset</span> <span class="op">=</span> <span class="ident">base</span>.<span class="ident">wrapping_add</span>(<span class="ident">phdr</span>.<span class="ident">p_offset</span>.<span class="ident">wrapping_sub</span>(<span class="ident">phdr</span>.<span class="ident">p_vaddr</span>));
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PT_DYNAMIC</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">==</span> <span class="ident">PT_DYNAMIC</span> {
             <span class="comment">// If `p_offset` is zero, it&#39;s more likely that we&#39;re looking at memory</span>
             <span class="comment">// that has been zeroed than that the kernel has somehow aliased the</span>
             <span class="comment">// `Ehdr` and the `Elf_Dyn` array.</span>
@@ -586,7 +586,7 @@
 
             <span class="ident">dyn_</span> <span class="op">=</span> <span class="ident">make_pointer</span>::<span class="op">&lt;</span><span class="ident">Elf_Dyn</span><span class="op">&gt;</span>(<span class="ident">base</span>.<span class="ident">checked_add</span>(<span class="ident">phdr</span>.<span class="ident">p_offset</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             <span class="ident">num_dyn</span> <span class="op">=</span> <span class="ident">phdr</span>.<span class="ident">p_memsz</span> <span class="op">/</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Elf_Dyn</span><span class="op">&gt;</span>();
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PT_INTERP</span> <span class="op">|</span><span class="op">|</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">PT_GNU_RELRO</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">==</span> <span class="ident">PT_INTERP</span> <span class="op">|</span><span class="op">|</span> <span class="ident">phdr</span>.<span class="ident">p_type</span> <span class="op">==</span> <span class="ident">PT_GNU_RELRO</span> {
             <span class="comment">// Don&#39;t trust any ELF image that has an &quot;interpreter&quot; or that uses</span>
             <span class="comment">// RELRO, which is likely to be a user ELF image rather and not the</span>
             <span class="comment">// kernel vDSO.</span>
@@ -606,33 +606,33 @@
     <span class="ident">vdso</span>.<span class="ident">verdef</span> <span class="op">=</span> <span class="ident">null</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="kw">loop</span> {
-        <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="ident">num_dyn</span> {
+        <span class="kw">if</span> <span class="ident">i</span> <span class="op">==</span> <span class="ident">num_dyn</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
         <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">dyn_</span>.<span class="ident">add</span>(<span class="ident">i</span>);
         <span class="kw">match</span> <span class="ident">d</span>.<span class="ident">d_tag</span> {
-            <span class="ident">DT_STRTAB</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DT_STRTAB</span> =&gt; {
                 <span class="ident">vdso</span>.<span class="ident">symstrings</span> <span class="op">=</span> <span class="ident">make_pointer</span>::<span class="op">&lt;</span><span class="ident">c_char</span><span class="op">&gt;</span>(<span class="ident">d</span>.<span class="ident">d_val</span>.<span class="ident">checked_add</span>(<span class="ident">vdso</span>.<span class="ident">load_offset</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             }
-            <span class="ident">DT_SYMTAB</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DT_SYMTAB</span> =&gt; {
                 <span class="ident">vdso</span>.<span class="ident">symtab</span> <span class="op">=</span> <span class="ident">make_pointer</span>::<span class="op">&lt;</span><span class="ident">Elf_Sym</span><span class="op">&gt;</span>(<span class="ident">d</span>.<span class="ident">d_val</span>.<span class="ident">checked_add</span>(<span class="ident">vdso</span>.<span class="ident">load_offset</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             }
-            <span class="ident">DT_HASH</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DT_HASH</span> =&gt; {
                 <span class="ident">hash</span> <span class="op">=</span> <span class="ident">make_pointer</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>(<span class="ident">d</span>.<span class="ident">d_val</span>.<span class="ident">checked_add</span>(<span class="ident">vdso</span>.<span class="ident">load_offset</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             }
-            <span class="ident">DT_VERSYM</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DT_VERSYM</span> =&gt; {
                 <span class="ident">vdso</span>.<span class="ident">versym</span> <span class="op">=</span> <span class="ident">make_pointer</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>(<span class="ident">d</span>.<span class="ident">d_val</span>.<span class="ident">checked_add</span>(<span class="ident">vdso</span>.<span class="ident">load_offset</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             }
-            <span class="ident">DT_VERDEF</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DT_VERDEF</span> =&gt; {
                 <span class="ident">vdso</span>.<span class="ident">verdef</span> <span class="op">=</span> <span class="ident">make_pointer</span>::<span class="op">&lt;</span><span class="ident">Elf_Verdef</span><span class="op">&gt;</span>(<span class="ident">d</span>.<span class="ident">d_val</span>.<span class="ident">checked_add</span>(<span class="ident">vdso</span>.<span class="ident">load_offset</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
             }
-            <span class="ident">DT_SYMENT</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">DT_SYMENT</span> =&gt; {
                 <span class="kw">if</span> <span class="ident">d</span>.<span class="ident">d_val</span> <span class="op">!</span><span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Elf_Sym</span><span class="op">&gt;</span>() {
                     <span class="kw">return</span> <span class="prelude-val">None</span>; <span class="comment">// Failed</span>
                 }
             }
-            <span class="ident">DT_NULL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">DT_NULL</span> =&gt; <span class="kw">break</span>,
+            <span class="kw">_</span> =&gt; {}
         }
         <span class="ident">i</span> <span class="op">=</span> <span class="ident">i</span>.<span class="ident">checked_add</span>(<span class="number">1</span>)<span class="question-mark">?</span>;
     }
@@ -660,7 +660,7 @@
     <span class="doccomment">/// Returns None if the vDSO can&#39;t be located or if it doesn&#39;t conform</span>
     <span class="doccomment">/// to our expectations.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">init_from_proc_self_auxv</span>()
     }
 
@@ -669,7 +669,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The raw pointers inside `self` must be valid.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">match_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">ver</span>: <span class="ident">u16</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>, <span class="ident">hash</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">match_version</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">ver</span>: <span class="ident">u16</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>, <span class="ident">hash</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// This is a helper function to check if the version indexed by</span>
         <span class="comment">// ver matches name (which hashes to hash).</span>
         <span class="comment">//</span>
@@ -691,11 +691,11 @@
                 <span class="kw">return</span> <span class="bool-val">false</span>; <span class="comment">// Failed</span>
             }
 
-            <span class="kw">if</span> ((<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_flags</span> <span class="op">&amp;</span> <span class="ident">VER_FLG_BASE</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> ((<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_ndx</span> <span class="op">&amp;</span> <span class="number">0x7fff</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">ver</span> {
+            <span class="kw">if</span> ((<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_flags</span> <span class="op">&amp;</span> <span class="ident">VER_FLG_BASE</span>) <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> ((<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_ndx</span> <span class="op">&amp;</span> <span class="number">0x7fff</span>) <span class="op">==</span> <span class="ident">ver</span> {
                 <span class="kw">break</span>;
             }
 
-            <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_next</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> (<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_next</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="kw">return</span> <span class="bool-val">false</span>; <span class="comment">// No definition.</span>
             }
 
@@ -709,12 +709,12 @@
         <span class="kw">let</span> <span class="ident">aux</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">def</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">c_char</span><span class="op">&gt;</span>())
             .<span class="ident">add</span>((<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_aux</span> <span class="kw">as</span> <span class="ident">usize</span>)
             .<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">Elf_Verdaux</span><span class="op">&gt;</span>();
-        (<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_hash</span> <span class="op">=</span><span class="op">=</span> <span class="ident">hash</span>
-            <span class="op">&amp;&amp;</span> (<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">CStr::from_ptr</span>(<span class="self">self</span>.<span class="ident">symstrings</span>.<span class="ident">add</span>(<span class="ident">aux</span>.<span class="ident">vda_name</span> <span class="kw">as</span> <span class="ident">usize</span>)))
+        (<span class="kw-2">*</span><span class="ident">def</span>).<span class="ident">vd_hash</span> <span class="op">==</span> <span class="ident">hash</span>
+            <span class="op">&amp;&amp;</span> (<span class="ident">name</span> <span class="op">==</span> <span class="ident">CStr::from_ptr</span>(<span class="self">self</span>.<span class="ident">symstrings</span>.<span class="ident">add</span>(<span class="ident">aux</span>.<span class="ident">vda_name</span> <span class="kw">as</span> <span class="ident">usize</span>)))
     }
 
     <span class="doccomment">/// Look up a symbol in the vDSO.</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">sym</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">version</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">sym</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">version</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_void</span> {
         <span class="kw">let</span> <span class="ident">ver_hash</span> <span class="op">=</span> <span class="ident">elf_hash</span>(<span class="ident">version</span>);
         <span class="kw">let</span> <span class="ident">name_hash</span> <span class="op">=</span> <span class="ident">elf_hash</span>(<span class="ident">name</span>);
 
@@ -729,8 +729,8 @@
                 <span class="kw">if</span> <span class="ident">ELF_ST_TYPE</span>(<span class="ident">sym</span>.<span class="ident">st_info</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">STT_FUNC</span> <span class="op">|</span><span class="op">|</span>
 		       (<span class="ident">ELF_ST_BIND</span>(<span class="ident">sym</span>.<span class="ident">st_info</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">STB_GLOBAL</span> <span class="op">&amp;&amp;</span>
 		        <span class="ident">ELF_ST_BIND</span>(<span class="ident">sym</span>.<span class="ident">st_info</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">STB_WEAK</span>) <span class="op">|</span><span class="op">|</span>
-		       <span class="ident">sym</span>.<span class="ident">st_shndx</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SHN_UNDEF</span> <span class="op">|</span><span class="op">|</span>
-		       <span class="ident">sym</span>.<span class="ident">st_shndx</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SHN_ABS</span> <span class="op">|</span><span class="op">|</span>
+		       <span class="ident">sym</span>.<span class="ident">st_shndx</span> <span class="op">==</span> <span class="ident">SHN_UNDEF</span> <span class="op">|</span><span class="op">|</span>
+		       <span class="ident">sym</span>.<span class="ident">st_shndx</span> <span class="op">==</span> <span class="ident">SHN_ABS</span> <span class="op">|</span><span class="op">|</span>
                <span class="ident">ELF_ST_VISIBILITY</span>(<span class="ident">sym</span>.<span class="ident">st_other</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">STV_DEFAULT</span> <span class="op">|</span><span class="op">|</span>
 		       (<span class="ident">name</span> <span class="op">!</span><span class="op">=</span> <span class="ident">CStr::from_ptr</span>(<span class="self">self</span>.<span class="ident">symstrings</span>.<span class="ident">add</span>(<span class="ident">sym</span>.<span class="ident">st_name</span> <span class="kw">as</span> <span class="ident">usize</span>))) <span class="op">|</span><span class="op">|</span>
 		       <span class="comment">// Check symbol version.</span>
@@ -775,7 +775,7 @@ unsafe fn init_from_auxv(elf_auxv: *const Elf_auxv_t) -&gt; Option&lt;Vdso&gt; {
 */</span>
 
 <span class="comment">// Find the `AT_SYSINFO_EHDR` in auxv records in /proc/self/auxv.</span>
-<span class="kw">fn</span> <span class="ident">init_from_proc_self_auxv</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vdso</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">init_from_proc_self_auxv</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vdso</span><span class="op">&gt;</span> {
     <span class="comment">// Safety: `sysinfo_ehdr` does extensive checks to ensure that the value</span>
     <span class="comment">// we get really is an `AT_SYSINFO_EHDR` value from the kernel.</span>
     <span class="kw">unsafe</span> { <span class="ident">init_from_sysinfo_ehdr</span>(<span class="ident"><span class="kw">super</span>::process::sysinfo_ehdr</span>()) }

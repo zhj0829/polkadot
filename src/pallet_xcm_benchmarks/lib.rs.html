@@ -153,10 +153,10 @@
 
 	<span class="doccomment">/// Does any necessary setup to create a valid destination for XCM messages.</span>
 	<span class="doccomment">/// Returns that destination&#39;s multi-location to be used in benchmarks.</span>
-	<span class="kw">fn</span> <span class="ident">valid_destination</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
+	<span class="kw">fn</span> <span class="ident">valid_destination</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiLocation</span>, <span class="ident">BenchmarkError</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Worst case scenario for a holding account in this runtime.</span>
-	<span class="kw">fn</span> <span class="ident">worst_case_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiAssets</span>;
+	<span class="kw">fn</span> <span class="ident">worst_case_holding</span>() -&gt; <span class="ident">MultiAssets</span>;
 }
 
 <span class="kw">const</span> <span class="ident">SEED</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
@@ -170,7 +170,7 @@
 <span class="doccomment">/// The call type of executor&#39;s config. Should eventually resolve to the same overarching call type.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">XcmCallOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::XcmConfig</span> <span class="kw">as</span> <span class="ident">xcm_executor::Config</span><span class="op">&gt;</span><span class="ident">::Call</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mock_worst_case_holding</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MultiAssets</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mock_worst_case_holding</span>() -&gt; <span class="ident">MultiAssets</span> {
 	<span class="kw">const</span> <span class="ident">HOLDING_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">99</span>;
 	<span class="kw">const</span> <span class="ident">HOLDING_NON_FUNGIBLES</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">99</span>;
 	<span class="kw">let</span> <span class="ident">fungibles_amount</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span>;
@@ -191,19 +191,19 @@
 		.<span class="ident">into</span>()
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">asset_instance_from</span>(<span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AssetInstance</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">asset_instance_from</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">AssetInstance</span> {
 	<span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">encode</span>();
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">instance</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">4</span>];
 	<span class="ident">instance</span>.<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>);
 	<span class="ident">AssetInstance::Array4</span>(<span class="ident">instance</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_executor</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>(<span class="ident">origin</span>: <span class="ident">MultiLocation</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutorOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_executor</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>(<span class="ident">origin</span>: <span class="ident">MultiLocation</span>) -&gt; <span class="ident">ExecutorOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="ident">ExecutorOf</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="ident">origin</span>)
 }
 
 <span class="doccomment">/// Build a multi-location from an account id.</span>
-<span class="kw">fn</span> <span class="ident">account_id_junction</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span><span class="op">&gt;</span>(<span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Junction</span> {
+<span class="kw">fn</span> <span class="ident">account_id_junction</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span><span class="op">&gt;</span>(<span class="ident">index</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Junction</span> {
 	<span class="kw">let</span> <span class="ident">account</span>: <span class="ident">T::AccountId</span> <span class="op">=</span> <span class="ident">account</span>(<span class="string">&quot;account&quot;</span>, <span class="ident">index</span>, <span class="ident">SEED</span>);
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">encoded</span> <span class="op">=</span> <span class="ident">account</span>.<span class="ident">encode</span>();
 	<span class="ident">encoded</span>.<span class="ident">resize</span>(<span class="number">32</span>, <span class="number">0u8</span>);
@@ -212,7 +212,7 @@
 	<span class="ident">Junction::AccountId32</span> { <span class="ident">network</span>: <span class="ident">NetworkId::Any</span>, <span class="ident">id</span> }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">account_and_location</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>(<span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">T::AccountId</span>, <span class="ident">MultiLocation</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">account_and_location</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span>(<span class="ident">index</span>: <span class="ident">u32</span>) -&gt; (<span class="ident">T::AccountId</span>, <span class="ident">MultiLocation</span>) {
 	<span class="kw">let</span> <span class="ident">location</span>: <span class="ident">MultiLocation</span> <span class="op">=</span> <span class="ident">account_id_junction</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">index</span>).<span class="ident">into</span>();
 	<span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">T::AccountIdConverter::convert</span>(<span class="ident">location</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>();
 

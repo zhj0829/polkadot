@@ -2055,7 +2055,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Writer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create a new `Writer` for the given endianness and ELF class.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">endian</span>: <span class="ident">Endianness</span>, <span class="ident">is_64</span>: <span class="ident">bool</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">WritableBuffer</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">endian</span>: <span class="ident">Endianness</span>, <span class="ident">is_64</span>: <span class="ident">bool</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">WritableBuffer</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">elf_align</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_64</span> { <span class="number">8</span> } <span class="kw">else</span> { <span class="number">4</span> };
         <span class="ident">Writer</span> {
             <span class="ident">endian</span>,
@@ -2140,21 +2140,21 @@
     }
 
     <span class="doccomment">/// Return the current file length that has been reserved.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserved_len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserved_len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">len</span>
     }
 
     <span class="doccomment">/// Return the current file length that has been written.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::len_without_is_empty</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>()
     }
 
     <span class="doccomment">/// Reserve a file range with the given size and starting alignment.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns the aligned offset of the start of the range.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>, <span class="ident">align_start</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>, <span class="ident">align_start</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
+        <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="self">self</span>.<span class="ident">len</span>;
         }
         <span class="self">self</span>.<span class="ident">len</span> <span class="op">=</span> <span class="ident">util::align</span>(<span class="self">self</span>.<span class="ident">len</span>, <span class="ident">align_start</span>);
@@ -2187,7 +2187,7 @@
         <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">resize</span>(<span class="ident">offset</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">file_header_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">file_header_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_64</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::FileHeader64</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
         } <span class="kw">else</span> {
@@ -2208,11 +2208,11 @@
     <span class="doccomment">/// This must be at the start of the file.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Fields that can be derived from known information are automatically set by this function.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_file_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">FileHeader</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_file_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="kw-2">&amp;</span><span class="ident">FileHeader</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>(), <span class="number">0</span>);
 
         <span class="self">self</span>.<span class="ident">is_mips64el</span> <span class="op">=</span>
-            <span class="self">self</span>.<span class="ident">is_64</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">endian</span>.<span class="ident">is_little_endian</span>() <span class="op">&amp;&amp;</span> <span class="ident">header</span>.<span class="ident">e_machine</span> <span class="op">=</span><span class="op">=</span> <span class="ident">elf::EM_MIPS</span>;
+            <span class="self">self</span>.<span class="ident">is_64</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">endian</span>.<span class="ident">is_little_endian</span>() <span class="op">&amp;&amp;</span> <span class="ident">header</span>.<span class="ident">e_machine</span> <span class="op">==</span> <span class="ident">elf::EM_MIPS</span>;
 
         <span class="comment">// Start writing.</span>
         <span class="self">self</span>.<span class="ident">buffer</span>
@@ -2241,7 +2241,7 @@
         <span class="kw">let</span> <span class="ident">e_ehsize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_header_size</span>() <span class="kw">as</span> <span class="ident">u16</span>;
 
         <span class="kw">let</span> <span class="ident">e_phoff</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">segment_offset</span> <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="kw">let</span> <span class="ident">e_phentsize</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">segment_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">e_phentsize</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">segment_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">program_header_size</span>() <span class="kw">as</span> <span class="ident">u16</span>
@@ -2250,7 +2250,7 @@
         <span class="kw">let</span> <span class="ident">e_phnum</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">segment_num</span> <span class="kw">as</span> <span class="ident">u16</span>;
 
         <span class="kw">let</span> <span class="ident">e_shoff</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">section_offset</span> <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="kw">let</span> <span class="ident">e_shentsize</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">e_shentsize</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">section_header_size</span>() <span class="kw">as</span> <span class="ident">u16</span>
@@ -2308,7 +2308,7 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">program_header_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">program_header_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_64</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::ProgramHeader64</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
         } <span class="kw">else</span> {
@@ -2319,7 +2319,7 @@
     <span class="doccomment">/// Reserve the range for the program headers.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_program_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">num</span>: <span class="ident">u32</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">segment_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">segment_num</span> <span class="op">=</span> <span class="ident">num</span>;
@@ -2329,7 +2329,7 @@
 
     <span class="doccomment">/// Write alignment padding bytes prior to the program headers.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_align_program_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">segment_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">segment_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -2372,9 +2372,9 @@
     <span class="doccomment">/// but this can be used to force an empty section table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_null_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_null_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">section_num</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span> <span class="number">1</span>;
         }
         <span class="ident">SectionIndex</span>(<span class="number">0</span>)
@@ -2385,9 +2385,9 @@
     <span class="doccomment">/// Automatically also reserves the null section header if required.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">section_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span> <span class="number">1</span>;
         }
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">section_num</span>;
@@ -2395,7 +2395,7 @@
         <span class="ident">SectionIndex</span>(<span class="ident">index</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">section_header_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">section_header_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_64</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::SectionHeader64</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
         } <span class="kw">else</span> {
@@ -2410,7 +2410,7 @@
     <span class="doccomment">/// and other functions that reserve section indices.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_section_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">section_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">section_offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve</span>(
@@ -2424,7 +2424,7 @@
     <span class="doccomment">/// This must be the first section header that is written.</span>
     <span class="doccomment">/// This function does nothing if no sections were reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_null_section_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -2496,7 +2496,7 @@
     <span class="doccomment">/// This will be stored in the `.shstrtab` section.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_shstrtab`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StringId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">StringId</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">shstrtab_offset</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">shstrtab</span>.<span class="ident">add</span>(<span class="ident">name</span>)
     }
@@ -2510,7 +2510,7 @@
     <span class="doccomment">/// and other functions that reserve section names and indices.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_shstrtab</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">shstrtab_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">section_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="comment">// Start with null section name.</span>
@@ -2523,7 +2523,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_shstrtab</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">shstrtab_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">shstrtab_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">shstrtab_offset</span>, <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>());
@@ -2534,7 +2534,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_shstrtab`]</span>
     <span class="doccomment">/// and [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_shstrtab_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_shstrtab_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">shstrtab_index</span>, <span class="ident">SectionIndex</span>(<span class="number">0</span>));
         <span class="self">self</span>.<span class="ident">shstrtab_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.shstrtab&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">shstrtab_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve_section_index</span>();
@@ -2545,7 +2545,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section index was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_shstrtab_section_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">shstrtab_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">shstrtab_index</span> <span class="op">==</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">write_section_header</span>(<span class="kw-2">&amp;</span><span class="ident">SectionHeader</span> {
@@ -2567,14 +2567,14 @@
     <span class="doccomment">/// This will be stored in the `.strtab` section.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_strtab`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StringId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">StringId</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">strtab_offset</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">need_strtab</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>.<span class="ident">strtab</span>.<span class="ident">add</span>(<span class="ident">name</span>)
     }
 
     <span class="doccomment">/// Return true if `.strtab` is needed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">strtab_needed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">strtab_needed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">need_strtab</span>
     }
 
@@ -2599,7 +2599,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_strtab</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strtab_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strtab_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">strtab_offset</span>, <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>());
@@ -2609,7 +2609,7 @@
     <span class="doccomment">/// Reserve the section index for the string table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_strtab_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_strtab_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">strtab_index</span>, <span class="ident">SectionIndex</span>(<span class="number">0</span>));
         <span class="self">self</span>.<span class="ident">strtab_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.strtab&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">strtab_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve_section_index</span>();
@@ -2620,7 +2620,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section index was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_strtab_section_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strtab_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strtab_index</span> <span class="op">==</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">write_section_header</span>(<span class="kw-2">&amp;</span><span class="ident">SectionHeader</span> {
@@ -2649,10 +2649,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_symtab`] and</span>
     <span class="doccomment">/// [`Self::reserve_symtab_shndx`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symbol_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">section_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SectionIndex</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SymbolIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symbol_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">section_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SectionIndex</span><span class="op">&gt;</span>) -&gt; <span class="ident">SymbolIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">symtab_offset</span>, <span class="number">0</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">symtab_shndx_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">=</span> <span class="number">1</span>;
             <span class="comment">// The symtab must link to a strtab.</span>
             <span class="self">self</span>.<span class="ident">need_strtab</span> <span class="op">=</span> <span class="bool-val">true</span>;
@@ -2670,11 +2670,11 @@
     <span class="doccomment">/// Return the number of reserved symbol table entries.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Includes the null symbol.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symbol_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symbol_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">symtab_num</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">symbol_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">symbol_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_64</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Sym64</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
         } <span class="kw">else</span> {
@@ -2689,7 +2689,7 @@
     <span class="doccomment">/// This must be called after [`Self::reserve_symbol_index`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symtab</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">symtab_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">symtab_offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve</span>(
@@ -2703,7 +2703,7 @@
     <span class="doccomment">/// This must be the first symbol that is written.</span>
     <span class="doccomment">/// This function does nothing if no symbols were reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_null_symbol</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -2769,7 +2769,7 @@
     <span class="doccomment">/// Reserve the section index for the symbol table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symtab_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symtab_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">symtab_index</span>, <span class="ident">SectionIndex</span>(<span class="number">0</span>));
         <span class="self">self</span>.<span class="ident">symtab_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.symtab&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">symtab_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve_section_index</span>();
@@ -2777,7 +2777,7 @@
     }
 
     <span class="doccomment">/// Return the section index of the symbol table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symtab_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symtab_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="self">self</span>.<span class="ident">symtab_index</span>
     }
 
@@ -2785,7 +2785,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section index was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_symtab_section_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">num_local</span>: <span class="ident">u32</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_index</span> <span class="op">==</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">write_section_header</span>(<span class="kw-2">&amp;</span><span class="ident">SectionHeader</span> {
@@ -2803,7 +2803,7 @@
     }
 
     <span class="doccomment">/// Return true if `.symtab_shndx` is needed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symtab_shndx_needed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symtab_shndx_needed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">need_symtab_shndx</span>
     }
 
@@ -2827,7 +2827,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_symtab_shndx</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_shndx_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_shndx_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">symtab_shndx_offset</span>, <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>());
@@ -2841,7 +2841,7 @@
     <span class="doccomment">/// unless you have other means of knowing if this section is needed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symtab_shndx_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_symtab_shndx_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">symtab_shndx_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">symtab_shndx_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.symtab_shndx&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -2854,7 +2854,7 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_shndx_str_id</span>.<span class="ident">is_none</span>() {
             <span class="kw">return</span>;
         }
-        <span class="kw">let</span> <span class="ident">sh_size</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_shndx_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">sh_size</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">symtab_shndx_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             (<span class="self">self</span>.<span class="ident">symtab_num</span> <span class="op">*</span> <span class="number">4</span>) <span class="kw">as</span> <span class="ident">u64</span>
@@ -2878,7 +2878,7 @@
     <span class="doccomment">/// This will be stored in the `.dynstr` section.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_dynstr`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_dynamic_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StringId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_dynamic_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">StringId</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynstr_offset</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">need_dynstr</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>.<span class="ident">dynstr</span>.<span class="ident">add</span>(<span class="ident">name</span>)
@@ -2887,12 +2887,12 @@
     <span class="doccomment">/// Get a string that was previously added to the dynamic string table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if the string was not added.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_dynamic_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StringId</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_dynamic_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">StringId</span> {
         <span class="self">self</span>.<span class="ident">dynstr</span>.<span class="ident">get_id</span>(<span class="ident">name</span>)
     }
 
     <span class="doccomment">/// Return true if `.dynstr` is needed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynstr_needed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynstr_needed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">need_dynstr</span>
     }
 
@@ -2917,7 +2917,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_dynstr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynstr_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynstr_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynstr_offset</span>, <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>());
@@ -2927,7 +2927,7 @@
     <span class="doccomment">/// Reserve the section index for the dynamic string table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynstr_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynstr_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynstr_index</span>, <span class="ident">SectionIndex</span>(<span class="number">0</span>));
         <span class="self">self</span>.<span class="ident">dynstr_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.dynstr&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">dynstr_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve_section_index</span>();
@@ -2935,7 +2935,7 @@
     }
 
     <span class="doccomment">/// Return the section index of the dynamic string table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynstr_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynstr_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="self">self</span>.<span class="ident">dynstr_index</span>
     }
 
@@ -2943,7 +2943,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section index was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_dynstr_section_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sh_addr</span>: <span class="ident">u64</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynstr_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynstr_index</span> <span class="op">==</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">write_section_header</span>(<span class="kw-2">&amp;</span><span class="ident">SectionHeader</span> {
@@ -2968,7 +2968,7 @@
     <span class="doccomment">/// but this can be used to force an empty dynamic symbol table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_dynsym`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_null_dynamic_symbol_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SymbolIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_null_dynamic_symbol_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SymbolIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynsym_offset</span>, <span class="number">0</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynsym_num</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span> <span class="number">1</span>;
@@ -2986,9 +2986,9 @@
     <span class="doccomment">/// starting at 1.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_dynsym`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynamic_symbol_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SymbolIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynamic_symbol_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SymbolIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynsym_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span> <span class="number">1</span>;
             <span class="comment">// The symtab must link to a strtab.</span>
             <span class="self">self</span>.<span class="ident">need_dynstr</span> <span class="op">=</span> <span class="bool-val">true</span>;
@@ -3001,7 +3001,7 @@
     <span class="doccomment">/// Return the number of reserved dynamic symbols.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Includes the null symbol.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynamic_symbol_count</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynamic_symbol_count</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">dynsym_num</span>
     }
 
@@ -3013,7 +3013,7 @@
     <span class="doccomment">/// This must be called after [`Self::reserve_dynamic_symbol_index`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynsym</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynsym_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">dynsym_offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve</span>(
@@ -3027,7 +3027,7 @@
     <span class="doccomment">/// This must be the first dynamic symbol that is written.</span>
     <span class="doccomment">/// This function does nothing if no dynamic symbols were reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_null_dynamic_symbol</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -3086,7 +3086,7 @@
     <span class="doccomment">/// Reserve the section index for the dynamic symbol table.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must be called before [`Self::reserve_section_headers`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynsym_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynsym_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynsym_index</span>, <span class="ident">SectionIndex</span>(<span class="number">0</span>));
         <span class="self">self</span>.<span class="ident">dynsym_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.dynsym&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">dynsym_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve_section_index</span>();
@@ -3094,7 +3094,7 @@
     }
 
     <span class="doccomment">/// Return the section index of the dynamic symbol table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynsym_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dynsym_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="self">self</span>.<span class="ident">dynsym_index</span>
     }
 
@@ -3102,7 +3102,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section index was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_dynsym_section_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sh_addr</span>: <span class="ident">u64</span>, <span class="ident">num_local</span>: <span class="ident">u32</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_index</span> <span class="op">==</span> <span class="ident">SectionIndex</span>(<span class="number">0</span>) {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">write_section_header</span>(<span class="kw-2">&amp;</span><span class="ident">SectionHeader</span> {
@@ -3119,7 +3119,7 @@
         });
     }
 
-    <span class="kw">fn</span> <span class="ident">dyn_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">dyn_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_64</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Dyn64</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
         } <span class="kw">else</span> {
@@ -3132,7 +3132,7 @@
     <span class="doccomment">/// This function does nothing if `dynamic_num` is zero.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynamic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dynamic_num</span>: <span class="ident">usize</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">dynamic_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">dynamic_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">dynamic_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">dynamic_num</span> <span class="op">=</span> <span class="ident">dynamic_num</span>;
@@ -3143,7 +3143,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function does nothing if the section was not reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_align_dynamic</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynamic_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynamic_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -3178,7 +3178,7 @@
     }
 
     <span class="doccomment">/// Reserve the section index for the dynamic table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynamic_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_dynamic_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">dynamic_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">dynamic_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.dynamic&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -3205,7 +3205,7 @@
         });
     }
 
-    <span class="kw">fn</span> <span class="ident">rel_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">is_rela</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">rel_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">is_rela</span>: <span class="ident">bool</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_64</span> {
             <span class="kw">if</span> <span class="ident">is_rela</span> {
                 <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Rela64</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
@@ -3238,7 +3238,7 @@
     <span class="doccomment">/// The argument to `hash` will be in the range `0..chain_count`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_hash</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bucket_count</span>: <span class="ident">u32</span>, <span class="ident">chain_count</span>: <span class="ident">u32</span>, <span class="ident">hash</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buckets</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">U32::new</span>(<span class="self">self</span>.<span class="ident">endian</span>, <span class="number">0</span>); <span class="ident">bucket_count</span> <span class="kw">as</span> <span class="ident">usize</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">chains</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">U32::new</span>(<span class="self">self</span>.<span class="ident">endian</span>, <span class="number">0</span>); <span class="ident">chain_count</span> <span class="kw">as</span> <span class="ident">usize</span>];
@@ -3261,7 +3261,7 @@
     }
 
     <span class="doccomment">/// Reserve the section index for the SysV hash table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_hash_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_hash_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">hash_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">hash_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.hash&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -3315,7 +3315,7 @@
         <span class="ident">symbol_count</span>: <span class="ident">u32</span>,
         <span class="ident">hash</span>: <span class="ident">F</span>,
     ) <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">u32</span>) -&gt; <span class="ident">u32</span>,
     {
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">gnu_hash_offset</span>, <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>());
@@ -3359,7 +3359,7 @@
                 <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">U32::new</span>(<span class="self">self</span>.<span class="ident">endian</span>, <span class="number">0</span>));
                 <span class="ident">bucket</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
-            <span class="kw">if</span> <span class="ident">bucket</span> <span class="op">=</span><span class="op">=</span> <span class="ident">symbol_bucket</span> {
+            <span class="kw">if</span> <span class="ident">bucket</span> <span class="op">==</span> <span class="ident">symbol_bucket</span> {
                 <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">U32::new</span>(<span class="self">self</span>.<span class="ident">endian</span>, <span class="ident">symbol_base</span> <span class="op">+</span> <span class="ident">i</span>));
                 <span class="ident">bucket</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
@@ -3372,7 +3372,7 @@
         <span class="comment">// Write hash values.</span>
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">symbol_count</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">h</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="ident">i</span>);
-            <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="ident">symbol_count</span> <span class="op">-</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">h</span> <span class="op">%</span> <span class="ident">bucket_count</span> <span class="op">!</span><span class="op">=</span> <span class="ident">hash</span>(<span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">%</span> <span class="ident">bucket_count</span> {
+            <span class="kw">if</span> <span class="ident">i</span> <span class="op">==</span> <span class="ident">symbol_count</span> <span class="op">-</span> <span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">h</span> <span class="op">%</span> <span class="ident">bucket_count</span> <span class="op">!</span><span class="op">=</span> <span class="ident">hash</span>(<span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">%</span> <span class="ident">bucket_count</span> {
                 <span class="ident">h</span> <span class="op">|</span><span class="op">=</span> <span class="number">1</span>;
             } <span class="kw">else</span> {
                 <span class="ident">h</span> <span class="op">&amp;=</span> <span class="op">!</span><span class="number">1</span>;
@@ -3382,7 +3382,7 @@
     }
 
     <span class="doccomment">/// Reserve the section index for the GNU hash table.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_hash_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_hash_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">gnu_hash_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">gnu_hash_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.gnu.hash&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -3414,7 +3414,7 @@
     <span class="doccomment">/// This function does nothing if no dynamic symbols were reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_versym</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">gnu_versym_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">gnu_versym_offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reserve</span>(<span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">*</span> <span class="number">2</span>, <span class="number">2</span>);
@@ -3425,7 +3425,7 @@
     <span class="doccomment">/// This must be the first symbol version that is written.</span>
     <span class="doccomment">/// This function does nothing if no dynamic symbols were reserved.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_null_gnu_versym</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">dynsym_num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="number">2</span>);
@@ -3439,7 +3439,7 @@
     }
 
     <span class="doccomment">/// Reserve the section index for the `.gnu.version` section.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_versym_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_versym_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">gnu_versym_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">gnu_versym_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.gnu.version&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -3469,7 +3469,7 @@
     <span class="doccomment">/// Reserve the range for the `.gnu.version_d` section.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_verdef</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">verdef_count</span>: <span class="ident">usize</span>, <span class="ident">verdaux_count</span>: <span class="ident">usize</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">gnu_verdef_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">verdef_count</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">verdef_count</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">gnu_verdef_size</span> <span class="op">=</span> <span class="ident">verdef_count</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verdef</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
@@ -3481,7 +3481,7 @@
 
     <span class="doccomment">/// Write alignment padding bytes prior to a `.gnu.version_d` section.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_align_gnu_verdef</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verdef_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verdef_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -3492,7 +3492,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_gnu_verdef</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">verdef</span>: <span class="kw-2">&amp;</span><span class="ident">Verdef</span>) {
         <span class="macro">debug_assert_ne!</span>(<span class="self">self</span>.<span class="ident">gnu_verdef_remaining</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">gnu_verdef_remaining</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-        <span class="kw">let</span> <span class="ident">vd_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verdef_remaining</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">vd_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verdef_remaining</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verdef</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
@@ -3500,7 +3500,7 @@
         };
 
         <span class="self">self</span>.<span class="ident">gnu_verdaux_remaining</span> <span class="op">=</span> <span class="ident">verdef</span>.<span class="ident">aux_count</span>;
-        <span class="kw">let</span> <span class="ident">vd_aux</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">verdef</span>.<span class="ident">aux_count</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">vd_aux</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">verdef</span>.<span class="ident">aux_count</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verdef</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
@@ -3522,7 +3522,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_gnu_verdaux</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">StringId</span>) {
         <span class="macro">debug_assert_ne!</span>(<span class="self">self</span>.<span class="ident">gnu_verdaux_remaining</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">gnu_verdaux_remaining</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-        <span class="kw">let</span> <span class="ident">vda_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verdaux_remaining</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">vda_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verdaux_remaining</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verdaux</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
@@ -3534,7 +3534,7 @@
     }
 
     <span class="doccomment">/// Reserve the section index for the `.gnu.version_d` section.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_verdef_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_verdef_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">gnu_verdef_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">gnu_verdef_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.gnu.version_d&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -3564,7 +3564,7 @@
     <span class="doccomment">/// Reserve the range for the `.gnu.version_r` section.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_verneed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">verneed_count</span>: <span class="ident">usize</span>, <span class="ident">vernaux_count</span>: <span class="ident">usize</span>) {
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">gnu_verneed_offset</span>, <span class="number">0</span>);
-        <span class="kw">if</span> <span class="ident">verneed_count</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">verneed_count</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="self">self</span>.<span class="ident">gnu_verneed_size</span> <span class="op">=</span> <span class="ident">verneed_count</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verneed</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>()
@@ -3576,7 +3576,7 @@
 
     <span class="doccomment">/// Write alignment padding bytes prior to a `.gnu.version_r` section.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_align_gnu_verneed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verneed_offset</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verneed_offset</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span>;
         }
         <span class="ident">util::write_align</span>(<span class="self">self</span>.<span class="ident">buffer</span>, <span class="self">self</span>.<span class="ident">elf_align</span>);
@@ -3587,7 +3587,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_gnu_verneed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">verneed</span>: <span class="kw-2">&amp;</span><span class="ident">Verneed</span>) {
         <span class="macro">debug_assert_ne!</span>(<span class="self">self</span>.<span class="ident">gnu_verneed_remaining</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">gnu_verneed_remaining</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-        <span class="kw">let</span> <span class="ident">vn_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verneed_remaining</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">vn_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_verneed_remaining</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verneed</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
@@ -3595,7 +3595,7 @@
         };
 
         <span class="self">self</span>.<span class="ident">gnu_vernaux_remaining</span> <span class="op">=</span> <span class="ident">verneed</span>.<span class="ident">aux_count</span>;
-        <span class="kw">let</span> <span class="ident">vn_aux</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">verneed</span>.<span class="ident">aux_count</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">vn_aux</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">verneed</span>.<span class="ident">aux_count</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Verneed</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
@@ -3614,7 +3614,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_gnu_vernaux</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">vernaux</span>: <span class="kw-2">&amp;</span><span class="ident">Vernaux</span>) {
         <span class="macro">debug_assert_ne!</span>(<span class="self">self</span>.<span class="ident">gnu_vernaux_remaining</span>, <span class="number">0</span>);
         <span class="self">self</span>.<span class="ident">gnu_vernaux_remaining</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-        <span class="kw">let</span> <span class="ident">vna_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_vernaux_remaining</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">let</span> <span class="ident">vna_next</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">gnu_vernaux_remaining</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="number">0</span>
         } <span class="kw">else</span> {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">elf::Vernaux</span><span class="op">&lt;</span><span class="ident">Endianness</span><span class="op">&gt;</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
@@ -3629,7 +3629,7 @@
     }
 
     <span class="doccomment">/// Reserve the section index for the `.gnu.version_r` section.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_verneed_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionIndex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_gnu_verneed_section_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SectionIndex</span> {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">gnu_verneed_str_id</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">gnu_verneed_str_id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">add_section_name</span>(<span class="kw-2">&amp;</span><span class="string">b&quot;.gnu.version_r&quot;</span>[..]));
         <span class="self">self</span>.<span class="ident">reserve_section_index</span>()
@@ -3659,7 +3659,7 @@
     <span class="doccomment">/// Reserve a file range for the given number of relocations.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns the offset of the range.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_relocations</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>, <span class="ident">is_rela</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_relocations</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>, <span class="ident">is_rela</span>: <span class="ident">bool</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">reserve</span>(<span class="ident">count</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">rel_size</span>(<span class="ident">is_rela</span>), <span class="self">self</span>.<span class="ident">elf_align</span>)
     }
 
@@ -3741,7 +3741,7 @@
     <span class="doccomment">/// `count` is the number of sections in the COMDAT group.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns the offset of the range.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_comdat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_comdat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">reserve</span>((<span class="ident">count</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">*</span> <span class="number">4</span>, <span class="number">4</span>)
     }
 

@@ -142,7 +142,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">System</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">System</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">System</span> {
         <span class="ident">System</span> { <span class="ident">_priv</span>: () }
     }
 }
@@ -151,7 +151,7 @@
 <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">LOCK</span>: <span class="ident">libc::pthread_mutex_t</span> <span class="op">=</span> <span class="ident">libc::PTHREAD_MUTEX_INITIALIZER</span>;
 
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Allocator</span> <span class="kw">for</span> <span class="ident">System</span> {
-    <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">usize</span>, <span class="ident">u32</span>) {
+    <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">usize</span>, <span class="ident">u32</span>) {
         <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">libc::mmap</span>(
                 <span class="number">0</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
@@ -162,7 +162,7 @@
                 <span class="number">0</span>,
             )
         };
-        <span class="kw">if</span> <span class="ident">addr</span> <span class="op">=</span><span class="op">=</span> <span class="ident">libc::MAP_FAILED</span> {
+        <span class="kw">if</span> <span class="ident">addr</span> <span class="op">==</span> <span class="ident">libc::MAP_FAILED</span> {
             (<span class="ident">ptr::null_mut</span>(), <span class="number">0</span>, <span class="number">0</span>)
         } <span class="kw">else</span> {
             (<span class="ident">addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>, <span class="number">0</span>)
@@ -170,10 +170,10 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">remap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">fn</span> <span class="ident">remap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>, <span class="ident">can_move</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">can_move</span> { <span class="ident">libc::MREMAP_MAYMOVE</span> } <span class="kw">else</span> { <span class="number">0</span> };
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">libc::mremap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">oldsize</span>, <span class="ident">newsize</span>, <span class="ident">flags</span>) };
-        <span class="kw">if</span> <span class="ident">ptr</span> <span class="op">=</span><span class="op">=</span> <span class="ident">libc::MAP_FAILED</span> {
+        <span class="kw">if</span> <span class="ident">ptr</span> <span class="op">==</span> <span class="ident">libc::MAP_FAILED</span> {
             <span class="ident">ptr::null_mut</span>()
         } <span class="kw">else</span> {
             <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>
@@ -181,39 +181,39 @@
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">remap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">_oldsize</span>: <span class="ident">usize</span>, <span class="ident">_newsize</span>: <span class="ident">usize</span>, <span class="ident">_can_move</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">fn</span> <span class="ident">remap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">_oldsize</span>: <span class="ident">usize</span>, <span class="ident">_newsize</span>: <span class="ident">usize</span>, <span class="ident">_can_move</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="ident">ptr::null_mut</span>()
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">free_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">free_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="ident">libc::mremap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">oldsize</span>, <span class="ident">newsize</span>, <span class="number">0</span>);
             <span class="kw">if</span> <span class="ident">rc</span> <span class="op">!</span><span class="op">=</span> <span class="ident">libc::MAP_FAILED</span> {
                 <span class="kw">return</span> <span class="bool-val">true</span>;
             }
-            <span class="ident">libc::munmap</span>(<span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="ident">newsize</span> <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">oldsize</span> <span class="op">-</span> <span class="ident">newsize</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+            <span class="ident">libc::munmap</span>(<span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="ident">newsize</span> <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">oldsize</span> <span class="op">-</span> <span class="ident">newsize</span>) <span class="op">==</span> <span class="number">0</span>
         }
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">free_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">libc::munmap</span>(<span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="ident">newsize</span> <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">oldsize</span> <span class="op">-</span> <span class="ident">newsize</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span> }
+    <span class="kw">fn</span> <span class="ident">free_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">oldsize</span>: <span class="ident">usize</span>, <span class="ident">newsize</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">libc::munmap</span>(<span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="ident">newsize</span> <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">oldsize</span> <span class="op">-</span> <span class="ident">newsize</span>) <span class="op">==</span> <span class="number">0</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">free</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">libc::munmap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span> }
+    <span class="kw">fn</span> <span class="ident">free</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw">unsafe</span> { <span class="ident">libc::munmap</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">size</span>) <span class="op">==</span> <span class="number">0</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">can_release_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">can_release_part</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_flags</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
         <span class="bool-val">true</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">allocates_zeros</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">allocates_zeros</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="bool-val">true</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">page_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">page_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="number">4096</span>
     }
 }

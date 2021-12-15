@@ -1461,19 +1461,19 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MmapRawDescriptor</span>(<span class="ident">RawHandle</span>);
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">MmapAsRawDesc</span> {
-    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapRawDescriptor</span>;
+    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MmapRawDescriptor</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">windows</span>)))]</span>
 <span class="kw">impl</span> <span class="ident">MmapAsRawDesc</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">File</span> {
-    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapRawDescriptor</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MmapRawDescriptor</span> {
         <span class="ident">MmapRawDescriptor</span>(<span class="self">self</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">MmapAsRawDesc</span> <span class="kw">for</span> <span class="ident">RawFd</span> {
-    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapRawDescriptor</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MmapRawDescriptor</span> {
         <span class="ident">MmapRawDescriptor</span>(<span class="kw-2">*</span><span class="self">self</span>)
     }
 }
@@ -1483,14 +1483,14 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsRawFd</span>,
 {
-    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapRawDescriptor</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MmapRawDescriptor</span> {
         <span class="ident">MmapRawDescriptor</span>(<span class="self">self</span>.<span class="ident">as_raw_fd</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">MmapAsRawDesc</span> <span class="kw">for</span> <span class="ident">RawHandle</span> {
-    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapRawDescriptor</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MmapRawDescriptor</span> {
         <span class="ident">MmapRawDescriptor</span>(<span class="kw-2">*</span><span class="self">self</span>)
     }
 }
@@ -1500,7 +1500,7 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsRawHandle</span>,
 {
-    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapRawDescriptor</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_desc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MmapRawDescriptor</span> {
         <span class="ident">MmapRawDescriptor</span>(<span class="self">self</span>.<span class="ident">as_raw_handle</span>())
     }
 }
@@ -1556,7 +1556,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MmapOptions</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">MmapOptions</span> {
         <span class="ident">MmapOptions::default</span>()
     }
 
@@ -1583,7 +1583,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u64</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">offset</span> <span class="op">=</span> <span class="ident">offset</span>;
         <span class="self">self</span>
     }
@@ -1610,13 +1610,13 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">len</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">len</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Returns the configured length, or the length of the provided file.</span>
-    <span class="kw">fn</span> <span class="ident">get_len</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_len</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">len</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
             <span class="kw">let</span> <span class="ident">file_len</span> <span class="op">=</span> <span class="ident">file_len</span>(<span class="ident">desc</span>.<span class="number">0</span>)<span class="question-mark">?</span>;
@@ -1660,7 +1660,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stack</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>
     }
@@ -1688,7 +1688,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">populate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">populate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">populate</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>
     }
@@ -1721,7 +1721,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
 
         <span class="ident">MmapInner::map</span>(<span class="self">self</span>.<span class="ident">get_len</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)<span class="question-mark">?</span>, <span class="ident">desc</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">populate</span>)
@@ -1734,7 +1734,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method returns an error when the underlying system call fails, which can happen for a</span>
     <span class="doccomment">/// variety of reasons, such as when the file is not open with read permissions.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_exec</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_exec</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
 
         <span class="ident">MmapInner::map_exec</span>(<span class="self">self</span>.<span class="ident">get_len</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)<span class="question-mark">?</span>, <span class="ident">desc</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">populate</span>)
@@ -1774,7 +1774,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_mut</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_mut</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
 
         <span class="ident">MmapInner::map_mut</span>(<span class="self">self</span>.<span class="ident">get_len</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)<span class="question-mark">?</span>, <span class="ident">desc</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">populate</span>)
@@ -1805,7 +1805,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_copy</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_copy</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
 
         <span class="ident">MmapInner::map_copy</span>(<span class="self">self</span>.<span class="ident">get_len</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)<span class="question-mark">?</span>, <span class="ident">desc</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">populate</span>)
@@ -1840,7 +1840,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_copy_read_only</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_copy_read_only</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
 
         <span class="ident">MmapInner::map_copy_read_only</span>(<span class="self">self</span>.<span class="ident">get_len</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)<span class="question-mark">?</span>, <span class="ident">desc</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">populate</span>)
@@ -1855,7 +1855,7 @@
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method returns an error when the underlying system call fails.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_anon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_anon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
         <span class="ident">MmapInner::map_anon</span>(<span class="self">self</span>.<span class="ident">len</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>), <span class="self">self</span>.<span class="ident">stack</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">inner</span><span class="op">|</span> <span class="ident">MmapMut</span> { <span class="ident">inner</span> })
     }
 
@@ -1865,7 +1865,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method returns an error when the underlying system call fails, which can happen for a</span>
     <span class="doccomment">/// variety of reasons, such as when the file is not open with read and write permissions.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_raw</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapRaw</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_raw</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapRaw</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">desc</span> <span class="op">=</span> <span class="ident">file</span>.<span class="ident">as_raw_desc</span>();
 
         <span class="ident">MmapInner::map_mut</span>(<span class="self">self</span>.<span class="ident">get_len</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)<span class="question-mark">?</span>, <span class="ident">desc</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="ident">offset</span>, <span class="self">self</span>.<span class="ident">populate</span>)
@@ -1950,7 +1950,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
         <span class="ident">MmapOptions::new</span>().<span class="ident">map</span>(<span class="ident">file</span>)
     }
 
@@ -1991,7 +1991,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_mut</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_mut</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">make_mut</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">MmapMut</span> { <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">inner</span> })
     }
@@ -2004,20 +2004,20 @@
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> [<span class="ident">u8</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ptr</span>(), <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">len</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Mmap</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="self">self</span>.<span class="ident">deref</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Mmap</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Mmap&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;ptr&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_ptr</span>())
             .<span class="ident">field</span>(<span class="string">&quot;len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">len</span>())
@@ -2042,7 +2042,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method returns an error when the underlying system call fails, which can happen for a</span>
     <span class="doccomment">/// variety of reasons, such as when the file is not open with read and write permissions.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_raw</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapRaw</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_raw</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapRaw</span><span class="op">&gt;</span> {
         <span class="ident">MmapOptions::new</span>().<span class="ident">map_raw</span>(<span class="ident">file</span>)
     }
 
@@ -2053,7 +2053,7 @@
     <span class="doccomment">/// Avoiding this will not introduce memory safety issues in Rust terms,</span>
     <span class="doccomment">/// but will cause SIGBUS (or equivalent) signal.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ptr</span>()
     }
 
@@ -2064,7 +2064,7 @@
     <span class="doccomment">/// Avoiding this will not introduce memory safety issues in Rust terms,</span>
     <span class="doccomment">/// but will cause SIGBUS (or equivalent) signal.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ptr</span>() <span class="kw">as</span> <span class="kw">_</span>
     }
 
@@ -2072,13 +2072,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that truncating the file can cause the length to change (and render this value unusable).</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">len</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MmapRaw</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MmapRaw&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;ptr&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_ptr</span>())
             .<span class="ident">field</span>(<span class="string">&quot;len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">len</span>())
@@ -2155,7 +2155,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_mut</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_mut</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">MmapAsRawDesc</span><span class="op">&gt;</span>(<span class="ident">file</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
         <span class="ident">MmapOptions::new</span>().<span class="ident">map_mut</span>(<span class="ident">file</span>)
     }
 
@@ -2166,7 +2166,7 @@
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method returns an error when the underlying system call fails.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_anon</span>(<span class="ident">length</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_anon</span>(<span class="ident">length</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MmapMut</span><span class="op">&gt;</span> {
         <span class="ident">MmapOptions::new</span>().<span class="ident">len</span>(<span class="ident">length</span>).<span class="ident">map_anon</span>()
     }
 
@@ -2202,7 +2202,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flush</span>(<span class="number">0</span>, <span class="ident">len</span>)
     }
@@ -2212,7 +2212,7 @@
     <span class="doccomment">/// This method initiates flushing modified pages to durable storage, but it will not wait for</span>
     <span class="doccomment">/// the operation to complete before returning. The file&#39;s metadata (including last</span>
     <span class="doccomment">/// modification timestamp) may not be updated.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_async</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_async</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flush_async</span>(<span class="number">0</span>, <span class="ident">len</span>)
     }
@@ -2226,7 +2226,7 @@
     <span class="doccomment">/// last modification timestamp) may not be updated. It is not guaranteed the only the changes</span>
     <span class="doccomment">/// in the specified range are flushed; other outstanding changes to the memory map may be</span>
     <span class="doccomment">/// flushed as well.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flush</span>(<span class="ident">offset</span>, <span class="ident">len</span>)
     }
 
@@ -2239,7 +2239,7 @@
     <span class="doccomment">/// modification timestamp) may not be updated. It is not guaranteed that the only changes</span>
     <span class="doccomment">/// flushed are those in the specified range; other outstanding changes to the memory map may</span>
     <span class="doccomment">/// be flushed as well.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_async_range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush_async_range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flush_async</span>(<span class="ident">offset</span>, <span class="ident">len</span>)
     }
 
@@ -2271,7 +2271,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_read_only</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_read_only</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">make_read_only</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Mmap</span> { <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">inner</span> })
     }
@@ -2284,7 +2284,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method returns an error when the underlying system call fails, which can happen for a</span>
     <span class="doccomment">/// variety of reasons, such as when the file has not been opened with execute permissions.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_exec</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_exec</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Mmap</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">make_exec</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Mmap</span> { <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">inner</span> })
     }
@@ -2297,34 +2297,34 @@
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> [<span class="ident">u8</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ptr</span>(), <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">len</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">MmapMut</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">mut_ptr</span>(), <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">len</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MmapMut</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="self">self</span>.<span class="ident">deref</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MmapMut</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
         <span class="self">self</span>.<span class="ident">deref_mut</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">MmapMut</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MmapMut&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;ptr&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_ptr</span>())
             .<span class="ident">field</span>(<span class="string">&quot;len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">len</span>())
@@ -2665,7 +2665,7 @@
 
         <span class="kw">let</span> <span class="ident">mmap</span> <span class="op">=</span> <span class="ident">mmap</span>.<span class="ident">make_exec</span>().<span class="ident">expect</span>(<span class="string">&quot;make_exec&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">jitfn</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">mmap</span>.<span class="ident">as_ptr</span>()) };
+        <span class="kw">let</span> <span class="ident">jitfn</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>() -&gt; <span class="ident">u8</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">mmap</span>.<span class="ident">as_ptr</span>()) };
         <span class="macro">assert_eq!</span>(<span class="ident">jitfn</span>(), <span class="number">0xab</span>);
     }
 

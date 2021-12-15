@@ -71,19 +71,19 @@
 <span class="doccomment">/// A struct that does not migration, but only checks that the counter prefix exists and is correct.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheckCounterPrefix</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident"><span class="kw">crate</span>::Config</span><span class="op">&gt;</span>(<span class="ident">sp_std::marker::PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident"><span class="kw">crate</span>::Config</span><span class="op">&gt;</span> <span class="ident">OnRuntimeUpgrade</span> <span class="kw">for</span> <span class="ident">CheckCounterPrefix</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">frame_support::weights::Weight</span> {
+	<span class="kw">fn</span> <span class="ident">on_runtime_upgrade</span>() -&gt; <span class="ident">frame_support::weights::Weight</span> {
 		<span class="number">0</span>
 	}
 
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try-runtime&quot;</span>)]</span>
-	<span class="kw">fn</span> <span class="ident">pre_upgrade</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">pre_upgrade</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
 		<span class="kw">use</span> <span class="ident">frame_support::ensure</span>;
 		<span class="comment">// The old explicit storage item.</span>
-		<span class="macro">frame_support::generate_storage_alias!</span>(<span class="ident">BagsList</span>, <span class="ident">CounterForListNodes</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Value</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>);
+		<span class="macro">frame_support::generate_storage_alias!</span>(<span class="ident">BagsList</span>, <span class="ident">CounterForListNodes</span> =&gt; <span class="ident">Value</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>);
 
 		<span class="comment">// ensure that a value exists in the counter struct.</span>
 		<span class="macro">ensure!</span>(
-			<span class="ident"><span class="kw">crate</span>::ListNodes</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::count</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">CounterForListNodes::get</span>().<span class="ident">unwrap</span>(),
+			<span class="ident"><span class="kw">crate</span>::ListNodes</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::count</span>() <span class="op">==</span> <span class="ident">CounterForListNodes::get</span>().<span class="ident">unwrap</span>(),
 			<span class="string">&quot;wrong list node counter&quot;</span>
 		);
 

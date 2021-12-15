@@ -49,11 +49,11 @@
 }
 
 <span class="kw">impl</span> <span class="ident">MemoryAllocationTracker</span> {
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
 		<span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">epoch</span>: <span class="ident">epoch::mib</span>()<span class="question-mark">?</span>, <span class="ident">allocated</span>: <span class="ident">stats::allocated::mib</span>()<span class="question-mark">?</span>, <span class="ident">resident</span>: <span class="ident">stats::resident::mib</span>()<span class="question-mark">?</span> })
 	}
 
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">snapshot</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::MemoryAllocationSnapshot</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">snapshot</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::MemoryAllocationSnapshot</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
 		<span class="comment">// update stats by advancing the allocation epoch</span>
 		<span class="self">self</span>.<span class="ident">epoch</span>.<span class="ident">advance</span>()<span class="question-mark">?</span>;
 

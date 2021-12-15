@@ -472,7 +472,7 @@
 
 <span class="comment">// Derive clone not possible, as it puts `Clone` constraint on `T` which is not sensible here.</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">SingleItemSink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+	<span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
 	}
 }
@@ -483,26 +483,26 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Sink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SingleItemSink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Infallible</span>;
 
-	<span class="kw">fn</span> <span class="ident">poll_ready</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">poll_ready</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>();
 		<span class="kw">match</span> <span class="kw-2">*</span><span class="ident">state</span> {
-			<span class="ident">SinkState::Empty</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())),
-			<span class="ident">SinkState::Item</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ready_waker</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">SinkState::Empty</span> { .. } =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())),
+			<span class="ident">SinkState::Item</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ready_waker</span>, .. } =&gt; {
 				<span class="kw-2">*</span><span class="ident">ready_waker</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cx</span>.<span class="ident">waker</span>().<span class="ident">clone</span>());
 				<span class="ident">Poll::Pending</span>
 			},
 		}
 	}
 
-	<span class="kw">fn</span> <span class="ident">start_send</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">item</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">start_send</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">item</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>();
 
 		<span class="kw">match</span> <span class="kw-2">*</span><span class="ident">state</span> {
-			<span class="ident">SinkState::Empty</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">read_waker</span> } <span class="op">=</span><span class="op">&gt;</span>
+			<span class="ident">SinkState::Empty</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">read_waker</span> } =&gt;
 				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">waker</span>) <span class="op">=</span> <span class="ident">read_waker</span>.<span class="ident">take</span>() {
 					<span class="ident">waker</span>.<span class="ident">wake</span>();
 				},
-			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;start_send called outside of empty sink state ensured by poll_ready&quot;</span>),
+			<span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;start_send called outside of empty sink state ensured by poll_ready&quot;</span>),
 		}
 
 		<span class="kw-2">*</span><span class="ident">state</span> <span class="op">=</span> <span class="ident">SinkState::Item</span> { <span class="ident">item</span>, <span class="ident">ready_waker</span>: <span class="prelude-val">None</span>, <span class="ident">flush_waker</span>: <span class="prelude-val">None</span> };
@@ -510,18 +510,18 @@
 		<span class="prelude-val">Ok</span>(())
 	}
 
-	<span class="kw">fn</span> <span class="ident">poll_flush</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">poll_flush</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>();
 		<span class="kw">match</span> <span class="kw-2">*</span><span class="ident">state</span> {
-			<span class="ident">SinkState::Empty</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())),
-			<span class="ident">SinkState::Item</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">flush_waker</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">SinkState::Empty</span> { .. } =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(())),
+			<span class="ident">SinkState::Item</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">flush_waker</span>, .. } =&gt; {
 				<span class="kw-2">*</span><span class="ident">flush_waker</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cx</span>.<span class="ident">waker</span>().<span class="ident">clone</span>());
 				<span class="ident">Poll::Pending</span>
 			},
 		}
 	}
 
-	<span class="kw">fn</span> <span class="ident">poll_close</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">poll_close</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">poll_flush</span>(<span class="ident">cx</span>)
 	}
 }
@@ -529,14 +529,14 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Stream</span> <span class="kw">for</span> <span class="ident">SingleItemStream</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>;
 
-	<span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>();
 
 		<span class="kw">let</span> <span class="ident">read_waker</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cx</span>.<span class="ident">waker</span>().<span class="ident">clone</span>());
 
 		<span class="kw">match</span> <span class="ident">std::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">state</span>, <span class="ident">SinkState::Empty</span> { <span class="ident">read_waker</span> }) {
-			<span class="ident">SinkState::Empty</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Pending</span>,
-			<span class="ident">SinkState::Item</span> { <span class="ident">item</span>, <span class="ident">ready_waker</span>, <span class="ident">flush_waker</span> } <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="ident">SinkState::Empty</span> { .. } =&gt; <span class="ident">Poll::Pending</span>,
+			<span class="ident">SinkState::Item</span> { <span class="ident">item</span>, <span class="ident">ready_waker</span>, <span class="ident">flush_waker</span> } =&gt; {
 				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">waker</span>) <span class="op">=</span> <span class="ident">ready_waker</span> {
 					<span class="ident">waker</span>.<span class="ident">wake</span>();
 				}
@@ -555,7 +555,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The sink&#39;s send methods resolve at the point which the stream reads the item,</span>
 <span class="doccomment">/// not when the item is buffered.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">single_item_sink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">SingleItemSink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">SingleItemStream</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">single_item_sink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() -&gt; (<span class="ident">SingleItemSink</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">SingleItemStream</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) {
 	<span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">SinkState::Empty</span> { <span class="ident">read_waker</span>: <span class="prelude-val">None</span> }));
 	(<span class="ident">SingleItemSink</span>(<span class="ident">inner</span>.<span class="ident">clone</span>()), <span class="ident">SingleItemStream</span>(<span class="ident">inner</span>))
 }
@@ -567,7 +567,7 @@
 }
 
 <span class="doccomment">/// Construct a sender/receiver pair.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sender_receiver</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">TestSubsystemSender</span>, <span class="ident">mpsc::UnboundedReceiver</span><span class="op">&lt;</span><span class="ident">AllMessages</span><span class="op">&gt;</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sender_receiver</span>() -&gt; (<span class="ident">TestSubsystemSender</span>, <span class="ident">mpsc::UnboundedReceiver</span><span class="op">&lt;</span><span class="ident">AllMessages</span><span class="op">&gt;</span>) {
 	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">mpsc::unbounded</span>();
 	(<span class="ident">TestSubsystemSender</span> { <span class="ident">tx</span> }, <span class="ident">rx</span>)
 }
@@ -615,15 +615,15 @@
 	<span class="kw">type</span> <span class="ident">AllMessages</span> <span class="op">=</span> <span class="ident">AllMessages</span>;
 	<span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SubsystemError</span>;
 
-	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span>, ()<span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="macro">poll!</span>(<span class="self">self</span>.<span class="ident">rx</span>.<span class="ident">next</span>()) {
-			<span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)),
-			<span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(()),
-			<span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+			<span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">msg</span>)),
+			<span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(()),
+			<span class="ident">Poll::Pending</span> =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
 		}
 	}
 
-	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubsystemResult</span><span class="op">&lt;</span><span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SubsystemResult</span><span class="op">&lt;</span><span class="ident">FromOverseer</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">rx</span>
 			.<span class="ident">next</span>()
 			.<span class="kw">await</span>
@@ -634,7 +634,7 @@
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
 		<span class="ident">s</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubsystemResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	) -&gt; <span class="ident">SubsystemResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">spawn</span>.<span class="ident">spawn</span>(<span class="ident">name</span>, <span class="prelude-val">None</span>, <span class="ident">s</span>);
 		<span class="prelude-val">Ok</span>(())
 	}
@@ -643,12 +643,12 @@
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
 		<span class="ident">s</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SubsystemResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	) -&gt; <span class="ident">SubsystemResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">spawn</span>.<span class="ident">spawn_blocking</span>(<span class="ident">name</span>, <span class="prelude-val">None</span>, <span class="ident">s</span>);
 		<span class="prelude-val">Ok</span>(())
 	}
 
-	<span class="kw">fn</span> <span class="ident">sender</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TestSubsystemSender</span> {
+	<span class="kw">fn</span> <span class="ident">sender</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TestSubsystemSender</span> {
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">tx</span>
 	}
 }
@@ -673,12 +673,12 @@
 	}
 
 	<span class="doccomment">/// Receive the next message from the subsystem.</span>
-	<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AllMessages</span> {
+	<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">AllMessages</span> {
 		<span class="self">self</span>.<span class="ident">try_recv</span>().<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;Test subsystem no longer live&quot;</span>)
 	}
 
 	<span class="doccomment">/// Receive the next message from the subsystem, or `None` if the channel has been closed.</span>
-	<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AllMessages</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_recv</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AllMessages</span><span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">rx</span>.<span class="ident">next</span>().<span class="kw">await</span>
 	}
 }
@@ -686,7 +686,7 @@
 <span class="doccomment">/// Make a test subsystem context.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_subsystem_context</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">S</span><span class="op">&gt;</span>(
 	<span class="ident">spawn</span>: <span class="ident">S</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">TestSubsystemContext</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">S</span><span class="op">&gt;</span>, <span class="ident">TestSubsystemContextHandle</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>) {
+) -&gt; (<span class="ident">TestSubsystemContext</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">S</span><span class="op">&gt;</span>, <span class="ident">TestSubsystemContextHandle</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>) {
 	<span class="kw">let</span> (<span class="ident">overseer_tx</span>, <span class="ident">overseer_rx</span>) <span class="op">=</span> <span class="ident">single_item_sink</span>();
 	<span class="kw">let</span> (<span class="ident">all_messages_tx</span>, <span class="ident">all_messages_rx</span>) <span class="op">=</span> <span class="ident">mpsc::unbounded</span>();
 
@@ -709,9 +709,9 @@
 	<span class="ident">overseer_factory</span>: <span class="ident">OverseerFactory</span>,
 	<span class="ident">test_factory</span>: <span class="ident">TestFactory</span>,
 ) <span class="kw">where</span>
-	<span class="ident">OverseerFactory</span>: <span class="ident">FnOnce</span>(<span class="ident">TestSubsystemContextHandle</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Overseer</span>,
+	<span class="ident">OverseerFactory</span>: <span class="ident">FnOnce</span>(<span class="ident">TestSubsystemContextHandle</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>) -&gt; <span class="ident">Overseer</span>,
 	<span class="ident">Overseer</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span>,
-	<span class="ident">TestFactory</span>: <span class="ident">FnOnce</span>(<span class="ident">TestSubsystemContext</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">TaskExecutor</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Test</span>,
+	<span class="ident">TestFactory</span>: <span class="ident">FnOnce</span>(<span class="ident">TestSubsystemContext</span><span class="op">&lt;</span><span class="ident">M</span>, <span class="ident">TaskExecutor</span><span class="op">&gt;</span>) -&gt; <span class="ident">Test</span>,
 	<span class="ident">Test</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span>,
 {
 	<span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">TaskExecutor::new</span>();
@@ -742,16 +742,16 @@
 	<span class="ident">M</span>: <span class="ident">std::fmt::Debug</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">M</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">overseer::SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">M</span><span class="op">&gt;</span>,
 {
-	<span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">ctx</span>: <span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SpawnedSubsystem</span> {
+	<span class="kw">fn</span> <span class="ident">start</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">ctx</span>: <span class="ident">Context</span>) -&gt; <span class="ident">SpawnedSubsystem</span> {
 		<span class="kw">let</span> <span class="ident">future</span> <span class="op">=</span> <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">loop</span> {
 				<span class="kw">match</span> <span class="ident">ctx</span>.<span class="ident">recv</span>().<span class="kw">await</span> {
-					<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Signal</span>(<span class="ident">OverseerSignal::Conclude</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
-					<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Communication</span> { <span class="ident">msg</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Signal</span>(<span class="ident">OverseerSignal::Conclude</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
+					<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Communication</span> { <span class="ident">msg</span> }) =&gt; {
 						<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">send</span>(<span class="ident">msg</span>).<span class="kw">await</span>;
 					},
-					<span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
-					<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> (),
+					<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
+					<span class="kw">_</span> =&gt; (),
 				}
 			}
 		});
@@ -763,29 +763,29 @@
 <span class="doccomment">/// Asserts that two patterns match, yet only one</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">arbitrary_order</span> {
-	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rx</span>:<span class="ident">expr</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p1</span>:<span class="ident">pat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e1</span>:<span class="ident">expr</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p2</span>:<span class="ident">pat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e2</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rx</span>:<span class="ident">expr</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p1</span>:<span class="ident">pat</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e1</span>:<span class="ident">expr</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">p2</span>:<span class="ident">pat</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e2</span>:<span class="ident">expr</span>) =&gt; {
 		<span class="comment">// If i.e. a enum has only two variants, `_` is unreachable.</span>
 		<span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rx</span> {
-			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p1</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p1</span> =&gt; {
 				<span class="kw">let</span> <span class="ident">__ret1</span> <span class="op">=</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e1</span> };
 				<span class="kw">let</span> <span class="ident">__ret2</span> <span class="op">=</span> <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rx</span> {
-					<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e2</span>,
+					<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p2</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e2</span>,
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
-					<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;first pattern matched, second pattern did not&quot;</span>),
+					<span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;first pattern matched, second pattern did not&quot;</span>),
 				};
 				(<span class="ident">__ret1</span>, <span class="ident">__ret2</span>)
 			},
-			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p2</span> <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p2</span> =&gt; {
 				<span class="kw">let</span> <span class="ident">__ret2</span> <span class="op">=</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e2</span> };
 				<span class="kw">let</span> <span class="ident">__ret1</span> <span class="op">=</span> <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rx</span> {
-					<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e1</span>,
+					<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p1</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e1</span>,
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
-					<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;second pattern matched, first pattern did not&quot;</span>),
+					<span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;second pattern matched, first pattern did not&quot;</span>),
 				};
 				(<span class="ident">__ret1</span>, <span class="ident">__ret2</span>)
 			},
 			<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>)]</span>
-			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;neither first nor second pattern matched&quot;</span>),
+			<span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;neither first nor second pattern matched&quot;</span>),
 		}
 	};
 }
@@ -800,7 +800,7 @@
 
 	<span class="kw">struct</span> <span class="ident">AlwaysSupportsParachains</span>;
 	<span class="kw">impl</span> <span class="ident">HeadSupportsParachains</span> <span class="kw">for</span> <span class="ident">AlwaysSupportsParachains</span> {
-		<span class="kw">fn</span> <span class="ident">head_supports_parachains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_head</span>: <span class="kw-2">&amp;</span><span class="ident">Hash</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+		<span class="kw">fn</span> <span class="ident">head_supports_parachains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_head</span>: <span class="kw-2">&amp;</span><span class="ident">Hash</span>) -&gt; <span class="ident">bool</span> {
 			<span class="bool-val">true</span>
 		}
 	}
@@ -831,7 +831,7 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">macro_arbitrary_order</span>() {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vals</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="prelude-val">Some</span>(<span class="number">15_usize</span>), <span class="prelude-val">None</span>];
-		<span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">second</span>) <span class="op">=</span> <span class="macro">arbitrary_order!</span>(<span class="ident">vals</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>(); <span class="prelude-val">Some</span>(<span class="ident">fx</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fx</span>; <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>);
+		<span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">second</span>) <span class="op">=</span> <span class="macro">arbitrary_order!</span>(<span class="ident">vals</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>(); <span class="prelude-val">Some</span>(<span class="ident">fx</span>) =&gt; <span class="ident">fx</span>; <span class="prelude-val">None</span> =&gt; <span class="number">0</span>);
 		<span class="macro">assert_eq!</span>(<span class="ident">first</span>, <span class="number">15_usize</span>);
 		<span class="macro">assert_eq!</span>(<span class="ident">second</span>, <span class="number">0_usize</span>);
 	}
@@ -839,7 +839,7 @@
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">macro_arbitrary_order_swapped</span>() {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vals</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="number">11_usize</span>)];
-		<span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">second</span>) <span class="op">=</span> <span class="macro">arbitrary_order!</span>(<span class="ident">vals</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>(); <span class="prelude-val">Some</span>(<span class="ident">fx</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fx</span>; <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>);
+		<span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">second</span>) <span class="op">=</span> <span class="macro">arbitrary_order!</span>(<span class="ident">vals</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>(); <span class="prelude-val">Some</span>(<span class="ident">fx</span>) =&gt; <span class="ident">fx</span>; <span class="prelude-val">None</span> =&gt; <span class="number">0</span>);
 		<span class="macro">assert_eq!</span>(<span class="ident">first</span>, <span class="number">11_usize</span>);
 		<span class="macro">assert_eq!</span>(<span class="ident">second</span>, <span class="number">0</span>);
 	}

@@ -258,7 +258,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">FromFd</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">owned_fd</span>: <span class="ident">OwnedFd</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_fd</span>(<span class="ident">owned_fd</span>: <span class="ident">OwnedFd</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">owned_fd</span>.<span class="ident">into</span>()
     }
 }
@@ -269,7 +269,7 @@
     <span class="ident">OwnedFd</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedFd</span> {
+    <span class="kw">fn</span> <span class="ident">into_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedFd</span> {
         <span class="self">self</span>.<span class="ident">into</span>()
     }
 }
@@ -278,7 +278,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OwnedHandle</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">FromHandle</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_handle</span>(<span class="ident">owned_handle</span>: <span class="ident">OwnedHandle</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_handle</span>(<span class="ident">owned_handle</span>: <span class="ident">OwnedHandle</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">owned_handle</span>.<span class="ident">into</span>()
     }
 }
@@ -289,7 +289,7 @@
     <span class="ident">OwnedHandle</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedHandle</span> {
+    <span class="kw">fn</span> <span class="ident">into_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedHandle</span> {
         <span class="self">self</span>.<span class="ident">into</span>()
     }
 }
@@ -298,7 +298,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OwnedSocket</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">FromSocket</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_socket</span>(<span class="ident">owned_socket</span>: <span class="ident">OwnedSocket</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_socket</span>(<span class="ident">owned_socket</span>: <span class="ident">OwnedSocket</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">owned_socket</span>.<span class="ident">into</span>()
     }
 }
@@ -309,7 +309,7 @@
     <span class="ident">OwnedSocket</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_socket</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OwnedSocket</span> {
+    <span class="kw">fn</span> <span class="ident">into_socket</span>(<span class="self">self</span>) -&gt; <span class="ident">OwnedSocket</span> {
         <span class="self">self</span>.<span class="ident">into</span>()
     }
 }

@@ -151,7 +151,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sc_cli::build_runtime</span>;
 
 <span class="doccomment">/// Base db path gotten from env</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">base_path</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BasePath</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">base_path</span>() -&gt; <span class="ident">BasePath</span> {
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">base</span>) <span class="op">=</span> <span class="ident">std::env::var</span>(<span class="string">&quot;DB_BASE_PATH&quot;</span>).<span class="ident">ok</span>() {
 		<span class="ident">BasePath::new</span>(<span class="ident">base</span>)
 	} <span class="kw">else</span> {
@@ -160,7 +160,7 @@
 }
 
 <span class="doccomment">/// Produces a default configuration object, suitable for use with most set ups.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_config</span>(<span class="ident">tokio_handle</span>: <span class="ident">Handle</span>, <span class="kw-2">mut</span> <span class="ident">chain_spec</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Configuration</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default_config</span>(<span class="ident">tokio_handle</span>: <span class="ident">Handle</span>, <span class="kw-2">mut</span> <span class="ident">chain_spec</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ChainSpec</span><span class="op">&gt;</span>) -&gt; <span class="ident">Configuration</span> {
 	<span class="kw">let</span> <span class="ident">base_path</span> <span class="op">=</span> <span class="ident">base_path</span>();
 	<span class="kw">let</span> <span class="ident">root_path</span> <span class="op">=</span> <span class="ident">base_path</span>.<span class="ident">path</span>().<span class="ident">to_path_buf</span>().<span class="ident">join</span>(<span class="string">&quot;chains&quot;</span>).<span class="ident">join</span>(<span class="ident">chain_spec</span>.<span class="ident">id</span>());
 

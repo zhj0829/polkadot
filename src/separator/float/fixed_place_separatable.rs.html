@@ -16,18 +16,18 @@
 <span id="16">16</span>
 <span id="17">17</span>
 </pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FixedPlaceSeparatable</span> {
-    <span class="kw">fn</span> <span class="ident">separated_string_with_fixed_place</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">places</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span>;
+    <span class="kw">fn</span> <span class="ident">separated_string_with_fixed_place</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">places</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">FixedPlaceSeparatable</span> <span class="kw">for</span> <span class="ident">f32</span> {
-    <span class="kw">fn</span> <span class="ident">separated_string_with_fixed_place</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">places</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">separated_string_with_fixed_place</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">places</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">string</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:.*}&quot;</span>, <span class="ident">places</span>, <span class="self">self</span>);
         <span class="macro">separated_float!</span>(<span class="ident">string</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">FixedPlaceSeparatable</span> <span class="kw">for</span> <span class="ident">f64</span> {
-    <span class="kw">fn</span> <span class="ident">separated_string_with_fixed_place</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">places</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">separated_string_with_fixed_place</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">places</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">string</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:.*}&quot;</span>, <span class="ident">places</span>, <span class="self">self</span>);
         <span class="macro">separated_float!</span>(<span class="ident">string</span>)
     }

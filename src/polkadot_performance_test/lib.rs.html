@@ -145,7 +145,7 @@
 }
 
 <span class="doccomment">/// Measures the time it takes to compile arbitrary wasm code.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">measure_pvf_prepare</span>(<span class="ident">wasm_code</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Duration</span>, <span class="ident">PerfCheckError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">measure_pvf_prepare</span>(<span class="ident">wasm_code</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Duration</span>, <span class="ident">PerfCheckError</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
 	<span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">sp_maybe_compressed_blob::decompress</span>(<span class="ident">wasm_code</span>, <span class="ident">VALIDATION_CODE_BOMB_LIMIT</span>)
@@ -162,7 +162,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">measure_erasure_coding</span>(
 	<span class="ident">n_validators</span>: <span class="ident">usize</span>,
 	<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Duration</span>, <span class="ident">PerfCheckError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Duration</span>, <span class="ident">PerfCheckError</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
 
 	<span class="kw">let</span> <span class="ident">chunks</span> <span class="op">=</span> <span class="ident">obtain_chunks</span>(<span class="ident">n_validators</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>)<span class="question-mark">?</span>;

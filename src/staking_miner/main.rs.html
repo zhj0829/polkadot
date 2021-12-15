@@ -643,6 +643,8 @@
 <span id="643">643</span>
 <span id="644">644</span>
 <span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -700,7 +702,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">RUNTIME</span>: <span class="ident">AnyRuntime</span> <span class="op">=</span> <span class="ident">AnyRuntime::Polkadot</span>;
 
 <span class="macro">macro_rules!</span> <span class="ident">construct_runtime_prelude</span> {
-	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">paste::paste!</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span>:<span class="ident">ident</span>) =&gt; { <span class="macro">paste::paste!</span> {
 		<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_import</span>)]</span>
 		<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> [<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span> <span class="ident">_runtime_exports</span><span class="op">&gt;</span>] {
 			<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::prelude::EPM</span>;
@@ -719,7 +721,7 @@
 					<span class="ident">nonce</span>: <span class="ident"><span class="kw">crate</span>::prelude::Index</span>,
 					<span class="ident">tip</span>: <span class="ident"><span class="kw">crate</span>::prelude::Balance</span>,
 					<span class="ident">era</span>: <span class="ident">sp_runtime::generic::Era</span>,
-				) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UncheckedExtrinsic</span> {
+				) -&gt; <span class="ident">UncheckedExtrinsic</span> {
 					<span class="kw">use</span> <span class="ident">codec::Encode</span> <span class="kw">as</span> <span class="kw">_</span>;
 					<span class="kw">use</span> <span class="ident">sp_core::Pair</span> <span class="kw">as</span> <span class="kw">_</span>;
 					<span class="kw">use</span> <span class="ident">sp_runtime::traits::StaticLookup</span> <span class="kw">as</span> <span class="kw">_</span>;
@@ -757,7 +759,7 @@
 	<span class="ident">nonce</span>: <span class="ident">Index</span>,
 	<span class="ident">tip</span>: <span class="ident">Balance</span>,
 	<span class="ident">era</span>: <span class="ident">sp_runtime::generic::Era</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">polkadot_runtime_exports::SignedExtra</span> {
+) -&gt; <span class="ident">polkadot_runtime_exports::SignedExtra</span> {
 	<span class="kw">use</span> <span class="ident">polkadot_runtime_exports::Runtime</span>;
 	(
 		<span class="ident">frame_system::CheckNonZeroSender</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::new</span>(),
@@ -776,7 +778,7 @@
 	<span class="ident">nonce</span>: <span class="ident">Index</span>,
 	<span class="ident">tip</span>: <span class="ident">Balance</span>,
 	<span class="ident">era</span>: <span class="ident">sp_runtime::generic::Era</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">kusama_runtime_exports::SignedExtra</span> {
+) -&gt; <span class="ident">kusama_runtime_exports::SignedExtra</span> {
 	<span class="kw">use</span> <span class="ident">kusama_runtime_exports::Runtime</span>;
 	(
 		<span class="ident">frame_system::CheckNonZeroSender</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::new</span>(),
@@ -794,7 +796,7 @@
 	<span class="ident">nonce</span>: <span class="ident">Index</span>,
 	<span class="ident">tip</span>: <span class="ident">Balance</span>,
 	<span class="ident">era</span>: <span class="ident">sp_runtime::generic::Era</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">westend_runtime_exports::SignedExtra</span> {
+) -&gt; <span class="ident">westend_runtime_exports::SignedExtra</span> {
 	<span class="kw">use</span> <span class="ident">westend_runtime_exports::Runtime</span>;
 	(
 		<span class="ident">frame_system::CheckNonZeroSender</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::new</span>(),
@@ -820,20 +822,20 @@
 <span class="comment">// need the concrete `Call` of that chain as well.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">any_runtime</span> {
-	($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+	($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
 		<span class="kw">unsafe</span> {
 			<span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::RUNTIME</span> {
-				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Polkadot</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Polkadot</span> =&gt; {
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 					<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::polkadot_runtime_exports</span>::<span class="kw-2">*</span>;
 					$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="op">*</span>
 				},
-				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Kusama</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Kusama</span> =&gt; {
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 					<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::kusama_runtime_exports</span>::<span class="kw-2">*</span>;
 					$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="op">*</span>
 				},
-				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Westend</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Westend</span> =&gt; {
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 					<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::westend_runtime_exports</span>::<span class="kw-2">*</span>;
 					$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="op">*</span>
@@ -847,20 +849,20 @@
 <span class="doccomment">/// for situations where the result is not useful and un-ergonomic to handle.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">any_runtime_unit</span> {
-	($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+	($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
 		<span class="kw">unsafe</span> {
 			<span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::RUNTIME</span> {
-				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Polkadot</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Polkadot</span> =&gt; {
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 					<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::polkadot_runtime_exports</span>::<span class="kw-2">*</span>;
 					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="kw-2">*</span>;
 				},
-				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Kusama</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Kusama</span> =&gt; {
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 					<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::kusama_runtime_exports</span>::<span class="kw-2">*</span>;
 					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="kw-2">*</span>;
 				},
-				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Westend</span> <span class="op">=</span><span class="op">&gt;</span> {
+				<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::AnyRuntime::Westend</span> =&gt; {
 					<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 					<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::westend_runtime_exports</span>::<span class="kw-2">*</span>;
 					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="kw-2">*</span>;
@@ -888,31 +890,31 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">sp_core::crypto::SecretStringError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">sp_core::crypto::SecretStringError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">sp_core::crypto::SecretStringError</span>) -&gt; <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="ident">Error::Crypto</span>(<span class="ident">e</span>)
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">EPM::unsigned::MinerError</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">EPM::unsigned::MinerError</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">EPM::unsigned::MinerError</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="ident">Error::PalletMiner</span>(<span class="ident">e</span>)
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">EPM::ElectionError</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">EPM::ElectionError</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">EPM::ElectionError</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="ident">Error::PalletElection</span>(<span class="ident">e</span>)
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">EPM::FeasibilityError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">EPM::FeasibilityError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">EPM::FeasibilityError</span>) -&gt; <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="ident">Error::PalletFeasibility</span>(<span class="ident">e</span>)
 	}
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+	<span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
 		<span class="op">&lt;</span><span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">std::fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
 	}
 }
@@ -964,10 +966,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
 <span class="kw">struct</span> <span class="ident">EmergencySolutionConfig</span> {
 	<span class="doccomment">/// The block hash at which scraping happens. If none is provided, the latest head is used.</span>
+	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
 	<span class="ident">at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// The solver algorithm to use.</span>
+	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">solver</span>: <span class="ident">Solvers</span>,
 
@@ -1016,7 +1020,7 @@
 	<span class="ident">uri</span>: <span class="ident">String</span>,
 	<span class="ident">at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B::Hash</span><span class="op">&gt;</span>,
 	<span class="ident">additional</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Ext</span>, <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Ext</span>, <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">storage::generator::StorageMap</span>, <span class="ident">traits::PalletInfo</span>};
 	<span class="kw">use</span> <span class="ident">sp_core::hashing::twox_128</span>;
 
@@ -1043,7 +1047,7 @@
 <span class="kw">fn</span> <span class="ident">mine_solution</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span><span class="op">&gt;</span>(
 	<span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ext</span>,
 	<span class="ident">do_feasibility</span>: <span class="ident">bool</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">EPM::RawSolution</span><span class="op">&lt;</span><span class="ident">EPM::SolutionOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">u32</span>), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">EPM::RawSolution</span><span class="op">&lt;</span><span class="ident">EPM::SolutionOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">u32</span>), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">T</span>: <span class="ident">EPM::Config</span>,
 	<span class="ident">S</span>: <span class="ident">NposSolver</span><span class="op">&lt;</span>
@@ -1070,7 +1074,7 @@
 	<span class="ident">solver</span>: <span class="kw-2">&amp;</span><span class="ident">Solvers</span>,
 	<span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ext</span>,
 	<span class="ident">do_feasibility</span>: <span class="ident">bool</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">EPM::RawSolution</span><span class="op">&lt;</span><span class="ident">EPM::SolutionOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">u32</span>), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">EPM::RawSolution</span><span class="op">&lt;</span><span class="ident">EPM::SolutionOf</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">u32</span>), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">T</span>: <span class="ident">EPM::Config</span>,
 	<span class="ident">T::Solver</span>: <span class="ident">NposSolver</span><span class="op">&lt;</span><span class="ident">Error</span> <span class="op">=</span> <span class="ident">sp_npos_elections::Error</span><span class="op">&gt;</span>,
@@ -1078,7 +1082,7 @@
 	<span class="kw">use</span> <span class="ident">frame_election_provider_support</span>::{<span class="ident">PhragMMS</span>, <span class="ident">SequentialPhragmen</span>};
 
 	<span class="kw">match</span> <span class="ident">solver</span> {
-		<span class="ident">Solvers::SeqPhragmen</span> { <span class="ident">iterations</span> } <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="ident">Solvers::SeqPhragmen</span> { <span class="ident">iterations</span> } =&gt; {
 			<span class="ident">BalanceIterations::set</span>(<span class="kw-2">*</span><span class="ident">iterations</span>);
 			<span class="ident">mine_solution</span>::<span class="op">&lt;</span>
 				<span class="ident">T</span>,
@@ -1089,7 +1093,7 @@
 				<span class="op">&gt;</span>,
 			<span class="op">&gt;</span>(<span class="ident">ext</span>, <span class="ident">do_feasibility</span>)
 		},
-		<span class="ident">Solvers::PhragMMS</span> { <span class="ident">iterations</span> } <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="ident">Solvers::PhragMMS</span> { <span class="ident">iterations</span> } =&gt; {
 			<span class="ident">BalanceIterations::set</span>(<span class="kw-2">*</span><span class="ident">iterations</span>);
 			<span class="ident">mine_solution</span>::<span class="op">&lt;</span>
 				<span class="ident">T</span>,
@@ -1100,7 +1104,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
-<span class="kw">fn</span> <span class="ident">mine_dpos</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span>(<span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ext</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">mine_dpos</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span>(<span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ext</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="ident">ext</span>.<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
 		<span class="kw">use</span> <span class="ident">std::collections::BTreeMap</span>;
 		<span class="kw">use</span> <span class="ident">EPM::RoundSnapshot</span>;
@@ -1139,7 +1143,7 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">check_versions</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span> <span class="op">+</span> <span class="ident">EPM::Config</span><span class="op">&gt;</span>(
 	<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">WsClient</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">linked_version</span> <span class="op">=</span> <span class="ident">T::Version::get</span>();
 	<span class="kw">let</span> <span class="ident">on_chain_version</span> <span class="op">=</span>
 		<span class="ident">rpc_helpers::rpc</span>::<span class="op">&lt;</span><span class="ident">sp_version::RuntimeVersion</span><span class="op">&gt;</span>(<span class="ident">client</span>, <span class="string">&quot;state_getRuntimeVersion&quot;</span>, <span class="prelude-val">None</span>)
@@ -1176,8 +1180,8 @@
 			.<span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="ident">shared</span>.<span class="ident">uri</span>)
 			.<span class="kw">await</span>;
 		<span class="kw">match</span> <span class="ident">maybe_client</span> {
-			<span class="prelude-val">Ok</span>(<span class="ident">client</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span> <span class="ident">client</span>,
-			<span class="prelude-val">Err</span>(<span class="ident">why</span>) <span class="op">=</span><span class="op">&gt;</span> {
+			<span class="prelude-val">Ok</span>(<span class="ident">client</span>) =&gt; <span class="kw">break</span> <span class="ident">client</span>,
+			<span class="prelude-val">Err</span>(<span class="ident">why</span>) =&gt; {
 				<span class="macro">log::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="string">&quot;failed to connect to client due to {:?}, retrying soon..&quot;</span>,
@@ -1192,7 +1196,7 @@
 		.<span class="kw">await</span>
 		.<span class="ident">expect</span>(<span class="string">&quot;system_chain infallible; qed.&quot;</span>);
 	<span class="kw">match</span> <span class="ident">chain</span>.<span class="ident">to_lowercase</span>().<span class="ident">as_str</span>() {
-		<span class="string">&quot;polkadot&quot;</span> <span class="op">|</span> <span class="string">&quot;development&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="string">&quot;polkadot&quot;</span> <span class="op">|</span> <span class="string">&quot;development&quot;</span> =&gt; {
 			<span class="ident">sp_core::crypto::set_default_ss58_version</span>(
 				<span class="ident">sp_core::crypto::Ss58AddressFormatRegistry::PolkadotAccount</span>.<span class="ident">into</span>(),
 			);
@@ -1204,7 +1208,7 @@
 				<span class="ident">RUNTIME</span> <span class="op">=</span> <span class="ident">AnyRuntime::Polkadot</span>;
 			}
 		},
-		<span class="string">&quot;kusama&quot;</span> <span class="op">|</span> <span class="string">&quot;kusama-dev&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="string">&quot;kusama&quot;</span> <span class="op">|</span> <span class="string">&quot;kusama-dev&quot;</span> =&gt; {
 			<span class="ident">sp_core::crypto::set_default_ss58_version</span>(
 				<span class="ident">sp_core::crypto::Ss58AddressFormatRegistry::KusamaAccount</span>.<span class="ident">into</span>(),
 			);
@@ -1216,7 +1220,7 @@
 				<span class="ident">RUNTIME</span> <span class="op">=</span> <span class="ident">AnyRuntime::Kusama</span>;
 			}
 		},
-		<span class="string">&quot;westend&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="string">&quot;westend&quot;</span> =&gt; {
 			<span class="ident">sp_core::crypto::set_default_ss58_version</span>(
 				<span class="ident">sp_core::crypto::Ss58AddressFormatRegistry::PolkadotAccount</span>.<span class="ident">into</span>(),
 			);
@@ -1228,7 +1232,7 @@
 				<span class="ident">RUNTIME</span> <span class="op">=</span> <span class="ident">AnyRuntime::Westend</span>;
 			}
 		},
-		<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+		<span class="kw">_</span> =&gt; {
 			<span class="macro">eprintln!</span>(<span class="string">&quot;unexpected chain: {:?}&quot;</span>, <span class="ident">chain</span>);
 			<span class="kw">return</span>
 		},
@@ -1247,15 +1251,15 @@
 
 	<span class="kw">let</span> <span class="ident">outcome</span> <span class="op">=</span> <span class="macro">any_runtime!</span> {
 		<span class="kw">match</span> <span class="ident">command</span>.<span class="ident">clone</span>() {
-			<span class="ident">Command::Monitor</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">monitor_cmd</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>, <span class="ident">shared</span>, <span class="ident">c</span>, <span class="ident">signer_account</span>).<span class="kw">await</span>
+			<span class="ident">Command::Monitor</span>(<span class="ident">c</span>) =&gt; <span class="ident">monitor_cmd</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>, <span class="ident">shared</span>, <span class="ident">c</span>, <span class="ident">signer_account</span>).<span class="kw">await</span>
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
 					<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Monitor error: {:?}&quot;</span>, <span class="ident">e</span>);
 				}),
-			<span class="ident">Command::DryRun</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">dry_run_cmd</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>, <span class="ident">shared</span>, <span class="ident">c</span>, <span class="ident">signer_account</span>).<span class="kw">await</span>
+			<span class="ident">Command::DryRun</span>(<span class="ident">c</span>) =&gt; <span class="ident">dry_run_cmd</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>, <span class="ident">shared</span>, <span class="ident">c</span>, <span class="ident">signer_account</span>).<span class="kw">await</span>
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
 					<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;DryRun error: {:?}&quot;</span>, <span class="ident">e</span>);
 				}),
-			<span class="ident">Command::EmergencySolution</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">emergency_solution_cmd</span>(<span class="ident">shared</span>.<span class="ident">clone</span>(), <span class="ident">c</span>).<span class="kw">await</span>
+			<span class="ident">Command::EmergencySolution</span>(<span class="ident">c</span>) =&gt; <span class="ident">emergency_solution_cmd</span>(<span class="ident">shared</span>.<span class="ident">clone</span>(), <span class="ident">c</span>).<span class="kw">await</span>
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
 					<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;EmergencySolution error: {:?}&quot;</span>, <span class="ident">e</span>);
 				}),
@@ -1268,7 +1272,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-	<span class="kw">fn</span> <span class="ident">get_version</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sp_version::RuntimeVersion</span> {
+	<span class="kw">fn</span> <span class="ident">get_version</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">frame_system::Config</span><span class="op">&gt;</span>() -&gt; <span class="ident">sp_version::RuntimeVersion</span> {
 		<span class="ident">T::Version::get</span>()
 	}
 

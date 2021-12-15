@@ -374,7 +374,7 @@
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">oflags</span>: <span class="ident">OFlags</span>,
     <span class="ident">create_mode</span>: <span class="ident">Mode</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OwnedFd</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::openat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">oflags</span>, <span class="ident">create_mode</span>))
 }
@@ -394,12 +394,12 @@
     <span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>,
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">reuse</span>: <span class="ident">OsString</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">_readlinkat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">reuse</span>))
 }
 
-<span class="kw">fn</span> <span class="ident">_readlinkat</span>(<span class="ident">dirfd</span>: <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>, <span class="ident">reuse</span>: <span class="ident">OsString</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">_readlinkat</span>(<span class="ident">dirfd</span>: <span class="ident">BorrowedFd</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>, <span class="ident">reuse</span>: <span class="ident">OsString</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> {
     <span class="comment">// This code would benefit from having a better way to read into</span>
     <span class="comment">// uninitialized memory, but that requires `unsafe`.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">reuse</span>.<span class="ident">into_vec</span>();
@@ -428,7 +428,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/mkdirat.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/mkdirat.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkdirat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">mode</span>: <span class="ident">Mode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mkdirat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">mode</span>: <span class="ident">Mode</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::mkdirat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">mode</span>))
 }
@@ -449,7 +449,7 @@
     <span class="ident">new_dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">QFd</span>,
     <span class="ident">new_path</span>: <span class="ident">Q</span>,
     <span class="ident">flags</span>: <span class="ident">AtFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">old_dirfd</span> <span class="op">=</span> <span class="ident">old_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="kw">let</span> <span class="ident">new_dirfd</span> <span class="op">=</span> <span class="ident">new_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">old_path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">old_path</span><span class="op">|</span> {
@@ -468,7 +468,7 @@
 <span class="doccomment">/// [POSIX]: https://pubs.opengroup.org/onlinepubs/9699919799/functions/unlinkat.html</span>
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/unlinkat.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlinkat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">flags</span>: <span class="ident">AtFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlinkat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">flags</span>: <span class="ident">AtFlags</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::unlinkat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">flags</span>))
 }
@@ -488,7 +488,7 @@
     <span class="ident">old_path</span>: <span class="ident">P</span>,
     <span class="ident">new_dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">QFd</span>,
     <span class="ident">new_path</span>: <span class="ident">Q</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">old_dirfd</span> <span class="op">=</span> <span class="ident">old_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="kw">let</span> <span class="ident">new_dirfd</span> <span class="op">=</span> <span class="ident">new_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">old_path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">old_path</span><span class="op">|</span> {
@@ -514,7 +514,7 @@
     <span class="ident">new_dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">QFd</span>,
     <span class="ident">new_path</span>: <span class="ident">Q</span>,
     <span class="ident">flags</span>: <span class="ident">RenameFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">old_dirfd</span> <span class="op">=</span> <span class="ident">old_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="kw">let</span> <span class="ident">new_dirfd</span> <span class="op">=</span> <span class="ident">new_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">old_path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">old_path</span><span class="op">|</span> {
@@ -537,7 +537,7 @@
     <span class="ident">old_path</span>: <span class="ident">P</span>,
     <span class="ident">new_dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>,
     <span class="ident">new_path</span>: <span class="ident">Q</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">new_dirfd</span> <span class="op">=</span> <span class="ident">new_dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">old_path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">old_path</span><span class="op">|</span> {
         <span class="ident">new_path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">new_path</span><span class="op">|</span> <span class="ident">imp::syscalls::symlinkat</span>(<span class="ident">old_path</span>, <span class="ident">new_dirfd</span>, <span class="ident">new_path</span>))
@@ -554,7 +554,7 @@
 <span class="doccomment">/// [Linux]: https://man7.org/linux/man-pages/man2/fstatat.2.html</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;fstatat&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">flags</span>: <span class="ident">AtFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stat</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">statat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">flags</span>: <span class="ident">AtFlags</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stat</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::statat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">flags</span>))
 }
@@ -575,7 +575,7 @@
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">access</span>: <span class="ident">Access</span>,
     <span class="ident">flags</span>: <span class="ident">AtFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::accessat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">access</span>, <span class="ident">flags</span>))
 }
@@ -594,7 +594,7 @@
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">times</span>: <span class="kw-2">&amp;</span>[<span class="ident">Timespec</span>; <span class="number">2</span>],
     <span class="ident">flags</span>: <span class="ident">AtFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::utimensat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">times</span>, <span class="ident">flags</span>))
 }
@@ -616,7 +616,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;wasi&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;fchmodat&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chmodat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">mode</span>: <span class="ident">Mode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chmodat</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">path::Arg</span>, <span class="ident">Fd</span>: <span class="ident">AsFd</span><span class="op">&gt;</span>(<span class="ident">dirfd</span>: <span class="kw-2">&amp;</span><span class="ident">Fd</span>, <span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">mode</span>: <span class="ident">Mode</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::chmodat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">mode</span>))
 }
@@ -634,7 +634,7 @@
     <span class="ident">dst_dir</span>: <span class="kw-2">&amp;</span><span class="ident">DstFd</span>,
     <span class="ident">dst</span>: <span class="ident">P</span>,
     <span class="ident">flags</span>: <span class="ident">CloneFlags</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">srcfd</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">as_fd</span>();
     <span class="kw">let</span> <span class="ident">dst_dirfd</span> <span class="op">=</span> <span class="ident">dst_dir</span>.<span class="ident">as_fd</span>();
     <span class="ident">dst</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">dst</span><span class="op">|</span> {
@@ -662,7 +662,7 @@
     <span class="ident">path</span>: <span class="ident">P</span>,
     <span class="ident">mode</span>: <span class="ident">Mode</span>,
     <span class="ident">dev</span>: <span class="ident">Dev</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">dirfd</span> <span class="op">=</span> <span class="ident">dirfd</span>.<span class="ident">as_fd</span>();
     <span class="ident">path</span>.<span class="ident">into_with_c_str</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">imp::syscalls::mknodat</span>(<span class="ident">dirfd</span>, <span class="ident">path</span>, <span class="ident">mode</span>, <span class="ident">dev</span>))
 }

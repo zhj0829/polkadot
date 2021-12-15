@@ -230,17 +230,17 @@
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="ident">EM_CURRENT</span>: <span class="ident">u16</span> <span class="op">=</span> <span class="number">243</span>; <span class="comment">// EM_RISCV</span>
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ELF_ST_VISIBILITY</span>(<span class="ident">o</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ELF_ST_VISIBILITY</span>(<span class="ident">o</span>: <span class="ident">u8</span>) -&gt; <span class="ident">u8</span> {
     <span class="ident">o</span> <span class="op">&amp;</span> <span class="number">0x03</span>
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ELF_ST_BIND</span>(<span class="ident">val</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ELF_ST_BIND</span>(<span class="ident">val</span>: <span class="ident">u8</span>) -&gt; <span class="ident">u8</span> {
     <span class="ident">val</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">4</span>
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ELF_ST_TYPE</span>(<span class="ident">val</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">ELF_ST_TYPE</span>(<span class="ident">val</span>: <span class="ident">u8</span>) -&gt; <span class="ident">u8</span> {
     <span class="ident">val</span> <span class="op">&amp;</span> <span class="number">0xf</span>
 }
 

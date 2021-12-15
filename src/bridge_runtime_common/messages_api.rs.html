@@ -78,7 +78,7 @@
 	<span class="ident">lane</span>: <span class="ident">LaneId</span>,
 	<span class="ident">begin</span>: <span class="ident">MessageNonce</span>,
 	<span class="ident">end</span>: <span class="ident">MessageNonce</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MessageDetails</span><span class="op">&lt;</span><span class="ident">Runtime::OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span>
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MessageDetails</span><span class="op">&lt;</span><span class="ident">Runtime::OutboundMessageFee</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Runtime</span>: <span class="ident">pallet_bridge_messages::Config</span><span class="op">&lt;</span><span class="ident">MessagesPalletInstance</span><span class="op">&gt;</span>,
 	<span class="ident">MessagesPalletInstance</span>: <span class="lifetime">&#39;static</span>,
