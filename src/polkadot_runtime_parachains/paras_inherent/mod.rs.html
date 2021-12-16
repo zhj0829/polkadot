@@ -1040,6 +1040,80 @@
 <span id="1040">1040</span>
 <span id="1041">1041</span>
 <span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+<span id="1077">1077</span>
+<span id="1078">1078</span>
+<span id="1079">1079</span>
+<span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
+<span id="1087">1087</span>
+<span id="1088">1088</span>
+<span id="1089">1089</span>
+<span id="1090">1090</span>
+<span id="1091">1091</span>
+<span id="1092">1092</span>
+<span id="1093">1093</span>
+<span id="1094">1094</span>
+<span id="1095">1095</span>
+<span id="1096">1096</span>
+<span id="1097">1097</span>
+<span id="1098">1098</span>
+<span id="1099">1099</span>
+<span id="1100">1100</span>
+<span id="1101">1101</span>
+<span id="1102">1102</span>
+<span id="1103">1103</span>
+<span id="1104">1104</span>
+<span id="1105">1105</span>
+<span id="1106">1106</span>
+<span id="1107">1107</span>
+<span id="1108">1108</span>
+<span id="1109">1109</span>
+<span id="1110">1110</span>
+<span id="1111">1111</span>
+<span id="1112">1112</span>
+<span id="1113">1113</span>
+<span id="1114">1114</span>
+<span id="1115">1115</span>
+<span id="1116">1116</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1097,6 +1171,7 @@
 	<span class="ident">vec::Vec</span>,
 };
 
+<span class="kw">use</span> <span class="ident">polkadot_runtime_metrics</span>::{<span class="ident">Counter</span>, <span class="ident">CounterVec</span>};
 <span class="kw">mod</span> <span class="ident">misc</span>;
 <span class="kw">mod</span> <span class="ident">weights</span>;
 
@@ -1302,13 +1377,41 @@
 			<span class="ident">parent_header</span>,
 			<span class="kw-2">mut</span> <span class="ident">disputes</span>,
 		} <span class="op">=</span> <span class="ident">data</span>;
+		<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-metrics&quot;</span>)]</span>
+		<span class="ident">sp_io::init_tracing</span>();
 
-		<span class="kw">let</span> <span class="ident">parent_header_hash</span> <span class="op">=</span> <span class="ident">parent_header</span>.<span class="ident">hash</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight_metric</span> <span class="op">=</span> <span class="ident">CounterVec::new</span>(
+			<span class="string">&quot;parachain_inherent_data_weight&quot;</span>,
+			<span class="string">&quot;Inherent data weight before and after filtering&quot;</span>,
+			<span class="kw-2">&amp;</span>[<span class="string">&quot;when&quot;</span>],
+		);
+
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bitfields_processed_metric</span> <span class="op">=</span> <span class="ident">Counter::new</span>(
+			<span class="string">&quot;parachain_inherent_data_bitfields_processed&quot;</span>,
+			<span class="string">&quot;Counts the number of bitfields processed in `enter_inner`.&quot;</span>,
+		);
+
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">candidates_processed_metric</span> <span class="op">=</span> <span class="ident">CounterVec::new</span>(
+			<span class="string">&quot;parachain_inherent_data_candidates_processed&quot;</span>,
+			<span class="string">&quot;Counts the number of parachain block candidates processed in `enter_inner`.&quot;</span>,
+			<span class="kw-2">&amp;</span>[<span class="string">&quot;category&quot;</span>],
+		);
+
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dispute_sets_processed_metric</span> <span class="op">=</span> <span class="ident">CounterVec::new</span>(
+			<span class="string">&quot;parachain_inherent_data_dispute_sets_processed&quot;</span>,
+			<span class="string">&quot;Counts the number of dispute statements sets processed in `enter_inner`.&quot;</span>,
+			<span class="kw-2">&amp;</span>[<span class="string">&quot;category&quot;</span>],
+		);
+
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">disputes_included_metric</span> <span class="op">=</span> <span class="ident">Counter::new</span>(
+			<span class="string">&quot;parachain_inherent_data_disputes_included&quot;</span>,
+			<span class="string">&quot;Counts the number of dispute statements sets included in a block in `enter_inner`.&quot;</span>,
+		);
 
 		<span class="macro">log::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="string">&quot;[enter_inner] parent_header={:?} bitfields.len(): {}, backed_candidates.len(): {}, disputes.len(): {}&quot;</span>,
-			<span class="ident">parent_header_hash</span>,
+			<span class="ident">parent_header</span>.<span class="ident">hash</span>(),
 			<span class="ident">signed_bitfields</span>.<span class="ident">len</span>(),
 			<span class="ident">backed_candidates</span>.<span class="ident">len</span>(),
 			<span class="ident">disputes</span>.<span class="ident">len</span>()
@@ -1317,7 +1420,7 @@
 		<span class="comment">// Check that the submitted parent header indeed corresponds to the previous block hash.</span>
 		<span class="kw">let</span> <span class="ident">parent_hash</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::parent_hash</span>();
 		<span class="macro">ensure!</span>(
-			<span class="ident">parent_header_hash</span>.<span class="ident">as_ref</span>() <span class="op">==</span> <span class="ident">parent_hash</span>.<span class="ident">as_ref</span>(),
+			<span class="ident">parent_header</span>.<span class="ident">hash</span>().<span class="ident">as_ref</span>() <span class="op">==</span> <span class="ident">parent_hash</span>.<span class="ident">as_ref</span>(),
 			<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidParentHeader</span>,
 		);
 
@@ -1328,6 +1431,10 @@
 		<span class="kw">let</span> <span class="ident">disputes_weight</span> <span class="op">=</span> <span class="ident">dispute_statements_weight</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">disputes</span>);
 
 		<span class="kw">let</span> <span class="ident">max_block_weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::BlockWeights::get</span>().<span class="ident">max_block</span>;
+
+		<span class="ident">weight_metric</span>
+			.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;before-filter&quot;</span>])
+			.<span class="ident">inc_by</span>(<span class="ident">candidate_weight</span> <span class="op">+</span> <span class="ident">bitfields_weight</span> <span class="op">+</span> <span class="ident">disputes_weight</span>);
 
 		<span class="comment">// Potentially trim inherent data to ensure processing will be within weight limits</span>
 		<span class="kw">let</span> <span class="ident">total_weight</span> <span class="op">=</span> {
@@ -1375,10 +1482,22 @@
 			<span class="comment">// Note that `provide_multi_dispute_data` will iterate, verify, and import each</span>
 			<span class="comment">// dispute; so the input here must be reasonably bounded.</span>
 			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">T::DisputesHandler::provide_multi_dispute_data</span>(<span class="ident">disputes</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
+			<span class="ident">dispute_sets_processed_metric</span>
+				.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;imported&quot;</span>])
+				.<span class="ident">inc_by</span>(<span class="ident">disputes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
+
 			<span class="kw">if</span> <span class="ident">T::DisputesHandler::is_frozen</span>() {
+				<span class="comment">// Relay chain freeze, at this point we will not include any parachain blocks.</span>
+				<span class="ident">dispute_sets_processed_metric</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;frozen&quot;</span>]).<span class="ident">inc</span>();
+
 				<span class="comment">// The relay chain we are currently on is invalid. Proceed no further on parachains.</span>
 				<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">dispute_statements_weight</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">disputes</span>)).<span class="ident">into</span>())
 			}
+
+			<span class="comment">// Process the dispute sets of the current session.</span>
+			<span class="ident">dispute_sets_processed_metric</span>
+				.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;current&quot;</span>])
+				.<span class="ident">inc_by</span>(<span class="ident">new_current_dispute_sets</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">freed_disputed</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">new_current_dispute_sets</span>.<span class="ident">is_empty</span>() {
 				<span class="kw">let</span> <span class="ident">concluded_invalid_disputes</span> <span class="op">=</span> <span class="ident">new_current_dispute_sets</span>
@@ -1389,11 +1508,17 @@
 					.<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">candidate</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">candidate</span>)
 					.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="ident">CandidateHash</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
-				<span class="kw">let</span> <span class="ident">freed_disputed</span> <span class="op">=</span>
+				<span class="comment">// Count invalid dispute sets.</span>
+				<span class="ident">dispute_sets_processed_metric</span>
+					.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;concluded_invalid&quot;</span>])
+					.<span class="ident">inc_by</span>(<span class="ident">concluded_invalid_disputes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
+
+				<span class="kw">let</span> <span class="ident">freed_disputed</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span>
 					<span class="op">&lt;</span><span class="ident">inclusion::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::collect_disputed</span>(<span class="kw-2">&amp;</span><span class="ident">concluded_invalid_disputes</span>)
 						.<span class="ident">into_iter</span>()
 						.<span class="ident">map</span>(<span class="op">|</span><span class="ident">core</span><span class="op">|</span> (<span class="ident">core</span>, <span class="ident">FreedReason::Concluded</span>))
 						.<span class="ident">collect</span>();
+
 				<span class="ident">freed_disputed</span>
 			} <span class="kw">else</span> {
 				<span class="ident">Vec::new</span>()
@@ -1416,6 +1541,7 @@
 			<span class="ident">disputed_bitfield</span>
 		};
 
+		<span class="ident">bitfields_processed_metric</span>.<span class="ident">inc_by</span>(<span class="ident">signed_bitfields</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 		<span class="comment">// Process new availability bitfields, yielding any availability cores whose</span>
 		<span class="comment">// work has now concluded.</span>
 		<span class="kw">let</span> <span class="ident">freed_concluded</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">inclusion::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::process_bitfields</span>(
@@ -1430,11 +1556,17 @@
 			<span class="ident">T::DisputesHandler::note_included</span>(<span class="ident">current_session</span>, <span class="kw-2">*</span><span class="ident">candidate_hash</span>, <span class="ident">now</span>);
 		}
 
+		<span class="ident">candidates_processed_metric</span>
+			.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;included&quot;</span>])
+			.<span class="ident">inc_by</span>(<span class="ident">freed_concluded</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 		<span class="kw">let</span> <span class="ident">freed</span> <span class="op">=</span> <span class="ident">collect_all_freed_cores</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">freed_concluded</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>());
 
 		<span class="op">&lt;</span><span class="ident">scheduler::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::clear</span>();
 		<span class="op">&lt;</span><span class="ident">scheduler::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::schedule</span>(<span class="ident">freed</span>, <span class="ident">now</span>);
 
+		<span class="ident">candidates_processed_metric</span>
+			.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;total&quot;</span>])
+			.<span class="ident">inc_by</span>(<span class="ident">backed_candidates</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 		<span class="kw">let</span> <span class="ident">scheduled</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">scheduler::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::scheduled</span>();
 		<span class="kw">let</span> <span class="ident">backed_candidates</span> <span class="op">=</span> <span class="ident">sanitize_backed_candidates</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">_</span><span class="op">&gt;</span>(
 			<span class="ident">parent_hash</span>,
@@ -1445,6 +1577,9 @@
 			},
 			<span class="kw-2">&amp;</span><span class="ident">scheduled</span>[..],
 		);
+		<span class="ident">candidates_processed_metric</span>
+			.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;sanitized&quot;</span>])
+			.<span class="ident">inc_by</span>(<span class="ident">backed_candidates</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 
 		<span class="comment">// Process backed candidates according to scheduled cores.</span>
 		<span class="kw">let</span> <span class="ident">parent_storage_root</span> <span class="op">=</span> <span class="ident">parent_header</span>.<span class="ident">state_root</span>().<span class="ident">clone</span>();
@@ -1458,6 +1593,8 @@
 			<span class="op">&lt;</span><span class="ident">scheduler::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::group_validators</span>,
 			<span class="ident">full_check</span>,
 		)<span class="question-mark">?</span>;
+
+		<span class="ident">disputes_included_metric</span>.<span class="ident">inc_by</span>(<span class="ident">disputes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 
 		<span class="comment">// The number of disputes included in a block is</span>
 		<span class="comment">// limited by the weight as well as the number of candidate blocks.</span>
@@ -1473,6 +1610,8 @@
 		<span class="comment">// Give some time slice to dispatch pending upward messages.</span>
 		<span class="comment">// this is max config.ump_service_total_weight</span>
 		<span class="kw">let</span> <span class="ident">_ump_weight</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">ump::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::process_pending_upward_messages</span>();
+
+		<span class="ident">weight_metric</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;after-filter&quot;</span>]).<span class="ident">inc_by</span>(<span class="ident">total_weight</span>);
 
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">total_weight</span>).<span class="ident">into</span>())
 	}
@@ -1842,6 +1981,12 @@
 	<span class="ident">validators</span>: <span class="kw-2">&amp;</span>[<span class="ident">ValidatorId</span>],
 	<span class="ident">full_check</span>: <span class="ident">FullCheck</span>,
 ) -&gt; <span class="ident">UncheckedSignedAvailabilityBitfields</span> {
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bitfields_signature_checks_metric</span> <span class="op">=</span> <span class="ident">CounterVec::new</span>(
+		<span class="string">&quot;create_inherent_bitfields_signature_checks&quot;</span>,
+		<span class="string">&quot;Counts the number of bitfields signature checked in `enter_inner`.&quot;</span>,
+		<span class="kw-2">&amp;</span>[<span class="string">&quot;validity&quot;</span>],
+	);
+
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bitfields</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">unchecked_bitfields</span>.<span class="ident">len</span>());
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">last_index</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidatorIndex</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -1907,12 +2052,15 @@
 		<span class="kw">let</span> <span class="ident">validator_public</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">validators</span>[<span class="ident">validator_index</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>];
 
 		<span class="kw">if</span> <span class="kw">let</span> <span class="ident">FullCheck::Yes</span> <span class="op">=</span> <span class="ident">full_check</span> {
+			<span class="comment">// Validate bitfield signature.</span>
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">signed_bitfield</span>) <span class="op">=</span>
 				<span class="ident">unchecked_bitfield</span>.<span class="ident">try_into_checked</span>(<span class="kw-2">&amp;</span><span class="ident">signing_context</span>, <span class="ident">validator_public</span>)
 			{
 				<span class="ident">bitfields</span>.<span class="ident">push</span>(<span class="ident">signed_bitfield</span>.<span class="ident">into_unchecked</span>());
+				<span class="ident">bitfields_signature_checks_metric</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;valid&quot;</span>]).<span class="ident">inc</span>();
 			} <span class="kw">else</span> {
 				<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Invalid bitfield signature&quot;</span>);
+				<span class="ident">bitfields_signature_checks_metric</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;invalid&quot;</span>]).<span class="ident">inc</span>();
 			};
 		} <span class="kw">else</span> {
 			<span class="ident">bitfields</span>.<span class="ident">push</span>(<span class="ident">unchecked_bitfield</span>);

@@ -1875,6 +1875,75 @@
 <span id="1875">1875</span>
 <span id="1876">1876</span>
 <span id="1877">1877</span>
+<span id="1878">1878</span>
+<span id="1879">1879</span>
+<span id="1880">1880</span>
+<span id="1881">1881</span>
+<span id="1882">1882</span>
+<span id="1883">1883</span>
+<span id="1884">1884</span>
+<span id="1885">1885</span>
+<span id="1886">1886</span>
+<span id="1887">1887</span>
+<span id="1888">1888</span>
+<span id="1889">1889</span>
+<span id="1890">1890</span>
+<span id="1891">1891</span>
+<span id="1892">1892</span>
+<span id="1893">1893</span>
+<span id="1894">1894</span>
+<span id="1895">1895</span>
+<span id="1896">1896</span>
+<span id="1897">1897</span>
+<span id="1898">1898</span>
+<span id="1899">1899</span>
+<span id="1900">1900</span>
+<span id="1901">1901</span>
+<span id="1902">1902</span>
+<span id="1903">1903</span>
+<span id="1904">1904</span>
+<span id="1905">1905</span>
+<span id="1906">1906</span>
+<span id="1907">1907</span>
+<span id="1908">1908</span>
+<span id="1909">1909</span>
+<span id="1910">1910</span>
+<span id="1911">1911</span>
+<span id="1912">1912</span>
+<span id="1913">1913</span>
+<span id="1914">1914</span>
+<span id="1915">1915</span>
+<span id="1916">1916</span>
+<span id="1917">1917</span>
+<span id="1918">1918</span>
+<span id="1919">1919</span>
+<span id="1920">1920</span>
+<span id="1921">1921</span>
+<span id="1922">1922</span>
+<span id="1923">1923</span>
+<span id="1924">1924</span>
+<span id="1925">1925</span>
+<span id="1926">1926</span>
+<span id="1927">1927</span>
+<span id="1928">1928</span>
+<span id="1929">1929</span>
+<span id="1930">1930</span>
+<span id="1931">1931</span>
+<span id="1932">1932</span>
+<span id="1933">1933</span>
+<span id="1934">1934</span>
+<span id="1935">1935</span>
+<span id="1936">1936</span>
+<span id="1937">1937</span>
+<span id="1938">1938</span>
+<span id="1939">1939</span>
+<span id="1940">1940</span>
+<span id="1941">1941</span>
+<span id="1942">1942</span>
+<span id="1943">1943</span>
+<span id="1944">1944</span>
+<span id="1945">1945</span>
+<span id="1946">1946</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1983,6 +2052,11 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">RococoChainSpec</span> <span class="op">=</span> <span class="ident">service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">RococoGenesisExt</span>, <span class="ident">Extensions</span><span class="op">&gt;</span>;
 
+<span class="doccomment">/// The `ChainSpec` parameterized for the `versi` runtime.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// As of now `Versi` will just be a clone of `Rococo`, until we need it to differ.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">VersiChainSpec</span> <span class="op">=</span> <span class="ident">RococoChainSpec</span>;
+
 <span class="doccomment">/// The `ChainSpec` parameterized for the rococo runtime.</span>
 <span class="comment">// Dummy chain spec, but that is fine when we don&#39;t have the native runtime.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>))]</span>
@@ -2026,6 +2100,10 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rococo_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 	<span class="ident">RococoChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/rococo.json&quot;</span>)[..])
+}
+
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">versi_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">VersiChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="ident">VersiChainSpec::from_json_bytes</span>(<span class="kw-2">&amp;</span><span class="macro">include_bytes!</span>(<span class="string">&quot;../res/versi.json&quot;</span>)[..])
 }
 
 <span class="doccomment">/// This is a temporary testnet that uses the same runtime as rococo.</span>
@@ -3567,6 +3645,28 @@
 	))
 }
 
+<span class="doccomment">/// `Versi` development config (single validator Alice)</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">versi_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Versi development wasm not available&quot;</span>)<span class="question-mark">?</span>;
+
+	<span class="prelude-val">Ok</span>(<span class="ident">RococoChainSpec::from_genesis</span>(
+		<span class="string">&quot;Development&quot;</span>,
+		<span class="string">&quot;versi_dev&quot;</span>,
+		<span class="ident">ChainType::Development</span>,
+		<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">RococoGenesisExt</span> {
+			<span class="ident">runtime_genesis_config</span>: <span class="ident">rococo_development_config_genesis</span>(<span class="ident">wasm_binary</span>),
+			<span class="comment">// Use 1 minute session length.</span>
+			<span class="ident">session_length_in_blocks</span>: <span class="prelude-val">Some</span>(<span class="number">10</span>),
+		},
+		<span class="macro">vec!</span>[],
+		<span class="prelude-val">None</span>,
+		<span class="prelude-val">Some</span>(<span class="string">&quot;versi&quot;</span>),
+		<span class="prelude-val">None</span>,
+		<span class="ident">Default::default</span>(),
+	))
+}
+
 <span class="doccomment">/// Wococo development config (single validator Alice)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_development_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
@@ -3731,6 +3831,22 @@
 	)
 }
 
+<span class="doccomment">/// `Versi` is a temporary testnet that uses the same runtime as rococo.</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">versi_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
+	<span class="ident">rococo_testnet_genesis</span>(
+		<span class="ident">wasm_binary</span>,
+		<span class="macro">vec!</span>[
+			<span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Alice&quot;</span>),
+			<span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Bob&quot;</span>),
+			<span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Charlie&quot;</span>),
+			<span class="ident">get_authority_keys_from_seed</span>(<span class="string">&quot;Dave&quot;</span>),
+		],
+		<span class="ident">get_account_id_from_seed</span>::<span class="op">&lt;</span><span class="ident">sr25519::Public</span><span class="op">&gt;</span>(<span class="string">&quot;Alice&quot;</span>),
+		<span class="prelude-val">None</span>,
+	)
+}
+
 <span class="doccomment">/// Wococo local testnet config (multivalidator Alice + Bob + Charlie + Dave)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wococo_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
@@ -3742,6 +3858,28 @@
 		<span class="ident">ChainType::Local</span>,
 		<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">RococoGenesisExt</span> {
 			<span class="ident">runtime_genesis_config</span>: <span class="ident">wococo_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>),
+			<span class="comment">// Use 1 minute session length.</span>
+			<span class="ident">session_length_in_blocks</span>: <span class="prelude-val">Some</span>(<span class="number">10</span>),
+		},
+		<span class="macro">vec!</span>[],
+		<span class="prelude-val">None</span>,
+		<span class="prelude-val">Some</span>(<span class="ident">DEFAULT_PROTOCOL_ID</span>),
+		<span class="prelude-val">None</span>,
+		<span class="ident">Default::default</span>(),
+	))
+}
+
+<span class="doccomment">/// `Versi` local testnet config (multivalidator Alice + Bob + Charlie + Dave)</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">versi_local_testnet_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RococoChainSpec</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+	<span class="kw">let</span> <span class="ident">wasm_binary</span> <span class="op">=</span> <span class="ident">rococo::WASM_BINARY</span>.<span class="ident">ok_or</span>(<span class="string">&quot;Versi development wasm not available&quot;</span>)<span class="question-mark">?</span>;
+
+	<span class="prelude-val">Ok</span>(<span class="ident">RococoChainSpec::from_genesis</span>(
+		<span class="string">&quot;Versi Local Testnet&quot;</span>,
+		<span class="string">&quot;versi_local_testnet&quot;</span>,
+		<span class="ident">ChainType::Local</span>,
+		<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">RococoGenesisExt</span> {
+			<span class="ident">runtime_genesis_config</span>: <span class="ident">versi_local_testnet_genesis</span>(<span class="ident">wasm_binary</span>),
 			<span class="comment">// Use 1 minute session length.</span>
 			<span class="ident">session_length_in_blocks</span>: <span class="prelude-val">Some</span>(<span class="number">10</span>),
 		},

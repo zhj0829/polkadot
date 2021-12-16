@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;49a4b18&#x2F;primitives&#x2F;version&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../sp_version/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;fb08d15&#x2F;primitives&#x2F;version&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../sp_version/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -350,6 +350,40 @@
 <span id="350">350</span>
 <span id="351">351</span>
 <span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2017-2021 Parity Technologies (UK) Ltd.</span>
@@ -367,7 +401,21 @@
 <span class="comment">// See the License for the specific language governing permissions and</span>
 <span class="comment">// limitations under the License.</span>
 
-<span class="doccomment">//! Version module for the Substrate runtime; Provides a function that returns the runtime version.</span>
+<span class="doccomment">//! Substrate runtime version</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Each runtime that should be executed by a Substrate based node needs to have a runtime version.</span>
+<span class="doccomment">//! The runtime version is defined by [`RuntimeVersion`]. The runtime version is used to</span>
+<span class="doccomment">//! distinguish different runtimes. The most important field is the</span>
+<span class="doccomment">//! [`spec_version`](RuntimeVersion::spec_version). The `spec_version` should be increased in a</span>
+<span class="doccomment">//! runtime when a new runtime build includes breaking changes that would make other runtimes unable</span>
+<span class="doccomment">//! to import blocks built by this runtime or vice-versa, where the new runtime could not import</span>
+<span class="doccomment">//! blocks built by the old runtime. The runtime version also carries other version information</span>
+<span class="doccomment">//! about the runtime, see [`RuntimeVersion`] for more information on this.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Substrate will fetch the runtime version from a `wasm` blob by first checking the</span>
+<span class="doccomment">//! `runtime_version` link section or calling the `Core::version` runtime api. The link section can</span>
+<span class="doccomment">//! be generated in the runtime using the [`runtime_version`] attribute. The `Core` runtime api also</span>
+<span class="doccomment">//! needs to be implemented for the runtime using `impl_runtime_apis!`.</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 
@@ -456,7 +504,23 @@
 <span class="doccomment">/// The id is generated by hashing the name of the runtime api with BLAKE2 using a hash size</span>
 <span class="doccomment">/// of 8 bytes.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The name of the runtime api is the name of the trait when using `decl_runtime_apis!` macro.</span>
+<span class="doccomment">/// The name of the runtime api is the name of the trait when using `decl_runtime_apis!` macro. So,</span>
+<span class="doccomment">/// in the following runtime api declaration:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```nocompile</span>
+<span class="doccomment">/// decl_runtime_apis! {</span>
+<span class="doccomment">///     trait TestApi {</span>
+<span class="doccomment">///         fn do_test();</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The name of the trait would be `TestApi` and would be taken as input to the BLAKE2 hash</span>
+<span class="doccomment">/// function.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// As Rust supports renaming of traits, the name of a runtime api given to `impl_runtime_apis!`</span>
+<span class="doccomment">/// doesn&#39;t need to be the same as in `decl_runtime_apis!`, but only the name in</span>
+<span class="doccomment">/// `decl_runtime_apis!` is the important one!</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ApiId</span> <span class="op">=</span> [<span class="ident">u8</span>; <span class="number">8</span>];
 
 <span class="doccomment">/// A vector of pairs of `ApiId` and a `u32` for version.</span>
@@ -568,12 +632,16 @@
 	}
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
+<span class="doccomment">/// The version of the native runtime.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In contrast to the bare [`RuntimeVersion`] this also carries a list of `spec_version`s of</span>
+<span class="doccomment">/// runtimes this native runtime can be used to author blocks for.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NativeVersion</span> {
 	<span class="doccomment">/// Basic runtime version info.</span>
 	<span class="kw">pub</span> <span class="ident">runtime_version</span>: <span class="ident">RuntimeVersion</span>,
-	<span class="doccomment">/// Authoring runtimes that this native runtime supports.</span>
+	<span class="doccomment">/// Authoring runtimes (`spec_version`s) that this native runtime supports.</span>
 	<span class="kw">pub</span> <span class="ident">can_author_with</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
 }
 

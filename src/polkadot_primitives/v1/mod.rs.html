@@ -1485,6 +1485,15 @@
 <span id="1485">1485</span>
 <span id="1486">1486</span>
 <span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
+<span id="1493">1493</span>
+<span id="1494">1494</span>
+<span id="1495">1495</span>
+<span id="1496">1496</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1549,6 +1558,12 @@
 <span class="doccomment">/// Signed data.</span>
 <span class="kw">mod</span> <span class="ident">signed</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">signed</span>::{<span class="ident">EncodeAs</span>, <span class="ident">Signed</span>, <span class="ident">UncheckedSigned</span>};
+
+<span class="kw">mod</span> <span class="ident">metrics</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">metrics</span>::{
+	<span class="ident">RuntimeMetricLabel</span>, <span class="ident">RuntimeMetricLabelValue</span>, <span class="ident">RuntimeMetricLabelValues</span>, <span class="ident">RuntimeMetricLabels</span>,
+	<span class="ident">RuntimeMetricOp</span>, <span class="ident">RuntimeMetricRegisterParams</span>, <span class="ident">RuntimeMetricUpdate</span>,
+};
 
 <span class="doccomment">/// A declarations of storage keys where an external observer can find some interesting data.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">well_known_keys</span> {
@@ -1722,6 +1737,7 @@
 <span class="doccomment">/// * initial genesis for the Parachains configuration</span>
 <span class="doccomment">/// * checking updates to this stored runtime configuration do not exceed this limit</span>
 <span class="doccomment">/// * when detecting a code decompression bomb in the client</span>
+<span class="comment">// NOTE: This value is used in the runtime so be careful when changing it.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_CODE_SIZE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">3</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>;
 
 <span class="doccomment">/// Maximum head data size we support right now.</span>
@@ -1729,6 +1745,7 @@
 <span class="doccomment">/// Used for:</span>
 <span class="doccomment">/// * initial genesis for the Parachains configuration</span>
 <span class="doccomment">/// * checking updates to this stored runtime configuration do not exceed this limit</span>
+<span class="comment">// NOTE: This value is used in the runtime so be careful when changing it.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_HEAD_DATA_SIZE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>;
 
 <span class="doccomment">/// Maximum PoV size we support right now.</span>
@@ -1737,6 +1754,7 @@
 <span class="doccomment">/// * initial genesis for the Parachains configuration</span>
 <span class="doccomment">/// * checking updates to this stored runtime configuration do not exceed this limit</span>
 <span class="doccomment">/// * when detecting a PoV decompression bomb in the client</span>
+<span class="comment">// NOTE: This value is used in the runtime so be careful when changing it.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_POV_SIZE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">5</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>;
 
 <span class="comment">// The public key of a keypair used by a validator for determining assignments</span>

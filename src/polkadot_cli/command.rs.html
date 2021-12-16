@@ -489,6 +489,27 @@
 <span id="489">489</span>
 <span id="490">490</span>
 <span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -562,7 +583,7 @@
 	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">id</span> <span class="op">==</span> <span class="string">&quot;&quot;</span> {
 			<span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">get_exec_name</span>().<span class="ident">unwrap_or_default</span>();
-			[<span class="string">&quot;polkadot&quot;</span>, <span class="string">&quot;kusama&quot;</span>, <span class="string">&quot;westend&quot;</span>, <span class="string">&quot;rococo&quot;</span>]
+			[<span class="string">&quot;polkadot&quot;</span>, <span class="string">&quot;kusama&quot;</span>, <span class="string">&quot;westend&quot;</span>, <span class="string">&quot;rococo&quot;</span>, <span class="string">&quot;versi&quot;</span>]
 				.<span class="ident">iter</span>()
 				.<span class="ident">cloned</span>()
 				.<span class="ident">find</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">chain</span><span class="op">|</span> <span class="ident">n</span>.<span class="ident">starts_with</span>(<span class="ident">chain</span>))
@@ -616,6 +637,14 @@
 			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>))]</span>
 			<span class="ident">name</span> <span class="kw">if</span> <span class="ident">name</span>.<span class="ident">starts_with</span>(<span class="string">&quot;wococo-&quot;</span>) =&gt;
 				<span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;`{}` only supported with `rococo-native` feature enabled.&quot;</span>, <span class="ident">name</span>))<span class="question-mark">?</span>,
+			<span class="string">&quot;versi&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">service::chain_spec::versi_config</span>()<span class="question-mark">?</span>),
+			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
+			<span class="string">&quot;versi-dev&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">service::chain_spec::versi_development_config</span>()<span class="question-mark">?</span>),
+			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
+			<span class="string">&quot;versi-local&quot;</span> =&gt; <span class="ident">Box::new</span>(<span class="ident">service::chain_spec::versi_local_testnet_config</span>()<span class="question-mark">?</span>),
+			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>))]</span>
+			<span class="ident">name</span> <span class="kw">if</span> <span class="ident">name</span>.<span class="ident">starts_with</span>(<span class="string">&quot;versi-&quot;</span>) =&gt;
+				<span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;`{}` only supported with `rococo-native` feature enabled.&quot;</span>, <span class="ident">name</span>))<span class="question-mark">?</span>,
 			<span class="ident">path</span> =&gt; {
 				<span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">std::path::PathBuf::from</span>(<span class="ident">path</span>);
 
@@ -624,7 +653,11 @@
 
 				<span class="comment">// When `force_*` is given or the file name starts with the name of one of the known chains,</span>
 				<span class="comment">// we use the chain spec for the specific chain.</span>
-				<span class="kw">if</span> <span class="self">self</span>.<span class="ident">run</span>.<span class="ident">force_rococo</span> <span class="op">|</span><span class="op">|</span> <span class="ident">chain_spec</span>.<span class="ident">is_rococo</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">chain_spec</span>.<span class="ident">is_wococo</span>() {
+				<span class="kw">if</span> <span class="self">self</span>.<span class="ident">run</span>.<span class="ident">force_rococo</span> <span class="op">|</span><span class="op">|</span>
+					<span class="ident">chain_spec</span>.<span class="ident">is_rococo</span>() <span class="op">|</span><span class="op">|</span>
+					<span class="ident">chain_spec</span>.<span class="ident">is_wococo</span>() <span class="op">|</span><span class="op">|</span>
+					<span class="ident">chain_spec</span>.<span class="ident">is_versi</span>()
+				{
 					<span class="ident">Box::new</span>(<span class="ident">service::RococoChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>)
 				} <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">run</span>.<span class="ident">force_kusama</span> <span class="op">|</span><span class="op">|</span> <span class="ident">chain_spec</span>.<span class="ident">is_kusama</span>() {
 					<span class="ident">Box::new</span>(<span class="ident">service::KusamaChainSpec::from_json_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>)
@@ -649,7 +682,7 @@
 		}
 
 		<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
-		<span class="kw">if</span> <span class="ident">spec</span>.<span class="ident">is_rococo</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">spec</span>.<span class="ident">is_wococo</span>() {
+		<span class="kw">if</span> <span class="ident">spec</span>.<span class="ident">is_rococo</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">spec</span>.<span class="ident">is_wococo</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">spec</span>.<span class="ident">is_versi</span>() {
 			<span class="kw">return</span> <span class="kw-2">&amp;</span><span class="ident">service::rococo_runtime::VERSION</span>
 		}
 
@@ -713,11 +746,20 @@
 <span class="doccomment">/// for integration tests as needed.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;malus&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_node</span>(<span class="ident">run</span>: <span class="ident">Cli</span>, <span class="ident">overseer_gen</span>: <span class="kw">impl</span> <span class="ident">service::OverseerGen</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-	<span class="ident">run_node_inner</span>(<span class="ident">run</span>, <span class="ident">overseer_gen</span>)
+	<span class="ident">run_node_inner</span>(<span class="ident">run</span>, <span class="ident">overseer_gen</span>, <span class="op">|</span><span class="ident">_logger_builder</span>, <span class="ident">_config</span><span class="op">|</span> {})
 }
 
-<span class="kw">fn</span> <span class="ident">run_node_inner</span>(<span class="ident">cli</span>: <span class="ident">Cli</span>, <span class="ident">overseer_gen</span>: <span class="kw">impl</span> <span class="ident">service::OverseerGen</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="kw-2">&amp;</span><span class="ident">cli</span>.<span class="ident">run</span>.<span class="ident">base</span>).<span class="ident">map_err</span>(<span class="ident">Error::from</span>)<span class="question-mark">?</span>;
+<span class="kw">fn</span> <span class="ident">run_node_inner</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
+	<span class="ident">cli</span>: <span class="ident">Cli</span>,
+	<span class="ident">overseer_gen</span>: <span class="kw">impl</span> <span class="ident">service::OverseerGen</span>,
+	<span class="ident">logger_hook</span>: <span class="ident">F</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+<span class="kw">where</span>
+	<span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sc_cli::LoggerBuilder</span>, <span class="kw-2">&amp;</span><span class="ident">sc_service::Configuration</span>),
+{
+	<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>
+		.<span class="ident">create_runner_with_logger_hook</span>::<span class="op">&lt;</span><span class="ident">sc_cli::RunCmd</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">cli</span>.<span class="ident">run</span>.<span class="ident">base</span>, <span class="ident">logger_hook</span>)
+		.<span class="ident">map_err</span>(<span class="ident">Error::from</span>)<span class="question-mark">?</span>;
 	<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>;
 
 	<span class="ident">set_default_ss58_version</span>(<span class="ident">chain_spec</span>);
@@ -760,10 +802,10 @@
 
 <span class="doccomment">/// Parses polkadot specific CLI arguments and run the service.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">Cli::from_args</span>();
+	<span class="kw">let</span> <span class="ident">cli</span>: <span class="ident">Cli</span> <span class="op">=</span> <span class="ident">Cli::from_args</span>();
 
 	<span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">cli</span>.<span class="ident">subcommand</span> {
-		<span class="prelude-val">None</span> =&gt; <span class="ident">run_node_inner</span>(<span class="ident">cli</span>, <span class="ident">service::RealOverseerGen</span>),
+		<span class="prelude-val">None</span> =&gt; <span class="ident">run_node_inner</span>(<span class="ident">cli</span>, <span class="ident">service::RealOverseerGen</span>, <span class="ident">polkadot_node_metrics::logger_hook</span>()),
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::BuildSpec</span>(<span class="ident">cmd</span>)) =&gt; {
 			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
 			<span class="prelude-val">Ok</span>(<span class="ident">runner</span>.<span class="ident">sync_run</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> <span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">config</span>.<span class="ident">chain_spec</span>, <span class="ident">config</span>.<span class="ident">network</span>))<span class="question-mark">?</span>)
