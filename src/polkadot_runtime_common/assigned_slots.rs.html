@@ -1266,6 +1266,21 @@
 <span id="1266">1266</span>
 <span id="1267">1267</span>
 <span id="1268">1268</span>
+<span id="1269">1269</span>
+<span id="1270">1270</span>
+<span id="1271">1271</span>
+<span id="1272">1272</span>
+<span id="1273">1273</span>
+<span id="1274">1274</span>
+<span id="1275">1275</span>
+<span id="1276">1276</span>
+<span id="1277">1277</span>
+<span id="1278">1278</span>
+<span id="1279">1279</span>
+<span id="1280">1280</span>
+<span id="1281">1281</span>
+<span id="1282">1282</span>
+<span id="1283">1283</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1823,6 +1838,7 @@
 	<span class="kw">use</span> <span class="ident">sp_core::H256</span>;
 	<span class="kw">use</span> <span class="ident">sp_runtime</span>::{
 		<span class="ident">traits</span>::{<span class="ident">BlakeTwo256</span>, <span class="ident">IdentityLookup</span>},
+		<span class="ident">transaction_validity::TransactionPriority</span>,
 		<span class="ident">DispatchError::BadOrigin</span>,
 	};
 
@@ -1844,6 +1860,14 @@
 			<span class="ident">AssignedSlots</span>: <span class="ident">assigned_slots</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>},
 		}
 	);
+
+	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="ident">frame_system::offchain::SendTransactionTypes</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Test</span>
+	<span class="kw">where</span>
+		<span class="ident">Call</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>,
+	{
+		<span class="kw">type</span> <span class="ident">Extrinsic</span> <span class="op">=</span> <span class="ident">UncheckedExtrinsic</span>;
+		<span class="kw">type</span> <span class="ident">OverarchingCall</span> <span class="op">=</span> <span class="ident">Call</span>;
+	}
 
 	<span class="macro">parameter_types!</span> {
 		<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockHashCount</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">250</span>;
@@ -1895,9 +1919,15 @@
 		<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">parachains_configuration::TestWeightInfo</span>;
 	}
 
+	<span class="macro">parameter_types!</span> {
+		<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ParasUnsignedPriority</span>: <span class="ident">TransactionPriority</span> <span class="op">=</span> <span class="ident">TransactionPriority::max_value</span>();
+	}
+
 	<span class="kw">impl</span> <span class="ident">parachains_paras::Config</span> <span class="kw">for</span> <span class="ident">Test</span> {
 		<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 		<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">parachains_paras::TestWeightInfo</span>;
+		<span class="kw">type</span> <span class="ident">UnsignedPriority</span> <span class="op">=</span> <span class="ident">ParasUnsignedPriority</span>;
+		<span class="kw">type</span> <span class="ident">NextSessionRotation</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::mock::TestNextSessionRotation</span>;
 	}
 
 	<span class="kw">impl</span> <span class="ident">parachains_shared::Config</span> <span class="kw">for</span> <span class="ident">Test</span> {}
