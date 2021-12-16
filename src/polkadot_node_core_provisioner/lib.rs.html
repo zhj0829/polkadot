@@ -721,7 +721,7 @@
 }
 
 <span class="doccomment">/// A per-relay-parent job for the provisioning subsystem.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProvisioningJob</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProvisionerJob</span> {
 	<span class="ident">leaf</span>: <span class="ident">ActivatedLeaf</span>,
 	<span class="ident">receiver</span>: <span class="ident">mpsc::Receiver</span><span class="op">&lt;</span><span class="ident">ProvisionerMessage</span><span class="op">&gt;</span>,
 	<span class="ident">backed_candidates</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CandidateReceipt</span><span class="op">&gt;</span>,
@@ -774,7 +774,7 @@
 	<span class="ident">BackedCandidateOrderingProblem</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">JobTrait</span> <span class="kw">for</span> <span class="ident">ProvisioningJob</span> {
+<span class="kw">impl</span> <span class="ident">JobTrait</span> <span class="kw">for</span> <span class="ident">ProvisionerJob</span> {
 	<span class="kw">type</span> <span class="ident">ToJob</span> <span class="op">=</span> <span class="ident">ProvisionerMessage</span>;
 	<span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
 	<span class="kw">type</span> <span class="ident">RunArgs</span> <span class="op">=</span> ();
@@ -794,7 +794,7 @@
 	) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">leaf</span>.<span class="ident">span</span>.<span class="ident">clone</span>();
-			<span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">ProvisioningJob::new</span>(<span class="ident">leaf</span>, <span class="ident">metrics</span>, <span class="ident">receiver</span>);
+			<span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">ProvisionerJob::new</span>(<span class="ident">leaf</span>, <span class="ident">metrics</span>, <span class="ident">receiver</span>);
 
 			<span class="ident">job</span>.<span class="ident">run_loop</span>(<span class="ident">sender</span>.<span class="ident">subsystem_sender</span>(), <span class="ident">PerLeafSpan::new</span>(<span class="ident">span</span>, <span class="string">&quot;provisioner&quot;</span>))
 				.<span class="kw">await</span>
@@ -803,7 +803,7 @@
 	}
 }
 
-<span class="kw">impl</span> <span class="ident">ProvisioningJob</span> {
+<span class="kw">impl</span> <span class="ident">ProvisionerJob</span> {
 	<span class="kw">fn</span> <span class="ident">new</span>(
 		<span class="ident">leaf</span>: <span class="ident">ActivatedLeaf</span>,
 		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
@@ -1256,8 +1256,8 @@
 		.<span class="ident">collect</span>())
 }
 
-<span class="doccomment">/// The provisioning subsystem.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ProvisioningSubsystem</span><span class="op">&lt;</span><span class="ident">Spawner</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">JobSubsystem</span><span class="op">&lt;</span><span class="ident">ProvisioningJob</span>, <span class="ident">Spawner</span><span class="op">&gt;</span>;
+<span class="doccomment">/// The provisioner subsystem.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ProvisionerSubsystem</span><span class="op">&lt;</span><span class="ident">Spawner</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">JobSubsystem</span><span class="op">&lt;</span><span class="ident">ProvisionerJob</span>, <span class="ident">Spawner</span><span class="op">&gt;</span>;
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="polkadot_node_core_provisioner" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>

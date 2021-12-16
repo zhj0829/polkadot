@@ -2123,7 +2123,7 @@
 <span class="kw">const</span> <span class="ident">MAX_LARGE_STATEMENTS_PER_SENDER</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">20</span>;
 
 <span class="doccomment">/// The statement distribution subsystem.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StatementDistribution</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StatementDistributionSubsystem</span> {
 	<span class="doccomment">/// Pointer to a keystore, which is required for determining this node&#39;s validator index.</span>
 	<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
 	<span class="doccomment">/// Receiver for incoming large statement requests.</span>
@@ -2132,7 +2132,7 @@
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span> <span class="ident">overseer::Subsystem</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">SubsystemError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StatementDistribution</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span> <span class="ident">overseer::Subsystem</span><span class="op">&lt;</span><span class="ident">Context</span>, <span class="ident">SubsystemError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StatementDistributionSubsystem</span>
 <span class="kw">where</span>
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">StatementDistributionMessage</span><span class="op">&gt;</span>,
 	<span class="ident">Context</span>: <span class="ident">overseer::SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">StatementDistributionMessage</span><span class="op">&gt;</span>,
@@ -2150,14 +2150,14 @@
 	}
 }
 
-<span class="kw">impl</span> <span class="ident">StatementDistribution</span> {
+<span class="kw">impl</span> <span class="ident">StatementDistributionSubsystem</span> {
 	<span class="doccomment">/// Create a new Statement Distribution Subsystem</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
 		<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
 		<span class="ident">req_receiver</span>: <span class="ident">IncomingRequestReceiver</span><span class="op">&lt;</span><span class="ident">request_v1::StatementFetchingRequest</span><span class="op">&gt;</span>,
 		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
-	) -&gt; <span class="ident">StatementDistribution</span> {
-		<span class="ident">StatementDistribution</span> { <span class="ident">keystore</span>, <span class="ident">req_receiver</span>: <span class="prelude-val">Some</span>(<span class="ident">req_receiver</span>), <span class="ident">metrics</span> }
+	) -&gt; <span class="self">Self</span> {
+		<span class="self">Self</span> { <span class="ident">keystore</span>, <span class="ident">req_receiver</span>: <span class="prelude-val">Some</span>(<span class="ident">req_receiver</span>), <span class="ident">metrics</span> }
 	}
 }
 
@@ -3554,7 +3554,7 @@
 	}
 }
 
-<span class="kw">impl</span> <span class="ident">StatementDistribution</span> {
+<span class="kw">impl</span> <span class="ident">StatementDistributionSubsystem</span> {
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run</span>(
 		<span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="kw-2">mut</span> <span class="ident">ctx</span>: (<span class="kw">impl</span> <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">StatementDistributionMessage</span><span class="op">&gt;</span>
