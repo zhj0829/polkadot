@@ -628,6 +628,83 @@
 <span id="628">628</span>
 <span id="629">629</span>
 <span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -655,6 +732,7 @@
 	<span class="ident">prelude</span>::<span class="kw-2">*</span>,
 };
 <span class="kw">use</span> <span class="ident">futures_timer::Delay</span>;
+<span class="kw">use</span> <span class="ident">polkadot_node_primitives::CandidateVotes</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{
 	<span class="ident">errors</span>::{<span class="ident">ChainApiError</span>, <span class="ident">RuntimeApiError</span>},
 	<span class="ident">jaeger</span>,
@@ -669,11 +747,14 @@
 	<span class="ident">JobSubsystem</span>, <span class="ident">JobTrait</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
-	<span class="ident">BackedCandidate</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CoreState</span>, <span class="ident">DisputeStatement</span>,
-	<span class="ident">DisputeStatementSet</span>, <span class="ident">Hash</span>, <span class="ident">MultiDisputeStatementSet</span>, <span class="ident">OccupiedCoreAssumption</span>,
+	<span class="ident">BackedCandidate</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CoreState</span>, <span class="ident">DisputeStatement</span>,
+	<span class="ident">DisputeStatementSet</span>, <span class="ident">Hash</span>, <span class="ident">MultiDisputeStatementSet</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">SessionIndex</span>,
 	<span class="ident">SignedAvailabilityBitfield</span>, <span class="ident">ValidatorIndex</span>,
 };
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::BTreeMap</span>, <span class="ident">pin::Pin</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{
+	<span class="ident">collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">HashSet</span>},
+	<span class="ident">pin::Pin</span>,
+};
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="kw">mod</span> <span class="ident">metrics</span>;
@@ -1120,7 +1201,7 @@
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="string">&quot;Selected {} candidates for {} cores&quot;</span>,
 		<span class="ident">candidates</span>.<span class="ident">len</span>(),
-		<span class="ident">availability_cores</span>.<span class="ident">len</span>(),
+		<span class="ident">availability_cores</span>.<span class="ident">len</span>()
 	);
 
 	<span class="prelude-val">Ok</span>(<span class="ident">candidates</span>)
@@ -1181,55 +1262,128 @@
 	<span class="number">3</span> <span class="op">*</span> <span class="ident">availability</span>.<span class="ident">count_ones</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">availability</span>.<span class="ident">len</span>()
 }
 
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">select_disputes</span>(
-	<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">SubsystemSender</span>,
-	<span class="ident">metrics</span>: <span class="kw-2">&amp;</span><span class="ident">metrics::Metrics</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiDisputeStatementSet</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">enum</span> <span class="ident">RequestType</span> {
+	<span class="doccomment">/// Query recent disputes, could be an excessive amount.</span>
+	<span class="ident">Recent</span>,
+	<span class="doccomment">/// Query the currently active and very recently concluded disputes.</span>
+	<span class="ident">Active</span>,
+}
 
-	<span class="comment">// We use `RecentDisputes` instead of `ActiveDisputes` because redundancy is fine.</span>
-	<span class="comment">// It&#39;s heavier than `ActiveDisputes` but ensures that everything from the dispute</span>
-	<span class="comment">// window gets on-chain, unlike `ActiveDisputes`.</span>
-	<span class="comment">//</span>
-	<span class="comment">// This should have no meaningful impact on performance on production networks for</span>
-	<span class="comment">// two reasons:</span>
-	<span class="comment">// 1. In large validator sets, a node might be a block author 1% or less of the time.</span>
-	<span class="comment">//    this code-path only triggers in the case of being a block author.</span>
-	<span class="comment">// 2. Disputes are expected to be rare because they come with heavy slashing.</span>
-	<span class="ident">sender</span>.<span class="ident">send_message</span>(<span class="ident">DisputeCoordinatorMessage::RecentDisputes</span>(<span class="ident">tx</span>).<span class="ident">into</span>()).<span class="kw">await</span>;
+<span class="doccomment">/// Request open disputes identified by `CandidateHash` and the `SessionIndex`.</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_disputes</span>(
+	<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">SubsystemSender</span>,
+	<span class="ident">active_or_recent</span>: <span class="ident">RequestType</span>,
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span> {
+	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
+	<span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">active_or_recent</span> {
+		<span class="ident">RequestType::Recent</span> =&gt; <span class="ident">DisputeCoordinatorMessage::RecentDisputes</span>(<span class="ident">tx</span>),
+		<span class="ident">RequestType::Active</span> =&gt; <span class="ident">DisputeCoordinatorMessage::ActiveDisputes</span>(<span class="ident">tx</span>),
+	};
+	<span class="ident">sender</span>.<span class="ident">send_message</span>(<span class="ident">msg</span>.<span class="ident">into</span>()).<span class="kw">await</span>;
 
 	<span class="kw">let</span> <span class="ident">recent_disputes</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rx</span>.<span class="kw">await</span> {
 		<span class="prelude-val">Ok</span>(<span class="ident">r</span>) =&gt; <span class="ident">r</span>,
 		<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) =&gt; {
-			<span class="macro">tracing::debug!</span>(
-				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-				<span class="string">&quot;Unable to gather recent disputes - subsystem disconnected?&quot;</span>,
-			);
-
+			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Unable to gather {:?} disputes&quot;</span>, <span class="ident">active_or_recent</span>);
 			<span class="ident">Vec::new</span>()
 		},
 	};
+	<span class="ident">recent_disputes</span>
+}
+
+<span class="doccomment">/// Request the relevant dispute statements for a set of disputes identified by `CandidateHash` and the `SessionIndex`.</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_votes</span>(
+	<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">SubsystemSender</span>,
+	<span class="ident">disputes_to_query</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span>,
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateVotes</span>)<span class="op">&gt;</span> {
+	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
+	<span class="ident">sender</span>
+		.<span class="ident">send_message</span>(<span class="ident">DisputeCoordinatorMessage::QueryCandidateVotes</span>(<span class="ident">disputes_to_query</span>, <span class="ident">tx</span>).<span class="ident">into</span>())
+		.<span class="kw">await</span>;
+
+	<span class="kw">match</span> <span class="ident">rx</span>.<span class="kw">await</span> {
+		<span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
+		<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) =&gt; {
+			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Unable to query candidate votes&quot;</span>);
+			<span class="ident">Vec::new</span>()
+		},
+	}
+}
+
+<span class="doccomment">/// Extend `acc` by `n` random, picks of not-yet-present in `acc` items of `recent` without repetition and  additions of recent.</span>
+<span class="kw">fn</span> <span class="ident">extend_by_random_subset_without_repetition</span>(
+	<span class="ident">acc</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span>,
+	<span class="ident">extension</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span>,
+	<span class="ident">n</span>: <span class="ident">usize</span>,
+) {
+	<span class="kw">use</span> <span class="ident">rand::Rng</span>;
+
+	<span class="kw">let</span> <span class="ident">lut</span> <span class="op">=</span> <span class="ident">acc</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span><span class="op">&gt;</span>();
+
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unique_new</span> <span class="op">=</span>
+		<span class="ident">extension</span>.<span class="ident">into_iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">recent</span><span class="op">|</span> <span class="op">!</span><span class="ident">lut</span>.<span class="ident">contains</span>(<span class="ident">recent</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+
+	<span class="comment">// we can simply add all</span>
+	<span class="kw">if</span> <span class="ident">unique_new</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">n</span> {
+		<span class="ident">acc</span>.<span class="ident">extend</span>(<span class="ident">unique_new</span>)
+	} <span class="kw">else</span> {
+		<span class="ident">acc</span>.<span class="ident">reserve</span>(<span class="ident">n</span>);
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">rand::thread_rng</span>();
+		<span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">n</span> {
+			<span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="ident">rng</span>.<span class="ident">gen_range</span>(<span class="number">0</span>..<span class="ident">unique_new</span>.<span class="ident">len</span>());
+			<span class="ident">acc</span>.<span class="ident">push</span>(<span class="ident">unique_new</span>.<span class="ident">swap_remove</span>(<span class="ident">idx</span>));
+		}
+	}
+	<span class="comment">// assure sorting stays candid according to session index</span>
+	<span class="ident">acc</span>.<span class="ident">sort_unstable_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span>.<span class="number">0</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>.<span class="number">0</span>));
+}
+
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">select_disputes</span>(
+	<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">SubsystemSender</span>,
+	<span class="ident">metrics</span>: <span class="kw-2">&amp;</span><span class="ident">metrics::Metrics</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MultiDisputeStatementSet</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+	<span class="kw">const</span> <span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">10_000</span>;
+
+	<span class="comment">// We use `RecentDisputes` instead of `ActiveDisputes` because redundancy is fine.</span>
+	<span class="comment">// It&#39;s heavier than `ActiveDisputes` but ensures that everything from the dispute</span>
+	<span class="comment">// window gets on-chain, unlike `ActiveDisputes`.</span>
+	<span class="comment">// In case of an overload condition, we limit ourselves to active disputes, and fill up to the</span>
+	<span class="comment">// upper bound of disputes to pass to wasm `fn create_inherent_data`.</span>
+	<span class="comment">// If the active ones are already exceeding the bounds, randomly select a subset.</span>
+	<span class="kw">let</span> <span class="ident">recent</span> <span class="op">=</span> <span class="ident">request_disputes</span>(<span class="ident">sender</span>, <span class="ident">RequestType::Recent</span>).<span class="kw">await</span>;
+	<span class="kw">let</span> <span class="ident">disputes</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">recent</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span> {
+		<span class="macro">tracing::warn!</span>(
+			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+			<span class="string">&quot;Recent disputes are excessive ({} &gt; {}), reduce to active ones, and selected&quot;</span>,
+			<span class="ident">recent</span>.<span class="ident">len</span>(),
+			<span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span>
+		);
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">active</span> <span class="op">=</span> <span class="ident">request_disputes</span>(<span class="ident">sender</span>, <span class="ident">RequestType::Active</span>).<span class="kw">await</span>;
+		<span class="kw">let</span> <span class="ident">n_active</span> <span class="op">=</span> <span class="ident">active</span>.<span class="ident">len</span>();
+		<span class="kw">let</span> <span class="ident">active</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">active</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span> {
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">picked</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span>);
+			<span class="ident">extend_by_random_subset_without_repetition</span>(
+				<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">picked</span>,
+				<span class="ident">active</span>,
+				<span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span>,
+			);
+			<span class="ident">picked</span>
+		} <span class="kw">else</span> {
+			<span class="ident">extend_by_random_subset_without_repetition</span>(
+				<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">active</span>,
+				<span class="ident">recent</span>,
+				<span class="ident">MAX_DISPUTES_FORWARDED_TO_RUNTIME</span>.<span class="ident">saturating_sub</span>(<span class="ident">n_active</span>),
+			);
+			<span class="ident">active</span>
+		};
+		<span class="ident">active</span>
+	} <span class="kw">else</span> {
+		<span class="ident">recent</span>
+	};
 
 	<span class="comment">// Load all votes for all disputes from the coordinator.</span>
-	<span class="kw">let</span> <span class="ident">dispute_candidate_votes</span> <span class="op">=</span> {
-		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
-		<span class="ident">sender</span>
-			.<span class="ident">send_message</span>(
-				<span class="ident">DisputeCoordinatorMessage::QueryCandidateVotes</span>(<span class="ident">recent_disputes</span>, <span class="ident">tx</span>).<span class="ident">into</span>(),
-			)
-			.<span class="kw">await</span>;
-
-		<span class="kw">match</span> <span class="ident">rx</span>.<span class="kw">await</span> {
-			<span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
-			<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) =&gt; {
-				<span class="macro">tracing::debug!</span>(
-					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-					<span class="string">&quot;Unable to query candidate votes - subsystem disconnected?&quot;</span>,
-				);
-				<span class="ident">Vec::new</span>()
-			},
-		}
-	};
+	<span class="kw">let</span> <span class="ident">dispute_candidate_votes</span> <span class="op">=</span> <span class="ident">request_votes</span>(<span class="ident">sender</span>, <span class="ident">disputes</span>).<span class="kw">await</span>;
 
 	<span class="comment">// Transform all `CandidateVotes` into `MultiDisputeStatementSet`.</span>
 	<span class="prelude-val">Ok</span>(<span class="ident">dispute_candidate_votes</span>
