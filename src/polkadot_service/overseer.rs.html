@@ -324,6 +324,25 @@
 <span id="324">324</span>
 <span id="325">325</span>
 <span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -348,6 +367,7 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_core_candidate_validation::Config</span> <span class="kw">as</span> <span class="ident">CandidateValidationConfig</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_core_chain_selection::Config</span> <span class="kw">as</span> <span class="ident">ChainSelectionConfig</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_core_dispute_coordinator::Config</span> <span class="kw">as</span> <span class="ident">DisputeCoordinatorConfig</span>;
+<span class="kw">use</span> <span class="ident">polkadot_node_core_provisioner::ProvisionerConfig</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol::request_response</span>::{<span class="ident">v1</span> <span class="kw">as</span> <span class="ident">request_v1</span>, <span class="ident">IncomingRequestReceiver</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;malus&quot;</span>, <span class="ident">test</span>))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_overseer</span>::{
@@ -432,6 +452,8 @@
 	<span class="kw">pub</span> <span class="ident">chain_selection_config</span>: <span class="ident">ChainSelectionConfig</span>,
 	<span class="doccomment">/// Configuration for the dispute coordinator subsystem.</span>
 	<span class="kw">pub</span> <span class="ident">dispute_coordinator_config</span>: <span class="ident">DisputeCoordinatorConfig</span>,
+	<span class="doccomment">/// Enable to disputes.</span>
+	<span class="kw">pub</span> <span class="ident">disputes_enabled</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// Obtain a prepared `OverseerBuilder`, that is initialized</span>
@@ -458,6 +480,7 @@
 		<span class="ident">candidate_validation_config</span>,
 		<span class="ident">chain_selection_config</span>,
 		<span class="ident">dispute_coordinator_config</span>,
+		<span class="ident">disputes_enabled</span>,
 	}: <span class="ident">OverseerGenArgs</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Spawner</span>, <span class="ident">RuntimeClient</span><span class="op">&gt;</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
 	<span class="ident">OverseerBuilder</span><span class="op">&lt;</span>
@@ -554,7 +577,11 @@
 			<span class="ident">Box::new</span>(<span class="ident">network_service</span>.<span class="ident">clone</span>()),
 			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>,
 		))
-		.<span class="ident">provisioner</span>(<span class="ident">ProvisionerSubsystem::new</span>(<span class="ident">spawner</span>.<span class="ident">clone</span>(), (), <span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>))
+		.<span class="ident">provisioner</span>(<span class="ident">ProvisionerSubsystem::new</span>(
+			<span class="ident">spawner</span>.<span class="ident">clone</span>(),
+			<span class="ident">ProvisionerConfig</span> { <span class="ident">disputes_enabled</span> },
+			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>,
+		))
 		.<span class="ident">runtime_api</span>(<span class="ident">RuntimeApiSubsystem::new</span>(
 			<span class="ident">runtime_client</span>.<span class="ident">clone</span>(),
 			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>,
@@ -577,12 +604,16 @@
 			<span class="ident">keystore</span>.<span class="ident">clone</span>(),
 			<span class="ident">authority_discovery_service</span>.<span class="ident">clone</span>(),
 		))
-		.<span class="ident">dispute_coordinator</span>(<span class="ident">DisputeCoordinatorSubsystem::new</span>(
-			<span class="ident">parachains_db</span>.<span class="ident">clone</span>(),
-			<span class="ident">dispute_coordinator_config</span>,
-			<span class="ident">keystore</span>.<span class="ident">clone</span>(),
-			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>,
-		))
+		.<span class="ident">dispute_coordinator</span>(<span class="kw">if</span> <span class="ident">disputes_enabled</span> {
+			<span class="ident">DisputeCoordinatorSubsystem::new</span>(
+				<span class="ident">parachains_db</span>.<span class="ident">clone</span>(),
+				<span class="ident">dispute_coordinator_config</span>,
+				<span class="ident">keystore</span>.<span class="ident">clone</span>(),
+				<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>,
+			)
+		} <span class="kw">else</span> {
+			<span class="ident">DisputeCoordinatorSubsystem::dummy</span>()
+		})
 		.<span class="ident">dispute_distribution</span>(<span class="ident">DisputeDistributionSubsystem::new</span>(
 			<span class="ident">keystore</span>.<span class="ident">clone</span>(),
 			<span class="ident">dispute_req_receiver</span>,
@@ -645,9 +676,16 @@
 		<span class="ident">RuntimeClient::Api</span>: <span class="ident">ParachainHost</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">BabeApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AuthorityDiscoveryApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 		<span class="ident">Spawner</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">SpawnNamed</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Unpin</span>,
 	{
-		<span class="ident">prepared_overseer_builder</span>(<span class="ident">args</span>)<span class="question-mark">?</span>
-			.<span class="ident">build_with_connector</span>(<span class="ident">connector</span>)
-			.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">into</span>())
+		<span class="kw">let</span> <span class="ident">disputes_enabled</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">disputes_enabled</span>;
+		<span class="kw">let</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">prepared_overseer_builder</span>(<span class="ident">args</span>)<span class="question-mark">?</span>;
+		<span class="kw">if</span> <span class="ident">disputes_enabled</span> {
+			<span class="ident">builder</span>
+				.<span class="ident">dispute_coordinator</span>(<span class="ident">DisputeCoordinatorSubsystem::dummy</span>())
+				.<span class="ident">build_with_connector</span>(<span class="ident">connector</span>)
+		} <span class="kw">else</span> {
+			<span class="ident">builder</span>.<span class="ident">build_with_connector</span>(<span class="ident">connector</span>)
+		}
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">into</span>())
 	}
 }
 </code></pre></div>

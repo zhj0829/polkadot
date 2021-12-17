@@ -554,6 +554,16 @@
 <span id="554">554</span>
 <span id="555">555</span>
 <span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -717,11 +727,16 @@
 
 	<span class="doccomment">/// Create a new [`SelectRelayChain`] wrapping the given chain backend</span>
 	<span class="doccomment">/// and a handle to the overseer.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_disputes_aware</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">overseer</span>: <span class="ident">Handle</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_disputes_aware</span>(
+		<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
+		<span class="ident">overseer</span>: <span class="ident">Handle</span>,
+		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
+		<span class="ident">disputes_enabled</span>: <span class="ident">bool</span>,
+	) -&gt; <span class="self">Self</span> {
 		<span class="macro">tracing::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="string">&quot;Using {} chain selection algorithm&quot;</span>,
-			<span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;disputes&quot;</span>) {
+			<span class="kw">if</span> <span class="ident">disputes_enabled</span> {
 				<span class="string">&quot;dispute aware relay&quot;</span>
 			} <span class="kw">else</span> {
 				<span class="comment">// no disputes are queried, that logic is disabled</span>
@@ -732,7 +747,10 @@
 		<span class="ident">SelectRelayChain</span> {
 			<span class="ident">longest_chain</span>: <span class="ident">sc_consensus::LongestChain::new</span>(<span class="ident">backend</span>.<span class="ident">clone</span>()),
 			<span class="ident">selection</span>: <span class="ident">IsDisputesAwareWithOverseer::Yes</span>(<span class="ident">SelectRelayChainInner::new</span>(
-				<span class="ident">backend</span>, <span class="ident">overseer</span>, <span class="ident">metrics</span>,
+				<span class="ident">backend</span>,
+				<span class="ident">overseer</span>,
+				<span class="ident">metrics</span>,
+				<span class="ident">disputes_enabled</span>,
 			)),
 		}
 	}
@@ -789,6 +807,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SelectRelayChainInner</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">OH</span><span class="op">&gt;</span> {
 	<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 	<span class="ident">overseer</span>: <span class="ident">OH</span>,
+	<span class="ident">disputes_enabled</span>: <span class="ident">bool</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 }
 
@@ -799,8 +818,8 @@
 {
 	<span class="doccomment">/// Create a new [`SelectRelayChainInner`] wrapping the given chain backend</span>
 	<span class="doccomment">/// and a handle to the overseer.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">overseer</span>: <span class="ident">OH</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) -&gt; <span class="self">Self</span> {
-		<span class="ident">SelectRelayChainInner</span> { <span class="ident">backend</span>, <span class="ident">overseer</span>, <span class="ident">metrics</span> }
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">overseer</span>: <span class="ident">OH</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>, <span class="ident">disputes_enabled</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
+		<span class="ident">SelectRelayChainInner</span> { <span class="ident">backend</span>, <span class="ident">overseer</span>, <span class="ident">metrics</span>, <span class="ident">disputes_enabled</span> }
 	}
 
 	<span class="kw">fn</span> <span class="ident">block_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">hash</span>: <span class="ident">Hash</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PolkadotHeader</span>, <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
@@ -838,6 +857,7 @@
 			<span class="ident">backend</span>: <span class="self">self</span>.<span class="ident">backend</span>.<span class="ident">clone</span>(),
 			<span class="ident">overseer</span>: <span class="self">self</span>.<span class="ident">overseer</span>.<span class="ident">clone</span>(),
 			<span class="ident">metrics</span>: <span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">clone</span>(),
+			<span class="ident">disputes_enabled</span>: <span class="self">self</span>.<span class="ident">disputes_enabled</span>,
 		}
 	}
 }
@@ -927,7 +947,7 @@
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">overseer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">overseer</span>.<span class="ident">clone</span>();
 		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Longest chain&quot;</span>);
 
-		<span class="kw">let</span> <span class="ident">subchain_head</span> <span class="op">=</span> <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;disputes&quot;</span>) {
+		<span class="kw">let</span> <span class="ident">subchain_head</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">disputes_enabled</span> {
 			<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
 			<span class="ident">overseer</span>
 				.<span class="ident">send_msg</span>(
@@ -1032,7 +1052,7 @@
 		<span class="kw">let</span> <span class="ident">lag</span> <span class="op">=</span> <span class="ident">initial_leaf_number</span>.<span class="ident">saturating_sub</span>(<span class="ident">subchain_number</span>);
 		<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">note_approval_checking_finality_lag</span>(<span class="ident">lag</span>);
 
-		<span class="kw">let</span> (<span class="ident">lag</span>, <span class="ident">subchain_head</span>) <span class="op">=</span> <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;disputes&quot;</span>) {
+		<span class="kw">let</span> (<span class="ident">lag</span>, <span class="ident">subchain_head</span>) <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">disputes_enabled</span> {
 			<span class="comment">// Prevent sending flawed data to the dispute-coordinator.</span>
 			<span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">subchain_block_descriptions</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span>
 				<span class="ident">subchain_number</span>.<span class="ident">checked_sub</span>(<span class="ident">target_number</span>)
