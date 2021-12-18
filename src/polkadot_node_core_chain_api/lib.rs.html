@@ -429,7 +429,7 @@
 							<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
 							<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">header</span>)) =&gt; {
 								<span class="comment">// stop at the genesis header.</span>
-								<span class="kw">if</span> <span class="ident">header</span>.<span class="ident">number</span> <span class="op">==</span> <span class="number">1</span> {
+								<span class="kw">if</span> <span class="ident">header</span>.<span class="ident">number</span> <span class="op">==</span> <span class="number">0</span> {
 									<span class="prelude-val">None</span>
 								} <span class="kw">else</span> {
 									<span class="ident">hash</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">parent_hash</span>;
