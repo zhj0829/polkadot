@@ -910,6 +910,40 @@
 <span id="910">910</span>
 <span id="911">911</span>
 <span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Cumulus.</span>
 
@@ -926,7 +960,41 @@
 <span class="comment">// You should have received a copy of the GNU General Public License</span>
 <span class="comment">// along with Cumulus.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
-<span class="doccomment">//! Version 1 of the Cross-Consensus Message format data structures.</span>
+<span class="doccomment">//! # XCM Version 2</span>
+<span class="doccomment">//! Version 2 of the Cross-Consensus Message format data structures. The comprehensive list of</span>
+<span class="doccomment">//! changes can be found in</span>
+<span class="doccomment">//! [this PR description](https://github.com/paritytech/polkadot/pull/3629#issue-968428279).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Changes to be aware of</span>
+<span class="doccomment">//! The biggest change here is the restructuring of XCM messages: instead of having `Order` and</span>
+<span class="doccomment">//! `Xcm` types, the `Xcm` type now simply wraps a `Vec` containing `Instruction`s. However, most</span>
+<span class="doccomment">//! changes should still be automatically convertible via the `try_from` and `from` conversion</span>
+<span class="doccomment">//! functions.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Junction</span>
+<span class="doccomment">//! - No special attention necessary</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### `MultiLocation`</span>
+<span class="doccomment">//! - No special attention necessary</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### `MultiAsset`</span>
+<span class="doccomment">//! - No special attention necessary</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### XCM and Order</span>
+<span class="doccomment">//! - `Xcm` and `Order` variants are now combined under a single `Instruction` enum.</span>
+<span class="doccomment">//! - `Order` is now obsolete and replaced entirely by `Instruction`.</span>
+<span class="doccomment">//! - `Xcm` is now a simple wrapper around a `Vec&lt;Instruction&gt;`.</span>
+<span class="doccomment">//! - During conversion from `Order` to `Instruction`, we do not handle `BuyExecution`s that have</span>
+<span class="doccomment">//!   nested XCMs, i.e. if the `instructions` field in the `BuyExecution` enum struct variant is</span>
+<span class="doccomment">//!   not empty, then the conversion will fail. To address this, rewrite the XCM using</span>
+<span class="doccomment">//!   `Instruction`s in chronological order.</span>
+<span class="doccomment">//! - During conversion from `Xcm` to `Instruction`, we do not handle `RelayedFrom` messages at</span>
+<span class="doccomment">//!   all.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### XCM Pallet</span>
+<span class="doccomment">//! - The `Weigher` configuration item must have sensible weights defined for `BuyExecution` and</span>
+<span class="doccomment">//!   `DepositAsset` instructions. Failing that, dispatch calls to `teleport_assets` and</span>
+<span class="doccomment">//!   `reserve_transfer_assets` will fail with `UnweighableMessage`.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::v1</span>::{<span class="ident">Order</span> <span class="kw">as</span> <span class="ident">OldOrder</span>, <span class="ident">Response</span> <span class="kw">as</span> <span class="ident">OldResponse</span>, <span class="ident">Xcm</span> <span class="kw">as</span> <span class="ident">OldXcm</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">DoubleEncoded</span>, <span class="ident">GetWeight</span>};
