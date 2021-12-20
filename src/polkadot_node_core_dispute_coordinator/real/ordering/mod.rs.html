@@ -335,6 +335,20 @@
 <span id="335">335</span>
 <span id="336">336</span>
 <span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -593,11 +607,11 @@
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ancestors</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
-		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">last_observed_blocks</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">head</span>).<span class="ident">is_some</span>() {
+		<span class="kw">let</span> <span class="ident">finalized_block_number</span> <span class="op">=</span> <span class="ident">get_finalized_block_number</span>(<span class="ident">sender</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+
+		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">last_observed_blocks</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">head</span>).<span class="ident">is_some</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">head_number</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">finalized_block_number</span> {
 			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ancestors</span>)
 		}
-
-		<span class="kw">let</span> <span class="ident">finalized_block_number</span> <span class="op">=</span> <span class="ident">get_finalized_block_number</span>(<span class="ident">sender</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
 		<span class="kw">loop</span> {
 			<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
@@ -616,7 +630,20 @@
 				<span class="ident">rx</span>.<span class="kw">await</span>.<span class="ident">or</span>(<span class="prelude-val">Err</span>(<span class="ident">Fatal::ChainApiSenderDropped</span>))<span class="question-mark">?</span>.<span class="ident">map_err</span>(<span class="ident">Fatal::ChainApi</span>)<span class="question-mark">?</span>
 			};
 
-			<span class="kw">let</span> <span class="ident">earliest_block_number</span> <span class="op">=</span> <span class="ident">head_number</span> <span class="op">-</span> <span class="ident">hashes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+			<span class="kw">let</span> <span class="ident">earliest_block_number</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">head_number</span>.<span class="ident">checked_sub</span>(<span class="ident">hashes</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) {
+				<span class="prelude-val">Some</span>(<span class="ident">number</span>) =&gt; <span class="ident">number</span>,
+				<span class="prelude-val">None</span> =&gt; {
+					<span class="comment">// It&#39;s assumed that it&#39;s impossible to retrieve</span>
+					<span class="comment">// more than N ancestors for block number N.</span>
+					<span class="macro">tracing::error!</span>(
+						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+						<span class="string">&quot;Received {} ancestors for block number {} from Chain API&quot;</span>,
+						<span class="ident">hashes</span>.<span class="ident">len</span>(),
+						<span class="ident">head_number</span>,
+					);
+					<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ancestors</span>)
+				},
+			};
 			<span class="comment">// The reversed order is parent, grandparent, etc. excluding the head.</span>
 			<span class="kw">let</span> <span class="ident">block_numbers</span> <span class="op">=</span> (<span class="ident">earliest_block_number</span>..<span class="ident">head_number</span>).<span class="ident">rev</span>();
 
@@ -632,6 +659,7 @@
 
 				<span class="ident">ancestors</span>.<span class="ident">push</span>(<span class="kw-2">*</span><span class="ident">hash</span>);
 			}
+
 			<span class="kw">match</span> <span class="ident">hashes</span>.<span class="ident">last</span>() {
 				<span class="prelude-val">Some</span>(<span class="ident">last_hash</span>) =&gt; {
 					<span class="ident">head</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">last_hash</span>;
