@@ -1494,6 +1494,13 @@
 <span id="1494">1494</span>
 <span id="1495">1495</span>
 <span id="1496">1496</span>
+<span id="1497">1497</span>
+<span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2482,6 +2489,7 @@
 
 <span class="macro">sp_api::decl_runtime_apis!</span> {
 	<span class="doccomment">/// The API for querying the state of parachains on-chain.</span>
+	<span class="attribute">#[<span class="ident">api_version</span>(<span class="number">2</span>)]</span>
 	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ParachainHost</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span> <span class="op">=</span> <span class="ident">Hash</span>, <span class="ident">N</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span> <span class="op">=</span> <span class="ident">BlockNumber</span><span class="op">&gt;</span> {
 		<span class="doccomment">/// Get the current validators.</span>
 		<span class="kw">fn</span> <span class="ident">validators</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorId</span><span class="op">&gt;</span>;
@@ -2550,6 +2558,12 @@
 
 		<span class="doccomment">/// Scrape dispute relevant from on-chain, backing votes and resolved disputes.</span>
 		<span class="kw">fn</span> <span class="ident">on_chain_votes</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScrapedOnChainVotes</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+
+		<span class="doccomment">/// Submits a PVF pre-checking statement into the transaction pool.</span>
+		<span class="kw">fn</span> <span class="ident">submit_pvf_check_statement</span>(<span class="ident">stmt</span>: <span class="ident">PvfCheckStatement</span>, <span class="ident">signature</span>: <span class="ident">ValidatorSignature</span>);
+
+		<span class="doccomment">/// Returns code hashes of PVFs that require pre-checking by validators in the active set.</span>
+		<span class="kw">fn</span> <span class="ident">pvfs_require_precheck</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span>;
 	}
 }
 

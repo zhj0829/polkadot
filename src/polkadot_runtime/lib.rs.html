@@ -2244,6 +2244,17 @@
 <span id="2244">2244</span>
 <span id="2245">2245</span>
 <span id="2246">2246</span>
+<span id="2247">2247</span>
+<span id="2248">2248</span>
+<span id="2249">2249</span>
+<span id="2250">2250</span>
+<span id="2251">2251</span>
+<span id="2252">2252</span>
+<span id="2253">2253</span>
+<span id="2254">2254</span>
+<span id="2255">2255</span>
+<span id="2256">2256</span>
+<span id="2257">2257</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -4026,6 +4037,17 @@
 
 		<span class="kw">fn</span> <span class="ident">on_chain_votes</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScrapedOnChainVotes</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="ident">parachains_runtime_api_impl::on_chain_votes</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>()
+		}
+
+		<span class="kw">fn</span> <span class="ident">submit_pvf_check_statement</span>(
+			<span class="ident">stmt</span>: <span class="ident">primitives::v1::PvfCheckStatement</span>,
+			<span class="ident">signature</span>: <span class="ident">primitives::v1::ValidatorSignature</span>,
+		) {
+			<span class="ident">parachains_runtime_api_impl::submit_pvf_check_statement</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">stmt</span>, <span class="ident">signature</span>)
+		}
+
+		<span class="kw">fn</span> <span class="ident">pvfs_require_precheck</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span> {
+			<span class="ident">parachains_runtime_api_impl::pvfs_require_precheck</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>()
 		}
 	}
 

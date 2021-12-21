@@ -503,6 +503,26 @@
 <span id="503">503</span>
 <span id="504">504</span>
 <span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -659,6 +679,9 @@
 				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_current_babe_epoch</span>(<span class="ident">relay_parent</span>, <span class="ident">epoch</span>),
 			<span class="ident">FetchOnChainVotes</span>(<span class="ident">relay_parent</span>, <span class="ident">scraped</span>) =&gt;
 				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_on_chain_votes</span>(<span class="ident">relay_parent</span>, <span class="ident">scraped</span>),
+			<span class="ident">PvfsRequirePrecheck</span>(<span class="ident">relay_parent</span>, <span class="ident">pvfs</span>) =&gt;
+				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_pvfs_require_precheck</span>(<span class="ident">relay_parent</span>, <span class="ident">pvfs</span>),
+			<span class="ident">SubmitPvfCheckStatement</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, ()) =&gt; {},
 		}
 	}
 
@@ -742,6 +765,12 @@
 				<span class="macro">query!</span>(<span class="ident">current_babe_epoch</span>(), <span class="ident">sender</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::CurrentBabeEpoch</span>(<span class="ident">sender</span>)),
 			<span class="ident">Request::FetchOnChainVotes</span>(<span class="ident">sender</span>) =&gt;
 				<span class="macro">query!</span>(<span class="ident">on_chain_votes</span>(), <span class="ident">sender</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::FetchOnChainVotes</span>(<span class="ident">sender</span>)),
+			<span class="ident">Request::PvfsRequirePrecheck</span>(<span class="ident">sender</span>) =&gt; <span class="macro">query!</span>(<span class="ident">pvfs_require_precheck</span>(), <span class="ident">sender</span>)
+				.<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::PvfsRequirePrecheck</span>(<span class="ident">sender</span>)),
+			<span class="ident">request</span> @ <span class="ident">Request::SubmitPvfCheckStatement</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
+				<span class="comment">// This request is side-effecting and thus cannot be cached.</span>
+				<span class="prelude-val">Some</span>(<span class="ident">request</span>)
+			},
 		}
 	}
 
@@ -946,6 +975,17 @@
 			<span class="macro">query!</span>(<span class="ident">CurrentBabeEpoch</span>, <span class="ident">current_epoch</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
 		<span class="ident">Request::FetchOnChainVotes</span>(<span class="ident">sender</span>) =&gt;
 			<span class="macro">query!</span>(<span class="ident">FetchOnChainVotes</span>, <span class="ident">on_chain_votes</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::SubmitPvfCheckStatement</span>(<span class="ident">stmt</span>, <span class="ident">signature</span>, <span class="ident">sender</span>) =&gt; {
+			<span class="macro">query!</span>(
+				<span class="ident">SubmitPvfCheckStatement</span>,
+				<span class="ident">submit_pvf_check_statement</span>(<span class="ident">stmt</span>, <span class="ident">signature</span>),
+				<span class="ident">ver</span> <span class="op">=</span> <span class="number">2</span>,
+				<span class="ident">sender</span>
+			)
+		},
+		<span class="ident">Request::PvfsRequirePrecheck</span>(<span class="ident">sender</span>) =&gt; {
+			<span class="macro">query!</span>(<span class="ident">PvfsRequirePrecheck</span>, <span class="ident">pvfs_require_precheck</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">2</span>, <span class="ident">sender</span>)
+		},
 	}
 }
 
