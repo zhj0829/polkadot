@@ -3172,9 +3172,9 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">beefy_primitives::BeefyApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">validator_set</span>() -&gt; <span class="ident">beefy_primitives::ValidatorSet</span><span class="op">&lt;</span><span class="ident">BeefyId</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">validator_set</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">beefy_primitives::ValidatorSet</span><span class="op">&lt;</span><span class="ident">BeefyId</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="comment">// dummy implementation due to lack of BEEFY pallet.</span>
-			<span class="ident">beefy_primitives::ValidatorSet</span> { <span class="ident">validators</span>: <span class="ident">Vec::new</span>(), <span class="ident">id</span>: <span class="number">0</span> }
+			<span class="prelude-val">None</span>
 		}
 	}
 

@@ -3223,7 +3223,7 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">beefy_primitives::BeefyApi</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-		<span class="kw">fn</span> <span class="ident">validator_set</span>() -&gt; <span class="ident">beefy_primitives::ValidatorSet</span><span class="op">&lt;</span><span class="ident">BeefyId</span><span class="op">&gt;</span> {
+		<span class="kw">fn</span> <span class="ident">validator_set</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">beefy_primitives::ValidatorSet</span><span class="op">&lt;</span><span class="ident">BeefyId</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 			<span class="ident">Beefy::validator_set</span>()
 		}
 	}
