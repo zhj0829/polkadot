@@ -1405,6 +1405,14 @@
 <span id="1405">1405</span>
 <span id="1406">1406</span>
 <span id="1407">1407</span>
+<span id="1408">1408</span>
+<span id="1409">1409</span>
+<span id="1410">1410</span>
+<span id="1411">1411</span>
+<span id="1412">1412</span>
+<span id="1413">1413</span>
+<span id="1414">1414</span>
+<span id="1415">1415</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1597,8 +1605,16 @@
 	<span class="ident">backing</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorIndex</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">group_quorum</span>(<span class="ident">n_validators</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
-	(<span class="ident">n_validators</span> <span class="op">/</span> <span class="number">2</span>) <span class="op">+</span> <span class="number">1</span>
+<span class="doccomment">/// How many votes we need to consider a candidate backed.</span>
+<span class="kw">fn</span> <span class="ident">minimum_votes</span>(<span class="ident">n_validators</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
+	<span class="comment">// Runtime change going live, see: https://github.com/paritytech/polkadot/pull/4437</span>
+	<span class="kw">let</span> <span class="ident">old_runtime_value</span> <span class="op">=</span> <span class="ident">n_validators</span> <span class="op">/</span> <span class="number">2</span> <span class="op">+</span> <span class="number">1</span>;
+	<span class="kw">let</span> <span class="ident">new_runtime_value</span> <span class="op">=</span> <span class="ident">std::cmp::min</span>(<span class="number">2</span>, <span class="ident">n_validators</span>);
+
+	<span class="comment">// Until new runtime is live everywhere and we don&#39;t yet have</span>
+	<span class="comment">// https://github.com/paritytech/polkadot/issues/4576, we want to err on the higher value for</span>
+	<span class="comment">// secured block production:</span>
+	<span class="ident">std::cmp::max</span>(<span class="ident">old_runtime_value</span>, <span class="ident">new_runtime_value</span>)
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
@@ -1630,7 +1646,7 @@
 	}
 
 	<span class="kw">fn</span> <span class="ident">requisite_votes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">group</span>: <span class="kw-2">&amp;</span><span class="ident">ParaId</span>) -&gt; <span class="ident">usize</span> {
-		<span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">get</span>(<span class="ident">group</span>).<span class="ident">map_or</span>(<span class="ident">usize::MAX</span>, <span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">group_quorum</span>(<span class="ident">g</span>.<span class="ident">len</span>()))
+		<span class="self">self</span>.<span class="ident">groups</span>.<span class="ident">get</span>(<span class="ident">group</span>).<span class="ident">map_or</span>(<span class="ident">usize::MAX</span>, <span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">minimum_votes</span>(<span class="ident">g</span>.<span class="ident">len</span>()))
 	}
 }
 
