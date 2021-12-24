@@ -140,6 +140,20 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -187,15 +201,12 @@
 	<span class="ident">fetched_chunks</span>: <span class="ident">CounterVec</span><span class="op">&lt;</span><span class="ident">U64</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// Number of chunks served.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// Note: Right now, `Succeeded` gets incremented whenever we were able to successfully respond</span>
-	<span class="doccomment">/// to a chunk request. This includes `NoSuchChunk` responses.</span>
 	<span class="ident">served_chunks</span>: <span class="ident">CounterVec</span><span class="op">&lt;</span><span class="ident">U64</span><span class="op">&gt;</span>,
 
+	<span class="doccomment">/// Number of received fetch PoV responses.</span>
+	<span class="ident">fetched_povs</span>: <span class="ident">CounterVec</span><span class="op">&lt;</span><span class="ident">U64</span><span class="op">&gt;</span>,
+
 	<span class="doccomment">/// Number of PoVs served.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// Note: Right now, `Succeeded` gets incremented whenever we were able to successfully respond</span>
-	<span class="doccomment">/// to a PoV request. This includes `NoSuchPoV` responses.</span>
 	<span class="ident">served_povs</span>: <span class="ident">CounterVec</span><span class="op">&lt;</span><span class="ident">U64</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// Number of times our first set of validators did not provide the needed chunk and we had to</span>
@@ -220,6 +231,13 @@
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on_served_chunk</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">label</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) {
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">metrics</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> {
 			<span class="ident">metrics</span>.<span class="ident">served_chunks</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">label</span>]).<span class="ident">inc</span>()
+		}
+	}
+
+	<span class="doccomment">/// Increment counter on fetched PoVs.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on_fetched_pov</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">label</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) {
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">metrics</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> {
+			<span class="ident">metrics</span>.<span class="ident">fetched_povs</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">label</span>]).<span class="ident">inc</span>()
 		}
 	}
 
@@ -256,6 +274,16 @@
 					<span class="ident">Opts::new</span>(
 						<span class="string">&quot;polkadot_parachain_served_chunks_total&quot;</span>,
 						<span class="string">&quot;Total number of chunks served by this backer.&quot;</span>,
+					),
+					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>]
+				)<span class="question-mark">?</span>,
+				<span class="ident">registry</span>,
+			)<span class="question-mark">?</span>,
+			<span class="ident">fetched_povs</span>: <span class="ident">prometheus::register</span>(
+				<span class="ident">CounterVec::new</span>(
+					<span class="ident">Opts::new</span>(
+						<span class="string">&quot;polkadot_parachain_fetched_povs_total&quot;</span>,
+						<span class="string">&quot;Total number of povs fetches by this backer.&quot;</span>,
 					),
 					<span class="kw-2">&amp;</span>[<span class="string">&quot;success&quot;</span>]
 				)<span class="question-mark">?</span>,

@@ -203,6 +203,24 @@
 <span id="203">203</span>
 <span id="204">204</span>
 <span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -230,7 +248,7 @@
 };
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives::PoV</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::runtime::RuntimeInfo</span>;
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CandidateHash</span>, <span class="ident">Hash</span>, <span class="ident">ValidatorIndex</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">AuthorityDiscoveryId</span>, <span class="ident">CandidateHash</span>, <span class="ident">Hash</span>, <span class="ident">ValidatorIndex</span>};
 <span class="kw">use</span> <span class="ident">polkadot_subsystem</span>::{
 	<span class="ident">jaeger</span>,
 	<span class="ident">messages</span>::{<span class="ident">IfDisconnected</span>, <span class="ident">NetworkBridgeMessage</span>},
@@ -239,7 +257,8 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
 	<span class="ident">error</span>::{<span class="ident">Fatal</span>, <span class="ident">NonFatal</span>},
-	<span class="ident">LOG_TARGET</span>,
+	<span class="ident">metrics</span>::{<span class="ident">FAILED</span>, <span class="ident">NOT_FOUND</span>, <span class="ident">SUCCEEDED</span>},
+	<span class="ident">Metrics</span>, <span class="ident">LOG_TARGET</span>,
 };
 
 <span class="doccomment">/// Start background worker for taking care of fetching the requested `PoV` from the network.</span>
@@ -251,6 +270,7 @@
 	<span class="ident">candidate_hash</span>: <span class="ident">CandidateHash</span>,
 	<span class="ident">pov_hash</span>: <span class="ident">Hash</span>,
 	<span class="ident">tx</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PoV</span><span class="op">&gt;</span>,
+	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 ) -&gt; <span class="ident"><span class="kw">super</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
@@ -262,7 +282,7 @@
 		.<span class="ident">ok_or</span>(<span class="ident">NonFatal::InvalidValidatorIndex</span>)<span class="question-mark">?</span>
 		.<span class="ident">clone</span>();
 	<span class="kw">let</span> (<span class="ident">req</span>, <span class="ident">pending_response</span>) <span class="op">=</span> <span class="ident">OutgoingRequest::new</span>(
-		<span class="ident">Recipient::Authority</span>(<span class="ident">authority_id</span>),
+		<span class="ident">Recipient::Authority</span>(<span class="ident">authority_id</span>.<span class="ident">clone</span>()),
 		<span class="ident">PoVFetchingRequest</span> { <span class="ident">candidate_hash</span> },
 	);
 	<span class="kw">let</span> <span class="ident">full_req</span> <span class="op">=</span> <span class="ident">Requests::PoVFetching</span>(<span class="ident">req</span>);
@@ -276,20 +296,25 @@
 	<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">jaeger::Span::new</span>(<span class="ident">candidate_hash</span>, <span class="string">&quot;fetch-pov&quot;</span>)
 		.<span class="ident">with_validator_index</span>(<span class="ident">from_validator</span>)
 		.<span class="ident">with_relay_parent</span>(<span class="ident">parent</span>);
-	<span class="ident">ctx</span>.<span class="ident">spawn</span>(<span class="string">&quot;pov-fetcher&quot;</span>, <span class="ident">fetch_pov_job</span>(<span class="ident">pov_hash</span>, <span class="ident">pending_response</span>.<span class="ident">boxed</span>(), <span class="ident">span</span>, <span class="ident">tx</span>).<span class="ident">boxed</span>())
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Fatal::SpawnTask</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
+	<span class="ident">ctx</span>.<span class="ident">spawn</span>(
+		<span class="string">&quot;pov-fetcher&quot;</span>,
+		<span class="ident">fetch_pov_job</span>(<span class="ident">pov_hash</span>, <span class="ident">authority_id</span>, <span class="ident">pending_response</span>.<span class="ident">boxed</span>(), <span class="ident">span</span>, <span class="ident">tx</span>, <span class="ident">metrics</span>).<span class="ident">boxed</span>(),
+	)
+	.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Fatal::SpawnTask</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>(())
 }
 
 <span class="doccomment">/// Future to be spawned for taking care of handling reception and sending of PoV.</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_pov_job</span>(
 	<span class="ident">pov_hash</span>: <span class="ident">Hash</span>,
+	<span class="ident">authority_id</span>: <span class="ident">AuthorityDiscoveryId</span>,
 	<span class="ident">pending_response</span>: <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PoVFetchingResponse</span>, <span class="ident">RequestError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">span</span>: <span class="ident">jaeger::Span</span>,
 	<span class="ident">tx</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PoV</span><span class="op">&gt;</span>,
+	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 ) {
-	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">do_fetch_pov</span>(<span class="ident">pov_hash</span>, <span class="ident">pending_response</span>, <span class="ident">span</span>, <span class="ident">tx</span>).<span class="kw">await</span> {
-		<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;fetch_pov_job&quot;</span>);
+	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">do_fetch_pov</span>(<span class="ident">pov_hash</span>, <span class="ident">pending_response</span>, <span class="ident">span</span>, <span class="ident">tx</span>, <span class="ident">metrics</span>).<span class="kw">await</span> {
+		<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="question-mark">?</span><span class="ident">pov_hash</span>, <span class="question-mark">?</span><span class="ident">authority_id</span>, <span class="string">&quot;fetch_pov_job&quot;</span>);
 	}
 }
 
@@ -299,15 +324,25 @@
 	<span class="ident">pending_response</span>: <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PoVFetchingResponse</span>, <span class="ident">RequestError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">_span</span>: <span class="ident">jaeger::Span</span>,
 	<span class="ident">tx</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PoV</span><span class="op">&gt;</span>,
+	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 ) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">NonFatal</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">pending_response</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">NonFatal::FetchPoV</span>)<span class="question-mark">?</span>;
+	<span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">pending_response</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">NonFatal::FetchPoV</span>);
 	<span class="kw">let</span> <span class="ident">pov</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">response</span> {
-		<span class="ident">PoVFetchingResponse::PoV</span>(<span class="ident">pov</span>) =&gt; <span class="ident">pov</span>,
-		<span class="ident">PoVFetchingResponse::NoSuchPoV</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">NonFatal::NoSuchPoV</span>),
+		<span class="prelude-val">Ok</span>(<span class="ident">PoVFetchingResponse::PoV</span>(<span class="ident">pov</span>)) =&gt; <span class="ident">pov</span>,
+		<span class="prelude-val">Ok</span>(<span class="ident">PoVFetchingResponse::NoSuchPoV</span>) =&gt; {
+			<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">NOT_FOUND</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">NonFatal::NoSuchPoV</span>)
+		},
+		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
+			<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">FAILED</span>);
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>)
+		},
 	};
 	<span class="kw">if</span> <span class="ident">pov</span>.<span class="ident">hash</span>() <span class="op">==</span> <span class="ident">pov_hash</span> {
+		<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">SUCCEEDED</span>);
 		<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">pov</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::SendResponse</span>)
 	} <span class="kw">else</span> {
+		<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">FAILED</span>);
 		<span class="prelude-val">Err</span>(<span class="ident">NonFatal::UnexpectedPoV</span>)
 	}
 }
@@ -364,6 +399,7 @@
 				<span class="ident">CandidateHash::default</span>(),
 				<span class="ident">pov_hash</span>,
 				<span class="ident">tx</span>,
+				<span class="ident">Metrics::new_dummy</span>(),
 			)
 			.<span class="kw">await</span>
 			.<span class="ident">expect</span>(<span class="string">&quot;Should succeed&quot;</span>);
