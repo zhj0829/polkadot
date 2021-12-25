@@ -50,6 +50,24 @@ pub const MAX_XCM_DECODE_DEPTH: u32 = 8;
 /// A version of XCM.
 pub type Version = u32;
 
+#[derive(Copy, Clone, Encode, Decode, Eq, PartialEq, Debug, TypeInfo)]
+pub enum VersionedConversionError {
+	UnsupportedVersion,
+	V3(v3::ConversionError),
+}
+
+impl From<()> for VersionedConversionError {
+	fn from(_: ()) -> Self {
+		VersionedConversionError::UnsupportedVersion
+	}
+}
+
+impl From<v3::ConversionError> for VersionedConversionError {
+	fn from(e: v3::ConversionError) -> Self {
+		VersionedConversionError::V3(e)
+	}
+}
+
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub enum Unsupported {}
 impl Encode for Unsupported {}
@@ -62,10 +80,10 @@ impl Decode for Unsupported {
 /// Attempt to convert `self` into a particular version of itself.
 pub trait IntoVersion: Sized {
 	/// Consume `self` and return same value expressed in some particular `version` of XCM.
-	fn into_version(self, version: Version) -> Result<Self, ()>;
+	fn into_version(self, version: Version) -> Result<Self, VersionedConversionError>;
 
 	/// Consume `self` and return same value expressed the latest version of XCM.
-	fn into_latest(self) -> Result<Self, ()> {
+	fn into_latest(self) -> Result<Self, VersionedConversionError> {
 		self.into_version(latest::VERSION)
 	}
 }
@@ -81,11 +99,11 @@ pub enum VersionedMultiLocation {
 }
 
 impl IntoVersion for VersionedMultiLocation {
-	fn into_version(self, n: Version) -> Result<Self, ()> {
+	fn into_version(self, n: Version) -> Result<Self, VersionedConversionError> {
 		Ok(match n {
 			0 => Self::V0(self.try_into()?),
 			1 | 2 | 3 => Self::V1(self.try_into()?),
-			_ => return Err(()),
+			_ => return Err(VersionedConversionError::UnsupportedVersion),
 		})
 	}
 }
@@ -137,13 +155,13 @@ pub enum VersionedResponse {
 }
 
 impl IntoVersion for VersionedResponse {
-	fn into_version(self, n: Version) -> Result<Self, ()> {
+	fn into_version(self, n: Version) -> Result<Self, VersionedConversionError> {
 		Ok(match n {
 			0 => Self::V0(self.try_into()?),
 			1 => Self::V1(self.try_into()?),
 			2 => Self::V2(self.try_into()?),
 			3 => Self::V3(self.try_into()?),
-			_ => return Err(()),
+			_ => return Err(VersionedConversionError::UnsupportedVersion),
 		})
 	}
 }
@@ -212,13 +230,13 @@ impl TryFrom<VersionedResponse> for v2::Response {
 }
 
 impl TryFrom<VersionedResponse> for v3::Response {
-	type Error = ();
-	fn try_from(x: VersionedResponse) -> Result<Self, ()> {
+	type Error = VersionedConversionError;
+	fn try_from(x: VersionedResponse) -> Result<Self, VersionedConversionError> {
 		use VersionedResponse::*;
 		match x {
 			V0(x) => V1(x.try_into()?).try_into(),
 			V1(x) => V2(x.try_into()?).try_into(),
-			V2(x) => x.try_into(),
+			V2(x) => Ok(x.try_into()?),
 			V3(x) => Ok(x),
 		}
 	}
@@ -235,11 +253,11 @@ pub enum VersionedMultiAsset {
 }
 
 impl IntoVersion for VersionedMultiAsset {
-	fn into_version(self, n: Version) -> Result<Self, ()> {
+	fn into_version(self, n: Version) -> Result<Self, VersionedConversionError> {
 		Ok(match n {
 			0 => Self::V0(self.try_into()?),
 			1 | 2 | 3 => Self::V1(self.try_into()?),
-			_ => return Err(()),
+			_ => return Err(VersionedConversionError::UnsupportedVersion),
 		})
 	}
 }
@@ -289,11 +307,11 @@ pub enum VersionedMultiAssets {
 }
 
 impl IntoVersion for VersionedMultiAssets {
-	fn into_version(self, n: Version) -> Result<Self, ()> {
+	fn into_version(self, n: Version) -> Result<Self, VersionedConversionError> {
 		Ok(match n {
 			0 => Self::V0(self.try_into()?),
 			1 | 2 | 3 => Self::V1(self.try_into()?),
-			_ => return Err(()),
+			_ => return Err(VersionedConversionError::UnsupportedVersion),
 		})
 	}
 }
@@ -346,13 +364,13 @@ pub enum VersionedXcm<Call> {
 }
 
 impl<C> IntoVersion for VersionedXcm<C> {
-	fn into_version(self, n: Version) -> Result<Self, ()> {
+	fn into_version(self, n: Version) -> Result<Self, VersionedConversionError> {
 		Ok(match n {
 			0 => Self::V0(self.try_into()?),
 			1 => Self::V1(self.try_into()?),
 			2 => Self::V2(self.try_into()?),
 			3 => Self::V3(self.try_into()?),
-			_ => return Err(()),
+			_ => return Err(VersionedConversionError::UnsupportedVersion),
 		})
 	}
 }
@@ -421,13 +439,13 @@ impl<Call> TryFrom<VersionedXcm<Call>> for v2::Xcm<Call> {
 }
 
 impl<Call> TryFrom<VersionedXcm<Call>> for v3::Xcm<Call> {
-	type Error = ();
-	fn try_from(x: VersionedXcm<Call>) -> Result<Self, ()> {
+	type Error = VersionedConversionError;
+	fn try_from(x: VersionedXcm<Call>) -> Result<Self, VersionedConversionError> {
 		use VersionedXcm::*;
 		match x {
 			V0(x) => V1(x.try_into()?).try_into(),
 			V1(x) => V2(x.try_into()?).try_into(),
-			V2(x) => x.try_into(),
+			V2(x) => Ok(x.try_into()?),
 			V3(x) => Ok(x),
 		}
 	}
@@ -438,7 +456,7 @@ pub trait WrapVersion {
 	fn wrap_version<Call>(
 		dest: &latest::MultiLocation,
 		xcm: impl Into<VersionedXcm<Call>>,
-	) -> Result<VersionedXcm<Call>, ()>;
+	) -> Result<VersionedXcm<Call>, VersionedConversionError>;
 }
 
 /// `()` implementation does nothing with the XCM, just sending with whatever version it was authored as.
@@ -446,7 +464,7 @@ impl WrapVersion for () {
 	fn wrap_version<Call>(
 		_: &latest::MultiLocation,
 		xcm: impl Into<VersionedXcm<Call>>,
-	) -> Result<VersionedXcm<Call>, ()> {
+	) -> Result<VersionedXcm<Call>, VersionedConversionError> {
 		Ok(xcm.into())
 	}
 }
@@ -457,7 +475,7 @@ impl WrapVersion for AlwaysV2 {
 	fn wrap_version<Call>(
 		_: &latest::MultiLocation,
 		xcm: impl Into<VersionedXcm<Call>>,
-	) -> Result<VersionedXcm<Call>, ()> {
+	) -> Result<VersionedXcm<Call>, VersionedConversionError> {
 		Ok(VersionedXcm::<Call>::V2(xcm.into().try_into()?))
 	}
 }
@@ -468,7 +486,7 @@ impl WrapVersion for AlwaysV3 {
 	fn wrap_version<Call>(
 		_: &latest::MultiLocation,
 		xcm: impl Into<VersionedXcm<Call>>,
-	) -> Result<VersionedXcm<Call>, ()> {
+	) -> Result<VersionedXcm<Call>, VersionedConversionError> {
 		Ok(VersionedXcm::<Call>::V3(xcm.into().try_into()?))
 	}
 }
@@ -482,8 +500,8 @@ pub type AlwaysRelease = AlwaysV2;
 pub mod prelude {
 	pub use super::{
 		latest::prelude::*, AlwaysLatest, AlwaysRelease, AlwaysV2, AlwaysV3, IntoVersion,
-		Unsupported, Version as XcmVersion, VersionedMultiAsset, VersionedMultiAssets,
-		VersionedMultiLocation, VersionedResponse, VersionedXcm, WrapVersion,
+		Unsupported, Version as XcmVersion, VersionedConversionError, VersionedMultiAsset,
+		VersionedMultiAssets, VersionedMultiLocation, VersionedResponse, VersionedXcm, WrapVersion,
 	};
 }
 

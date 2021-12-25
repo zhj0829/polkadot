@@ -24,7 +24,10 @@ use primitives::v1::{Id as ParaId, UpwardMessage};
 use sp_std::{
 	collections::btree_map::BTreeMap, convert::TryFrom, fmt, marker::PhantomData, mem, prelude::*,
 };
-use xcm::latest::Outcome;
+use xcm::{
+	latest::{ConversionError as XcmConversionError, Outcome},
+	VersionedConversionError,
+};
 
 pub use pallet::*;
 
@@ -106,8 +109,12 @@ impl<XcmExecutor: xcm::latest::ExecuteXcm<C::Call>, C: Config> UmpSink for XcmSi
 				Pallet::<C>::deposit_event(Event::InvalidFormat(id));
 				Ok(0)
 			},
-			Ok(Err(())) => {
+			Ok(Err(VersionedConversionError::UnsupportedVersion)) => {
 				Pallet::<C>::deposit_event(Event::UnsupportedVersion(id));
+				Ok(0)
+			},
+			Ok(Err(VersionedConversionError::V3(e))) => {
+				Pallet::<C>::deposit_event(Event::FailedToConvertToXcmV3(e));
 				Ok(0)
 			},
 			Ok(Ok(xcm_message)) => {
@@ -220,6 +227,8 @@ pub mod pallet {
 		///
 		/// \[ overweight_index, used \]
 		OverweightServiced(OverweightIndex, Weight),
+		/// Failed converting XCM to V3.
+		FailedToConvertToXcmV3(XcmConversionError),
 	}
 
 	#[pallet::error]

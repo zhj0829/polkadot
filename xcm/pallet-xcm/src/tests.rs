@@ -844,7 +844,10 @@ fn subscriber_side_subscription_works() {
 
 		// This message cannot be sent to a v2 remote.
 		let v2_msg = xcm::v2::Xcm::<()>(vec![xcm::v2::Instruction::Trap(0)]);
-		assert_eq!(XcmPallet::wrap_version(&remote, v2_msg.clone()), Err(()));
+		assert_eq!(
+			XcmPallet::wrap_version(&remote, v2_msg.clone()),
+			Err(VersionedConversionError::UnsupportedVersion)
+		);
 
 		let message = Xcm(vec![
 			// Remote upgraded to XCM v2
@@ -880,12 +883,21 @@ fn auto_subscription_works() {
 			XcmPallet::wrap_version(&remote0, v1_msg.clone()),
 			Ok(VersionedXcm::from(v1_msg.clone())),
 		);
-		assert_eq!(XcmPallet::wrap_version(&remote0, v2_msg.clone()), Err(()));
+		assert_eq!(
+			XcmPallet::wrap_version(&remote0, v2_msg.clone()),
+			Err(VersionedConversionError::UnsupportedVersion)
+		);
 		let expected = vec![(remote0.clone().into(), 2)];
 		assert_eq!(VersionDiscoveryQueue::<Test>::get().into_inner(), expected);
 
-		assert_eq!(XcmPallet::wrap_version(&remote0, v2_msg.clone()), Err(()));
-		assert_eq!(XcmPallet::wrap_version(&remote1, v2_msg.clone()), Err(()));
+		assert_eq!(
+			XcmPallet::wrap_version(&remote0, v2_msg.clone()),
+			Err(VersionedConversionError::UnsupportedVersion)
+		);
+		assert_eq!(
+			XcmPallet::wrap_version(&remote1, v2_msg.clone()),
+			Err(VersionedConversionError::UnsupportedVersion)
+		);
 		let expected = vec![(remote0.clone().into(), 3), (remote1.clone().into(), 1)];
 		assert_eq!(VersionDiscoveryQueue::<Test>::get().into_inner(), expected);
 
@@ -935,7 +947,10 @@ fn auto_subscription_works() {
 
 		// v2 messages cannot be sent to remote1...
 		assert_eq!(XcmPallet::wrap_version(&remote1, v1_msg.clone()), Ok(VersionedXcm::V1(v1_msg)));
-		assert_eq!(XcmPallet::wrap_version(&remote1, v2_msg.clone()), Err(()));
+		assert_eq!(
+			XcmPallet::wrap_version(&remote1, v2_msg.clone()),
+			Err(VersionedConversionError::UnsupportedVersion)
+		);
 	})
 }
 

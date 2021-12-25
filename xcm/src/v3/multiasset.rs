@@ -23,7 +23,7 @@
 //! - `MultiAssetFilter`: A combination of `Wild` and `MultiAssets` designed for efficiently filtering an XCM holding
 //!   account.
 
-use super::MultiLocation;
+use super::{ConversionError, MultiLocation};
 use crate::v2::{MultiAssetFilter as OldMultiAssetFilter, WildMultiAsset as OldWildMultiAsset};
 use alloc::{vec, vec::Vec};
 use core::convert::TryFrom;
@@ -214,13 +214,13 @@ impl From<OldMultiAssetFilter> for MultiAssetFilter {
 }
 
 impl TryFrom<(OldMultiAssetFilter, u32)> for MultiAssetFilter {
-	type Error = ();
-	fn try_from(old: (OldMultiAssetFilter, u32)) -> Result<MultiAssetFilter, ()> {
+	type Error = ConversionError;
+	fn try_from(old: (OldMultiAssetFilter, u32)) -> Result<MultiAssetFilter, ConversionError> {
 		let count = old.1;
 		Ok(match old.0 {
 			OldMultiAssetFilter::Definite(x) if count >= x.len() as u32 => Self::Definite(x.into()),
 			OldMultiAssetFilter::Wild(x) => Self::Wild((x, count).into()),
-			_ => return Err(()),
+			_ => return Err(ConversionError::MaxAssetCountExceeded),
 		})
 	}
 }

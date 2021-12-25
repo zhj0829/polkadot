@@ -33,7 +33,7 @@ impl<T: configuration::Config + dmp::Config, W: xcm::WrapVersion> SendXcm
 			MultiLocation { parents: 0, interior: X1(Parachain(id)) } => {
 				// Downward message passing.
 				let versioned_xcm =
-					W::wrap_version(&dest, msg).map_err(|()| SendError::DestinationUnsupported)?;
+					W::wrap_version(&dest, msg).map_err(SendError::DestinationUnsupported)?;
 				let config = <configuration::Pallet<T>>::config();
 				<dmp::Pallet<T>>::queue_downward_message(
 					&config,

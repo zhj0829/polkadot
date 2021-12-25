@@ -262,6 +262,8 @@ pub mod pallet {
 		NoSubscription,
 		/// The location is invalid since it already has a subscription from us.
 		AlreadySubscribed,
+		/// Cannot convert to the latest XCM version.
+		XcmConversionFailed(ConversionError),
 	}
 
 	/// The status of a query.
@@ -461,7 +463,10 @@ pub mod pallet {
 			let interior: Junctions =
 				origin_location.clone().try_into().map_err(|_| Error::<T>::InvalidOrigin)?;
 			let dest = MultiLocation::try_from(*dest).map_err(|()| Error::<T>::BadVersion)?;
-			let message: Xcm<()> = (*message).try_into().map_err(|()| Error::<T>::BadVersion)?;
+			let message: Xcm<()> = (*message).try_into().map_err(|e| match e {
+				VersionedConversionError::UnsupportedVersion => Error::<T>::BadVersion,
+				VersionedConversionError::V3(e) => Error::<T>::XcmConversionFailed(e),
+			})?;
 
 			Self::send_xcm(interior, dest.clone(), message.clone()).map_err(|e| match e {
 				SendError::CannotReachDestination(..) => Error::<T>::Unreachable,
@@ -579,7 +584,10 @@ pub mod pallet {
 			max_weight: Weight,
 		) -> DispatchResult {
 			let origin_location = T::ExecuteXcmOrigin::ensure_origin(origin)?;
-			let message = (*message).try_into().map_err(|()| Error::<T>::BadVersion)?;
+			let message = (*message).try_into().map_err(|e| match e {
+				VersionedConversionError::UnsupportedVersion => Error::<T>::BadVersion,
+				VersionedConversionError::V3(e) => Error::<T>::XcmConversionFailed(e),
+			})?;
 			let value = (origin_location, message);
 			ensure!(T::XcmExecuteFilter::contains(&value), Error::<T>::Filtered);
 			let (origin_location, message) = value;
@@ -1218,7 +1226,7 @@ pub mod pallet {
 		fn wrap_version<Call>(
 			dest: &MultiLocation,
 			xcm: impl Into<VersionedXcm<Call>>,
-		) -> Result<VersionedXcm<Call>, ()> {
+		) -> Result<VersionedXcm<Call>, VersionedConversionError> {
 			SupportedVersion::<T>::get(XCM_VERSION, LatestVersionedMultiLocation(dest))
 				.or_else(|| {
 					Self::note_unknown_version(dest);
@@ -1230,7 +1238,7 @@ pub mod pallet {
 						"Could not determine a version to wrap XCM for destination: {:?}",
 						dest,
 					);
-					()
+					VersionedConversionError::UnsupportedVersion
 				})
 				.and_then(|v| xcm.into().into_version(v.min(XCM_VERSION)))
 		}
@@ -1299,7 +1307,7 @@ pub mod pallet {
 				(0, X1(GeneralIndex(i))) =>
 					versioned = match versioned.into_version(*i as u32) {
 						Ok(v) => v,
-						Err(()) => return false,
+						Err(_) => return false,
 					},
 				(0, Here) => (),
 				_ => return false,

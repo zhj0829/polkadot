@@ -17,7 +17,7 @@
 //! Cross-Consensus Message format data structures.
 
 use super::MultiLocation;
-use crate::v1::{MultiAssetFilter, MultiAssets, MultiAsset as NewMultiAsset, WildMultiAsset};
+use crate::v1::{MultiAsset as NewMultiAsset, MultiAssetFilter, MultiAssets, WildMultiAsset};
 use alloc::{vec, vec::Vec};
 use core::{
 	convert::{TryFrom, TryInto},
