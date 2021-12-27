@@ -1656,6 +1656,102 @@
 <span id="1656">1656</span>
 <span id="1657">1657</span>
 <span id="1658">1658</span>
+<span id="1659">1659</span>
+<span id="1660">1660</span>
+<span id="1661">1661</span>
+<span id="1662">1662</span>
+<span id="1663">1663</span>
+<span id="1664">1664</span>
+<span id="1665">1665</span>
+<span id="1666">1666</span>
+<span id="1667">1667</span>
+<span id="1668">1668</span>
+<span id="1669">1669</span>
+<span id="1670">1670</span>
+<span id="1671">1671</span>
+<span id="1672">1672</span>
+<span id="1673">1673</span>
+<span id="1674">1674</span>
+<span id="1675">1675</span>
+<span id="1676">1676</span>
+<span id="1677">1677</span>
+<span id="1678">1678</span>
+<span id="1679">1679</span>
+<span id="1680">1680</span>
+<span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
+<span id="1684">1684</span>
+<span id="1685">1685</span>
+<span id="1686">1686</span>
+<span id="1687">1687</span>
+<span id="1688">1688</span>
+<span id="1689">1689</span>
+<span id="1690">1690</span>
+<span id="1691">1691</span>
+<span id="1692">1692</span>
+<span id="1693">1693</span>
+<span id="1694">1694</span>
+<span id="1695">1695</span>
+<span id="1696">1696</span>
+<span id="1697">1697</span>
+<span id="1698">1698</span>
+<span id="1699">1699</span>
+<span id="1700">1700</span>
+<span id="1701">1701</span>
+<span id="1702">1702</span>
+<span id="1703">1703</span>
+<span id="1704">1704</span>
+<span id="1705">1705</span>
+<span id="1706">1706</span>
+<span id="1707">1707</span>
+<span id="1708">1708</span>
+<span id="1709">1709</span>
+<span id="1710">1710</span>
+<span id="1711">1711</span>
+<span id="1712">1712</span>
+<span id="1713">1713</span>
+<span id="1714">1714</span>
+<span id="1715">1715</span>
+<span id="1716">1716</span>
+<span id="1717">1717</span>
+<span id="1718">1718</span>
+<span id="1719">1719</span>
+<span id="1720">1720</span>
+<span id="1721">1721</span>
+<span id="1722">1722</span>
+<span id="1723">1723</span>
+<span id="1724">1724</span>
+<span id="1725">1725</span>
+<span id="1726">1726</span>
+<span id="1727">1727</span>
+<span id="1728">1728</span>
+<span id="1729">1729</span>
+<span id="1730">1730</span>
+<span id="1731">1731</span>
+<span id="1732">1732</span>
+<span id="1733">1733</span>
+<span id="1734">1734</span>
+<span id="1735">1735</span>
+<span id="1736">1736</span>
+<span id="1737">1737</span>
+<span id="1738">1738</span>
+<span id="1739">1739</span>
+<span id="1740">1740</span>
+<span id="1741">1741</span>
+<span id="1742">1742</span>
+<span id="1743">1743</span>
+<span id="1744">1744</span>
+<span id="1745">1745</span>
+<span id="1746">1746</span>
+<span id="1747">1747</span>
+<span id="1748">1748</span>
+<span id="1749">1749</span>
+<span id="1750">1750</span>
+<span id="1751">1751</span>
+<span id="1752">1752</span>
+<span id="1753">1753</span>
+<span id="1754">1754</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1916,45 +2012,75 @@
 	}
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>: <span class="ident">Zero</span><span class="op">&gt;</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> {
+<span class="doccomment">/// Enumerates the possible inconsistencies of `HostConfiguration`.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">InconsistentError</span> {
+	<span class="doccomment">/// `group_rotation_frequency` is set to zero.</span>
+	<span class="ident">ZeroGroupRotationFrequency</span>,
+	<span class="doccomment">/// `chain_availability_period` is set to zero.</span>
+	<span class="ident">ZeroChainAvailabilityPeriod</span>,
+	<span class="doccomment">/// `thread_availability_period` is set to zero.</span>
+	<span class="ident">ZeroThreadAvailabilityPeriod</span>,
+	<span class="doccomment">/// `no_show_slots` is set to zero.</span>
+	<span class="ident">ZeroNoShowSlots</span>,
+	<span class="doccomment">/// `max_code_size` exceeds the hard limit of `MAX_CODE_SIZE`.</span>
+	<span class="ident">MaxCodeSizeExceedHardLimit</span> { <span class="ident">max_code_size</span>: <span class="ident">u32</span> },
+	<span class="doccomment">/// `max_head_data_size` exceeds the hard limit of `MAX_HEAD_DATA_SIZE`.</span>
+	<span class="ident">MaxHeadDataSizeExceedHardLimit</span> { <span class="ident">max_head_data_size</span>: <span class="ident">u32</span> },
+	<span class="doccomment">/// `max_pov_size` exceeds the hard limit of `MAX_POV_SIZE`.</span>
+	<span class="ident">MaxPovSizeExceedHardLimit</span> { <span class="ident">max_pov_size</span>: <span class="ident">u32</span> },
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">PartialOrd</span> <span class="op">+</span> <span class="ident">sp_std::fmt::Debug</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Checks that this instance is consistent with the requirements on each individual member.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// # Panic</span>
+	<span class="doccomment">/// # Errors</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// This function panics if any member is not set properly.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check_consistency</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+	<span class="doccomment">/// This function returns an error if the configuration is inconsistent.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check_consistency</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">InconsistentError</span><span class="op">&gt;</span> {
+		<span class="kw">use</span> <span class="ident">InconsistentError</span>::<span class="kw-2">*</span>;
+
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">group_rotation_frequency</span>.<span class="ident">is_zero</span>() {
-			<span class="macro">panic!</span>(<span class="string">&quot;`group_rotation_frequency` must be non-zero!&quot;</span>)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ZeroGroupRotationFrequency</span>)
 		}
 
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">chain_availability_period</span>.<span class="ident">is_zero</span>() {
-			<span class="macro">panic!</span>(<span class="string">&quot;`chain_availability_period` must be at least 1!&quot;</span>)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ZeroChainAvailabilityPeriod</span>)
 		}
 
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">thread_availability_period</span>.<span class="ident">is_zero</span>() {
-			<span class="macro">panic!</span>(<span class="string">&quot;`thread_availability_period` must be at least 1!&quot;</span>)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ZeroThreadAvailabilityPeriod</span>)
 		}
 
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">no_show_slots</span>.<span class="ident">is_zero</span>() {
-			<span class="macro">panic!</span>(<span class="string">&quot;`no_show_slots` must be at least 1!&quot;</span>)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ZeroNoShowSlots</span>)
 		}
 
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">max_code_size</span> <span class="op">&gt;</span> <span class="ident">MAX_CODE_SIZE</span> {
-			<span class="macro">panic!</span>(
-				<span class="string">&quot;`max_code_size` ({}) is bigger than allowed by the client ({})&quot;</span>,
-				<span class="self">self</span>.<span class="ident">max_code_size</span>, <span class="ident">MAX_CODE_SIZE</span>,
-			)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MaxCodeSizeExceedHardLimit</span> { <span class="ident">max_code_size</span>: <span class="self">self</span>.<span class="ident">max_code_size</span> })
 		}
 
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">max_head_data_size</span> <span class="op">&gt;</span> <span class="ident">MAX_HEAD_DATA_SIZE</span> {
-			<span class="macro">panic!</span>(
-				<span class="string">&quot;`max_head_data_size` ({}) is bigger than allowed by the client ({})&quot;</span>,
-				<span class="self">self</span>.<span class="ident">max_head_data_size</span>, <span class="ident">MAX_HEAD_DATA_SIZE</span>
-			)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MaxHeadDataSizeExceedHardLimit</span> {
+				<span class="ident">max_head_data_size</span>: <span class="self">self</span>.<span class="ident">max_head_data_size</span>,
+			})
 		}
 
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">max_pov_size</span> <span class="op">&gt;</span> <span class="ident">MAX_POV_SIZE</span> {
-			<span class="macro">panic!</span>(<span class="string">&quot;`max_pov_size` is bigger than allowed by the client&quot;</span>)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MaxPovSizeExceedHardLimit</span> { <span class="ident">max_pov_size</span>: <span class="self">self</span>.<span class="ident">max_pov_size</span> })
+		}
+
+		<span class="prelude-val">Ok</span>(())
+	}
+
+	<span class="doccomment">/// Checks that this instance is consistent with the requirements on each individual member.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// # Panics</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// This function panics if the configuration is inconsistent.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">panic_if_not_consistent</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">check_consistency</span>() {
+			<span class="macro">panic!</span>(<span class="string">&quot;Host configuration is inconsistent: {:?}&quot;</span>, <span class="ident">err</span>);
 		}
 	}
 }
@@ -2035,6 +2161,11 @@
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">PendingConfigs</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
 		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>)<span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
+	<span class="doccomment">/// If this is set, then the configuration setters will bypass the consistency checks. This</span>
+	<span class="doccomment">/// is meant to be used only as the last resort.</span>
+	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">BypassConsistencyCheck</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">bool</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
+
 	<span class="attribute">#[<span class="ident">pallet::genesis_config</span>]</span>
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GenesisConfig</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
 		<span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>,
@@ -2050,7 +2181,7 @@
 	<span class="attribute">#[<span class="ident">pallet::genesis_build</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">GenesisBuild</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GenesisConfig</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="kw">fn</span> <span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-			<span class="self">self</span>.<span class="ident">config</span>.<span class="ident">check_consistency</span>();
+			<span class="self">self</span>.<span class="ident">config</span>.<span class="ident">panic_if_not_consistent</span>();
 			<span class="ident">ActiveConfig</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>);
 		}
 	}
@@ -2067,10 +2198,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">validation_upgrade_frequency</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the validation upgrade delay.</span>
@@ -2083,10 +2213,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">validation_upgrade_delay</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the acceptance period for an included candidate.</span>
@@ -2099,10 +2228,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">code_retention_period</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the max validation code size for incoming upgrades.</span>
@@ -2112,11 +2240,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_code_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="macro">ensure!</span>(<span class="ident">new</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_CODE_SIZE</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_code_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the max POV block size for incoming upgrades.</span>
@@ -2126,11 +2252,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_pov_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="macro">ensure!</span>(<span class="ident">new</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_POV_SIZE</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_pov_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the max head data size for paras.</span>
@@ -2140,11 +2264,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_head_data_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="macro">ensure!</span>(<span class="ident">new</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAX_HEAD_DATA_SIZE</span>, <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_head_data_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the number of parathread execution cores.</span>
@@ -2154,10 +2276,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_parathread_cores</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">parathread_cores</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the number of retries for a particular parathread.</span>
@@ -2167,10 +2288,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_parathread_retries</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">parathread_retries</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the parachain validator-group rotation frequency</span>
@@ -2183,13 +2303,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-
-			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">group_rotation_frequency</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the availability period for parachains.</span>
@@ -2202,13 +2318,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-
-			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">chain_availability_period</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the availability period for parathreads.</span>
@@ -2221,13 +2333,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-
-			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">thread_availability_period</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the scheduling lookahead, in expected number of blocks at peak throughput.</span>
@@ -2237,10 +2345,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scheduling_lookahead</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">scheduling_lookahead</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the maximum number of validators to assign to any core.</span>
@@ -2253,10 +2360,9 @@
 			<span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_validators_per_core</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the maximum number of validators to use in parachain consensus.</span>
@@ -2266,10 +2372,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_validators</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_validators</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the dispute period, in number of sessions to keep for disputes.</span>
@@ -2279,10 +2384,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_period</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">dispute_period</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the dispute post conclusion acceptance period.</span>
@@ -2295,10 +2399,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">dispute_post_conclusion_acceptance_period</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the maximum number of dispute spam slots.</span>
@@ -2308,10 +2411,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_dispute_max_spam_slots</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">dispute_max_spam_slots</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the dispute conclusion by time out period.</span>
@@ -2324,10 +2426,9 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">dispute_conclusion_by_time_out_period</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the no show slots, in number of number of consensus slots.</span>
@@ -2338,13 +2439,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_no_show_slots</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-
-			<span class="macro">ensure!</span>(<span class="op">!</span><span class="ident">new</span>.<span class="ident">is_zero</span>(), <span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>);
-
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">no_show_slots</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the total number of delay tranches.</span>
@@ -2354,10 +2451,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_n_delay_tranches</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">n_delay_tranches</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the zeroth delay tranche width.</span>
@@ -2367,10 +2463,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_zeroth_delay_tranche_width</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">zeroth_delay_tranche_width</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the number of validators needed to approve a block.</span>
@@ -2380,10 +2475,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_needed_approvals</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">needed_approvals</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the number of samples to do of the `RelayVRFModulo` approval assignment criterion.</span>
@@ -2393,10 +2487,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_relay_vrf_modulo_samples</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">relay_vrf_modulo_samples</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum items that can present in a upward dispatch queue at once.</span>
@@ -2406,10 +2499,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_queue_count</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_upward_queue_count</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum total size of items that can present in a upward dispatch queue at once.</span>
@@ -2419,10 +2511,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_queue_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_upward_queue_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the critical downward message size.</span>
@@ -2432,10 +2523,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_downward_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_downward_message_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the soft limit for the phase of dispatching dispatchable upward messages.</span>
@@ -2445,10 +2535,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ump_service_total_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">ump_service_total_weight</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum size of an upward message that can be sent by a candidate.</span>
@@ -2458,10 +2547,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max_upward_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_upward_message_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of messages that a candidate can contain.</span>
@@ -2474,10 +2562,9 @@
 			<span class="ident">new</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">max_upward_message_num_per_candidate</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the number of sessions after which an HRMP open channel request expires.</span>
@@ -2498,10 +2585,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_sender_deposit</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Balance</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_sender_deposit</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the amount of funds that the recipient should provide for accepting opening an HRMP</span>
@@ -2512,10 +2598,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_recipient_deposit</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Balance</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_recipient_deposit</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of messages allowed in an HRMP channel at once.</span>
@@ -2525,10 +2610,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_capacity</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_channel_max_capacity</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum total size of messages in bytes allowed in an HRMP channel at once.</span>
@@ -2538,10 +2622,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_total_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_channel_max_total_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of inbound HRMP channels a parachain is allowed to accept.</span>
@@ -2554,10 +2637,9 @@
 			<span class="ident">new</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_max_parachain_inbound_channels</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of inbound HRMP channels a parathread is allowed to accept.</span>
@@ -2570,10 +2652,9 @@
 			<span class="ident">new</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_max_parathread_inbound_channels</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum size of a message that could ever be put into an HRMP channel.</span>
@@ -2583,10 +2664,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_hrmp_channel_max_message_size</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_channel_max_message_size</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of outbound HRMP channels a parachain is allowed to open.</span>
@@ -2599,10 +2679,9 @@
 			<span class="ident">new</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_max_parachain_outbound_channels</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of outbound HRMP channels a parathread is allowed to open.</span>
@@ -2615,10 +2694,9 @@
 			<span class="ident">new</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_max_parathread_outbound_channels</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum number of outbound HRMP messages can be sent by a candidate.</span>
@@ -2631,10 +2709,9 @@
 			<span class="ident">new</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">hrmp_max_message_num_per_candidate</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the maximum amount of weight any individual upward message may consume.</span>
@@ -2644,10 +2721,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ump_max_individual_weight</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">Weight</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">ump_max_individual_weight</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Enable or disable PVF pre-checking. Consult the field documentation prior executing.</span>
@@ -2658,10 +2734,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pvf_checking_enabled</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">bool</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">pvf_checking_enabled</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Set the number of session changes after which a PVF pre-checking voting is rejected.</span>
@@ -2671,10 +2746,9 @@
 		))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_pvf_voting_ttl</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">pvf_voting_ttl</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
-			<span class="prelude-val">Ok</span>(())
+			})
 		}
 
 		<span class="doccomment">/// Sets the minimum delay between announcing the upgrade block for a parachain until the</span>
@@ -2688,9 +2762,20 @@
 			<span class="ident">new</span>: <span class="ident">T::BlockNumber</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
-			<span class="ident"><span class="self">Self</span>::update_config_member</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
+			<span class="ident"><span class="self">Self</span>::schedule_config_update</span>(<span class="op">|</span><span class="ident">config</span><span class="op">|</span> {
 				<span class="ident">config</span>.<span class="ident">minimum_validation_upgrade_delay</span> <span class="op">=</span> <span class="ident">new</span>;
-			});
+			})
+		}
+
+		<span class="doccomment">/// Setting this to true will disable consistency checks for the configuration setters.</span>
+		<span class="doccomment">/// Use with caution.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>((
+			<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>),
+			<span class="ident">DispatchClass::Operational</span>,
+		))]</span>
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bypass_consistency_check</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">bool</span>) -&gt; <span class="ident">DispatchResult</span> {
+			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::BypassConsistencyCheck::put</span>(<span class="ident">new</span>);
 			<span class="prelude-val">Ok</span>(())
 		}
 	}
@@ -2782,12 +2867,24 @@
 		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::ActiveConfig::set</span>(<span class="ident">config</span>);
 	}
 
+	<span class="doccomment">/// This function should be used to update members of the configuration.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// This function is used to update the configuration in a way that is safe. It will check the</span>
+	<span class="doccomment">/// resulting configuration and ensure that the update is valid. If the update is invalid, it</span>
+	<span class="doccomment">/// will check if the previous configuration was valid. If it was invalid, we proceed with</span>
+	<span class="doccomment">/// updating the configuration, giving a chance to recover from such a condition.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// The actual configuration change take place after a couple of sessions have passed. In case</span>
+	<span class="doccomment">/// this function is called more than once in a session, then the pending configuration change</span>
+	<span class="doccomment">/// will be updated and the changes will be applied at once.</span>
 	<span class="comment">// NOTE: Explicitly tell rustc not to inline this because otherwise heuristics note the incoming</span>
 	<span class="comment">// closure making it&#39;s attractive to inline. However, in this case, we will end up with lots of</span>
 	<span class="comment">// duplicated code (making this function to show up in the top of heaviest functions) only for</span>
 	<span class="comment">// the sake of essentially avoiding an indirect call. Doesn&#39;t worth it.</span>
 	<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-	<span class="kw">fn</span> <span class="ident">update_config_member</span>(<span class="ident">updater</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>)) {
+	<span class="kw">fn</span> <span class="ident">schedule_config_update</span>(
+		<span class="ident">updater</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>),
+	) -&gt; <span class="ident">DispatchResult</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pending_configs</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">PendingConfigs</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::get</span>();
 
 		<span class="comment">// 1. pending_configs = []</span>
@@ -2821,9 +2918,44 @@
 			.<span class="ident">last</span>()
 			.<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="ident">config</span>)<span class="op">|</span> <span class="ident">config</span>.<span class="ident">clone</span>())
 			.<span class="ident">unwrap_or_else</span>(<span class="ident"><span class="self">Self</span>::config</span>);
+		<span class="kw">let</span> <span class="ident">base_config_consistent</span> <span class="op">=</span> <span class="ident">base_config</span>.<span class="ident">check_consistency</span>().<span class="ident">is_ok</span>();
 
 		<span class="comment">// Now, we need to decide what the new configuration should be.</span>
+		<span class="comment">// We also move the `base_config` to `new_config` to empahsize that the base config was</span>
+		<span class="comment">// destroyed by the `updater`.</span>
 		<span class="ident">updater</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">base_config</span>);
+		<span class="kw">let</span> <span class="ident">new_config</span> <span class="op">=</span> <span class="ident">base_config</span>;
+
+		<span class="kw">if</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::BypassConsistencyCheck::get</span>() {
+			<span class="comment">// This will emit a warning each configuration update if the consistency check is</span>
+			<span class="comment">// bypassed. This is an attempt to make sure the bypass is not accidentally left on.</span>
+			<span class="macro">log::warn!</span>(
+				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+				<span class="string">&quot;Bypassing the consistency check for the configuration change!&quot;</span>,
+			);
+		} <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">new_config</span>.<span class="ident">check_consistency</span>() {
+			<span class="kw">if</span> <span class="ident">base_config_consistent</span> {
+				<span class="comment">// Base configuration is consistent and the new configuration is inconsistent.</span>
+				<span class="comment">// This means that the value set by the `updater` is invalid and we can return</span>
+				<span class="comment">// it as an error.</span>
+				<span class="macro">log::warn!</span>(
+					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+					<span class="string">&quot;Configuration change rejected due to invalid configuration: {:?}&quot;</span>,
+					<span class="ident">e</span>,
+				);
+				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>.<span class="ident">into</span>())
+			} <span class="kw">else</span> {
+				<span class="comment">// The configuration was already broken, so we can as well proceed with the update.</span>
+				<span class="comment">// You cannot break something that is already broken.</span>
+				<span class="comment">//</span>
+				<span class="comment">// That will allow to call several functions and ultimately return the configuration</span>
+				<span class="comment">// into consistent state.</span>
+				<span class="macro">log::warn!</span>(
+					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+					<span class="string">&quot;The new configuration is broken but the old is broken as well. Proceeding&quot;</span>,
+				);
+			}
+		}
 
 		<span class="kw">let</span> <span class="ident">scheduled_session</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::scheduled_session</span>();
 
@@ -2831,22 +2963,23 @@
 			.<span class="ident">iter_mut</span>()
 			.<span class="ident">find</span>(<span class="op">|</span><span class="op">&amp;&amp;</span><span class="kw-2">mut</span> (<span class="ident">apply_at_session</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">apply_at_session</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">scheduled_session</span>)
 		{
-			<span class="kw-2">*</span><span class="ident">config</span> <span class="op">=</span> <span class="ident">base_config</span>;
+			<span class="kw-2">*</span><span class="ident">config</span> <span class="op">=</span> <span class="ident">new_config</span>;
 		} <span class="kw">else</span> {
 			<span class="comment">// We are scheduling a new configuration change for the scheduled session.</span>
-			<span class="ident">pending_configs</span>.<span class="ident">push</span>((<span class="ident">scheduled_session</span>, <span class="ident">base_config</span>));
+			<span class="ident">pending_configs</span>.<span class="ident">push</span>((<span class="ident">scheduled_session</span>, <span class="ident">new_config</span>));
 		}
 
 		<span class="op">&lt;</span><span class="ident">PendingConfigs</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">pending_configs</span>);
+
+		<span class="prelude-val">Ok</span>(())
 	}
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mock</span>::{<span class="ident">new_test_ext</span>, <span class="ident">Configuration</span>, <span class="ident">Origin</span>, <span class="ident">ParasShared</span>};
-
-	<span class="kw">use</span> <span class="ident">frame_support::assert_ok</span>;
+	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mock</span>::{<span class="ident">new_test_ext</span>, <span class="ident">Configuration</span>, <span class="ident">Origin</span>, <span class="ident">ParasShared</span>, <span class="ident">Test</span>};
+	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">assert_err</span>, <span class="ident">assert_ok</span>};
 
 	<span class="kw">fn</span> <span class="ident">on_new_session</span>(
 		<span class="ident">session_index</span>: <span class="ident">SessionIndex</span>,
@@ -2856,6 +2989,13 @@
 			<span class="ident">Configuration::initializer_on_new_session</span>(<span class="kw-2">&amp;</span><span class="ident">session_index</span>);
 		<span class="kw">let</span> <span class="ident">new_config</span> <span class="op">=</span> <span class="ident">new_config</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">prev_config</span>.<span class="ident">clone</span>());
 		(<span class="ident">prev_config</span>, <span class="ident">new_config</span>)
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">default_is_consistent</span>() {
+		<span class="ident">new_test_ext</span>(<span class="ident">Default::default</span>()).<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="ident">Configuration::config</span>().<span class="ident">panic_if_not_consistent</span>();
+		});
 	}
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
@@ -3034,6 +3174,58 @@
 
 			<span class="macro">assert_eq!</span>(<span class="ident">Configuration::config</span>(), <span class="ident">final_config</span>);
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Configuration</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::PendingConfigs::get</span>(), <span class="macro">vec!</span>[]);
+		});
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">invariants</span>() {
+		<span class="ident">new_test_ext</span>(<span class="ident">Default::default</span>()).<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_max_code_size</span>(<span class="ident">Origin::root</span>(), <span class="ident">MAX_CODE_SIZE</span> <span class="op">+</span> <span class="number">1</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_max_pov_size</span>(<span class="ident">Origin::root</span>(), <span class="ident">MAX_POV_SIZE</span> <span class="op">+</span> <span class="number">1</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_max_head_data_size</span>(<span class="ident">Origin::root</span>(), <span class="ident">MAX_HEAD_DATA_SIZE</span> <span class="op">+</span> <span class="number">1</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_chain_availability_period</span>(<span class="ident">Origin::root</span>(), <span class="number">0</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_thread_availability_period</span>(<span class="ident">Origin::root</span>(), <span class="number">0</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+		});
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">consistency_bypass_works</span>() {
+		<span class="ident">new_test_ext</span>(<span class="ident">Default::default</span>()).<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_max_code_size</span>(<span class="ident">Origin::root</span>(), <span class="ident">MAX_CODE_SIZE</span> <span class="op">+</span> <span class="number">1</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+
+			<span class="macro">assert_ok!</span>(<span class="ident">Configuration::set_bypass_consistency_check</span>(<span class="ident">Origin::root</span>(), <span class="bool-val">true</span>));
+			<span class="macro">assert_ok!</span>(<span class="ident">Configuration::set_max_code_size</span>(<span class="ident">Origin::root</span>(), <span class="ident">MAX_CODE_SIZE</span> <span class="op">+</span> <span class="number">1</span>));
+
+			<span class="macro">assert_eq!</span>(
+				<span class="ident">Configuration::config</span>().<span class="ident">max_code_size</span>,
+				<span class="ident">HostConfiguration</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::default</span>().<span class="ident">max_code_size</span>
+			);
+
+			<span class="ident">on_new_session</span>(<span class="number">1</span>);
+			<span class="ident">on_new_session</span>(<span class="number">2</span>);
+
+			<span class="macro">assert_eq!</span>(<span class="ident">Configuration::config</span>().<span class="ident">max_code_size</span>, <span class="ident">MAX_CODE_SIZE</span> <span class="op">+</span> <span class="number">1</span>);
 		});
 	}
 

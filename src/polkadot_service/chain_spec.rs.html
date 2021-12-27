@@ -1944,6 +1944,17 @@
 <span id="1944">1944</span>
 <span id="1945">1945</span>
 <span id="1946">1946</span>
+<span id="1947">1947</span>
+<span id="1948">1948</span>
+<span id="1949">1949</span>
+<span id="1950">1950</span>
+<span id="1951">1951</span>
+<span id="1952">1952</span>
+<span id="1953">1953</span>
+<span id="1954">1954</span>
+<span id="1955">1955</span>
+<span id="1956">1956</span>
+<span id="1957">1957</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2125,8 +2136,8 @@
 	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">MAX_CODE_SIZE</span>, <span class="ident">MAX_POV_SIZE</span>};
 
 	<span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span> {
-		<span class="ident">validation_upgrade_frequency</span>: <span class="number">1u32</span>,
-		<span class="ident">validation_upgrade_delay</span>: <span class="number">1</span>,
+		<span class="ident">validation_upgrade_frequency</span>: <span class="number">2u32</span>,
+		<span class="ident">validation_upgrade_delay</span>: <span class="number">2</span>,
 		<span class="ident">code_retention_period</span>: <span class="number">1200</span>,
 		<span class="ident">max_code_size</span>: <span class="ident">MAX_CODE_SIZE</span>,
 		<span class="ident">max_pov_size</span>: <span class="ident">MAX_POV_SIZE</span>,
@@ -2158,6 +2169,17 @@
 		<span class="ident">zeroth_delay_tranche_width</span>: <span class="number">0</span>,
 		..<span class="ident">Default::default</span>()
 	}
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+	<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>,
+	<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kusama-native&quot;</span>,
+	<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;westend-native&quot;</span>,
+	<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>
+))]</span>
+<span class="attribute">#[<span class="ident">test</span>]</span>
+<span class="kw">fn</span> <span class="ident">default_parachains_host_configuration_is_consistent</span>() {
+	<span class="ident">default_parachains_host_configuration</span>().<span class="ident">panic_if_not_consistent</span>();
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
