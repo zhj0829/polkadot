@@ -588,6 +588,8 @@
 <span id="588">588</span>
 <span id="589">589</span>
 <span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -882,6 +884,8 @@
 			<span class="ident">no_show_slots</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">needed_approvals</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
+			<span class="ident">dispute_period</span>: <span class="number">6</span>,
+			<span class="ident">random_seed</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
 		}
 	}
 

@@ -218,6 +218,12 @@
 <span id="218">218</span>
 <span id="219">219</span>
 <span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -254,6 +260,10 @@
 	<span class="doccomment">/// All the validators actively participating in parachain consensus.</span>
 	<span class="doccomment">/// Indices are into the broader validator set.</span>
 	<span class="kw">pub</span> <span class="ident">active_validator_indices</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">v1::ValidatorIndex</span><span class="op">&gt;</span>,
+	<span class="doccomment">/// A secure random seed for the session, gathered from BABE.</span>
+	<span class="kw">pub</span> <span class="ident">random_seed</span>: [<span class="ident">u8</span>; <span class="number">32</span>],
+	<span class="doccomment">/// The amount of sessions to keep for disputes.</span>
+	<span class="kw">pub</span> <span class="ident">dispute_period</span>: <span class="ident">v1::SessionIndex</span>,
 
 	<span class="comment">/****** Old fields ******/</span>
 	<span class="doccomment">/// Validators in canonical ordering.</span>
@@ -307,6 +317,8 @@
 		<span class="ident">SessionInfo</span> {
 			<span class="comment">// new fields</span>
 			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
+			<span class="ident">random_seed</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
+			<span class="ident">dispute_period</span>: <span class="number">6</span>,
 			<span class="comment">// old fields</span>
 			<span class="ident">validators</span>: <span class="ident">old</span>.<span class="ident">validators</span>,
 			<span class="ident">discovery_keys</span>: <span class="ident">old</span>.<span class="ident">discovery_keys</span>,

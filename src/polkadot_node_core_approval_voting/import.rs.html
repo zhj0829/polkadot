@@ -1308,6 +1308,10 @@
 <span id="1308">1308</span>
 <span id="1309">1309</span>
 <span id="1310">1310</span>
+<span id="1311">1311</span>
+<span id="1312">1312</span>
+<span id="1313">1313</span>
+<span id="1314">1314</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1996,6 +2000,8 @@
 			<span class="ident">no_show_slots</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">needed_approvals</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
+			<span class="ident">dispute_period</span>: <span class="number">6</span>,
+			<span class="ident">random_seed</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
 		}
 	}
 
@@ -2452,6 +2458,8 @@
 			<span class="ident">n_delay_tranches</span>: <span class="ident">irrelevant</span>,
 			<span class="ident">no_show_slots</span>: <span class="ident">irrelevant</span>,
 			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
+			<span class="ident">dispute_period</span>: <span class="number">6</span>,
+			<span class="ident">random_seed</span>: [<span class="number">0u8</span>; <span class="number">32</span>],
 		};
 
 		<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">Slot::from</span>(<span class="number">10</span>);

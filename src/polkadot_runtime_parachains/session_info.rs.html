@@ -385,6 +385,9 @@
 <span id="385">385</span>
 <span id="386">386</span>
 <span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -505,6 +508,7 @@
 		<span class="kw">let</span> <span class="ident">needed_approvals</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">needed_approvals</span>;
 
 		<span class="kw">let</span> <span class="ident">new_session_index</span> <span class="op">=</span> <span class="ident">notification</span>.<span class="ident">session_index</span>;
+		<span class="kw">let</span> <span class="ident">random_seed</span> <span class="op">=</span> <span class="ident">notification</span>.<span class="ident">random_seed</span>;
 		<span class="kw">let</span> <span class="ident">old_earliest_stored_session</span> <span class="op">=</span> <span class="ident">EarliestStoredSession</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>();
 		<span class="kw">let</span> <span class="ident">new_earliest_stored_session</span> <span class="op">=</span> <span class="ident">new_session_index</span>.<span class="ident">saturating_sub</span>(<span class="ident">dispute_period</span>);
 		<span class="kw">let</span> <span class="ident">new_earliest_stored_session</span> <span class="op">=</span>
@@ -534,6 +538,8 @@
 			<span class="ident">no_show_slots</span>,
 			<span class="ident">needed_approvals</span>,
 			<span class="ident">active_validator_indices</span>: <span class="ident">active_set</span>,
+			<span class="ident">random_seed</span>,
+			<span class="ident">dispute_period</span>,
 		};
 		<span class="ident">Sessions</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">new_session_index</span>, <span class="kw-2">&amp;</span><span class="ident">new_session_info</span>);
 	}
