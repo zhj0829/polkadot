@@ -584,6 +584,10 @@
 <span id="584">584</span>
 <span id="585">585</span>
 <span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -606,7 +610,10 @@
 <span class="doccomment">//! care about the state of particular blocks.</span>
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{<span class="ident">new_session_window_size</span>, <span class="ident">SessionWindowSize</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Hash</span>, <span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
+	<span class="ident">v1</span>::{<span class="ident">Hash</span>, <span class="ident">SessionIndex</span>},
+	<span class="ident">v2::SessionInfo</span>,
+};
 
 <span class="kw">use</span> <span class="ident">futures::channel::oneshot</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{
@@ -874,6 +881,7 @@
 			<span class="ident">n_delay_tranches</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">no_show_slots</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">needed_approvals</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
+			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
 		}
 	}
 

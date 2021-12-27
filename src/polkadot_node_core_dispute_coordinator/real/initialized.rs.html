@@ -1129,6 +1129,9 @@
 <span id="1129">1129</span>
 <span id="1130">1130</span>
 <span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
+<span id="1134">1134</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1170,10 +1173,13 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::rolling_session_window</span>::{
 	<span class="ident">RollingSessionWindow</span>, <span class="ident">SessionWindowUpdate</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
-	<span class="ident">byzantine_threshold</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CompactStatement</span>,
-	<span class="ident">DisputeStatement</span>, <span class="ident">DisputeStatementSet</span>, <span class="ident">Hash</span>, <span class="ident">ScrapedOnChainVotes</span>, <span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>,
-	<span class="ident">ValidDisputeStatementKind</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorPair</span>, <span class="ident">ValidatorSignature</span>,
+<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
+	<span class="ident">v1</span>::{
+		<span class="ident">byzantine_threshold</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CompactStatement</span>,
+		<span class="ident">DisputeStatement</span>, <span class="ident">DisputeStatementSet</span>, <span class="ident">Hash</span>, <span class="ident">ScrapedOnChainVotes</span>, <span class="ident">SessionIndex</span>,
+		<span class="ident">ValidDisputeStatementKind</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorPair</span>, <span class="ident">ValidatorSignature</span>,
+	},
+	<span class="ident">v2::SessionInfo</span>,
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">metrics::Metrics</span>, <span class="ident">real::DisputeCoordinatorSubsystem</span>, <span class="ident">LOG_TARGET</span>};

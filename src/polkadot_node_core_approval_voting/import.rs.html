@@ -1306,6 +1306,8 @@
 <span id="1306">1306</span>
 <span id="1307">1307</span>
 <span id="1308">1308</span>
+<span id="1309">1309</span>
+<span id="1310">1310</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1890,7 +1892,7 @@
 	<span class="kw">use</span> <span class="ident">polkadot_node_primitives::approval</span>::{<span class="ident">VRFOutput</span>, <span class="ident">VRFProof</span>};
 	<span class="kw">use</span> <span class="ident">polkadot_node_subsystem::messages::AllMessages</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_node_subsystem_test_helpers::make_subsystem_context</span>;
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">SessionInfo</span>, <span class="ident">ValidatorIndex</span>};
+	<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{<span class="ident">v1::ValidatorIndex</span>, <span class="ident">v2::SessionInfo</span>};
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">sp_consensus_babe</span>::{
 		<span class="ident">digests</span>::{<span class="ident">CompatibleDigestItem</span>, <span class="ident">PreDigest</span>, <span class="ident">SecondaryVRFPreDigest</span>},
 		<span class="ident">AllowedSlots</span>, <span class="ident">BabeEpochConfiguration</span>, <span class="ident">Epoch</span> <span class="kw">as</span> <span class="ident">BabeEpoch</span>,
@@ -1993,6 +1995,7 @@
 			<span class="ident">n_delay_tranches</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">no_show_slots</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
 			<span class="ident">needed_approvals</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="kw">_</span>,
+			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
 		}
 	}
 
@@ -2448,6 +2451,7 @@
 			<span class="ident">relay_vrf_modulo_samples</span>: <span class="ident">irrelevant</span>,
 			<span class="ident">n_delay_tranches</span>: <span class="ident">irrelevant</span>,
 			<span class="ident">no_show_slots</span>: <span class="ident">irrelevant</span>,
+			<span class="ident">active_validator_indices</span>: <span class="ident">Vec::new</span>(),
 		};
 
 		<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">Slot::from</span>(<span class="number">10</span>);

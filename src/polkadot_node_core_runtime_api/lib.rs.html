@@ -511,6 +511,43 @@
 <span id="511">511</span>
 <span id="512">512</span>
 <span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -536,7 +573,10 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::metrics</span>::{<span class="self">self</span>, <span class="ident">prometheus</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Block</span>, <span class="ident">BlockId</span>, <span class="ident">Hash</span>, <span class="ident">ParachainHost</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
+	<span class="ident">v1</span>::{<span class="ident">Block</span>, <span class="ident">BlockId</span>, <span class="ident">Hash</span>},
+	<span class="ident">v2::ParachainHost</span>,
+};
 <span class="kw">use</span> <span class="ident">polkadot_subsystem</span>::{
 	<span class="ident">errors::RuntimeApiError</span>,
 	<span class="ident">messages</span>::{<span class="ident">RuntimeApiMessage</span>, <span class="ident">RuntimeApiRequest</span> <span class="kw">as</span> <span class="ident">Request</span>},
@@ -942,8 +982,42 @@
 		),
 		<span class="ident">Request::CandidateEvents</span>(<span class="ident">sender</span>) =&gt;
 			<span class="macro">query!</span>(<span class="ident">CandidateEvents</span>, <span class="ident">candidate_events</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
-		<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>) =&gt;
-			<span class="macro">query!</span>(<span class="ident">SessionInfo</span>, <span class="ident">session_info</span>(<span class="ident">index</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
+		<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>) =&gt; {
+			<span class="kw">use</span> <span class="ident">sp_api::ApiExt</span>;
+
+			<span class="kw">let</span> <span class="ident">api</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">runtime_api</span>();
+			<span class="kw">let</span> <span class="ident">block_id</span> <span class="op">=</span> <span class="ident">BlockId::Hash</span>(<span class="ident">relay_parent</span>);
+
+			<span class="kw">let</span> <span class="ident">api_version</span> <span class="op">=</span> <span class="ident">api</span>
+				.<span class="ident">api_version</span>::<span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ParachainHost</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">BlockId::Hash</span>(<span class="ident">relay_parent</span>))
+				.<span class="ident">unwrap_or_default</span>()
+				.<span class="ident">unwrap_or_default</span>();
+
+			<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">api_version</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">2</span> {
+				<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span>
+					<span class="ident">api</span>.<span class="ident">session_info</span>(<span class="kw-2">&amp;</span><span class="ident">block_id</span>, <span class="ident">index</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RuntimeApiError::Execution</span> {
+						<span class="ident">runtime_api_name</span>: <span class="string">&quot;SessionInfo&quot;</span>,
+						<span class="ident">source</span>: <span class="ident">std::sync::Arc::new</span>(<span class="ident">e</span>),
+					});
+				<span class="ident">metrics</span>.<span class="ident">on_request</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
+				<span class="ident">res</span>
+			} <span class="kw">else</span> {
+				<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
+				<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">api</span>.<span class="ident">session_info_before_version_2</span>(<span class="kw-2">&amp;</span><span class="ident">block_id</span>, <span class="ident">index</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+					<span class="ident">RuntimeApiError::Execution</span> {
+						<span class="ident">runtime_api_name</span>: <span class="string">&quot;SessionInfo&quot;</span>,
+						<span class="ident">source</span>: <span class="ident">std::sync::Arc::new</span>(<span class="ident">e</span>),
+					}
+				});
+				<span class="ident">metrics</span>.<span class="ident">on_request</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
+
+				<span class="ident">res</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">old</span><span class="op">|</span> <span class="ident">old</span>.<span class="ident">into</span>()))
+			};
+
+			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">res</span>.<span class="ident">clone</span>());
+
+			<span class="ident">res</span>.<span class="ident">ok</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">res</span><span class="op">|</span> <span class="ident">RequestResult::SessionInfo</span>(<span class="ident">relay_parent</span>, <span class="ident">index</span>, <span class="ident">res</span>))
+		},
 		<span class="ident">Request::DmqContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) =&gt; <span class="macro">query!</span>(<span class="ident">DmqContents</span>, <span class="ident">dmq_contents</span>(<span class="ident">id</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),
 		<span class="ident">Request::InboundHrmpChannelsContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) =&gt;
 			<span class="macro">query!</span>(<span class="ident">InboundHrmpChannelsContents</span>, <span class="ident">inbound_hrmp_channels_contents</span>(<span class="ident">id</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">1</span>, <span class="ident">sender</span>),

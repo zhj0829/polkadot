@@ -2152,6 +2152,10 @@
 <span id="2152">2152</span>
 <span id="2153">2153</span>
 <span id="2154">2154</span>
+<span id="2155">2155</span>
+<span id="2156">2156</span>
+<span id="2157">2157</span>
+<span id="2158">2158</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2176,11 +2180,15 @@
 
 <span class="kw">use</span> <span class="ident">pallet_transaction_payment::CurrencyAdapter</span>;
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>, <span class="ident">MaxEncodedLen</span>};
-<span class="kw">use</span> <span class="ident">primitives::v1</span>::{
-	<span class="ident">AccountId</span>, <span class="ident">AccountIndex</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateEvent</span>, <span class="ident">CommittedCandidateReceipt</span>,
-	<span class="ident">CoreState</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">InboundDownwardMessage</span>, <span class="ident">InboundHrmpMessage</span>,
-	<span class="ident">Moment</span>, <span class="ident">Nonce</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>, <span class="ident">ScrapedOnChainVotes</span>,
-	<span class="ident">SessionInfo</span>, <span class="ident">Signature</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>,
+<span class="kw">use</span> <span class="ident">primitives</span>::{
+	<span class="ident">v1</span>::{
+		<span class="ident">AccountId</span>, <span class="ident">AccountIndex</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateEvent</span>, <span class="ident">CommittedCandidateReceipt</span>,
+		<span class="ident">CoreState</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">InboundDownwardMessage</span>,
+		<span class="ident">InboundHrmpMessage</span>, <span class="ident">Moment</span>, <span class="ident">Nonce</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>,
+		<span class="ident">ScrapedOnChainVotes</span>, <span class="ident">Signature</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>,
+		<span class="ident">ValidatorIndex</span>,
+	},
+	<span class="ident">v2::SessionInfo</span>,
 };
 <span class="kw">use</span> <span class="ident">runtime_common</span>::{
 	<span class="ident">auctions</span>, <span class="ident">claims</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::DealWithFees</span>, <span class="ident">paras_registrar</span>, <span class="ident">slots</span>, <span class="ident">xcm_sender</span>,
@@ -3889,7 +3897,7 @@
 		}
 	}
 
-	<span class="kw">impl</span> <span class="ident">primitives::v1::ParachainHost</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Hash</span>, <span class="ident">BlockNumber</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+	<span class="kw">impl</span> <span class="ident">primitives::v2::ParachainHost</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Hash</span>, <span class="ident">BlockNumber</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 		<span class="kw">fn</span> <span class="ident">validators</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorId</span><span class="op">&gt;</span> {
 			<span class="ident">parachains_runtime_api_impl::validators</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>()
 		}
@@ -3971,7 +3979,7 @@
 		}
 
 		<span class="kw">fn</span> <span class="ident">submit_pvf_check_statement</span>(
-			<span class="ident">stmt</span>: <span class="ident">primitives::v1::PvfCheckStatement</span>,
+			<span class="ident">stmt</span>: <span class="ident">primitives::v2::PvfCheckStatement</span>,
 			<span class="ident">signature</span>: <span class="ident">primitives::v1::ValidatorSignature</span>,
 		) {
 			<span class="ident">parachains_runtime_api_impl::submit_pvf_check_statement</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">stmt</span>, <span class="ident">signature</span>)

@@ -1396,111 +1396,6 @@
 <span id="1396">1396</span>
 <span id="1397">1397</span>
 <span id="1398">1398</span>
-<span id="1399">1399</span>
-<span id="1400">1400</span>
-<span id="1401">1401</span>
-<span id="1402">1402</span>
-<span id="1403">1403</span>
-<span id="1404">1404</span>
-<span id="1405">1405</span>
-<span id="1406">1406</span>
-<span id="1407">1407</span>
-<span id="1408">1408</span>
-<span id="1409">1409</span>
-<span id="1410">1410</span>
-<span id="1411">1411</span>
-<span id="1412">1412</span>
-<span id="1413">1413</span>
-<span id="1414">1414</span>
-<span id="1415">1415</span>
-<span id="1416">1416</span>
-<span id="1417">1417</span>
-<span id="1418">1418</span>
-<span id="1419">1419</span>
-<span id="1420">1420</span>
-<span id="1421">1421</span>
-<span id="1422">1422</span>
-<span id="1423">1423</span>
-<span id="1424">1424</span>
-<span id="1425">1425</span>
-<span id="1426">1426</span>
-<span id="1427">1427</span>
-<span id="1428">1428</span>
-<span id="1429">1429</span>
-<span id="1430">1430</span>
-<span id="1431">1431</span>
-<span id="1432">1432</span>
-<span id="1433">1433</span>
-<span id="1434">1434</span>
-<span id="1435">1435</span>
-<span id="1436">1436</span>
-<span id="1437">1437</span>
-<span id="1438">1438</span>
-<span id="1439">1439</span>
-<span id="1440">1440</span>
-<span id="1441">1441</span>
-<span id="1442">1442</span>
-<span id="1443">1443</span>
-<span id="1444">1444</span>
-<span id="1445">1445</span>
-<span id="1446">1446</span>
-<span id="1447">1447</span>
-<span id="1448">1448</span>
-<span id="1449">1449</span>
-<span id="1450">1450</span>
-<span id="1451">1451</span>
-<span id="1452">1452</span>
-<span id="1453">1453</span>
-<span id="1454">1454</span>
-<span id="1455">1455</span>
-<span id="1456">1456</span>
-<span id="1457">1457</span>
-<span id="1458">1458</span>
-<span id="1459">1459</span>
-<span id="1460">1460</span>
-<span id="1461">1461</span>
-<span id="1462">1462</span>
-<span id="1463">1463</span>
-<span id="1464">1464</span>
-<span id="1465">1465</span>
-<span id="1466">1466</span>
-<span id="1467">1467</span>
-<span id="1468">1468</span>
-<span id="1469">1469</span>
-<span id="1470">1470</span>
-<span id="1471">1471</span>
-<span id="1472">1472</span>
-<span id="1473">1473</span>
-<span id="1474">1474</span>
-<span id="1475">1475</span>
-<span id="1476">1476</span>
-<span id="1477">1477</span>
-<span id="1478">1478</span>
-<span id="1479">1479</span>
-<span id="1480">1480</span>
-<span id="1481">1481</span>
-<span id="1482">1482</span>
-<span id="1483">1483</span>
-<span id="1484">1484</span>
-<span id="1485">1485</span>
-<span id="1486">1486</span>
-<span id="1487">1487</span>
-<span id="1488">1488</span>
-<span id="1489">1489</span>
-<span id="1490">1490</span>
-<span id="1491">1491</span>
-<span id="1492">1492</span>
-<span id="1493">1493</span>
-<span id="1494">1494</span>
-<span id="1495">1495</span>
-<span id="1496">1496</span>
-<span id="1497">1497</span>
-<span id="1498">1498</span>
-<span id="1499">1499</span>
-<span id="1500">1500</span>
-<span id="1501">1501</span>
-<span id="1502">1502</span>
-<span id="1503">1503</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1522,7 +1417,7 @@
 <span class="kw">use</span> <span class="ident">bitvec::vec::BitVec</span>;
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
-<span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">collections::btree_map::BTreeMap</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="ident">sp_std::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident">application_crypto::KeyTypeId</span>;
 <span class="kw">use</span> <span class="ident">inherents::InherentIdentifier</span>;
@@ -2487,86 +2382,6 @@
 	}
 }
 
-<span class="macro">sp_api::decl_runtime_apis!</span> {
-	<span class="doccomment">/// The API for querying the state of parachains on-chain.</span>
-	<span class="attribute">#[<span class="ident">api_version</span>(<span class="number">2</span>)]</span>
-	<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ParachainHost</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span> <span class="op">=</span> <span class="ident">Hash</span>, <span class="ident">N</span>: <span class="ident">Encode</span> <span class="op">+</span> <span class="ident">Decode</span> <span class="op">=</span> <span class="ident">BlockNumber</span><span class="op">&gt;</span> {
-		<span class="doccomment">/// Get the current validators.</span>
-		<span class="kw">fn</span> <span class="ident">validators</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorId</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Returns the validator groups and rotation info localized based on the hypothetical child</span>
-		<span class="doccomment">///  of a block whose state  this is invoked on. Note that `now` in the `GroupRotationInfo`</span>
-		<span class="doccomment">/// should be the successor of the number of the block.</span>
-		<span class="kw">fn</span> <span class="ident">validator_groups</span>() -&gt; (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorIndex</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">GroupRotationInfo</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>);
-
-		<span class="doccomment">/// Yields information on all availability cores as relevant to the child block.</span>
-		<span class="doccomment">/// Cores are either free or occupied. Free cores can have paras assigned to them.</span>
-		<span class="kw">fn</span> <span class="ident">availability_cores</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CoreState</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Yields the persisted validation data for the given `ParaId` along with an assumption that</span>
-		<span class="doccomment">/// should be used if the para currently occupies a core.</span>
-		<span class="doccomment">///</span>
-		<span class="doccomment">/// Returns `None` if either the para is not registered or the assumption is `Freed`</span>
-		<span class="doccomment">/// and the para already occupies a core.</span>
-		<span class="kw">fn</span> <span class="ident">persisted_validation_data</span>(<span class="ident">para_id</span>: <span class="ident">Id</span>, <span class="ident">assumption</span>: <span class="ident">OccupiedCoreAssumption</span>)
-			-&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PersistedValidationData</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Returns the persisted validation data for the given `ParaId` along with the corresponding</span>
-		<span class="doccomment">/// validation code hash. Instead of accepting assumption about the para, matches the validation</span>
-		<span class="doccomment">/// data hash against an expected one and yields `None` if they&#39;re not equal.</span>
-		<span class="kw">fn</span> <span class="ident">assumed_validation_data</span>(
-			<span class="ident">para_id</span>: <span class="ident">Id</span>,
-			<span class="ident">expected_persisted_validation_data_hash</span>: <span class="ident">Hash</span>,
-		) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">PersistedValidationData</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">N</span><span class="op">&gt;</span>, <span class="ident">ValidationCodeHash</span>)<span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Checks if the given validation outputs pass the acceptance criteria.</span>
-		<span class="kw">fn</span> <span class="ident">check_validation_outputs</span>(<span class="ident">para_id</span>: <span class="ident">Id</span>, <span class="ident">outputs</span>: <span class="ident">CandidateCommitments</span>) -&gt; <span class="ident">bool</span>;
-
-		<span class="doccomment">/// Returns the session index expected at a child of the block.</span>
-		<span class="doccomment">///</span>
-		<span class="doccomment">/// This can be used to instantiate a `SigningContext`.</span>
-		<span class="kw">fn</span> <span class="ident">session_index_for_child</span>() -&gt; <span class="ident">SessionIndex</span>;
-
-		<span class="doccomment">/// Get the session info for the given session, if stored.</span>
-		<span class="kw">fn</span> <span class="ident">session_info</span>(<span class="ident">index</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SessionInfo</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Fetch the validation code used by a para, making the given `OccupiedCoreAssumption`.</span>
-		<span class="doccomment">///</span>
-		<span class="doccomment">/// Returns `None` if either the para is not registered or the assumption is `Freed`</span>
-		<span class="doccomment">/// and the para already occupies a core.</span>
-		<span class="kw">fn</span> <span class="ident">validation_code</span>(<span class="ident">para_id</span>: <span class="ident">Id</span>, <span class="ident">assumption</span>: <span class="ident">OccupiedCoreAssumption</span>)
-			-&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidationCode</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Get the receipt of a candidate pending availability. This returns `Some` for any paras</span>
-		<span class="doccomment">/// assigned to occupied cores in `availability_cores` and `None` otherwise.</span>
-		<span class="kw">fn</span> <span class="ident">candidate_pending_availability</span>(<span class="ident">para_id</span>: <span class="ident">Id</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CommittedCandidateReceipt</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Get a vector of events concerning candidates that occurred within a block.</span>
-		<span class="kw">fn</span> <span class="ident">candidate_events</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CandidateEvent</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Get all the pending inbound messages in the downward message queue for a para.</span>
-		<span class="kw">fn</span> <span class="ident">dmq_contents</span>(
-			<span class="ident">recipient</span>: <span class="ident">Id</span>,
-		) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InboundDownwardMessage</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Get the contents of all channels addressed to the given recipient. Channels that have no</span>
-		<span class="doccomment">/// messages in them are also included.</span>
-		<span class="kw">fn</span> <span class="ident">inbound_hrmp_channels_contents</span>(<span class="ident">recipient</span>: <span class="ident">Id</span>) -&gt; <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">Id</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Get the validation code from its hash.</span>
-		<span class="kw">fn</span> <span class="ident">validation_code_by_hash</span>(<span class="ident">hash</span>: <span class="ident">ValidationCodeHash</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidationCode</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Scrape dispute relevant from on-chain, backing votes and resolved disputes.</span>
-		<span class="kw">fn</span> <span class="ident">on_chain_votes</span>() -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScrapedOnChainVotes</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-
-		<span class="doccomment">/// Submits a PVF pre-checking statement into the transaction pool.</span>
-		<span class="kw">fn</span> <span class="ident">submit_pvf_check_statement</span>(<span class="ident">stmt</span>: <span class="ident">PvfCheckStatement</span>, <span class="ident">signature</span>: <span class="ident">ValidatorSignature</span>);
-
-		<span class="doccomment">/// Returns code hashes of PVFs that require pre-checking by validators in the active set.</span>
-		<span class="kw">fn</span> <span class="ident">pvfs_require_precheck</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span>;
-	}
-}
-
 <span class="doccomment">/// Custom validity errors used in Polkadot while validating transactions.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">u8</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ValidityError</span> {
@@ -2894,31 +2709,6 @@
 	<span class="kw">pub</span> <span class="ident">disputes</span>: <span class="ident">MultiDisputeStatementSet</span>,
 	<span class="doccomment">/// The parent block header. Used for checking state proofs.</span>
 	<span class="kw">pub</span> <span class="ident">parent_header</span>: <span class="ident">HDR</span>,
-}
-
-<span class="doccomment">/// A statement from the specified validator whether the given validation code passes PVF</span>
-<span class="doccomment">/// pre-checking or not anchored to the given session index.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PvfCheckStatement</span> {
-	<span class="doccomment">/// `true` if the subject passed pre-checking and `false` otherwise.</span>
-	<span class="kw">pub</span> <span class="ident">accept</span>: <span class="ident">bool</span>,
-	<span class="doccomment">/// The validation code hash that was checked.</span>
-	<span class="kw">pub</span> <span class="ident">subject</span>: <span class="ident">ValidationCodeHash</span>,
-	<span class="doccomment">/// The index of a session during which this statement is considered valid.</span>
-	<span class="kw">pub</span> <span class="ident">session_index</span>: <span class="ident">SessionIndex</span>,
-	<span class="doccomment">/// The index of the validator from which this statement originates.</span>
-	<span class="kw">pub</span> <span class="ident">validator_index</span>: <span class="ident">ValidatorIndex</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">PvfCheckStatement</span> {
-	<span class="doccomment">/// Produce the payload used for signing this type of statement.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// It is expected that it will be signed by the validator at `validator_index` in the</span>
-	<span class="doccomment">/// `session_index`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signing_payload</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
-		<span class="kw">const</span> <span class="ident">MAGIC</span>: [<span class="ident">u8</span>; <span class="number">4</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;VCPC&quot;</span>; <span class="comment">// for &quot;validation code pre-checking&quot;</span>
-		(<span class="ident">MAGIC</span>, <span class="self">self</span>.<span class="ident">accept</span>, <span class="self">self</span>.<span class="ident">subject</span>, <span class="self">self</span>.<span class="ident">session_index</span>, <span class="self">self</span>.<span class="ident">validator_index</span>).<span class="ident">encode</span>()
-	}
 }
 
 <span class="doccomment">/// The maximum number of validators `f` which may safely be faulty.</span>

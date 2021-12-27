@@ -2538,6 +2538,9 @@
 <span id="2538">2538</span>
 <span id="2539">2539</span>
 <span id="2540">2540</span>
+<span id="2541">2541</span>
+<span id="2542">2542</span>
+<span id="2543">2543</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2590,10 +2593,13 @@
 	},
 	<span class="ident">TimeoutExt</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
-	<span class="ident">ApprovalVote</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateIndex</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">DisputeStatement</span>,
-	<span class="ident">GroupIndex</span>, <span class="ident">Hash</span>, <span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>, <span class="ident">ValidDisputeStatementKind</span>, <span class="ident">ValidatorId</span>,
-	<span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorPair</span>, <span class="ident">ValidatorSignature</span>,
+<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
+	<span class="ident">v1</span>::{
+		<span class="ident">ApprovalVote</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateIndex</span>, <span class="ident">CandidateReceipt</span>,
+		<span class="ident">DisputeStatement</span>, <span class="ident">GroupIndex</span>, <span class="ident">Hash</span>, <span class="ident">SessionIndex</span>, <span class="ident">ValidDisputeStatementKind</span>, <span class="ident">ValidatorId</span>,
+		<span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorPair</span>, <span class="ident">ValidatorSignature</span>,
+	},
+	<span class="ident">v2::SessionInfo</span>,
 };
 <span class="kw">use</span> <span class="ident">sc_keystore::LocalKeystore</span>;
 <span class="kw">use</span> <span class="ident">sp_application_crypto::Pair</span>;

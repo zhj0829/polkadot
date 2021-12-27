@@ -325,6 +325,9 @@
 <span id="325">325</span>
 <span id="326">326</span>
 <span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -353,10 +356,13 @@
 <span class="kw">use</span> <span class="ident">sp_keystore</span>::{<span class="ident">CryptoStore</span>, <span class="ident">SyncCryptoStorePtr</span>};
 
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{<span class="ident">SubsystemContext</span>, <span class="ident">SubsystemSender</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
-	<span class="ident">CandidateEvent</span>, <span class="ident">CoreState</span>, <span class="ident">EncodeAs</span>, <span class="ident">GroupIndex</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">OccupiedCore</span>,
-	<span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>, <span class="ident">Signed</span>, <span class="ident">SigningContext</span>, <span class="ident">UncheckedSigned</span>, <span class="ident">ValidationCode</span>,
-	<span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>,
+<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
+	<span class="ident">v1</span>::{
+		<span class="ident">CandidateEvent</span>, <span class="ident">CoreState</span>, <span class="ident">EncodeAs</span>, <span class="ident">GroupIndex</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">OccupiedCore</span>,
+		<span class="ident">SessionIndex</span>, <span class="ident">Signed</span>, <span class="ident">SigningContext</span>, <span class="ident">UncheckedSigned</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>,
+		<span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>,
+	},
+	<span class="ident">v2::SessionInfo</span>,
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{

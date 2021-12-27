@@ -796,6 +796,9 @@
 <span id="796">796</span>
 <span id="797">797</span>
 <span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -869,7 +872,10 @@
 <span class="kw">use</span> <span class="ident">lru::LruCache</span>;
 
 <span class="kw">use</span> <span class="ident">client</span>::{<span class="ident">BlockImportNotification</span>, <span class="ident">BlockchainEvents</span>, <span class="ident">FinalityNotification</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Block</span>, <span class="ident">BlockId</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">ParachainHost</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
+	<span class="ident">v1</span>::{<span class="ident">Block</span>, <span class="ident">BlockId</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>},
+	<span class="ident">v2::ParachainHost</span>,
+};
 <span class="kw">use</span> <span class="ident">sp_api</span>::{<span class="ident">ApiExt</span>, <span class="ident">ProvideRuntimeApi</span>};
 
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol::v1</span> <span class="kw">as</span> <span class="ident">protocol_v1</span>;
