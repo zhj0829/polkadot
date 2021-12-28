@@ -1804,6 +1804,22 @@
 <span id="1804">1804</span>
 <span id="1805">1805</span>
 <span id="1806">1806</span>
+<span id="1807">1807</span>
+<span id="1808">1808</span>
+<span id="1809">1809</span>
+<span id="1810">1810</span>
+<span id="1811">1811</span>
+<span id="1812">1812</span>
+<span id="1813">1813</span>
+<span id="1814">1814</span>
+<span id="1815">1815</span>
+<span id="1816">1816</span>
+<span id="1817">1817</span>
+<span id="1818">1818</span>
+<span id="1819">1819</span>
+<span id="1820">1820</span>
+<span id="1821">1821</span>
+<span id="1822">1822</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2025,7 +2041,7 @@
 			<span class="ident">thread_availability_period</span>: <span class="number">1u32</span>.<span class="ident">into</span>(),
 			<span class="ident">no_show_slots</span>: <span class="number">1u32</span>.<span class="ident">into</span>(),
 			<span class="ident">validation_upgrade_frequency</span>: <span class="ident">Default::default</span>(),
-			<span class="ident">validation_upgrade_delay</span>: <span class="ident">Default::default</span>(),
+			<span class="ident">validation_upgrade_delay</span>: <span class="number">2u32</span>.<span class="ident">into</span>(),
 			<span class="ident">code_retention_period</span>: <span class="ident">Default::default</span>(),
 			<span class="ident">max_code_size</span>: <span class="ident">Default::default</span>(),
 			<span class="ident">max_pov_size</span>: <span class="ident">Default::default</span>(),
@@ -2094,9 +2110,14 @@
 		<span class="ident">minimum_validation_upgrade_delay</span>: <span class="ident">BlockNumber</span>,
 		<span class="ident">thread_availability_period</span>: <span class="ident">BlockNumber</span>,
 	},
+	<span class="doccomment">/// `validation_upgrade_delay` is less than or equal 1.</span>
+	<span class="ident">ValidationUpgradeDelayIsTooLow</span> { <span class="ident">validation_upgrade_delay</span>: <span class="ident">BlockNumber</span> },
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">PartialOrd</span> <span class="op">+</span> <span class="ident">sp_std::fmt::Debug</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+	<span class="ident">BlockNumber</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">PartialOrd</span> <span class="op">+</span> <span class="ident">sp_std::fmt::Debug</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+{
 	<span class="doccomment">/// Checks that this instance is consistent with the requirements on each individual member.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// # Errors</span>
@@ -2144,6 +2165,12 @@
 			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MinimumValidationUpgradeDelayLessThanThreadAvailabilityPeriod</span> {
 				<span class="ident">minimum_validation_upgrade_delay</span>: <span class="self">self</span>.<span class="ident">minimum_validation_upgrade_delay</span>.<span class="ident">clone</span>(),
 				<span class="ident">thread_availability_period</span>: <span class="self">self</span>.<span class="ident">thread_availability_period</span>.<span class="ident">clone</span>(),
+			})
+		}
+
+		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">validation_upgrade_delay</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">into</span>() {
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ValidationUpgradeDelayIsTooLow</span> {
+				<span class="ident">validation_upgrade_delay</span>: <span class="self">self</span>.<span class="ident">validation_upgrade_delay</span>.<span class="ident">clone</span>(),
 			})
 		}
 
@@ -3303,6 +3330,11 @@
 			);
 			<span class="macro">assert_err!</span>(
 				<span class="ident">Configuration::set_minimum_validation_upgrade_delay</span>(<span class="ident">Origin::root</span>(), <span class="number">9</span>),
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
+			);
+
+			<span class="macro">assert_err!</span>(
+				<span class="ident">Configuration::set_validation_upgrade_delay</span>(<span class="ident">Origin::root</span>(), <span class="number">0</span>),
 				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">Test</span><span class="op">&gt;</span><span class="ident">::InvalidNewValue</span>
 			);
 		});
