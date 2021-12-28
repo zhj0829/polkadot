@@ -779,6 +779,8 @@
 <span id="779">779</span>
 <span id="780">780</span>
 <span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -996,6 +998,8 @@
 	<span class="kw">fn</span> <span class="ident">request_candidate_pending_availability</span>(<span class="ident">para_id</span>: <span class="ident">ParaId</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CommittedCandidateReceipt</span><span class="op">&gt;</span>; <span class="ident">CandidatePendingAvailability</span>;
 	<span class="kw">fn</span> <span class="ident">request_candidate_events</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">CandidateEvent</span><span class="op">&gt;</span>; <span class="ident">CandidateEvents</span>;
 	<span class="kw">fn</span> <span class="ident">request_session_info</span>(<span class="ident">index</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SessionInfo</span><span class="op">&gt;</span>; <span class="ident">SessionInfo</span>;
+	<span class="kw">fn</span> <span class="ident">request_validation_code_hash</span>(<span class="ident">para_id</span>: <span class="ident">ParaId</span>, <span class="ident">assumption</span>: <span class="ident">OccupiedCoreAssumption</span>)
+		-&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span>; <span class="ident">ValidationCodeHash</span>;
 }
 
 <span class="doccomment">/// From the given set of validators, find the first key we can sign with, if any.</span>

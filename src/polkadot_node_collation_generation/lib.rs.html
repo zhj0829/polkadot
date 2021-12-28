@@ -510,6 +510,34 @@
 <span id="510">510</span>
 <span id="511">511</span>
 <span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -536,16 +564,17 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{
 	<span class="ident">messages</span>::{<span class="ident">AllMessages</span>, <span class="ident">CollationGenerationMessage</span>, <span class="ident">CollatorProtocolMessage</span>},
 	<span class="ident">overseer</span>, <span class="ident">ActiveLeavesUpdate</span>, <span class="ident">FromOverseer</span>, <span class="ident">OverseerSignal</span>, <span class="ident">SpawnedSubsystem</span>, <span class="ident">SubsystemContext</span>,
-	<span class="ident">SubsystemError</span>, <span class="ident">SubsystemResult</span>,
+	<span class="ident">SubsystemError</span>, <span class="ident">SubsystemResult</span>, <span class="ident">SubsystemSender</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util</span>::{
 	<span class="ident">metrics</span>::{<span class="self">self</span>, <span class="ident">prometheus</span>},
 	<span class="ident">request_availability_cores</span>, <span class="ident">request_persisted_validation_data</span>, <span class="ident">request_validation_code</span>,
-	<span class="ident">request_validators</span>,
+	<span class="ident">request_validation_code_hash</span>, <span class="ident">request_validators</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
 	<span class="ident">collator_signature_payload</span>, <span class="ident">CandidateCommitments</span>, <span class="ident">CandidateDescriptor</span>, <span class="ident">CandidateReceipt</span>,
-	<span class="ident">CoreState</span>, <span class="ident">Hash</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>,
+	<span class="ident">CoreState</span>, <span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>,
+	<span class="ident">ValidationCodeHash</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_core::crypto::Pair</span>;
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
@@ -775,14 +804,13 @@
 				},
 			};
 
-			<span class="kw">let</span> <span class="ident">validation_code</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">request_validation_code</span>(
+			<span class="kw">let</span> <span class="ident">validation_code_hash</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">obtain_current_validation_code_hash</span>(
 				<span class="ident">relay_parent</span>,
 				<span class="ident">scheduled_core</span>.<span class="ident">para_id</span>,
 				<span class="ident">assumption</span>,
 				<span class="ident">ctx</span>.<span class="ident">sender</span>(),
 			)
-			.<span class="kw">await</span>
-			.<span class="kw">await</span><span class="question-mark">?</span><span class="question-mark">?</span>
+			.<span class="kw">await</span><span class="question-mark">?</span>
 			{
 				<span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
 				<span class="prelude-val">None</span> =&gt; {
@@ -792,12 +820,11 @@
 						<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">relay_parent</span>,
 						<span class="ident">our_para</span> <span class="op">=</span> <span class="op">%</span><span class="ident">config</span>.<span class="ident">para_id</span>,
 						<span class="ident">their_para</span> <span class="op">=</span> <span class="op">%</span><span class="ident">scheduled_core</span>.<span class="ident">para_id</span>,
-						<span class="string">&quot;validation code is not available&quot;</span>,
+						<span class="string">&quot;validation code hash is not found.&quot;</span>,
 					);
 					<span class="kw">continue</span>
 				},
 			};
-			<span class="kw">let</span> <span class="ident">validation_code_hash</span> <span class="op">=</span> <span class="ident">validation_code</span>.<span class="ident">hash</span>();
 
 			<span class="kw">let</span> <span class="ident">task_config</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">clone</span>();
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_sender</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">clone</span>();
@@ -924,6 +951,35 @@
 	}
 
 	<span class="prelude-val">Ok</span>(())
+}
+
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">obtain_current_validation_code_hash</span>(
+	<span class="ident">relay_parent</span>: <span class="ident">Hash</span>,
+	<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
+	<span class="ident">assumption</span>: <span class="ident">OccupiedCoreAssumption</span>,
+	<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">SubsystemSender</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span>, <span class="ident"><span class="kw">crate</span>::error::Error</span><span class="op">&gt;</span> {
+	<span class="kw">use</span> <span class="ident">polkadot_node_subsystem::RuntimeApiError</span>;
+
+	<span class="kw">match</span> <span class="ident">request_validation_code_hash</span>(<span class="ident">relay_parent</span>, <span class="ident">para_id</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>)
+		.<span class="kw">await</span>
+		.<span class="kw">await</span><span class="question-mark">?</span>
+	{
+		<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)),
+		<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+		<span class="prelude-val">Err</span>(<span class="ident">RuntimeApiError::NotSupported</span> { .. }) =&gt; {
+			<span class="kw">match</span> <span class="ident">request_validation_code</span>(<span class="ident">relay_parent</span>, <span class="ident">para_id</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>).<span class="kw">await</span>.<span class="kw">await</span><span class="question-mark">?</span> {
+				<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>.<span class="ident">hash</span>())),
+				<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+				<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+					<span class="comment">// We assume that the `validation_code` API is always available, so any error</span>
+					<span class="comment">// is unexpected.</span>
+					<span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>())
+				},
+			}
+		},
+		<span class="prelude-val">Err</span>(<span class="ident">e</span> @ <span class="ident">RuntimeApiError::Execution</span> { .. }) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
+	}
 }
 
 <span class="kw">fn</span> <span class="ident">erasure_root</span>(

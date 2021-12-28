@@ -548,6 +548,14 @@
 <span id="548">548</span>
 <span id="549">549</span>
 <span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -710,6 +718,9 @@
 			<span class="ident">PvfsRequirePrecheck</span>(<span class="ident">relay_parent</span>, <span class="ident">pvfs</span>) =&gt;
 				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_pvfs_require_precheck</span>(<span class="ident">relay_parent</span>, <span class="ident">pvfs</span>),
 			<span class="ident">SubmitPvfCheckStatement</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, ()) =&gt; {},
+			<span class="ident">ValidationCodeHash</span>(<span class="ident">relay_parent</span>, <span class="ident">para_id</span>, <span class="ident">assumption</span>, <span class="ident">hash</span>) =&gt; <span class="self">self</span>
+				.<span class="ident">requests_cache</span>
+				.<span class="ident">cache_validation_code_hash</span>((<span class="ident">relay_parent</span>, <span class="ident">para_id</span>, <span class="ident">assumption</span>), <span class="ident">hash</span>),
 		}
 	}
 
@@ -799,6 +810,9 @@
 				<span class="comment">// This request is side-effecting and thus cannot be cached.</span>
 				<span class="prelude-val">Some</span>(<span class="ident">request</span>)
 			},
+			<span class="ident">Request::ValidationCodeHash</span>(<span class="ident">para</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>) =&gt;
+				<span class="macro">query!</span>(<span class="ident">validation_code_hash</span>(<span class="ident">para</span>, <span class="ident">assumption</span>), <span class="ident">sender</span>)
+					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::ValidationCodeHash</span>(<span class="ident">para</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>)),
 		}
 	}
 
@@ -1036,6 +1050,8 @@
 		<span class="ident">Request::PvfsRequirePrecheck</span>(<span class="ident">sender</span>) =&gt; {
 			<span class="macro">query!</span>(<span class="ident">PvfsRequirePrecheck</span>, <span class="ident">pvfs_require_precheck</span>(), <span class="ident">ver</span> <span class="op">=</span> <span class="number">2</span>, <span class="ident">sender</span>)
 		},
+		<span class="ident">Request::ValidationCodeHash</span>(<span class="ident">para</span>, <span class="ident">assumption</span>, <span class="ident">sender</span>) =&gt;
+			<span class="macro">query!</span>(<span class="ident">ValidationCodeHash</span>, <span class="ident">validation_code_hash</span>(<span class="ident">para</span>, <span class="ident">assumption</span>), <span class="ident">ver</span> <span class="op">=</span> <span class="number">2</span>, <span class="ident">sender</span>),
 	}
 }
 

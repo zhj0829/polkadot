@@ -1734,6 +1734,12 @@
 <span id="1734">1734</span>
 <span id="1735">1735</span>
 <span id="1736">1736</span>
+<span id="1737">1737</span>
+<span id="1738">1738</span>
+<span id="1739">1739</span>
+<span id="1740">1740</span>
+<span id="1741">1741</span>
+<span id="1742">1742</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -3118,6 +3124,12 @@
 
 		<span class="kw">fn</span> <span class="ident">pvfs_require_precheck</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span> {
 			<span class="ident">runtime_api_impl::pvfs_require_precheck</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>()
+		}
+
+		<span class="kw">fn</span> <span class="ident">validation_code_hash</span>(<span class="ident">para_id</span>: <span class="ident">ParaId</span>, <span class="ident">assumption</span>: <span class="ident">OccupiedCoreAssumption</span>)
+			-&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span>
+		{
+			<span class="ident">runtime_api_impl::validation_code_hash</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">para_id</span>, <span class="ident">assumption</span>)
 		}
 	}
 

@@ -224,6 +224,12 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -448,6 +454,12 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// NOTE: This function is only available since parachain host version 2.</span>
 		<span class="kw">fn</span> <span class="ident">pvfs_require_precheck</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">v1::ValidationCodeHash</span><span class="op">&gt;</span>;
+
+		<span class="doccomment">/// Fetch the hash of the validation code used by a para, making the given `OccupiedCoreAssumption`.</span>
+		<span class="doccomment">///</span>
+		<span class="doccomment">/// NOTE: This function is only available since parachain host version 2.</span>
+		<span class="kw">fn</span> <span class="ident">validation_code_hash</span>(<span class="ident">para_id</span>: <span class="ident">v1::Id</span>, <span class="ident">assumption</span>: <span class="ident">v1::OccupiedCoreAssumption</span>)
+			-&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">v1::ValidationCodeHash</span><span class="op">&gt;</span>;
 	}
 }
 </code></pre></div>
