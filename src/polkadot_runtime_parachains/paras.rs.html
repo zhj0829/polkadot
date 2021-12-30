@@ -5015,7 +5015,7 @@
 		<span class="ident">UpgradeRestrictionSignal</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">UpgradeRestriction::Present</span>);
 
 		<span class="ident">weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>);
-		<span class="kw">let</span> <span class="ident">next_possible_upgrade_at</span> <span class="op">=</span> <span class="ident">relay_parent_number</span> <span class="op">+</span> <span class="ident">cfg</span>.<span class="ident">validation_upgrade_frequency</span>;
+		<span class="kw">let</span> <span class="ident">next_possible_upgrade_at</span> <span class="op">=</span> <span class="ident">relay_parent_number</span> <span class="op">+</span> <span class="ident">cfg</span>.<span class="ident">validation_upgrade_cooldown</span>;
 		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeCooldowns::mutate</span>(<span class="op">|</span><span class="ident">upgrade_cooldowns</span><span class="op">|</span> {
 			<span class="kw">let</span> <span class="ident">insert_idx</span> <span class="op">=</span> <span class="ident">upgrade_cooldowns</span>
 				.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">next_possible_upgrade_at</span>, <span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw">_</span>, <span class="ident">b</span>)<span class="op">|</span> <span class="ident">b</span>)
@@ -5637,7 +5637,7 @@
 	<span class="kw">fn</span> <span class="ident">code_upgrade_applied_after_delay</span>() {
 		<span class="kw">let</span> <span class="ident">code_retention_period</span> <span class="op">=</span> <span class="number">10</span>;
 		<span class="kw">let</span> <span class="ident">validation_upgrade_delay</span> <span class="op">=</span> <span class="number">5</span>;
-		<span class="kw">let</span> <span class="ident">validation_upgrade_frequency</span> <span class="op">=</span> <span class="number">10</span>;
+		<span class="kw">let</span> <span class="ident">validation_upgrade_cooldown</span> <span class="op">=</span> <span class="number">10</span>;
 
 		<span class="kw">let</span> <span class="ident">original_code</span> <span class="op">=</span> <span class="ident">ValidationCode</span>(<span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
 		<span class="kw">let</span> <span class="ident">paras</span> <span class="op">=</span> <span class="macro">vec!</span>[(
@@ -5655,7 +5655,7 @@
 				<span class="ident">config</span>: <span class="ident">HostConfiguration</span> {
 					<span class="ident">code_retention_period</span>,
 					<span class="ident">validation_upgrade_delay</span>,
-					<span class="ident">validation_upgrade_frequency</span>,
+					<span class="ident">validation_upgrade_cooldown</span>,
 					<span class="ident">pvf_checking_enabled</span>: <span class="bool-val">false</span>,
 					..<span class="ident">Default::default</span>()
 				},
@@ -5676,7 +5676,7 @@
 			<span class="kw">let</span> <span class="ident">expected_at</span> <span class="op">=</span> {
 				<span class="comment">// this parablock is in the context of block 1.</span>
 				<span class="kw">let</span> <span class="ident">expected_at</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">validation_upgrade_delay</span>;
-				<span class="kw">let</span> <span class="ident">next_possible_upgrade_at</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">validation_upgrade_frequency</span>;
+				<span class="kw">let</span> <span class="ident">next_possible_upgrade_at</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">validation_upgrade_cooldown</span>;
 				<span class="ident">Paras::schedule_code_upgrade</span>(
 					<span class="ident">para_id</span>,
 					<span class="ident">new_code</span>.<span class="ident">clone</span>(),
@@ -5745,7 +5745,7 @@
 	<span class="kw">fn</span> <span class="ident">code_upgrade_applied_after_delay_even_when_late</span>() {
 		<span class="kw">let</span> <span class="ident">code_retention_period</span> <span class="op">=</span> <span class="number">10</span>;
 		<span class="kw">let</span> <span class="ident">validation_upgrade_delay</span> <span class="op">=</span> <span class="number">5</span>;
-		<span class="kw">let</span> <span class="ident">validation_upgrade_frequency</span> <span class="op">=</span> <span class="number">10</span>;
+		<span class="kw">let</span> <span class="ident">validation_upgrade_cooldown</span> <span class="op">=</span> <span class="number">10</span>;
 
 		<span class="kw">let</span> <span class="ident">original_code</span> <span class="op">=</span> <span class="ident">ValidationCode</span>(<span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
 		<span class="kw">let</span> <span class="ident">paras</span> <span class="op">=</span> <span class="macro">vec!</span>[(
@@ -5763,7 +5763,7 @@
 				<span class="ident">config</span>: <span class="ident">HostConfiguration</span> {
 					<span class="ident">code_retention_period</span>,
 					<span class="ident">validation_upgrade_delay</span>,
-					<span class="ident">validation_upgrade_frequency</span>,
+					<span class="ident">validation_upgrade_cooldown</span>,
 					<span class="ident">pvf_checking_enabled</span>: <span class="bool-val">false</span>,
 					..<span class="ident">Default::default</span>()
 				},
@@ -5782,7 +5782,7 @@
 			<span class="kw">let</span> <span class="ident">expected_at</span> <span class="op">=</span> {
 				<span class="comment">// this parablock is in the context of block 1.</span>
 				<span class="kw">let</span> <span class="ident">expected_at</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">validation_upgrade_delay</span>;
-				<span class="kw">let</span> <span class="ident">next_possible_upgrade_at</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">validation_upgrade_frequency</span>;
+				<span class="kw">let</span> <span class="ident">next_possible_upgrade_at</span> <span class="op">=</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">validation_upgrade_cooldown</span>;
 				<span class="ident">Paras::schedule_code_upgrade</span>(
 					<span class="ident">para_id</span>,
 					<span class="ident">new_code</span>.<span class="ident">clone</span>(),
@@ -5836,7 +5836,7 @@
 	<span class="kw">fn</span> <span class="ident">submit_code_change_when_not_allowed_is_err</span>() {
 		<span class="kw">let</span> <span class="ident">code_retention_period</span> <span class="op">=</span> <span class="number">10</span>;
 		<span class="kw">let</span> <span class="ident">validation_upgrade_delay</span> <span class="op">=</span> <span class="number">7</span>;
-		<span class="kw">let</span> <span class="ident">validation_upgrade_frequency</span> <span class="op">=</span> <span class="number">100</span>;
+		<span class="kw">let</span> <span class="ident">validation_upgrade_cooldown</span> <span class="op">=</span> <span class="number">100</span>;
 
 		<span class="kw">let</span> <span class="ident">paras</span> <span class="op">=</span> <span class="macro">vec!</span>[(
 			<span class="number">0u32</span>.<span class="ident">into</span>(),
@@ -5853,7 +5853,7 @@
 				<span class="ident">config</span>: <span class="ident">HostConfiguration</span> {
 					<span class="ident">code_retention_period</span>,
 					<span class="ident">validation_upgrade_delay</span>,
-					<span class="ident">validation_upgrade_frequency</span>,
+					<span class="ident">validation_upgrade_cooldown</span>,
 					<span class="ident">pvf_checking_enabled</span>: <span class="bool-val">false</span>,
 					..<span class="ident">Default::default</span>()
 				},

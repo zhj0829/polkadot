@@ -545,7 +545,7 @@
 <span class="ident">max_upward_message_size</span>                  : <span class="ident">pre</span>.<span class="ident">max_upward_message_size</span>,
 <span class="ident">max_upward_message_num_per_candidate</span>     : <span class="ident">pre</span>.<span class="ident">max_upward_message_num_per_candidate</span>,
 <span class="ident">hrmp_max_message_num_per_candidate</span>       : <span class="ident">pre</span>.<span class="ident">hrmp_max_message_num_per_candidate</span>,
-<span class="ident">validation_upgrade_frequency</span>             : <span class="ident">pre</span>.<span class="ident">validation_upgrade_frequency</span>,
+<span class="ident">validation_upgrade_cooldown</span>              : <span class="ident">pre</span>.<span class="ident">validation_upgrade_frequency</span>,
 <span class="ident">validation_upgrade_delay</span>                 : <span class="ident">pre</span>.<span class="ident">validation_upgrade_delay</span>,
 <span class="ident">max_pov_size</span>                             : <span class="ident">pre</span>.<span class="ident">max_pov_size</span>,
 <span class="ident">max_downward_message_size</span>                : <span class="ident">pre</span>.<span class="ident">max_downward_message_size</span>,
@@ -736,7 +736,7 @@
 			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">max_upward_message_size</span>                  , <span class="ident">v2</span>.<span class="ident">max_upward_message_size</span>);
 			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">max_upward_message_num_per_candidate</span>     , <span class="ident">v2</span>.<span class="ident">max_upward_message_num_per_candidate</span>);
 			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">hrmp_max_message_num_per_candidate</span>       , <span class="ident">v2</span>.<span class="ident">hrmp_max_message_num_per_candidate</span>);
-			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">validation_upgrade_frequency</span>             , <span class="ident">v2</span>.<span class="ident">validation_upgrade_frequency</span>);
+			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">validation_upgrade_frequency</span>             , <span class="ident">v2</span>.<span class="ident">validation_upgrade_cooldown</span>);
 			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">validation_upgrade_delay</span>                 , <span class="ident">v2</span>.<span class="ident">validation_upgrade_delay</span>);
 			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">max_pov_size</span>                             , <span class="ident">v2</span>.<span class="ident">max_pov_size</span>);
 			<span class="macro">assert_eq!</span>(<span class="ident">v1</span>.<span class="ident">max_downward_message_size</span>                , <span class="ident">v2</span>.<span class="ident">max_downward_message_size</span>);
