@@ -3367,6 +3367,103 @@
 <span id="3367">3367</span>
 <span id="3368">3368</span>
 <span id="3369">3369</span>
+<span id="3370">3370</span>
+<span id="3371">3371</span>
+<span id="3372">3372</span>
+<span id="3373">3373</span>
+<span id="3374">3374</span>
+<span id="3375">3375</span>
+<span id="3376">3376</span>
+<span id="3377">3377</span>
+<span id="3378">3378</span>
+<span id="3379">3379</span>
+<span id="3380">3380</span>
+<span id="3381">3381</span>
+<span id="3382">3382</span>
+<span id="3383">3383</span>
+<span id="3384">3384</span>
+<span id="3385">3385</span>
+<span id="3386">3386</span>
+<span id="3387">3387</span>
+<span id="3388">3388</span>
+<span id="3389">3389</span>
+<span id="3390">3390</span>
+<span id="3391">3391</span>
+<span id="3392">3392</span>
+<span id="3393">3393</span>
+<span id="3394">3394</span>
+<span id="3395">3395</span>
+<span id="3396">3396</span>
+<span id="3397">3397</span>
+<span id="3398">3398</span>
+<span id="3399">3399</span>
+<span id="3400">3400</span>
+<span id="3401">3401</span>
+<span id="3402">3402</span>
+<span id="3403">3403</span>
+<span id="3404">3404</span>
+<span id="3405">3405</span>
+<span id="3406">3406</span>
+<span id="3407">3407</span>
+<span id="3408">3408</span>
+<span id="3409">3409</span>
+<span id="3410">3410</span>
+<span id="3411">3411</span>
+<span id="3412">3412</span>
+<span id="3413">3413</span>
+<span id="3414">3414</span>
+<span id="3415">3415</span>
+<span id="3416">3416</span>
+<span id="3417">3417</span>
+<span id="3418">3418</span>
+<span id="3419">3419</span>
+<span id="3420">3420</span>
+<span id="3421">3421</span>
+<span id="3422">3422</span>
+<span id="3423">3423</span>
+<span id="3424">3424</span>
+<span id="3425">3425</span>
+<span id="3426">3426</span>
+<span id="3427">3427</span>
+<span id="3428">3428</span>
+<span id="3429">3429</span>
+<span id="3430">3430</span>
+<span id="3431">3431</span>
+<span id="3432">3432</span>
+<span id="3433">3433</span>
+<span id="3434">3434</span>
+<span id="3435">3435</span>
+<span id="3436">3436</span>
+<span id="3437">3437</span>
+<span id="3438">3438</span>
+<span id="3439">3439</span>
+<span id="3440">3440</span>
+<span id="3441">3441</span>
+<span id="3442">3442</span>
+<span id="3443">3443</span>
+<span id="3444">3444</span>
+<span id="3445">3445</span>
+<span id="3446">3446</span>
+<span id="3447">3447</span>
+<span id="3448">3448</span>
+<span id="3449">3449</span>
+<span id="3450">3450</span>
+<span id="3451">3451</span>
+<span id="3452">3452</span>
+<span id="3453">3453</span>
+<span id="3454">3454</span>
+<span id="3455">3455</span>
+<span id="3456">3456</span>
+<span id="3457">3457</span>
+<span id="3458">3458</span>
+<span id="3459">3459</span>
+<span id="3460">3460</span>
+<span id="3461">3461</span>
+<span id="3462">3462</span>
+<span id="3463">3463</span>
+<span id="3464">3464</span>
+<span id="3465">3465</span>
+<span id="3466">3466</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -4373,7 +4470,9 @@
 	}
 
 	<span class="doccomment">/// Called by the initializer to finalize the configuration pallet.</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_finalize</span>() {}
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_finalize</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>) {
+		<span class="ident"><span class="self">Self</span>::process_scheduled_upgrade_cooldowns</span>(<span class="ident">now</span>);
+	}
 
 	<span class="doccomment">/// Called by the initializer to note that a new session has started.</span>
 	<span class="doccomment">///</span>
@@ -4601,10 +4700,13 @@
 	}
 
 	<span class="doccomment">/// Process the timers related to upgrades. Specifically, the upgrade go ahead signals toggle</span>
-	<span class="doccomment">/// and the upgrade cooldown restrictions.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// Takes the current block number and returns the weight consumed.</span>
+	<span class="doccomment">/// and the upgrade cooldown restrictions. However, this function does not actually unset</span>
+	<span class="doccomment">/// the upgrade restriction, that will happen in the `initializer_finalize` function. However,</span>
+	<span class="doccomment">/// this function does count the number of cooldown timers expired so that we can reserve weight</span>
+	<span class="doccomment">/// for the `initializer_finalize` function.</span>
 	<span class="kw">fn</span> <span class="ident">process_scheduled_upgrade_changes</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
+		<span class="comment">// account weight for `UpcomingUpgrades::mutate`.</span>
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>);
 		<span class="kw">let</span> <span class="ident">upgrades_signaled</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpcomingUpgrades::mutate</span>(
 			<span class="op">|</span><span class="ident">upcoming_upgrades</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">ParaId</span>, <span class="ident">T::BlockNumber</span>)<span class="op">&gt;</span><span class="op">|</span> {
 				<span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">upcoming_upgrades</span>.<span class="ident">iter</span>().<span class="ident">take_while</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw">_</span>, <span class="ident">at</span>)<span class="op">|</span> <span class="ident">at</span> <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">now</span>).<span class="ident">count</span>();
@@ -4614,17 +4716,35 @@
 				<span class="ident">num</span>
 			},
 		);
-		<span class="kw">let</span> <span class="ident">cooldowns_expired</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeCooldowns::mutate</span>(
+		<span class="ident">weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="ident">upgrades_signaled</span> <span class="kw">as</span> <span class="ident">u64</span>);
+
+		<span class="comment">// account weight for `UpgradeCooldowns::get`.</span>
+		<span class="ident">weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">1</span>);
+		<span class="kw">let</span> <span class="ident">cooldowns_expired</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeCooldowns::get</span>()
+			.<span class="ident">iter</span>()
+			.<span class="ident">take_while</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw">_</span>, <span class="ident">at</span>)<span class="op">|</span> <span class="ident">at</span> <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">now</span>)
+			.<span class="ident">count</span>();
+
+		<span class="comment">// reserve weight for `initializer_finalize`:</span>
+		<span class="comment">// - 1 read and 1 write for `UpgradeCooldowns::mutate`.</span>
+		<span class="comment">// - 1 write per expired cooldown.</span>
+		<span class="ident">weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">1</span>, <span class="number">1</span>);
+		<span class="ident">weight</span> <span class="op">+</span><span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="ident">cooldowns_expired</span> <span class="kw">as</span> <span class="ident">u64</span>);
+
+		<span class="ident">weight</span>
+	}
+
+	<span class="doccomment">/// Actually perform unsetting the expired upgrade restrictions.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// See `process_scheduled_upgrade_changes` for more details.</span>
+	<span class="kw">fn</span> <span class="ident">process_scheduled_upgrade_cooldowns</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>) {
+		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeCooldowns::mutate</span>(
 			<span class="op">|</span><span class="ident">upgrade_cooldowns</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">ParaId</span>, <span class="ident">T::BlockNumber</span>)<span class="op">&gt;</span><span class="op">|</span> {
-				<span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">upgrade_cooldowns</span>.<span class="ident">iter</span>().<span class="ident">take_while</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw">_</span>, <span class="ident">at</span>)<span class="op">|</span> <span class="ident">at</span> <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">now</span>).<span class="ident">count</span>();
-				<span class="kw">for</span> (<span class="ident">para</span>, <span class="kw">_</span>) <span class="kw">in</span> <span class="ident">upgrade_cooldowns</span>.<span class="ident">drain</span>(..<span class="ident">num</span>) {
+				<span class="kw">for</span> <span class="kw-2">&amp;</span>(<span class="ident">para</span>, <span class="kw">_</span>) <span class="kw">in</span> <span class="ident">upgrade_cooldowns</span>.<span class="ident">iter</span>().<span class="ident">take_while</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw">_</span>, <span class="ident">at</span>)<span class="op">|</span> <span class="ident">at</span> <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">now</span>) {
 					<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeRestrictionSignal::remove</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>);
 				}
-				<span class="ident">num</span>
 			},
 		);
-
-		<span class="ident">T::DbWeight::get</span>().<span class="ident">reads_writes</span>(<span class="number">2</span>, <span class="ident">upgrades_signaled</span> <span class="kw">as</span> <span class="ident">u64</span> <span class="op">+</span> <span class="ident">cooldowns_expired</span> <span class="kw">as</span> <span class="ident">u64</span>)
 	}
 
 	<span class="doccomment">/// Goes over all PVF votes in progress, reinitializes ballots, increments ages and prunes the</span>
@@ -5354,7 +5474,7 @@
 
 		<span class="kw">while</span> <span class="ident">System::block_number</span>() <span class="op">&lt;</span> <span class="ident">to</span> {
 			<span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">System::block_number</span>();
-			<span class="ident">Paras::initializer_finalize</span>();
+			<span class="ident">Paras::initializer_finalize</span>(<span class="ident">b</span>);
 			<span class="ident">ParasShared::initializer_finalize</span>();
 			<span class="kw">if</span> <span class="ident">new_session</span>.<span class="ident">as_ref</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>))) {
 				<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">session_change_notification</span> <span class="op">=</span> <span class="ident">SessionChangeNotification::default</span>();
@@ -5879,6 +5999,7 @@
 			<span class="comment">// We expect that if an upgrade is signalled while there is already one pending we just</span>
 			<span class="comment">// ignore it. Note that this is only true from perspective of this module.</span>
 			<span class="ident">run_to_block</span>(<span class="number">2</span>, <span class="prelude-val">None</span>);
+			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Paras::can_upgrade_validation_code</span>(<span class="ident">para_id</span>));
 			<span class="ident">Paras::schedule_code_upgrade</span>(<span class="ident">para_id</span>, <span class="ident">newer_code</span>.<span class="ident">clone</span>(), <span class="number">2</span>, <span class="kw-2">&amp;</span><span class="ident">Configuration::config</span>());
 			<span class="macro">assert_eq!</span>(
 				<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeUpgrades::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>),
@@ -5886,6 +6007,79 @@
 			);
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeHash::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>), <span class="prelude-val">Some</span>(<span class="ident">new_code</span>.<span class="ident">hash</span>()));
 			<span class="ident">check_code_is_not_stored</span>(<span class="kw-2">&amp;</span><span class="ident">newer_code</span>);
+		});
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">upgrade_restriction_elapsed_doesnt_mean_can_upgrade</span>() {
+		<span class="comment">// Situation: parachain scheduled upgrade but it doesn&#39;t produce any candidate after</span>
+		<span class="comment">// `expected_at`. When `validation_upgrade_cooldown` elapsed the parachain produces a</span>
+		<span class="comment">// candidate that tries to upgrade the code.</span>
+		<span class="comment">//</span>
+		<span class="comment">// In the current code this is not allowed: the upgrade should be consumed first. This is</span>
+		<span class="comment">// rather an artifact of the current implementation and not necessarily something we want</span>
+		<span class="comment">// to keep in the future.</span>
+		<span class="comment">//</span>
+		<span class="comment">// This test exists that this is not accidentially changed.</span>
+
+		<span class="kw">let</span> <span class="ident">code_retention_period</span> <span class="op">=</span> <span class="number">10</span>;
+		<span class="kw">let</span> <span class="ident">validation_upgrade_delay</span> <span class="op">=</span> <span class="number">7</span>;
+		<span class="kw">let</span> <span class="ident">validation_upgrade_cooldown</span> <span class="op">=</span> <span class="number">30</span>;
+
+		<span class="kw">let</span> <span class="ident">paras</span> <span class="op">=</span> <span class="macro">vec!</span>[(
+			<span class="number">0u32</span>.<span class="ident">into</span>(),
+			<span class="ident">ParaGenesisArgs</span> {
+				<span class="ident">parachain</span>: <span class="bool-val">true</span>,
+				<span class="ident">genesis_head</span>: <span class="ident">dummy_head_data</span>(),
+				<span class="ident">validation_code</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="ident">into</span>(),
+			},
+		)];
+
+		<span class="kw">let</span> <span class="ident">genesis_config</span> <span class="op">=</span> <span class="ident">MockGenesisConfig</span> {
+			<span class="ident">paras</span>: <span class="ident">GenesisConfig</span> { <span class="ident">paras</span>, ..<span class="ident">Default::default</span>() },
+			<span class="ident">configuration</span>: <span class="ident"><span class="kw">crate</span>::configuration::GenesisConfig</span> {
+				<span class="ident">config</span>: <span class="ident">HostConfiguration</span> {
+					<span class="ident">code_retention_period</span>,
+					<span class="ident">validation_upgrade_delay</span>,
+					<span class="ident">validation_upgrade_cooldown</span>,
+					<span class="ident">pvf_checking_enabled</span>: <span class="bool-val">false</span>,
+					..<span class="ident">Default::default</span>()
+				},
+				..<span class="ident">Default::default</span>()
+			},
+			..<span class="ident">Default::default</span>()
+		};
+
+		<span class="ident">new_test_ext</span>(<span class="ident">genesis_config</span>).<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="kw">let</span> <span class="ident">para_id</span> <span class="op">=</span> <span class="number">0u32</span>.<span class="ident">into</span>();
+			<span class="kw">let</span> <span class="ident">new_code</span> <span class="op">=</span> <span class="ident">ValidationCode</span>(<span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]);
+			<span class="kw">let</span> <span class="ident">newer_code</span> <span class="op">=</span> <span class="ident">ValidationCode</span>(<span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]);
+
+			<span class="ident">run_to_block</span>(<span class="number">1</span>, <span class="prelude-val">None</span>);
+			<span class="ident">Paras::schedule_code_upgrade</span>(<span class="ident">para_id</span>, <span class="ident">new_code</span>.<span class="ident">clone</span>(), <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">Configuration::config</span>());
+			<span class="ident">Paras::note_new_head</span>(<span class="ident">para_id</span>, <span class="ident">dummy_head_data</span>(), <span class="number">0</span>);
+			<span class="macro">assert_eq!</span>(
+				<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeRestrictionSignal::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>),
+				<span class="prelude-val">Some</span>(<span class="ident">UpgradeRestriction::Present</span>),
+			);
+			<span class="macro">assert_eq!</span>(
+				<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeUpgrades::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>),
+				<span class="prelude-val">Some</span>(<span class="number">0</span> <span class="op">+</span> <span class="ident">validation_upgrade_delay</span>)
+			);
+			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Paras::can_upgrade_validation_code</span>(<span class="ident">para_id</span>));
+
+			<span class="ident">run_to_block</span>(<span class="number">31</span>, <span class="prelude-val">None</span>);
+			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpgradeRestrictionSignal::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>).<span class="ident">is_none</span>());
+
+			<span class="comment">// Note the para still cannot upgrade the validation code.</span>
+			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Paras::can_upgrade_validation_code</span>(<span class="ident">para_id</span>));
+
+			<span class="comment">// And scheduling another upgrade does not do anything. `expected_at` is still the same.</span>
+			<span class="ident">Paras::schedule_code_upgrade</span>(<span class="ident">para_id</span>, <span class="ident">newer_code</span>.<span class="ident">clone</span>(), <span class="number">30</span>, <span class="kw-2">&amp;</span><span class="ident">Configuration::config</span>());
+			<span class="macro">assert_eq!</span>(
+				<span class="op">&lt;</span><span class="ident">Paras</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeUpgrades::get</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>),
+				<span class="prelude-val">Some</span>(<span class="number">0</span> <span class="op">+</span> <span class="ident">validation_upgrade_delay</span>)
+			);
 		});
 	}
 

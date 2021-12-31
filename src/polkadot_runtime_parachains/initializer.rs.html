@@ -632,7 +632,7 @@
 			<span class="ident">total_weight</span>
 		}
 
-		<span class="kw">fn</span> <span class="ident">on_finalize</span>(<span class="kw">_</span>: <span class="ident">T::BlockNumber</span>) {
+		<span class="kw">fn</span> <span class="ident">on_finalize</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>) {
 			<span class="comment">// reverse initialization order.</span>
 			<span class="ident">hrmp::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
 			<span class="ident">ump::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
@@ -641,7 +641,7 @@
 			<span class="ident">session_info::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
 			<span class="ident">inclusion::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
 			<span class="ident">scheduler::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
-			<span class="ident">paras::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
+			<span class="ident">paras::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>(<span class="ident">now</span>);
 			<span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
 			<span class="ident">configuration::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initializer_finalize</span>();
 
