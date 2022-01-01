@@ -4463,13 +4463,13 @@
 <span class="kw">const</span> <span class="ident">INVALID_TX_DOUBLE_VOTE</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">3</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="doccomment">/// Called by the initializer to initialize the configuration pallet.</span>
+	<span class="doccomment">/// Called by the initializer to initialize the paras pallet.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_initialize</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::prune_old_code</span>(<span class="ident">now</span>);
 		<span class="ident">weight</span> <span class="op">+</span> <span class="ident"><span class="self">Self</span>::process_scheduled_upgrade_changes</span>(<span class="ident">now</span>)
 	}
 
-	<span class="doccomment">/// Called by the initializer to finalize the configuration pallet.</span>
+	<span class="doccomment">/// Called by the initializer to finalize the paras pallet.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_finalize</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>) {
 		<span class="ident"><span class="self">Self</span>::process_scheduled_upgrade_cooldowns</span>(<span class="ident">now</span>);
 	}
@@ -4931,7 +4931,7 @@
 	<span class="doccomment">/// does not guarantee that the parachain will eventually be onboarded. This can happen in case</span>
 	<span class="doccomment">/// the PVF does not pass PVF pre-checking.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// The Para ID should be not activated in this module. The validation code supplied in</span>
+	<span class="doccomment">/// The Para ID should be not activated in this pallet. The validation code supplied in</span>
 	<span class="doccomment">/// `genesis_data` should not be empty. If those conditions are not met, then the para cannot</span>
 	<span class="doccomment">/// be onboarded.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">schedule_para_initialize</span>(

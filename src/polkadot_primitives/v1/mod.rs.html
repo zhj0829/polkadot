@@ -2462,7 +2462,7 @@
 }
 
 <span class="doccomment">/// A possible upgrade restriction that prevents a parachain from performing an upgrade.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">PartialEq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">PartialEq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UpgradeRestriction</span> {
 	<span class="doccomment">/// There is an upgrade restriction and there are no details about its specifics nor how long</span>
 	<span class="doccomment">/// it could last.</span>
@@ -2475,7 +2475,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This data type appears in the last step of the upgrade process. After the parachain observes it</span>
 <span class="doccomment">/// and reacts to it the upgrade process concludes.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">PartialEq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">PartialEq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UpgradeGoAhead</span> {
 	<span class="doccomment">/// Abort the upgrade process. There is something wrong with the validation code previously</span>
 	<span class="doccomment">/// submitted by the parachain. This variant can also be used to prevent upgrades by the governance</span>

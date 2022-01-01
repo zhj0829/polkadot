@@ -2437,12 +2437,12 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="doccomment">/// Called by the initializer to initialize the scheduler module.</span>
+	<span class="doccomment">/// Called by the initializer to initialize the scheduler pallet.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_initialize</span>(<span class="ident">_now</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="number">0</span>
 	}
 
-	<span class="doccomment">/// Called by the initializer to finalize the scheduler module.</span>
+	<span class="doccomment">/// Called by the initializer to finalize the scheduler pallet.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_finalize</span>() {}
 
 	<span class="doccomment">/// Called by the initializer to note that a new session has started.</span>
@@ -3035,7 +3035,7 @@
 			<span class="ident">Paras::initializer_initialize</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>);
 			<span class="ident">Scheduler::initializer_initialize</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>);
 
-			<span class="comment">// In the real runt;me this is expected to be called by the `InclusionInherent` module.</span>
+			<span class="comment">// In the real runtime this is expected to be called by the `InclusionInherent` pallet.</span>
 			<span class="ident">Scheduler::clear</span>();
 			<span class="ident">Scheduler::schedule</span>(<span class="ident">Vec::new</span>(), <span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>);
 		}

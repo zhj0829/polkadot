@@ -2915,12 +2915,12 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="doccomment">/// Called by the initializer to initialize the configuration module.</span>
+	<span class="doccomment">/// Called by the initializer to initialize the configuration pallet.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_initialize</span>(<span class="ident">_now</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="ident">Weight</span> {
 		<span class="number">0</span>
 	}
 
-	<span class="doccomment">/// Called by the initializer to finalize the configuration module.</span>
+	<span class="doccomment">/// Called by the initializer to finalize the configuration pallet.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_finalize</span>() {}
 
 	<span class="doccomment">/// Called by the initializer to note that a new session has started.</span>
@@ -2969,7 +2969,7 @@
 	}
 
 	<span class="doccomment">/// Forcibly set the active config. This should be used with extreme care, and typically</span>
-	<span class="doccomment">/// only when enabling parachains runtime modules for the first time on a chain which has</span>
+	<span class="doccomment">/// only when enabling parachains runtime pallets for the first time on a chain which has</span>
 	<span class="doccomment">/// been running without them.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_set_active_config</span>(<span class="ident">config</span>: <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>) {
 		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::ActiveConfig::set</span>(<span class="ident">config</span>);
