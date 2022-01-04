@@ -202,7 +202,7 @@
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">CollatorEvictionPolicy</span> {
 	<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
 		<span class="ident">CollatorEvictionPolicy</span> {
-			<span class="ident">inactive_collator</span>: <span class="ident">Duration::from_secs</span>(<span class="number">24</span>),
+			<span class="ident">inactive_collator</span>: <span class="ident">Duration::from_secs</span>(<span class="number">5</span>),
 			<span class="ident">undeclared</span>: <span class="ident">Duration::from_secs</span>(<span class="number">1</span>),
 		}
 	}

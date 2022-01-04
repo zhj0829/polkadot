@@ -1462,6 +1462,14 @@
 <span id="1462">1462</span>
 <span id="1463">1463</span>
 <span id="1464">1464</span>
+<span id="1465">1465</span>
+<span id="1466">1466</span>
+<span id="1467">1467</span>
+<span id="1468">1468</span>
+<span id="1469">1469</span>
+<span id="1470">1470</span>
+<span id="1471">1471</span>
+<span id="1472">1472</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1530,7 +1538,6 @@
 <span class="kw">const</span> <span class="ident">COST_CORRUPTED_MESSAGE</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::CostMinor</span>(<span class="string">&quot;Message was corrupt&quot;</span>);
 <span class="doccomment">/// Network errors that originated at the remote host should have same cost as timeout.</span>
 <span class="kw">const</span> <span class="ident">COST_NETWORK_ERROR</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::CostMinor</span>(<span class="string">&quot;Some network error&quot;</span>);
-<span class="kw">const</span> <span class="ident">COST_REQUEST_TIMED_OUT</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::CostMinor</span>(<span class="string">&quot;A collation request has timed out&quot;</span>);
 <span class="kw">const</span> <span class="ident">COST_INVALID_SIGNATURE</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::Malicious</span>(<span class="string">&quot;Invalid network message signature&quot;</span>);
 <span class="kw">const</span> <span class="ident">COST_REPORT_BAD</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::Malicious</span>(<span class="string">&quot;A collator was reported by another subsystem&quot;</span>);
 <span class="kw">const</span> <span class="ident">COST_WRONG_PARA</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::Malicious</span>(<span class="string">&quot;A collator provided a collation for the wrong para&quot;</span>);
@@ -2676,7 +2683,7 @@
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">result</span>.<span class="ident">is_ready</span>() {
 			<span class="ident">retained_requested</span>.<span class="ident">insert</span>(<span class="ident">pending_collation</span>.<span class="ident">clone</span>());
 		}
-		<span class="kw">if</span> <span class="kw">let</span> <span class="ident">CollationFetchResult::Error</span>(<span class="ident">rep</span>) <span class="op">=</span> <span class="ident">result</span> {
+		<span class="kw">if</span> <span class="kw">let</span> <span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">rep</span>)) <span class="op">=</span> <span class="ident">result</span> {
 			<span class="ident">reputation_changes</span>.<span class="ident">push</span>((<span class="ident">pending_collation</span>.<span class="ident">peer_id</span>.<span class="ident">clone</span>(), <span class="ident">rep</span>));
 		}
 	}
@@ -2797,8 +2804,8 @@
 	<span class="doccomment">/// The collation was fetched successfully.</span>
 	<span class="ident">Success</span>,
 	<span class="doccomment">/// An error occurred when fetching a collation or it was invalid.</span>
-	<span class="doccomment">/// A reputation change should be applied to the peer.</span>
-	<span class="ident">Error</span>(<span class="ident">Rep</span>),
+	<span class="doccomment">/// A given reputation change should be applied to the peer.</span>
+	<span class="ident">Error</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rep</span><span class="op">&gt;</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">CollationFetchResult</span> {
@@ -2844,7 +2851,19 @@
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
 					<span class="string">&quot;Collator provided response that could not be decoded&quot;</span>
 				);
-				<span class="ident">CollationFetchResult::Error</span>(<span class="ident">COST_CORRUPTED_MESSAGE</span>)
+				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">COST_CORRUPTED_MESSAGE</span>))
+			},
+			<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">is_timed_out</span>() =&gt; {
+				<span class="macro">tracing::debug!</span>(
+					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
+					<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
+					<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">peer_id</span>,
+					<span class="string">&quot;Request timed out&quot;</span>
+				);
+				<span class="comment">// For now we don&#39;t want to change reputation on timeout, to mitigate issues like</span>
+				<span class="comment">// this: https://github.com/paritytech/polkadot/issues/4617</span>
+				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">None</span>)
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::NetworkError</span>(<span class="ident">err</span>)) =&gt; {
 				<span class="macro">tracing::debug!</span>(
@@ -2856,24 +2875,21 @@
 					<span class="string">&quot;Fetching collation failed due to network error&quot;</span>
 				);
 				<span class="comment">// A minor decrease in reputation for any network failure seems</span>
-				<span class="comment">// sensible. In theory this could be exploited, by Dosing this node,</span>
+				<span class="comment">// sensible. In theory this could be exploited, by DoSing this node,</span>
 				<span class="comment">// which would result in reduced reputation for proper nodes, but the</span>
 				<span class="comment">// same can happen for penalties on timeouts, which we also have.</span>
-				<span class="ident">CollationFetchResult::Error</span>(<span class="ident">COST_NETWORK_ERROR</span>)
+				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">COST_NETWORK_ERROR</span>))
 			},
-			<span class="prelude-val">Err</span>(<span class="ident">RequestError::Canceled</span>(<span class="kw">_</span>)) =&gt; {
+			<span class="prelude-val">Err</span>(<span class="ident">RequestError::Canceled</span>(<span class="ident">err</span>)) =&gt; {
 				<span class="macro">tracing::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
 					<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
 					<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">peer_id</span>,
-					<span class="string">&quot;Request timed out&quot;</span>
+					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
+					<span class="string">&quot;Canceled should be handled by `is_timed_out` above - this is a bug!&quot;</span>
 				);
-				<span class="comment">// A minor decrease in reputation for any network failure seems</span>
-				<span class="comment">// sensible. In theory this could be exploited, by Dosing this node,</span>
-				<span class="comment">// which would result in reduced reputation for proper nodes, but the</span>
-				<span class="comment">// same can happen for penalties on timeouts, which we also have.</span>
-				<span class="ident">CollationFetchResult::Error</span>(<span class="ident">COST_REQUEST_TIMED_OUT</span>)
+				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">None</span>)
 			},
 			<span class="prelude-val">Ok</span>(<span class="ident">CollationFetchingResponse::Collation</span>(<span class="ident">receipt</span>, <span class="kw">_</span>))
 				<span class="kw">if</span> <span class="ident">receipt</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span> <span class="op">!</span><span class="op">=</span> <span class="ident">pending_collation</span>.<span class="ident">para_id</span> =&gt;
@@ -2886,7 +2902,7 @@
 					<span class="string">&quot;Got wrong para ID for requested collation.&quot;</span>
 				);
 
-				<span class="ident">CollationFetchResult::Error</span>(<span class="ident">COST_WRONG_PARA</span>)
+				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">COST_WRONG_PARA</span>))
 			},
 			<span class="prelude-val">Ok</span>(<span class="ident">CollationFetchingResponse::Collation</span>(<span class="ident">receipt</span>, <span class="ident">pov</span>)) =&gt; {
 				<span class="macro">tracing::debug!</span>(

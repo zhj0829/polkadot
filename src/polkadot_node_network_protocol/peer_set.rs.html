@@ -221,7 +221,7 @@
 				<span class="ident">max_notification_size</span>,
 				<span class="ident">set_config</span>: <span class="ident">SetConfig</span> {
 					<span class="comment">// Non-authority nodes don&#39;t need to accept incoming connections on this peer set:</span>
-					<span class="ident">in_peers</span>: <span class="kw">if</span> <span class="ident">is_authority</span> <span class="op">==</span> <span class="ident">IsAuthority::Yes</span> { <span class="number">25</span> } <span class="kw">else</span> { <span class="number">0</span> },
+					<span class="ident">in_peers</span>: <span class="kw">if</span> <span class="ident">is_authority</span> <span class="op">==</span> <span class="ident">IsAuthority::Yes</span> { <span class="number">100</span> } <span class="kw">else</span> { <span class="number">0</span> },
 					<span class="ident">out_peers</span>: <span class="number">0</span>,
 					<span class="ident">reserved_nodes</span>: <span class="ident">Vec::new</span>(),
 					<span class="ident">non_reserved_mode</span>: <span class="kw">if</span> <span class="ident">is_authority</span> <span class="op">==</span> <span class="ident">IsAuthority::Yes</span> {
