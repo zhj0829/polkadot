@@ -50,6 +50,8 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -70,6 +72,8 @@
 <span class="doccomment">//! provide a dummy implementation for the native runtime to avoid cluttering the runtime code</span>
 <span class="doccomment">//! with `#[cfg(feature = &quot;runtime-metrics&quot;)]`.</span>
 
+<span class="kw">use</span> <span class="ident">primitives::v1::metric_definitions</span>::{<span class="ident">CounterDefinition</span>, <span class="ident">CounterVecDefinition</span>};
+
 <span class="doccomment">/// A dummy Counter.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Counter</span>;
 <span class="doccomment">/// A dummy CounterVec.</span>
@@ -78,29 +82,29 @@
 <span class="doccomment">/// Dummy implementation.</span>
 <span class="kw">impl</span> <span class="ident">CounterVec</span> {
 	<span class="doccomment">/// Constructor.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">_description</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">_labels</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_definition</span>: <span class="ident">CounterVecDefinition</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">CounterVec</span>
 	}
 	<span class="doccomment">/// Sets label values, implementation is a `no op`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_label_values</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_label_values</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span> {
 		<span class="self">self</span>
 	}
 	<span class="doccomment">/// Increment counter by value, implementation is a `no op`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">u64</span>) {}
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="ident">u64</span>) {}
 	<span class="doccomment">/// Increment counter, implementation is a `no op`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {}
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
 }
 
 <span class="doccomment">/// Dummy implementation.</span>
 <span class="kw">impl</span> <span class="ident">Counter</span> {
 	<span class="doccomment">/// Constructor.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">_description</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_definition</span>: <span class="ident">CounterDefinition</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">Counter</span>
 	}
 	<span class="doccomment">/// Increment counter by value, implementation is a `no op`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">u64</span>) {}
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc_by</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="ident">u64</span>) {}
 	<span class="doccomment">/// Increment counter, implementation is a `no op`.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {}
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="polkadot_runtime_metrics" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>

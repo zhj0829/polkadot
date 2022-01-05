@@ -120,7 +120,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-metrics&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::runtime::logger_hook</span>;
 
-<span class="doccomment">/// Export a dummy logger hook when `wasm tracing` is not enabled.</span>
+<span class="doccomment">/// Export a dummy logger hook when the `runtime-metrics` feature is not enabled.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-metrics&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">logger_hook</span>() -&gt; <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sc_cli::LoggerBuilder</span>, <span class="kw-2">&amp;</span><span class="ident">sc_service::Configuration</span>) -&gt; () {
 	<span class="op">|</span><span class="ident">_logger_builder</span>, <span class="ident">_config</span><span class="op">|</span> {}
