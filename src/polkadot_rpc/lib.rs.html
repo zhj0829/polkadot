@@ -164,6 +164,9 @@
 <span id="164">164</span>
 <span id="165">165</span>
 <span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -227,10 +230,13 @@
 	<span class="kw">pub</span> <span class="ident">finality_provider</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FinalityProofProvider</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">Block</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
+<span class="kw">use</span> <span class="ident">beefy_gadget::notification</span>::{<span class="ident">BeefyBestBlockStream</span>, <span class="ident">BeefySignedCommitmentStream</span>};
 <span class="doccomment">/// Dependencies for BEEFY</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BeefyDeps</span> {
 	<span class="doccomment">/// Receives notifications about signed commitment events from BEEFY.</span>
-	<span class="kw">pub</span> <span class="ident">beefy_commitment_stream</span>: <span class="ident">beefy_gadget::notification::BeefySignedCommitmentStream</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">beefy_commitment_stream</span>: <span class="ident">BeefySignedCommitmentStream</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
+	<span class="doccomment">/// Receives notifications about best block events from BEEFY.</span>
+	<span class="kw">pub</span> <span class="ident">beefy_best_block_stream</span>: <span class="ident">BeefyBestBlockStream</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Executor to drive the subscription manager in the BEEFY RPC handler.</span>
 	<span class="kw">pub</span> <span class="ident">subscription_executor</span>: <span class="ident">sc_rpc::SubscriptionTaskExecutor</span>,
 }
@@ -321,12 +327,12 @@
 		<span class="ident">deny_unsafe</span>,
 	)<span class="question-mark">?</span>));
 
-	<span class="ident">io</span>.<span class="ident">extend_with</span>(<span class="ident">beefy_gadget_rpc::BeefyApi::to_delegate</span>(
-		<span class="ident">beefy_gadget_rpc::BeefyRpcHandler::new</span>(
-			<span class="ident">beefy</span>.<span class="ident">beefy_commitment_stream</span>,
-			<span class="ident">beefy</span>.<span class="ident">subscription_executor</span>,
-		),
-	));
+	<span class="kw">let</span> <span class="ident">handler</span>: <span class="ident">beefy_gadget_rpc::BeefyRpcHandler</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">beefy_gadget_rpc::BeefyRpcHandler::new</span>(
+		<span class="ident">beefy</span>.<span class="ident">beefy_commitment_stream</span>,
+		<span class="ident">beefy</span>.<span class="ident">beefy_best_block_stream</span>,
+		<span class="ident">beefy</span>.<span class="ident">subscription_executor</span>,
+	)<span class="question-mark">?</span>;
+	<span class="ident">io</span>.<span class="ident">extend_with</span>(<span class="ident">beefy_gadget_rpc::BeefyApi::to_delegate</span>(<span class="ident">handler</span>));
 
 	<span class="prelude-val">Ok</span>(<span class="ident">io</span>)
 }
