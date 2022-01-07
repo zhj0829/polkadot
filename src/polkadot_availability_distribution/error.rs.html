@@ -134,6 +134,7 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
+<span id="137">137</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -154,6 +155,7 @@
 <span class="doccomment">//! Error handling related code and Error/Result definitions.</span>
 
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol::request_response::outgoing::RequestError</span>;
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::SessionIndex</span>;
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="kw">use</span> <span class="ident">futures::channel::oneshot</span>;
@@ -212,8 +214,8 @@
 	<span class="ident">QueryAvailableDataResponseChannel</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">oneshot::Canceled</span>),
 
 	<span class="doccomment">/// We tried accessing a session that was not cached.</span>
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Session is not cached.&quot;</span>)]</span>
-	<span class="ident">NoSuchCachedSession</span>,
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Session {missing_session} is not cached, cached sessions: {available_sessions:?}.&quot;</span>)]</span>
+	<span class="ident">NoSuchCachedSession</span> { <span class="ident">available_sessions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SessionIndex</span><span class="op">&gt;</span>, <span class="ident">missing_session</span>: <span class="ident">SessionIndex</span> },
 
 	<span class="doccomment">/// Sending request response failed (Can happen on timeouts for example).</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Sending a request&#39;s response failed.&quot;</span>)]</span>
@@ -256,7 +258,7 @@
 			<span class="kw">match</span> <span class="ident">error</span> {
 				<span class="ident">NonFatal::UnexpectedPoV</span> <span class="op">|</span>
 				<span class="ident">NonFatal::InvalidValidatorIndex</span> <span class="op">|</span>
-				<span class="ident">NonFatal::NoSuchCachedSession</span> <span class="op">|</span>
+				<span class="ident">NonFatal::NoSuchCachedSession</span> { .. } <span class="op">|</span>
 				<span class="ident">NonFatal::QueryAvailableDataResponseChannel</span>(<span class="kw">_</span>) <span class="op">|</span>
 				<span class="ident">NonFatal::QueryChunkResponseChannel</span>(<span class="kw">_</span>) =&gt;
 					<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">error</span>, <span class="ident">ctx</span>),
