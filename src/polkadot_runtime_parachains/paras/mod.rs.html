@@ -3377,7 +3377,7 @@
 		<span class="ident">code_hash</span>: <span class="kw-2">&amp;</span><span class="ident">ValidationCodeHash</span>,
 		<span class="ident">causes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PvfCheckCause</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	) -&gt; <span class="ident">Weight</span> {
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span>);
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weight</span> <span class="op">=</span> <span class="number">0</span>;
 
 		<span class="kw">for</span> <span class="ident">cause</span> <span class="kw">in</span> <span class="ident">causes</span> {
 			<span class="comment">// Whenever PVF pre-checking is started or a new cause is added to it, the RC is bumped.</span>
