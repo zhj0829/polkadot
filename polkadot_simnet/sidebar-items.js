@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["dispatch_with_root","Dispatch with root origin, via pallet-democracy"],["run","Runs the test-runner as a binary."]],"struct":[["ExecutorDispatch","Declare an instance of the native executor named `ExecutorDispatch`. Include the wasm binary as the equivalent wasm code."],["PolkadotChainInfo","`ChainInfo` implementation."]]});
