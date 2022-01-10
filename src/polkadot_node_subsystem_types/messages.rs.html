@@ -916,6 +916,9 @@
 <span id="916">916</span>
 <span id="917">917</span>
 <span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1146,6 +1149,9 @@
 }
 
 <span class="doccomment">/// Messages received by the dispute coordinator subsystem.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// NOTE: Any response oneshots might get cancelled if the `DisputeCoordinator` was not yet</span>
+<span class="doccomment">/// properly initialized for some reason.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DisputeCoordinatorMessage</span> {
 	<span class="doccomment">/// Import statements by validators about a candidate.</span>

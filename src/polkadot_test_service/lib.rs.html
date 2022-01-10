@@ -387,6 +387,10 @@
 <span id="387">387</span>
 <span id="388">388</span>
 <span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -417,7 +421,9 @@
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Balance</span>, <span class="ident">CollatorPair</span>, <span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">ValidationCode</span>};
 <span class="kw">use</span> <span class="ident">polkadot_runtime_common::BlockHashCount</span>;
 <span class="kw">use</span> <span class="ident">polkadot_runtime_parachains::paras::ParaGenesisArgs</span>;
-<span class="kw">use</span> <span class="ident">polkadot_service</span>::{<span class="ident">ClientHandle</span>, <span class="ident">Error</span>, <span class="ident">ExecuteWithClient</span>, <span class="ident">FullClient</span>, <span class="ident">IsCollator</span>, <span class="ident">NewFull</span>};
+<span class="kw">use</span> <span class="ident">polkadot_service</span>::{
+	<span class="ident">ClientHandle</span>, <span class="ident">Error</span>, <span class="ident">ExecuteWithClient</span>, <span class="ident">FullClient</span>, <span class="ident">IsCollator</span>, <span class="ident">NewFull</span>, <span class="ident">PrometheusConfig</span>,
+};
 <span class="kw">use</span> <span class="ident">polkadot_test_runtime</span>::{
 	<span class="ident">ParasSudoWrapperCall</span>, <span class="ident">Runtime</span>, <span class="ident">SignedExtra</span>, <span class="ident">SignedPayload</span>, <span class="ident">SudoCall</span>, <span class="ident">UncheckedExtrinsic</span>,
 	<span class="ident">VERSION</span>,
@@ -437,7 +443,11 @@
 <span class="kw">use</span> <span class="ident">sp_keyring::Sr25519Keyring</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">codec::Encode</span>, <span class="ident">generic</span>, <span class="ident">traits::IdentifyAccount</span>, <span class="ident">MultiSigner</span>};
 <span class="kw">use</span> <span class="ident">sp_state_machine::BasicExternalities</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">path::PathBuf</span>, <span class="ident">sync::Arc</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{
+	<span class="ident">net</span>::{<span class="ident">Ipv4Addr</span>, <span class="ident">SocketAddr</span>},
+	<span class="ident">path::PathBuf</span>,
+	<span class="ident">sync::Arc</span>,
+};
 <span class="kw">use</span> <span class="ident">substrate_test_client</span>::{
 	<span class="ident">BlockchainEventsExt</span>, <span class="ident">RpcHandlersExt</span>, <span class="ident">RpcTransactionError</span>, <span class="ident">RpcTransactionOutput</span>,
 };
@@ -489,6 +499,14 @@
 	<span class="kw">fn</span> <span class="ident">execute_with</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ExecuteWithClient</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">t</span>: <span class="ident">T</span>) -&gt; <span class="ident">T::Output</span> {
 		<span class="ident">T::execute_with_client</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">polkadot_service::FullBackend</span><span class="op">&gt;</span>(<span class="ident">t</span>, <span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
 	}
+}
+
+<span class="doccomment">/// Returns a prometheus config usable for testing.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_prometheus_config</span>(<span class="ident">port</span>: <span class="ident">u16</span>) -&gt; <span class="ident">PrometheusConfig</span> {
+	<span class="ident">PrometheusConfig::new_with_default_registry</span>(
+		<span class="ident">SocketAddr::new</span>(<span class="ident">Ipv4Addr::LOCALHOST</span>.<span class="ident">into</span>(), <span class="ident">port</span>),
+		<span class="string">&quot;test-chain&quot;</span>.<span class="ident">to_string</span>(),
+	)
 }
 
 <span class="doccomment">/// Create a Polkadot `Configuration`.</span>
@@ -549,7 +567,7 @@
 		<span class="ident">keep_blocks</span>: <span class="ident">KeepBlocks::All</span>,
 		<span class="ident">transaction_storage</span>: <span class="ident">TransactionStorageMode::BlockBody</span>,
 		<span class="ident">chain_spec</span>: <span class="ident">Box::new</span>(<span class="ident">spec</span>),
-		<span class="ident">wasm_method</span>: <span class="ident">WasmExecutionMethod::Interpreted</span>,
+		<span class="ident">wasm_method</span>: <span class="ident">WasmExecutionMethod::Compiled</span>,
 		<span class="ident">wasm_runtime_overrides</span>: <span class="ident">Default::default</span>(),
 		<span class="comment">// NOTE: we enforce the use of the native runtime to make the errors more debuggable</span>
 		<span class="ident">execution_strategies</span>: <span class="ident">ExecutionStrategies</span> {
@@ -584,21 +602,11 @@
 	}
 }
 
-<span class="doccomment">/// Run a test validator node that uses the test runtime.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The node will be using an in-memory socket, therefore you need to provide boot nodes if you</span>
-<span class="doccomment">/// want it to be connected to other nodes.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The `storage_update_func` function will be executed in an externalities provided environment</span>
-<span class="doccomment">/// and can be used to make adjustments to the runtime genesis storage.</span>
+<span class="doccomment">/// Run a test validator node that uses the test runtime and specified `config`.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_validator_node</span>(
-	<span class="ident">tokio_handle</span>: <span class="ident">tokio::runtime::Handle</span>,
-	<span class="ident">key</span>: <span class="ident">Sr25519Keyring</span>,
-	<span class="ident">storage_update_func</span>: <span class="kw">impl</span> <span class="ident">Fn</span>(),
-	<span class="ident">boot_nodes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MultiaddrWithPeerId</span><span class="op">&gt;</span>,
+	<span class="ident">config</span>: <span class="ident">Configuration</span>,
 	<span class="ident">worker_program_path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">PolkadotTestNode</span> {
-	<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">node_config</span>(<span class="ident">storage_update_func</span>, <span class="ident">tokio_handle</span>, <span class="ident">key</span>, <span class="ident">boot_nodes</span>, <span class="bool-val">true</span>);
 	<span class="kw">let</span> <span class="ident">multiaddr</span> <span class="op">=</span> <span class="ident">config</span>.<span class="ident">network</span>.<span class="ident">listen_addresses</span>[<span class="number">0</span>].<span class="ident">clone</span>();
 	<span class="kw">let</span> <span class="ident">NewFull</span> { <span class="ident">task_manager</span>, <span class="ident">client</span>, <span class="ident">network</span>, <span class="ident">rpc_handlers</span>, <span class="ident">overseer_handle</span>, .. } <span class="op">=</span>
 		<span class="ident">new_full</span>(<span class="ident">config</span>, <span class="ident">IsCollator::No</span>, <span class="ident">worker_program_path</span>)

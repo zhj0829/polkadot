@@ -564,6 +564,14 @@
 <span id="564">564</span>
 <span id="565">565</span>
 <span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -864,9 +872,17 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Error</span> {
-	<span class="comment">// A request to the subsystem was canceled.</span>
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Overseer is disconnected from Chain Selection&quot;</span>)]</span>
-	<span class="ident">OverseerDisconnected</span>(<span class="ident">oneshot::Canceled</span>),
+	<span class="comment">// Oneshot for requesting leaves from chain selection got canceled - check errors in that</span>
+	<span class="comment">// subsystem.</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Request for leaves from chain selection got canceled&quot;</span>)]</span>
+	<span class="ident">LeavesCanceled</span>(<span class="ident">oneshot::Canceled</span>),
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Request for leaves from chain selection got canceled&quot;</span>)]</span>
+	<span class="ident">BestLeafContainingCanceled</span>(<span class="ident">oneshot::Canceled</span>),
+	<span class="comment">// Requesting recent disputes oneshot got canceled.</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Request for determining the undisputed chain from DisputeCoordinator got canceled&quot;</span>)]</span>
+	<span class="ident">DetermineUndisputedChainCanceled</span>(<span class="ident">oneshot::Canceled</span>),
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Request approved ancestor from approval voting got canceled&quot;</span>)]</span>
+	<span class="ident">ApprovedAncestorCanceled</span>(<span class="ident">oneshot::Canceled</span>),
 	<span class="doccomment">/// Chain selection returned empty leaves.</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;ChainSelection returned no leaves&quot;</span>)]</span>
 	<span class="ident">EmptyLeaves</span>,
@@ -904,7 +920,7 @@
 
 		<span class="kw">let</span> <span class="ident">leaves</span> <span class="op">=</span> <span class="ident">rx</span>
 			.<span class="kw">await</span>
-			.<span class="ident">map_err</span>(<span class="ident">Error::OverseerDisconnected</span>)
+			.<span class="ident">map_err</span>(<span class="ident">Error::LeavesCanceled</span>)
 			.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">leaves</span>, <span class="string">&quot;Chain selection leaves&quot;</span>);
@@ -958,7 +974,7 @@
 
 			<span class="kw">let</span> <span class="ident">best</span> <span class="op">=</span> <span class="ident">rx</span>
 				.<span class="kw">await</span>
-				.<span class="ident">map_err</span>(<span class="ident">Error::OverseerDisconnected</span>)
+				.<span class="ident">map_err</span>(<span class="ident">Error::BestLeafContainingCanceled</span>)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 			<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best</span>, <span class="string">&quot;Best leaf containing&quot;</span>);
@@ -1033,7 +1049,7 @@
 
 			<span class="kw">match</span> <span class="ident">rx</span>
 				.<span class="kw">await</span>
-				.<span class="ident">map_err</span>(<span class="ident">Error::OverseerDisconnected</span>)
+				.<span class="ident">map_err</span>(<span class="ident">Error::ApprovedAncestorCanceled</span>)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>
 			{
 				<span class="comment">// No approved ancestors means target hash is maximal vote.</span>
@@ -1080,7 +1096,7 @@
 				.<span class="kw">await</span>;
 			<span class="kw">let</span> (<span class="ident">subchain_number</span>, <span class="ident">subchain_head</span>) <span class="op">=</span> <span class="ident">rx</span>
 				.<span class="kw">await</span>
-				.<span class="ident">map_err</span>(<span class="ident">Error::OverseerDisconnected</span>)
+				.<span class="ident">map_err</span>(<span class="ident">Error::DetermineUndisputedChainCanceled</span>)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
 			<span class="comment">// The the total lag accounting for disputes.</span>

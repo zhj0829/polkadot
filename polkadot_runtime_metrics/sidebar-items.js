@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Counter","A dummy Counter."],["CounterVec","A dummy CounterVec."]]});
+initSidebarItems({"struct":[["Counter","A counter metric."],["CounterVec","Holds a set of counters that have different values for their labels, like Prometheus CounterVec."],["LabeledMetric",""]]});

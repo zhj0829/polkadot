@@ -403,6 +403,8 @@
 <span id="403">403</span>
 <span id="404">404</span>
 <span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -795,11 +797,13 @@
 			},
 			<span class="ident">FromOverseer::Signal</span>(<span class="ident">OverseerSignal::BlockFinalized</span>(<span class="kw">_</span>, <span class="kw">_</span>)) =&gt; {},
 			<span class="ident">FromOverseer::Communication</span> { <span class="ident">msg</span> } =&gt;
-			<span class="comment">// Note: It seems we really should not receive any messages before the first</span>
-			<span class="comment">// `ActiveLeavesUpdate`, if that proves wrong over time and we do receive</span>
-			<span class="comment">// messages before the first `ActiveLeavesUpdate` that should not be dropped,</span>
-			<span class="comment">// this can easily be fixed by collecting those messages and passing them on to</span>
-			<span class="comment">// `Initialized::new()`.</span>
+			<span class="comment">// NOTE: We could technically actually handle a couple of message types, even if</span>
+			<span class="comment">// not initialized (e.g. all requests that only query the database). The problem</span>
+			<span class="comment">// is, we would deliver potentially outdated information, especially in the event</span>
+			<span class="comment">// of bugs where initialization fails for a while (e.g. `SessionInfo`s are not</span>
+			<span class="comment">// available). So instead of telling subsystems, everything is fine, because of an</span>
+			<span class="comment">// hour old database state, we should rather cancel contained oneshots and delay</span>
+			<span class="comment">// finality until we are fully functional.</span>
 				<span class="macro">tracing::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">msg</span>,

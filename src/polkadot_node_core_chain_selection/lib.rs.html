@@ -659,6 +659,7 @@
 <span id="659">659</span>
 <span id="660">660</span>
 <span id="661">661</span>
+<span id="662">662</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1013,6 +1014,7 @@
 		<span class="kw">match</span> <span class="ident">res</span> {
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
 				<span class="ident">e</span>.<span class="ident">trace</span>();
+				<span class="comment">// All errors right now are considered fatal:</span>
 				<span class="kw">break</span>
 			},
 			<span class="prelude-val">Ok</span>(()) =&gt; {
