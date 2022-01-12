@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;b54c21f&#x2F;frame&#x2F;system&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../frame_system/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;306be17&#x2F;frame&#x2F;system&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../frame_system/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1653,38 +1653,6 @@
 <span id="1653">1653</span>
 <span id="1654">1654</span>
 <span id="1655">1655</span>
-<span id="1656">1656</span>
-<span id="1657">1657</span>
-<span id="1658">1658</span>
-<span id="1659">1659</span>
-<span id="1660">1660</span>
-<span id="1661">1661</span>
-<span id="1662">1662</span>
-<span id="1663">1663</span>
-<span id="1664">1664</span>
-<span id="1665">1665</span>
-<span id="1666">1666</span>
-<span id="1667">1667</span>
-<span id="1668">1668</span>
-<span id="1669">1669</span>
-<span id="1670">1670</span>
-<span id="1671">1671</span>
-<span id="1672">1672</span>
-<span id="1673">1673</span>
-<span id="1674">1674</span>
-<span id="1675">1675</span>
-<span id="1676">1676</span>
-<span id="1677">1677</span>
-<span id="1678">1678</span>
-<span id="1679">1679</span>
-<span id="1680">1680</span>
-<span id="1681">1681</span>
-<span id="1682">1682</span>
-<span id="1683">1683</span>
-<span id="1684">1684</span>
-<span id="1685">1685</span>
-<span id="1686">1686</span>
-<span id="1687">1687</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2017-2022 Parity Technologies (UK) Ltd.</span>
@@ -2631,27 +2599,6 @@
 	}
 }
 
-<span class="doccomment">/// A type of block initialization to perform.</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">InitKind</span> {
-	<span class="doccomment">/// Leave inspectable storage entries in state.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// i.e. `Events` are not being reset.</span>
-	<span class="doccomment">/// Should only be used for off-chain calls,</span>
-	<span class="doccomment">/// regular block execution should clear those.</span>
-	<span class="ident">Inspection</span>,
-
-	<span class="doccomment">/// Reset also inspectable storage entries.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// This should be used for regular block execution.</span>
-	<span class="ident">Full</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">InitKind</span> {
-	<span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-		<span class="ident">InitKind::Full</span>
-	}
-}
-
 <span class="doccomment">/// Reference status; can be either referenced or unreferenced.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">RuntimeDebug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RefStatus</span> {
@@ -2989,12 +2936,7 @@
 	}
 
 	<span class="doccomment">/// Start the execution of a particular block.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialize</span>(
-		<span class="ident">number</span>: <span class="kw-2">&amp;</span><span class="ident">T::BlockNumber</span>,
-		<span class="ident">parent_hash</span>: <span class="kw-2">&amp;</span><span class="ident">T::Hash</span>,
-		<span class="ident">digest</span>: <span class="kw-2">&amp;</span><span class="ident">generic::Digest</span>,
-		<span class="ident">kind</span>: <span class="ident">InitKind</span>,
-	) {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialize</span>(<span class="ident">number</span>: <span class="kw-2">&amp;</span><span class="ident">T::BlockNumber</span>, <span class="ident">parent_hash</span>: <span class="kw-2">&amp;</span><span class="ident">T::Hash</span>, <span class="ident">digest</span>: <span class="kw-2">&amp;</span><span class="ident">generic::Digest</span>) {
 		<span class="comment">// populate environment</span>
 		<span class="ident">ExecutionPhase</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">Phase::Initialization</span>);
 		<span class="ident">storage::unhashed::put</span>(<span class="ident">well_known_keys::EXTRINSIC_INDEX</span>, <span class="kw-2">&amp;</span><span class="number">0u32</span>);
@@ -3005,13 +2947,6 @@
 
 		<span class="comment">// Remove previous block data from storage</span>
 		<span class="ident">BlockWeight</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::kill</span>();
-
-		<span class="comment">// Kill inspectable storage entries in state when `InitKind::Full`.</span>
-		<span class="kw">if</span> <span class="kw">let</span> <span class="ident">InitKind::Full</span> <span class="op">=</span> <span class="ident">kind</span> {
-			<span class="op">&lt;</span><span class="ident">Events</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::kill</span>();
-			<span class="ident">EventCount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::kill</span>();
-			<span class="op">&lt;</span><span class="ident">EventTopics</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::remove_all</span>(<span class="prelude-val">None</span>);
-		}
 	}
 
 	<span class="doccomment">/// Remove temporary &quot;environment&quot; entries in storage, compute the storage root and return the</span>
@@ -3131,9 +3066,10 @@
 		<span class="ident">AllExtrinsicsLen</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="ident">len</span> <span class="kw">as</span> <span class="ident">u32</span>);
 	}
 
-	<span class="doccomment">/// Reset events. Can be used as an alternative to</span>
-	<span class="doccomment">/// `initialize` for tests that don&#39;t need to bother with the other environment entries.</span>
-	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>, <span class="ident">test</span>))]</span>
+	<span class="doccomment">/// Reset events.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// This needs to be used in prior calling [`initialize`](Self::initialize) for each new block</span>
+	<span class="doccomment">/// to clear events from previous block.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_events</span>() {
 		<span class="op">&lt;</span><span class="ident">Events</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::kill</span>();
 		<span class="ident">EventCount</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::kill</span>();

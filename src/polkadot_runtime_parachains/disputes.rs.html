@@ -4640,7 +4640,6 @@
 		<span class="ident">assert_err</span>, <span class="ident">assert_noop</span>, <span class="ident">assert_ok</span>, <span class="ident">assert_storage_noop</span>,
 		<span class="ident">traits</span>::{<span class="ident">OnFinalize</span>, <span class="ident">OnInitialize</span>},
 	};
-	<span class="kw">use</span> <span class="ident">frame_system::InitKind</span>;
 	<span class="kw">use</span> <span class="ident">primitives::v1::BlockNumber</span>;
 	<span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">crypto::CryptoType</span>, <span class="ident">Pair</span>};
 
@@ -4668,7 +4667,8 @@
 				<span class="ident">System::finalize</span>();
 			}
 
-			<span class="ident">System::initialize</span>(<span class="kw-2">&amp;</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>), <span class="kw-2">&amp;</span><span class="ident">Default::default</span>(), <span class="kw-2">&amp;</span><span class="ident">Default::default</span>(), <span class="ident">InitKind::Full</span>);
+			<span class="ident">System::reset_events</span>();
+			<span class="ident">System::initialize</span>(<span class="kw-2">&amp;</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>), <span class="kw-2">&amp;</span><span class="ident">Default::default</span>(), <span class="kw-2">&amp;</span><span class="ident">Default::default</span>());
 			<span class="ident">AllPalletsWithSystem::on_initialize</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>);
 
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">new_session</span>) <span class="op">=</span> <span class="ident">new_session</span>(<span class="ident">b</span> <span class="op">+</span> <span class="number">1</span>) {
