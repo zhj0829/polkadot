@@ -2304,6 +2304,19 @@
 <span id="2304">2304</span>
 <span id="2305">2305</span>
 <span id="2306">2306</span>
+<span id="2307">2307</span>
+<span id="2308">2308</span>
+<span id="2309">2309</span>
+<span id="2310">2310</span>
+<span id="2311">2311</span>
+<span id="2312">2312</span>
+<span id="2313">2313</span>
+<span id="2314">2314</span>
+<span id="2315">2315</span>
+<span id="2316">2316</span>
+<span id="2317">2317</span>
+<span id="2318">2318</span>
+<span id="2319">2319</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2328,8 +2341,8 @@
 
 <span class="kw">use</span> <span class="ident">pallet_transaction_payment::CurrencyAdapter</span>;
 <span class="kw">use</span> <span class="ident">runtime_common</span>::{
-	<span class="ident">auctions</span>, <span class="ident">claims</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::DealWithFees</span>, <span class="ident">paras_registrar</span>, <span class="ident">slots</span>, <span class="ident">BlockHashCount</span>,
-	<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">CurrencyToVote</span>, <span class="ident">OffchainSolutionLengthLimit</span>,
+	<span class="ident">auctions</span>, <span class="ident">claims</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::DealWithFees</span>, <span class="ident">paras_registrar</span>, <span class="ident">prod_or_fast</span>, <span class="ident">slots</span>,
+	<span class="ident">BlockHashCount</span>, <span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">CurrencyToVote</span>, <span class="ident">OffchainSolutionLengthLimit</span>,
 	<span class="ident">OffchainSolutionWeightLimit</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>,
 };
 
@@ -2599,9 +2612,13 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EpochDuration</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="kw">as</span> <span class="ident">u64</span>;
+	<span class="kw">pub</span> <span class="ident">EpochDuration</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(
+		<span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="kw">as</span> <span class="ident">u64</span>,
+		<span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span> <span class="kw">as</span> <span class="ident">u64</span>,
+		<span class="string">&quot;KSM_EPOCH_DURATION&quot;</span>
+	);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ExpectedBlockTime</span>: <span class="ident">Moment</span> <span class="op">=</span> <span class="ident">MILLISECS_PER_BLOCK</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReportLongevity</span>: <span class="ident">u64</span> <span class="op">=</span>
+	<span class="kw">pub</span> <span class="ident">ReportLongevity</span>: <span class="ident">u64</span> <span class="op">=</span>
 		<span class="ident">BondingDuration::get</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="ident">SessionsPerEra::get</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="ident">EpochDuration::get</span>();
 }
 
@@ -2731,8 +2748,17 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// phase durations. 1/4 of the last session for each.</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UnsignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>;
+	<span class="comment">// in testing: 1min or half of the session for each</span>
+	<span class="kw">pub</span> <span class="ident">SignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(
+		<span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>,
+		(<span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>).<span class="ident">min</span>(<span class="ident">EpochDuration::get</span>().<span class="ident">saturated_into</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">2</span>),
+		<span class="string">&quot;DOT_SIGNED_PHASE&quot;</span>
+	);
+	<span class="kw">pub</span> <span class="ident">UnsignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(
+		<span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>,
+		(<span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>).<span class="ident">min</span>(<span class="ident">EpochDuration::get</span>().<span class="ident">saturated_into</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">2</span>),
+		<span class="string">&quot;DOT_UNSIGNED_PHASE&quot;</span>
+	);
 
 	<span class="comment">// signed config</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SignedMaxSubmissions</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">16</span>;
@@ -2899,12 +2925,12 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LaunchPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">28</span> <span class="op">*</span> <span class="ident">DAYS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">28</span> <span class="op">*</span> <span class="ident">DAYS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FastTrackVotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">3</span> <span class="op">*</span> <span class="ident">HOURS</span>;
+	<span class="kw">pub</span> <span class="ident">LaunchPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">28</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span>, <span class="string">&quot;DOT_LAUNCH_PERIOD&quot;</span>);
+	<span class="kw">pub</span> <span class="ident">VotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">28</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;DOT_VOTING_PERIOD&quot;</span>);
+	<span class="kw">pub</span> <span class="ident">FastTrackVotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">3</span> <span class="op">*</span> <span class="ident">HOURS</span>, <span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;DOT_FAST_TRACK_VOTING_PERIOD&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MinimumDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="ident">DOLLARS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EnactmentPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">28</span> <span class="op">*</span> <span class="ident">DAYS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CooloffPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">EnactmentPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">28</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span>, <span class="string">&quot;DOT_ENACTMENT_PERIOD&quot;</span>);
+	<span class="kw">pub</span> <span class="ident">CooloffPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span>, <span class="string">&quot;DOT_COOLOFF_PERIOD&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">InstantAllowed</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">true</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxVotes</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxProposals</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
@@ -2974,7 +3000,7 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CouncilMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">CouncilMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;DOT_MOTION_DURATION&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CouncilMaxProposals</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CouncilMaxMembers</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 }
@@ -2998,7 +3024,7 @@
 	<span class="comment">// additional data per vote is 32 bytes (account id).</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VotingBondFactor</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">0</span>, <span class="number">32</span>);
 	<span class="doccomment">/// Weekly council elections; scaling up to monthly eventually.</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TermDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">TermDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;DOT_TERM_DURATION&quot;</span>);
 	<span class="doccomment">/// 13 members initially, to be increased to 23 eventually.</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DesiredMembers</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">13</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DesiredRunnersUp</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">20</span>;
@@ -3542,13 +3568,13 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// 12 weeks = 3 months per lease period -&gt; 8 lease periods ~ 2 years</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LeasePeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">12</span> <span class="op">*</span> <span class="ident">WEEKS</span>;
+	<span class="kw">pub</span> <span class="ident">LeasePeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">12</span> <span class="op">*</span> <span class="ident">WEEKS</span>, <span class="number">12</span> <span class="op">*</span> <span class="ident">WEEKS</span>, <span class="string">&quot;DOT_LEASE_PERIOD&quot;</span>);
 	<span class="comment">// Polkadot Genesis was on May 26, 2020.</span>
 	<span class="comment">// Target Parachain Onboarding Date: Dec 15, 2021.</span>
 	<span class="comment">// Difference is 568 days.</span>
 	<span class="comment">// We want a lease period to start on the target onboarding date.</span>
 	<span class="comment">// 568 % (12 * 7) = 64 day offset</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LeaseOffset</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">64</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">LeaseOffset</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">64</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">0</span>, <span class="string">&quot;DOT_LEASE_OFFSET&quot;</span>);
 }
 
 <span class="kw">impl</span> <span class="ident">slots::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {

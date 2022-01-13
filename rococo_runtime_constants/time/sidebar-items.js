@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["DAYS",""],["HOURS",""],["MILLISECS_PER_BLOCK",""],["MINUTES",""],["PRIMARY_PROBABILITY",""],["SLOT_DURATION",""]],"struct":[["EpochDurationInBlocks",""]]});
+initSidebarItems({"constant":[["DAYS",""],["DEFAULT_EPOCH_DURATION",""],["HOURS",""],["MILLISECS_PER_BLOCK",""],["MINUTES",""],["PRIMARY_PROBABILITY",""],["SLOT_DURATION",""]],"struct":[["EpochDurationInBlocks",""]]});

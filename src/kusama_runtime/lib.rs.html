@@ -3413,6 +3413,19 @@
 <span id="3413">3413</span>
 <span id="3414">3414</span>
 <span id="3415">3415</span>
+<span id="3416">3416</span>
+<span id="3417">3417</span>
+<span id="3418">3418</span>
+<span id="3419">3419</span>
+<span id="3420">3420</span>
+<span id="3421">3421</span>
+<span id="3422">3422</span>
+<span id="3423">3423</span>
+<span id="3424">3424</span>
+<span id="3425">3425</span>
+<span id="3426">3426</span>
+<span id="3427">3427</span>
+<span id="3428">3428</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -3448,8 +3461,8 @@
 	<span class="ident">v2::SessionInfo</span>,
 };
 <span class="kw">use</span> <span class="ident">runtime_common</span>::{
-	<span class="ident">auctions</span>, <span class="ident">claims</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::DealWithFees</span>, <span class="ident">paras_registrar</span>, <span class="ident">slots</span>, <span class="ident">BlockHashCount</span>,
-	<span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">CurrencyToVote</span>, <span class="ident">OffchainSolutionLengthLimit</span>,
+	<span class="ident">auctions</span>, <span class="ident">claims</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::DealWithFees</span>, <span class="ident">paras_registrar</span>, <span class="ident">prod_or_fast</span>, <span class="ident">slots</span>,
+	<span class="ident">BlockHashCount</span>, <span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">CurrencyToVote</span>, <span class="ident">OffchainSolutionLengthLimit</span>,
 	<span class="ident">OffchainSolutionWeightLimit</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_core::u32_trait</span>::{<span class="ident">_1</span>, <span class="ident">_2</span>, <span class="ident">_3</span>, <span class="ident">_5</span>};
@@ -3664,9 +3677,13 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EpochDuration</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="kw">as</span> <span class="ident">u64</span>;
+	<span class="kw">pub</span> <span class="ident">EpochDuration</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(
+		<span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="kw">as</span> <span class="ident">u64</span>,
+		<span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span> <span class="kw">as</span> <span class="ident">u64</span>,
+		<span class="string">&quot;KSM_EPOCH_DURATION&quot;</span>
+	);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ExpectedBlockTime</span>: <span class="ident">Moment</span> <span class="op">=</span> <span class="ident">MILLISECS_PER_BLOCK</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ReportLongevity</span>: <span class="ident">u64</span> <span class="op">=</span>
+	<span class="kw">pub</span> <span class="ident">ReportLongevity</span>: <span class="ident">u64</span> <span class="op">=</span>
 		<span class="ident">BondingDuration::get</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="ident">SessionsPerEra::get</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="ident">EpochDuration::get</span>();
 }
 
@@ -3800,8 +3817,17 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// phase durations. 1/4 of the last session for each.</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UnsignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>;
+	<span class="comment">// in testing: 1min or half of the session for each</span>
+	<span class="kw">pub</span> <span class="ident">SignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(
+		<span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>,
+		(<span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>).<span class="ident">min</span>(<span class="ident">EpochDuration::get</span>().<span class="ident">saturated_into</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">2</span>),
+		<span class="string">&quot;KSM_SIGNED_PHASE&quot;</span>
+	);
+	<span class="kw">pub</span> <span class="ident">UnsignedPhase</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(
+		<span class="ident">EPOCH_DURATION_IN_SLOTS</span> <span class="op">/</span> <span class="number">4</span>,
+		(<span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>).<span class="ident">min</span>(<span class="ident">EpochDuration::get</span>().<span class="ident">saturated_into</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">2</span>),
+		<span class="string">&quot;KSM_UNSIGNED_PHASE&quot;</span>
+	);
 
 	<span class="comment">// signed config</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SignedMaxSubmissions</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">16</span>;
@@ -3987,12 +4013,12 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LaunchPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FastTrackVotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">3</span> <span class="op">*</span> <span class="ident">HOURS</span>;
+	<span class="kw">pub</span> <span class="ident">LaunchPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span>, <span class="string">&quot;KSM_LAUNCH_PERIOD&quot;</span>);
+	<span class="kw">pub</span> <span class="ident">VotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;KSM_VOTING_PERIOD&quot;</span>);
+	<span class="kw">pub</span> <span class="ident">FastTrackVotingPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">3</span> <span class="op">*</span> <span class="ident">HOURS</span>, <span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;KSM_FAST_TRACK_VOTING_PERIOD&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MinimumDeposit</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="ident">CENTS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EnactmentPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">8</span> <span class="op">*</span> <span class="ident">DAYS</span>;
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CooloffPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">EnactmentPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">8</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span>, <span class="string">&quot;KSM_ENACTMENT_PERIOD&quot;</span>);
+	<span class="kw">pub</span> <span class="ident">CooloffPeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">7</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">1</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;KSM_COOLOFF_PERIOD&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">InstantAllowed</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">true</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxVotes</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxProposals</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
@@ -4052,7 +4078,7 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CouncilMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">3</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">CouncilMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">3</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;KSM_MOTION_DURATION&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CouncilMaxProposals</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CouncilMaxMembers</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 }
@@ -4076,7 +4102,7 @@
 	<span class="comment">// additional data per vote is 32 bytes (account id).</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VotingBondFactor</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">deposit</span>(<span class="number">0</span>, <span class="number">32</span>);
 	<span class="doccomment">/// Daily council elections</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TermDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">24</span> <span class="op">*</span> <span class="ident">HOURS</span>;
+	<span class="kw">pub</span> <span class="ident">TermDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">24</span> <span class="op">*</span> <span class="ident">HOURS</span>, <span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;KSM_TERM_DURATION&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DesiredMembers</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">19</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DesiredRunnersUp</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">19</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PhragmenElectionPalletId</span>: <span class="ident">LockIdentifier</span> <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;phrelect&quot;</span>;
@@ -4104,7 +4130,7 @@
 }
 
 <span class="macro">parameter_types!</span> {
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TechnicalMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">3</span> <span class="op">*</span> <span class="ident">DAYS</span>;
+	<span class="kw">pub</span> <span class="ident">TechnicalMotionDuration</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">3</span> <span class="op">*</span> <span class="ident">DAYS</span>, <span class="number">2</span> <span class="op">*</span> <span class="ident">MINUTES</span>, <span class="string">&quot;KSM_MOTION_DURATION&quot;</span>);
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TechnicalMaxProposals</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TechnicalMaxMembers</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
 }
@@ -4667,7 +4693,7 @@
 
 <span class="macro">parameter_types!</span> {
 	<span class="comment">// 6 weeks</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">LeasePeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">6</span> <span class="op">*</span> <span class="ident">WEEKS</span>;
+	<span class="kw">pub</span> <span class="ident">LeasePeriod</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="macro">prod_or_fast!</span>(<span class="number">6</span> <span class="op">*</span> <span class="ident">WEEKS</span>, <span class="number">6</span> <span class="op">*</span> <span class="ident">WEEKS</span>, <span class="string">&quot;KSM_LEASE_PERIOD&quot;</span>);
 }
 
 <span class="kw">impl</span> <span class="ident">slots::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
