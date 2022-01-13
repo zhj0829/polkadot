@@ -498,6 +498,68 @@
 <span id="498">498</span>
 <span id="499">499</span>
 <span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -549,13 +611,17 @@
 		<span class="ident">RuntimeApiRequest</span>,
 	},
 	<span class="ident">overseer</span>, <span class="ident">ActiveLeavesUpdate</span>, <span class="ident">FromOverseer</span>, <span class="ident">OverseerSignal</span>, <span class="ident">SpawnedSubsystem</span>, <span class="ident">SubsystemContext</span>,
-	<span class="ident">SubsystemError</span>,
+	<span class="ident">SubsystemError</span>, <span class="ident">SubsystemSender</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util</span> <span class="kw">as</span> <span class="ident">util</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">AuthorityDiscoveryId</span>, <span class="ident">Hash</span>, <span class="ident">SessionIndex</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
+
+<span class="kw">mod</span> <span class="ident">metrics</span>;
+
+<span class="kw">use</span> <span class="ident">metrics::Metrics</span>;
 
 <span class="kw">const</span> <span class="ident">LOG_TARGET</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;parachain::gossip-support&quot;</span>;
 <span class="comment">// How much time should we wait to reissue a connection request</span>
@@ -604,6 +670,9 @@
 	<span class="ident">connected_authorities_by_peer_id</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PeerId</span>, <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Authority discovery service.</span>
 	<span class="ident">authority_discovery</span>: <span class="ident">AD</span>,
+
+	<span class="doccomment">/// Subsystem metrics.</span>
+	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">AD</span><span class="op">&gt;</span> <span class="ident">GossipSupport</span><span class="op">&lt;</span><span class="ident">AD</span><span class="op">&gt;</span>
@@ -611,7 +680,11 @@
 	<span class="ident">AD</span>: <span class="ident">AuthorityDiscovery</span>,
 {
 	<span class="doccomment">/// Create a new instance of the [`GossipSupport`] subsystem.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>, <span class="ident">authority_discovery</span>: <span class="ident">AD</span>) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>, <span class="ident">authority_discovery</span>: <span class="ident">AD</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) -&gt; <span class="self">Self</span> {
+		<span class="comment">// Initialize metrics to `0`.</span>
+		<span class="ident">metrics</span>.<span class="ident">on_is_not_authority</span>();
+		<span class="ident">metrics</span>.<span class="ident">on_is_not_parachain_validator</span>();
+
 		<span class="self">Self</span> {
 			<span class="ident">keystore</span>,
 			<span class="ident">last_session_index</span>: <span class="prelude-val">None</span>,
@@ -621,6 +694,7 @@
 			<span class="ident">connected_authorities</span>: <span class="ident">HashMap::new</span>(),
 			<span class="ident">connected_authorities_by_peer_id</span>: <span class="ident">HashMap::new</span>(),
 			<span class="ident">authority_discovery</span>,
+			<span class="ident">metrics</span>,
 		}
 	}
 
@@ -723,10 +797,60 @@
 
 				<span class="kw">if</span> <span class="ident">is_new_session</span> {
 					<span class="ident">update_gossip_topology</span>(<span class="ident">ctx</span>, <span class="ident">our_index</span>, <span class="ident">all_authorities</span>, <span class="ident">relay_parent</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+					<span class="self">self</span>.<span class="ident">update_authority_status_metrics</span>(<span class="ident">leaf</span>, <span class="ident">ctx</span>.<span class="ident">sender</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
 				}
 			}
 		}
+		<span class="prelude-val">Ok</span>(())
+	}
 
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_authority_status_metrics</span>(
+		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+		<span class="ident">leaf</span>: <span class="ident">Hash</span>,
+		<span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">impl</span> <span class="ident">SubsystemSender</span>,
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">util::Error</span><span class="op">&gt;</span> {
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">session_info</span>) <span class="op">=</span> <span class="ident">util::request_session_info</span>(
+			<span class="ident">leaf</span>,
+			<span class="self">self</span>.<span class="ident">last_session_index</span>
+				.<span class="ident">expect</span>(<span class="string">&quot;Last session index is always set on every session index change&quot;</span>),
+			<span class="ident">sender</span>,
+		)
+		.<span class="kw">await</span>
+		.<span class="kw">await</span><span class="question-mark">?</span><span class="question-mark">?</span>
+		{
+			<span class="kw">let</span> <span class="ident">maybe_index</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ensure_i_am_an_authority</span>(
+				<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">keystore</span>,
+				<span class="kw-2">&amp;</span><span class="ident">session_info</span>.<span class="ident">discovery_keys</span>,
+			)
+			.<span class="kw">await</span>
+			{
+				<span class="prelude-val">Ok</span>(<span class="ident">index</span>) =&gt; {
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_is_authority</span>();
+					<span class="prelude-val">Some</span>(<span class="ident">index</span>)
+				},
+				<span class="prelude-val">Err</span>(<span class="ident">util::Error::NotAValidator</span>) =&gt; {
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_is_not_authority</span>();
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_is_not_parachain_validator</span>();
+					<span class="prelude-val">None</span>
+				},
+				<span class="comment">// Don&#39;t update on runtime errors.</span>
+				<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+			};
+
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">validator_index</span>) <span class="op">=</span> <span class="ident">maybe_index</span> {
+				<span class="comment">// The subset of authorities participating in parachain consensus.</span>
+				<span class="kw">let</span> <span class="ident">parachain_validators_this_session</span> <span class="op">=</span> <span class="ident">session_info</span>.<span class="ident">validators</span>;
+
+				<span class="comment">// First `maxValidators` entries are the parachain validators. We&#39;ll check</span>
+				<span class="comment">// if our index is in this set to avoid searching for the keys.</span>
+				<span class="comment">// https://github.com/paritytech/polkadot/blob/a52dca2be7840b23c19c153cf7e110b1e3e475f8/runtime/parachains/src/configuration.rs#L148</span>
+				<span class="kw">if</span> <span class="ident">validator_index</span> <span class="op">&lt;</span> <span class="ident">parachain_validators_this_session</span>.<span class="ident">len</span>() {
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_is_parachain_validator</span>();
+				} <span class="kw">else</span> {
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_is_not_parachain_validator</span>();
+				}
+			}
+		}
 		<span class="prelude-val">Ok</span>(())
 	}
 
