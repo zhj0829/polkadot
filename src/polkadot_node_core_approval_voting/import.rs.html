@@ -1312,6 +1312,8 @@
 <span id="1312">1312</span>
 <span id="1313">1313</span>
 <span id="1314">1314</span>
+<span id="1315">1315</span>
+<span id="1316">1316</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1617,7 +1619,7 @@
 	<span class="ident">head</span>: <span class="ident">Hash</span>,
 	<span class="ident">finalized_number</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span>,
 ) -&gt; <span class="ident">SubsystemResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BlockImportedCandidates</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-	<span class="comment">// Update session info based on most recent head.</span>
+	<span class="kw">const</span> <span class="ident">MAX_HEADS_LOOK_BACK</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">500</span>;
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">jaeger::Span::new</span>(<span class="ident">head</span>, <span class="string">&quot;approval-checking-import&quot;</span>);
 
@@ -1643,6 +1645,7 @@
 		}
 	};
 
+	<span class="comment">// Update session info based on most recent head.</span>
 	<span class="kw">match</span> <span class="ident">state</span>.<span class="ident">cache_session_info_for_head</span>(<span class="ident">ctx</span>, <span class="ident">head</span>).<span class="kw">await</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
 			<span class="macro">tracing::debug!</span>(
@@ -1664,9 +1667,10 @@
 		<span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {},
 	}
 
-	<span class="comment">// If we&#39;ve just started the node and haven&#39;t yet received any finality notifications,</span>
-	<span class="comment">// we don&#39;t do any look-back. Approval voting is only for nodes were already online.</span>
-	<span class="kw">let</span> <span class="ident">lower_bound_number</span> <span class="op">=</span> <span class="ident">finalized_number</span>.<span class="ident">unwrap_or</span>(<span class="ident">header</span>.<span class="ident">number</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>));
+	<span class="comment">// If we&#39;ve just started the node and are far behind,</span>
+	<span class="comment">// import at most `MAX_HEADS_LOOK_BACK` blocks.</span>
+	<span class="kw">let</span> <span class="ident">lower_bound_number</span> <span class="op">=</span> <span class="ident">header</span>.<span class="ident">number</span>.<span class="ident">saturating_sub</span>(<span class="ident">MAX_HEADS_LOOK_BACK</span>);
+	<span class="kw">let</span> <span class="ident">lower_bound_number</span> <span class="op">=</span> <span class="ident">finalized_number</span>.<span class="ident">unwrap_or</span>(<span class="ident">lower_bound_number</span>).<span class="ident">max</span>(<span class="ident">lower_bound_number</span>);
 
 	<span class="kw">let</span> <span class="ident">new_blocks</span> <span class="op">=</span> <span class="ident">determine_new_blocks</span>(
 		<span class="ident">ctx</span>.<span class="ident">sender</span>(),
