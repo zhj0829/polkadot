@@ -632,8 +632,8 @@
 	<span class="ident">RuntimeApiUnavailable</span>(<span class="ident">oneshot::Canceled</span>),
 	<span class="doccomment">/// The runtime API itself returned an error.</span>
 	<span class="ident">RuntimeApi</span>(<span class="ident">RuntimeApiError</span>),
-	<span class="doccomment">/// Missing session info from runtime API.</span>
-	<span class="ident">Missing</span>,
+	<span class="doccomment">/// Missing session info from runtime API for given `SessionIndex`.</span>
+	<span class="ident">Missing</span>(<span class="ident">SessionIndex</span>),
 }
 
 <span class="doccomment">/// Information about the sessions being fetched.</span>
@@ -849,7 +849,7 @@
 
 		<span class="kw">let</span> <span class="ident">session_info</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rx</span>.<span class="kw">await</span> {
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">s</span>))) =&gt; <span class="ident">s</span>,
-			<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SessionsUnavailableKind::Missing</span>),
+			<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SessionsUnavailableKind::Missing</span>(<span class="ident">i</span>)),
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SessionsUnavailableKind::RuntimeApi</span>(<span class="ident">e</span>)),
 			<span class="prelude-val">Err</span>(<span class="ident">canceled</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SessionsUnavailableKind::RuntimeApiUnavailable</span>(<span class="ident">canceled</span>)),
 		};
