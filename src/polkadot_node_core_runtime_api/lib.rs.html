@@ -556,6 +556,15 @@
 <span id="556">556</span>
 <span id="557">557</span>
 <span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -705,7 +714,9 @@
 			<span class="ident">CandidateEvents</span>(<span class="ident">relay_parent</span>, <span class="ident">events</span>) =&gt;
 				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_candidate_events</span>(<span class="ident">relay_parent</span>, <span class="ident">events</span>),
 			<span class="ident">SessionInfo</span>(<span class="ident">_relay_parent</span>, <span class="ident">session_index</span>, <span class="ident">info</span>) =&gt;
-				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_session_info</span>(<span class="ident">session_index</span>, <span class="ident">info</span>),
+				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">info</span>) <span class="op">=</span> <span class="ident">info</span> {
+					<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_session_info</span>(<span class="ident">session_index</span>, <span class="ident">info</span>);
+				},
 			<span class="ident">DmqContents</span>(<span class="ident">relay_parent</span>, <span class="ident">para_id</span>, <span class="ident">messages</span>) =&gt;
 				<span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">cache_dmq_contents</span>((<span class="ident">relay_parent</span>, <span class="ident">para_id</span>), <span class="ident">messages</span>),
 			<span class="ident">InboundHrmpChannelsContents</span>(<span class="ident">relay_parent</span>, <span class="ident">para_id</span>, <span class="ident">contents</span>) =&gt; <span class="self">self</span>
@@ -793,8 +804,15 @@
 					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::CandidatePendingAvailability</span>(<span class="ident">para</span>, <span class="ident">sender</span>)),
 			<span class="ident">Request::CandidateEvents</span>(<span class="ident">sender</span>) =&gt;
 				<span class="macro">query!</span>(<span class="ident">candidate_events</span>(), <span class="ident">sender</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::CandidateEvents</span>(<span class="ident">sender</span>)),
-			<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>) =&gt; <span class="macro">query!</span>(<span class="ident">session_info</span>(<span class="ident">index</span>), <span class="ident">sender</span>)
-				.<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>)),
+			<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>) =&gt; {
+				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">info</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">requests_cache</span>.<span class="ident">session_info</span>(<span class="ident">index</span>) {
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_cached_request</span>();
+					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">send</span>(<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">info</span>.<span class="ident">clone</span>())));
+					<span class="prelude-val">None</span>
+				} <span class="kw">else</span> {
+					<span class="prelude-val">Some</span>(<span class="ident">Request::SessionInfo</span>(<span class="ident">index</span>, <span class="ident">sender</span>))
+				}
+			},
 			<span class="ident">Request::DmqContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) =&gt;
 				<span class="macro">query!</span>(<span class="ident">dmq_contents</span>(<span class="ident">id</span>), <span class="ident">sender</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">sender</span><span class="op">|</span> <span class="ident">Request::DmqContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>)),
 			<span class="ident">Request::InboundHrmpChannelsContents</span>(<span class="ident">id</span>, <span class="ident">sender</span>) =&gt;
