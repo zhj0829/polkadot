@@ -1978,6 +1978,21 @@
 <span id="1978">1978</span>
 <span id="1979">1979</span>
 <span id="1980">1980</span>
+<span id="1981">1981</span>
+<span id="1982">1982</span>
+<span id="1983">1983</span>
+<span id="1984">1984</span>
+<span id="1985">1985</span>
+<span id="1986">1986</span>
+<span id="1987">1987</span>
+<span id="1988">1988</span>
+<span id="1989">1989</span>
+<span id="1990">1990</span>
+<span id="1991">1991</span>
+<span id="1992">1992</span>
+<span id="1993">1993</span>
+<span id="1994">1994</span>
+<span id="1995">1995</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2492,6 +2507,9 @@
 		<span class="ident">PvfCheckDoubleVote</span>,
 		<span class="doccomment">/// The given PVF does not exist at the moment of process a vote.</span>
 		<span class="ident">PvfCheckSubjectInvalid</span>,
+		<span class="doccomment">/// The PVF pre-checking statement cannot be included since the PVF pre-checking mechanism</span>
+		<span class="doccomment">/// is disabled.</span>
+		<span class="ident">PvfCheckDisabled</span>,
 	}
 
 	<span class="doccomment">/// All currently active PVF pre-checking votes.</span>
@@ -2855,6 +2873,13 @@
 			<span class="ident">signature</span>: <span class="ident">ValidatorSignature</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_none</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
+
+			<span class="comment">// Make sure that PVF pre-checking is enabled.</span>
+			<span class="macro">ensure!</span>(
+				<span class="ident">configuration::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::config</span>().<span class="ident">pvf_checking_enabled</span>,
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::PvfCheckDisabled</span>,
+			);
+
 			<span class="kw">let</span> <span class="ident">validators</span> <span class="op">=</span> <span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::active_validator_keys</span>();
 			<span class="kw">let</span> <span class="ident">current_session</span> <span class="op">=</span> <span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::session_index</span>();
 			<span class="kw">if</span> <span class="ident">stmt</span>.<span class="ident">session_index</span> <span class="op">&lt;</span> <span class="ident">current_session</span> {
@@ -2937,6 +2962,10 @@
 				<span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="ident">InvalidTransaction::Call</span>.<span class="ident">into</span>(),
 			};
 
+			<span class="kw">if</span> <span class="op">!</span><span class="ident">configuration::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::config</span>().<span class="ident">pvf_checking_enabled</span> {
+				<span class="kw">return</span> <span class="ident">InvalidTransaction::Custom</span>(<span class="ident">INVALID_TX_PVF_CHECK_DISABLED</span>).<span class="ident">into</span>()
+			}
+
 			<span class="kw">let</span> <span class="ident">current_session</span> <span class="op">=</span> <span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::session_index</span>();
 			<span class="kw">if</span> <span class="ident">stmt</span>.<span class="ident">session_index</span> <span class="op">&lt;</span> <span class="ident">current_session</span> {
 				<span class="kw">return</span> <span class="ident">InvalidTransaction::Stale</span>.<span class="ident">into</span>()
@@ -2997,6 +3026,7 @@
 <span class="kw">const</span> <span class="ident">INVALID_TX_BAD_VALIDATOR_IDX</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">1</span>;
 <span class="kw">const</span> <span class="ident">INVALID_TX_BAD_SUBJECT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">2</span>;
 <span class="kw">const</span> <span class="ident">INVALID_TX_DOUBLE_VOTE</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">3</span>;
+<span class="kw">const</span> <span class="ident">INVALID_TX_PVF_CHECK_DISABLED</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">4</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Called by the initializer to initialize the paras pallet.</span>
