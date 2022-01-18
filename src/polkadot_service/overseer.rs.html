@@ -343,6 +343,10 @@
 <span id="343">343</span>
 <span id="344">344</span>
 <span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -558,7 +562,11 @@
 			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>, <span class="comment">// candidate-validation metrics</span>
 			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>, <span class="comment">// validation host metrics</span>
 		))
-		.<span class="ident">pvf_checker</span>(<span class="ident">PvfCheckerSubsystem::new</span>(<span class="ident">pvf_checker_enabled</span>, <span class="ident">keystore</span>.<span class="ident">clone</span>()))
+		.<span class="ident">pvf_checker</span>(<span class="ident">PvfCheckerSubsystem::new</span>(
+			<span class="ident">pvf_checker_enabled</span>,
+			<span class="ident">keystore</span>.<span class="ident">clone</span>(),
+			<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>,
+		))
 		.<span class="ident">chain_api</span>(<span class="ident">ChainApiSubsystem::new</span>(<span class="ident">runtime_client</span>.<span class="ident">clone</span>(), <span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>))
 		.<span class="ident">collation_generation</span>(<span class="ident">CollationGenerationSubsystem::new</span>(<span class="ident">Metrics::register</span>(<span class="ident">registry</span>)<span class="question-mark">?</span>))
 		.<span class="ident">collator_protocol</span>({
