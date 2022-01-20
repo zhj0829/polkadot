@@ -643,6 +643,8 @@
 <span id="643">643</span>
 <span id="644">644</span>
 <span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -964,10 +966,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
 <span class="kw">struct</span> <span class="ident">EmergencySolutionConfig</span> {
 	<span class="doccomment">/// The block hash at which scraping happens. If none is provided, the latest head is used.</span>
+	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
 	<span class="ident">at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// The solver algorithm to use.</span>
+	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">solver</span>: <span class="ident">Solvers</span>,
 

@@ -1043,6 +1043,17 @@
 <span id="1043">1043</span>
 <span id="1044">1044</span>
 <span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1066,10 +1077,8 @@
 <span class="doccomment">//! to included.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">configuration</span>, <span class="ident">disputes</span>, <span class="ident">dmp</span>, <span class="ident">hrmp</span>, <span class="ident">paras</span>,
-	<span class="ident">paras_inherent</span>::{<span class="ident">sanitize_bitfields</span>, <span class="ident">DisputedBitfield</span>},
-	<span class="ident">scheduler::CoreAssignment</span>,
-	<span class="ident">shared</span>, <span class="ident">ump</span>,
+	<span class="ident">configuration</span>, <span class="ident">disputes</span>, <span class="ident">dmp</span>, <span class="ident">hrmp</span>, <span class="ident">paras</span>, <span class="ident">paras_inherent::DisputedBitfield</span>,
+	<span class="ident">scheduler::CoreAssignment</span>, <span class="ident">shared</span>, <span class="ident">ump</span>,
 };
 <span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>, <span class="ident">vec::BitVec</span>};
 <span class="kw">use</span> <span class="ident">frame_support::pallet_prelude</span>::<span class="kw-2">*</span>;
@@ -1103,7 +1112,7 @@
 
 <span class="doccomment">/// Determines if all checks should be applied or if a subset was already completed</span>
 <span class="doccomment">/// in a code path that will be executed afterwards or was already executed before.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">FullCheck</span> {
 	<span class="doccomment">/// Yes, do a full check, skip nothing.</span>
 	<span class="ident">Yes</span>,
@@ -1259,8 +1268,18 @@
 
 	<span class="attribute">#[<span class="ident">pallet::error</span>]</span>
 	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+		<span class="doccomment">/// Validator indices are out of order or contains duplicates.</span>
+		<span class="ident">UnsortedOrDuplicateValidatorIndices</span>,
+		<span class="doccomment">/// Dispute statement sets are out of order or contain duplicates.</span>
+		<span class="ident">UnsortedOrDuplicateDisputeStatementSet</span>,
+		<span class="doccomment">/// Backed candidates are out of order (core index) or contain duplicates.</span>
+		<span class="ident">UnsortedOrDuplicateBackedCandidates</span>,
+		<span class="doccomment">/// A different relay parent was provided compared to the on-chain stored one.</span>
+		<span class="ident">UnexpectedRelayParent</span>,
 		<span class="doccomment">/// Availability bitfield has unexpected size.</span>
 		<span class="ident">WrongBitfieldSize</span>,
+		<span class="doccomment">/// Bitfield consists of zeros only.</span>
+		<span class="ident">BitfieldAllZeros</span>,
 		<span class="doccomment">/// Multiple bitfields submitted by same validator or validators out of order by index.</span>
 		<span class="ident">BitfieldDuplicateOrUnordered</span>,
 		<span class="doccomment">/// Validator index out of bounds.</span>
@@ -1356,11 +1375,12 @@
 	<span class="doccomment">/// Extract the freed cores based on cores that became available.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Updates storage items `PendingAvailability` and `AvailabilityBitfields`.</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">update_pending_availability_and_get_freed_cores</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="kw">const</span> <span class="ident">ON_CHAIN_USE</span>: <span class="ident">bool</span><span class="op">&gt;</span>(
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">update_pending_availability_and_get_freed_cores</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
 		<span class="ident">expected_bits</span>: <span class="ident">usize</span>,
 		<span class="ident">validators</span>: <span class="kw-2">&amp;</span>[<span class="ident">ValidatorId</span>],
 		<span class="ident">signed_bitfields</span>: <span class="ident">UncheckedSignedAvailabilityBitfields</span>,
 		<span class="ident">core_lookup</span>: <span class="ident">F</span>,
+		<span class="ident">enact_candidate</span>: <span class="ident">bool</span>,
 	) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">CoreIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">CoreIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>,
@@ -1432,7 +1452,7 @@
 					},
 				};
 
-				<span class="kw">if</span> <span class="ident">ON_CHAIN_USE</span> {
+				<span class="kw">if</span> <span class="ident">enact_candidate</span> {
 					<span class="kw">let</span> <span class="ident">receipt</span> <span class="op">=</span> <span class="ident">CommittedCandidateReceipt</span> {
 						<span class="ident">descriptor</span>: <span class="ident">pending_availability</span>.<span class="ident">descriptor</span>,
 						<span class="ident">commitments</span>,
@@ -1465,29 +1485,31 @@
 		<span class="ident">signed_bitfields</span>: <span class="ident">UncheckedSignedAvailabilityBitfields</span>,
 		<span class="ident">disputed_bitfield</span>: <span class="ident">DisputedBitfield</span>,
 		<span class="ident">core_lookup</span>: <span class="kw">impl</span> <span class="ident">Fn</span>(<span class="ident">CoreIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>,
-	) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">CoreIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span> {
+		<span class="ident">full_check</span>: <span class="ident">FullCheck</span>,
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">CoreIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span>, <span class="ident"><span class="kw">crate</span>::inclusion::Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">validators</span> <span class="op">=</span> <span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::active_validator_keys</span>();
 		<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span> <span class="ident">shared::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::session_index</span>();
 		<span class="kw">let</span> <span class="ident">parent_hash</span> <span class="op">=</span> <span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::parent_hash</span>();
 
-		<span class="kw">let</span> <span class="ident">checked_bitfields</span> <span class="op">=</span> <span class="ident">sanitize_bitfields</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
+		<span class="kw">let</span> <span class="ident">checked_bitfields</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::paras_inherent::assure_sanity_bitfields</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
 			<span class="ident">signed_bitfields</span>,
 			<span class="ident">disputed_bitfield</span>,
 			<span class="ident">expected_bits</span>,
 			<span class="ident">parent_hash</span>,
 			<span class="ident">session_index</span>,
 			<span class="kw-2">&amp;</span><span class="ident">validators</span>[..],
-			<span class="ident">FullCheck::Yes</span>,
-		);
+			<span class="ident">full_check</span>,
+		)<span class="question-mark">?</span>;
 
-		<span class="kw">let</span> <span class="ident">freed_cores</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::update_pending_availability_and_get_freed_cores</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="bool-val">true</span><span class="op">&gt;</span>(
+		<span class="kw">let</span> <span class="ident">freed_cores</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::update_pending_availability_and_get_freed_cores</span>::<span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>(
 			<span class="ident">expected_bits</span>,
 			<span class="kw-2">&amp;</span><span class="ident">validators</span>[..],
 			<span class="ident">checked_bitfields</span>,
 			<span class="ident">core_lookup</span>,
+			<span class="bool-val">true</span>,
 		);
 
-		<span class="ident">freed_cores</span>
+		<span class="prelude-val">Ok</span>(<span class="ident">freed_cores</span>)
 	}
 
 	<span class="doccomment">/// Process candidates that have been backed. Provide the relay storage root, a set of candidates</span>
