@@ -171,6 +171,8 @@
 <span id="171">171</span>
 <span id="172">172</span>
 <span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -225,9 +227,11 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// use frame_support::parameter_types;</span>
+<span class="doccomment">/// use parity_scale_codec::Decode;</span>
+<span class="doccomment">/// use frame_support::{parameter_types, PalletId};</span>
+<span class="doccomment">/// use sp_runtime::traits::{AccountIdConversion, TrailingZeroInput};</span>
 <span class="doccomment">/// use xcm::latest::prelude::*;</span>
-<span class="doccomment">/// use xcm_builder::{ParentIsDefault, CurrencyAdapter, IsConcrete};</span>
+<span class="doccomment">/// use xcm_builder::{ParentIsPreset, CurrencyAdapter, IsConcrete};</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// /// Our chain&#39;s account id.</span>
 <span class="doccomment">/// type AccountId = sp_runtime::AccountId32;</span>
@@ -235,12 +239,12 @@
 <span class="doccomment">/// /// Our relay chain&#39;s location.</span>
 <span class="doccomment">/// parameter_types! {</span>
 <span class="doccomment">///     pub RelayChain: MultiLocation = Parent.into();</span>
-<span class="doccomment">///     pub CheckingAccount: AccountId = Default::default();</span>
+<span class="doccomment">///     pub CheckingAccount: AccountId = PalletId(*b&quot;checking&quot;).into_account();</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// /// Some items that implement `Convert&lt;MultiLocation, AccountId&gt;`. Can be more, but for now we just assume we accept</span>
 <span class="doccomment">/// /// messages from the parent (relay chain).</span>
-<span class="doccomment">/// pub type LocationConvertor = (ParentIsDefault&lt;RelayChain&gt;);</span>
+<span class="doccomment">/// pub type LocationConverter = (ParentIsPreset&lt;AccountId&gt;);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// /// Final currency adapter. This can be used in `xcm::Config` to specify how asset related transactions happen.</span>
 <span class="doccomment">/// pub type AssetTransactor = CurrencyAdapter&lt;</span>
@@ -248,8 +252,8 @@
 <span class="doccomment">///     u128,</span>
 <span class="doccomment">///     // The matcher: use the currency when the asset is a concrete asset in our relay chain.</span>
 <span class="doccomment">///     IsConcrete&lt;RelayChain&gt;,</span>
-<span class="doccomment">///     // The local convertor: default account of the parent relay chain.</span>
-<span class="doccomment">///     LocationConvertor,</span>
+<span class="doccomment">///     // The local converter: default account of the parent relay chain.</span>
+<span class="doccomment">///     LocationConverter,</span>
 <span class="doccomment">///     // Our chain&#39;s account ID type.</span>
 <span class="doccomment">///     AccountId,</span>
 <span class="doccomment">///     // The checking account. Can be any deterministic inaccessible account.</span>
