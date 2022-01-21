@@ -433,6 +433,8 @@
 <span id="433">433</span>
 <span id="434">434</span>
 <span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -844,11 +846,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-	<span class="kw">use</span> <span class="ident">sp_runtime::codec::Encode</span>;
+	<span class="kw">use</span> <span class="ident">parity_scale_codec::Decode</span>;
+	<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">codec::Encode</span>, <span class="ident">traits::TrailingZeroInput</span>};
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">maximal_encoded_account_id_size_is_correct</span>() {
-		<span class="kw">let</span> <span class="ident">actual_size</span> <span class="op">=</span> <span class="ident">AccountId::default</span>().<span class="ident">encode</span>().<span class="ident">len</span>();
+		<span class="kw">let</span> <span class="ident">actual_size</span> <span class="op">=</span>
+			<span class="ident">AccountId::decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TrailingZeroInput::new</span>(<span class="kw-2">&amp;</span>[])).<span class="ident">unwrap</span>().<span class="ident">encode</span>().<span class="ident">len</span>();
 		<span class="macro">assert!</span>(
 			<span class="ident">actual_size</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">MAXIMAL_ENCODED_ACCOUNT_ID_SIZE</span> <span class="kw">as</span> <span class="ident">usize</span>,
 			<span class="string">&quot;Actual size of encoded account id for Polkadot-like chains ({}) is larger than expected {}&quot;</span>,

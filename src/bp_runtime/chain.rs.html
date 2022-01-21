@@ -145,11 +145,6 @@
 <span id="145">145</span>
 <span id="146">146</span>
 <span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
-<span id="150">150</span>
-<span id="151">151</span>
-<span id="152">152</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -234,13 +229,8 @@
 		<span class="op">+</span> <span class="ident">MaybeSerializeDeserialize</span>;
 
 	<span class="doccomment">/// The user account identifier type for the runtime.</span>
-	<span class="kw">type</span> <span class="ident">AccountId</span>: <span class="ident">Parameter</span>
-		<span class="op">+</span> <span class="ident">Member</span>
-		<span class="op">+</span> <span class="ident">MaybeSerializeDeserialize</span>
-		<span class="op">+</span> <span class="ident">Debug</span>
-		<span class="op">+</span> <span class="ident">MaybeDisplay</span>
-		<span class="op">+</span> <span class="ident">Ord</span>
-		<span class="op">+</span> <span class="ident">Default</span>;
+	<span class="kw">type</span> <span class="ident">AccountId</span>: <span class="ident">Parameter</span> <span class="op">+</span> <span class="ident">Member</span> <span class="op">+</span> <span class="ident">MaybeSerializeDeserialize</span> <span class="op">+</span> <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">MaybeDisplay</span> <span class="op">+</span> <span class="ident">Ord</span>;
+
 	<span class="doccomment">/// Balance of an account in native tokens.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// The chain may support multiple tokens, but this particular type is for token that is used</span>
