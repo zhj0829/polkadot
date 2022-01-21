@@ -224,7 +224,7 @@
 
 <span class="doccomment">/// The `ChainSpec` parameterized for polkadot test runtime.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">PolkadotChainSpec</span> <span class="op">=</span>
-	<span class="ident">service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">polkadot_test_runtime::GenesisConfig</span>, <span class="ident">Extensions</span><span class="op">&gt;</span>;
+	<span class="ident">sc_service::GenericChainSpec</span><span class="op">&lt;</span><span class="ident">polkadot_test_runtime::GenesisConfig</span>, <span class="ident">Extensions</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Local testnet config (multivalidator Alice + Bob)</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">polkadot_local_testnet_config</span>() -&gt; <span class="ident">PolkadotChainSpec</span> {
