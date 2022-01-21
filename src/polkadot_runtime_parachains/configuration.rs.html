@@ -1850,6 +1850,19 @@
 <span id="1850">1850</span>
 <span id="1851">1851</span>
 <span id="1852">1852</span>
+<span id="1853">1853</span>
+<span id="1854">1854</span>
+<span id="1855">1855</span>
+<span id="1856">1856</span>
+<span id="1857">1857</span>
+<span id="1858">1858</span>
+<span id="1859">1859</span>
+<span id="1860">1860</span>
+<span id="1861">1861</span>
+<span id="1862">1862</span>
+<span id="1863">1863</span>
+<span id="1864">1864</span>
+<span id="1865">1865</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2171,6 +2184,10 @@
 	},
 	<span class="doccomment">/// `validation_upgrade_delay` is less than or equal 1.</span>
 	<span class="ident">ValidationUpgradeDelayIsTooLow</span> { <span class="ident">validation_upgrade_delay</span>: <span class="ident">BlockNumber</span> },
+	<span class="doccomment">/// Maximum number of HRMP outbound channels exceeded.</span>
+	<span class="ident">MaxHrmpOutboundChannelsExceeded</span>,
+	<span class="doccomment">/// Maximum number of HRMP inbound channels exceeded.</span>
+	<span class="ident">MaxHrmpInboundChannelsExceeded</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span> <span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span>
@@ -2231,6 +2248,15 @@
 			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ValidationUpgradeDelayIsTooLow</span> {
 				<span class="ident">validation_upgrade_delay</span>: <span class="self">self</span>.<span class="ident">validation_upgrade_delay</span>.<span class="ident">clone</span>(),
 			})
+		}
+
+		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">hrmp_max_parachain_outbound_channels</span> <span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::hrmp::HRMP_MAX_OUTBOUND_CHANNELS_BOUND</span>
+		{
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MaxHrmpOutboundChannelsExceeded</span>)
+		}
+
+		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">hrmp_max_parachain_inbound_channels</span> <span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::hrmp::HRMP_MAX_INBOUND_CHANNELS_BOUND</span> {
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">MaxHrmpInboundChannelsExceeded</span>)
 		}
 
 		<span class="prelude-val">Ok</span>(())
@@ -3460,11 +3486,11 @@
 				<span class="ident">hrmp_recipient_deposit</span>: <span class="number">4905</span>,
 				<span class="ident">hrmp_channel_max_capacity</span>: <span class="number">3921</span>,
 				<span class="ident">hrmp_channel_max_total_size</span>: <span class="number">7687</span>,
-				<span class="ident">hrmp_max_parachain_inbound_channels</span>: <span class="number">3722</span>,
-				<span class="ident">hrmp_max_parathread_inbound_channels</span>: <span class="number">1967</span>,
+				<span class="ident">hrmp_max_parachain_inbound_channels</span>: <span class="number">37</span>,
+				<span class="ident">hrmp_max_parathread_inbound_channels</span>: <span class="number">19</span>,
 				<span class="ident">hrmp_channel_max_message_size</span>: <span class="number">8192</span>,
-				<span class="ident">hrmp_max_parachain_outbound_channels</span>: <span class="number">100</span>,
-				<span class="ident">hrmp_max_parathread_outbound_channels</span>: <span class="number">200</span>,
+				<span class="ident">hrmp_max_parachain_outbound_channels</span>: <span class="number">10</span>,
+				<span class="ident">hrmp_max_parathread_outbound_channels</span>: <span class="number">20</span>,
 				<span class="ident">hrmp_max_message_num_per_candidate</span>: <span class="number">20</span>,
 				<span class="ident">ump_max_individual_weight</span>: <span class="number">909</span>,
 				<span class="ident">pvf_checking_enabled</span>: <span class="bool-val">true</span>,

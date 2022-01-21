@@ -2011,6 +2011,129 @@
 <span id="2011">2011</span>
 <span id="2012">2012</span>
 <span id="2013">2013</span>
+<span id="2014">2014</span>
+<span id="2015">2015</span>
+<span id="2016">2016</span>
+<span id="2017">2017</span>
+<span id="2018">2018</span>
+<span id="2019">2019</span>
+<span id="2020">2020</span>
+<span id="2021">2021</span>
+<span id="2022">2022</span>
+<span id="2023">2023</span>
+<span id="2024">2024</span>
+<span id="2025">2025</span>
+<span id="2026">2026</span>
+<span id="2027">2027</span>
+<span id="2028">2028</span>
+<span id="2029">2029</span>
+<span id="2030">2030</span>
+<span id="2031">2031</span>
+<span id="2032">2032</span>
+<span id="2033">2033</span>
+<span id="2034">2034</span>
+<span id="2035">2035</span>
+<span id="2036">2036</span>
+<span id="2037">2037</span>
+<span id="2038">2038</span>
+<span id="2039">2039</span>
+<span id="2040">2040</span>
+<span id="2041">2041</span>
+<span id="2042">2042</span>
+<span id="2043">2043</span>
+<span id="2044">2044</span>
+<span id="2045">2045</span>
+<span id="2046">2046</span>
+<span id="2047">2047</span>
+<span id="2048">2048</span>
+<span id="2049">2049</span>
+<span id="2050">2050</span>
+<span id="2051">2051</span>
+<span id="2052">2052</span>
+<span id="2053">2053</span>
+<span id="2054">2054</span>
+<span id="2055">2055</span>
+<span id="2056">2056</span>
+<span id="2057">2057</span>
+<span id="2058">2058</span>
+<span id="2059">2059</span>
+<span id="2060">2060</span>
+<span id="2061">2061</span>
+<span id="2062">2062</span>
+<span id="2063">2063</span>
+<span id="2064">2064</span>
+<span id="2065">2065</span>
+<span id="2066">2066</span>
+<span id="2067">2067</span>
+<span id="2068">2068</span>
+<span id="2069">2069</span>
+<span id="2070">2070</span>
+<span id="2071">2071</span>
+<span id="2072">2072</span>
+<span id="2073">2073</span>
+<span id="2074">2074</span>
+<span id="2075">2075</span>
+<span id="2076">2076</span>
+<span id="2077">2077</span>
+<span id="2078">2078</span>
+<span id="2079">2079</span>
+<span id="2080">2080</span>
+<span id="2081">2081</span>
+<span id="2082">2082</span>
+<span id="2083">2083</span>
+<span id="2084">2084</span>
+<span id="2085">2085</span>
+<span id="2086">2086</span>
+<span id="2087">2087</span>
+<span id="2088">2088</span>
+<span id="2089">2089</span>
+<span id="2090">2090</span>
+<span id="2091">2091</span>
+<span id="2092">2092</span>
+<span id="2093">2093</span>
+<span id="2094">2094</span>
+<span id="2095">2095</span>
+<span id="2096">2096</span>
+<span id="2097">2097</span>
+<span id="2098">2098</span>
+<span id="2099">2099</span>
+<span id="2100">2100</span>
+<span id="2101">2101</span>
+<span id="2102">2102</span>
+<span id="2103">2103</span>
+<span id="2104">2104</span>
+<span id="2105">2105</span>
+<span id="2106">2106</span>
+<span id="2107">2107</span>
+<span id="2108">2108</span>
+<span id="2109">2109</span>
+<span id="2110">2110</span>
+<span id="2111">2111</span>
+<span id="2112">2112</span>
+<span id="2113">2113</span>
+<span id="2114">2114</span>
+<span id="2115">2115</span>
+<span id="2116">2116</span>
+<span id="2117">2117</span>
+<span id="2118">2118</span>
+<span id="2119">2119</span>
+<span id="2120">2120</span>
+<span id="2121">2121</span>
+<span id="2122">2122</span>
+<span id="2123">2123</span>
+<span id="2124">2124</span>
+<span id="2125">2125</span>
+<span id="2126">2126</span>
+<span id="2127">2127</span>
+<span id="2128">2128</span>
+<span id="2129">2129</span>
+<span id="2130">2130</span>
+<span id="2131">2131</span>
+<span id="2132">2132</span>
+<span id="2133">2133</span>
+<span id="2134">2134</span>
+<span id="2135">2135</span>
+<span id="2136">2136</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2047,6 +2170,58 @@
 };
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
+
+<span class="doccomment">/// Maximum bound that can be set for inbound channels.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If inaccurate, the weighing of this pallet might become inaccurate. It is expected form the</span>
+<span class="doccomment">/// `configurations` pallet to check these values before setting</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HRMP_MAX_INBOUND_CHANNELS_BOUND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">128</span>;
+<span class="doccomment">/// Same as [`HRMP_MAX_INBOUND_CHANNELS_BOUND`], but for outbound channels.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HRMP_MAX_OUTBOUND_CHANNELS_BOUND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">128</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">benchmarking</span>;
+
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WeightInfo</span> {
+	<span class="kw">fn</span> <span class="ident">hrmp_init_open_channel</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">hrmp_accept_open_channel</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">hrmp_close_channel</span>() -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">force_clean_hrmp</span>(<span class="ident">i</span>: <span class="ident">u32</span>, <span class="ident">e</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">force_process_hrmp_open</span>(<span class="ident">c</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">force_process_hrmp_close</span>(<span class="ident">c</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">hrmp_cancel_open_request</span>(<span class="ident">c</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span>;
+	<span class="kw">fn</span> <span class="ident">clean_open_channel_requests</span>(<span class="ident">c</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span>;
+}
+
+<span class="doccomment">/// A weight info that is only suitable for testing.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestWeightInfo</span>;
+
+<span class="kw">impl</span> <span class="ident">WeightInfo</span> <span class="kw">for</span> <span class="ident">TestWeightInfo</span> {
+	<span class="kw">fn</span> <span class="ident">hrmp_accept_open_channel</span>() -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">force_clean_hrmp</span>(<span class="kw">_</span>: <span class="ident">u32</span>, <span class="kw">_</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">force_process_hrmp_close</span>(<span class="kw">_</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">force_process_hrmp_open</span>(<span class="kw">_</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">hrmp_cancel_open_request</span>(<span class="kw">_</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">hrmp_close_channel</span>() -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">hrmp_init_open_channel</span>() -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+	<span class="kw">fn</span> <span class="ident">clean_open_channel_requests</span>(<span class="kw">_</span>: <span class="ident">u32</span>) -&gt; <span class="ident">Weight</span> {
+		<span class="ident">Weight::MAX</span>
+	}
+}
 
 <span class="doccomment">/// A description of a request to open an HRMP channel.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">TypeInfo</span>)]</span>
@@ -2205,10 +2380,13 @@
 
 		<span class="doccomment">/// An interface for reserving deposits for opening channels.</span>
 		<span class="doccomment">///</span>
-		<span class="doccomment">/// NOTE that this Currency instance will be charged with the amounts defined in the `Configuration`</span>
-		<span class="doccomment">/// pallet. Specifically, that means that the `Balance` of the `Currency` implementation should</span>
-		<span class="doccomment">/// be the same as `Balance` as used in the `Configuration`.</span>
+		<span class="doccomment">/// NOTE that this Currency instance will be charged with the amounts defined in the</span>
+		<span class="doccomment">/// `Configuration` pallet. Specifically, that means that the `Balance` of the `Currency`</span>
+		<span class="doccomment">/// implementation should be the same as `Balance` as used in the `Configuration`.</span>
 		<span class="kw">type</span> <span class="ident">Currency</span>: <span class="ident">ReservableCurrency</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::AccountId</span><span class="op">&gt;</span>;
+
+		<span class="doccomment">/// Something that provides the weight of this pallet.</span>
+		<span class="kw">type</span> <span class="ident">WeightInfo</span>: <span class="ident">WeightInfo</span>;
 	}
 
 	<span class="attribute">#[<span class="ident">pallet::event</span>]</span>
@@ -2264,6 +2442,8 @@
 		<span class="ident">OpenHrmpChannelDoesntExist</span>,
 		<span class="doccomment">/// Cannot cancel an HRMP open channel request because it is already confirmed.</span>
 		<span class="ident">OpenHrmpChannelAlreadyConfirmed</span>,
+		<span class="doccomment">/// The provided witness data is wrong.</span>
+		<span class="ident">WrongWitness</span>,
 	}
 
 	<span class="doccomment">/// The set of pending HRMP open channel requests.</span>
@@ -2276,13 +2456,16 @@
 	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HrmpOpenChannelRequests</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
 		<span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Twox64Concat</span>, <span class="ident">HrmpChannelId</span>, <span class="ident">HrmpOpenChannelRequest</span><span class="op">&gt;</span>;
 
+	<span class="comment">// NOTE: could become bounded, but we don&#39;t have a global maximum for this.</span>
+	<span class="comment">// `HRMP_MAX_INBOUND_CHANNELS_BOUND` are per parachain/parathread, while this storage tracks the</span>
+	<span class="comment">// global state.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HrmpOpenChannelRequestsList</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
 		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">HrmpChannelId</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// This mapping tracks how many open channel requests are initiated by a given sender para.</span>
-	<span class="doccomment">/// Invariant: `HrmpOpenChannelRequests` should contain the same number of items that has `(X, _)`</span>
-	<span class="doccomment">/// as the number of `HrmpOpenChannelRequestCount` for `X`.</span>
+	<span class="doccomment">/// Invariant: `HrmpOpenChannelRequests` should contain the same number of items that has</span>
+	<span class="doccomment">/// `(X, _)` as the number of `HrmpOpenChannelRequestCount` for `X`.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HrmpOpenChannelRequestCount</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
 		<span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Twox64Concat</span>, <span class="ident">ParaId</span>, <span class="ident">u32</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
@@ -2294,8 +2477,8 @@
 	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HrmpAcceptedChannelRequestCount</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
 		<span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Twox64Concat</span>, <span class="ident">ParaId</span>, <span class="ident">u32</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
-	<span class="doccomment">/// A set of pending HRMP close channel requests that are going to be closed during the session change.</span>
-	<span class="doccomment">/// Used for checking if a given channel is registered for closure.</span>
+	<span class="doccomment">/// A set of pending HRMP close channel requests that are going to be closed during the session</span>
+	<span class="doccomment">/// change. Used for checking if a given channel is registered for closure.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// The set is accompanied by a list for iteration.</span>
 	<span class="doccomment">///</span>
@@ -2320,17 +2503,17 @@
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HrmpChannels</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Twox64Concat</span>, <span class="ident">HrmpChannelId</span>, <span class="ident">HrmpChannel</span><span class="op">&gt;</span>;
 
-	<span class="doccomment">/// Ingress/egress indexes allow to find all the senders and receivers given the opposite</span>
-	<span class="doccomment">/// side. I.e.</span>
+	<span class="doccomment">/// Ingress/egress indexes allow to find all the senders and receivers given the opposite side.</span>
+	<span class="doccomment">/// I.e.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// (a) ingress index allows to find all the senders for a given recipient.</span>
 	<span class="doccomment">/// (b) egress index allows to find all the recipients for a given sender.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Invariants:</span>
-	<span class="doccomment">/// - for each ingress index entry for `P` each item `I` in the index should present in `HrmpChannels`</span>
-	<span class="doccomment">///   as `(I, P)`.</span>
-	<span class="doccomment">/// - for each egress index entry for `P` each item `E` in the index should present in `HrmpChannels`</span>
-	<span class="doccomment">///   as `(P, E)`.</span>
+	<span class="doccomment">/// - for each ingress index entry for `P` each item `I` in the index should present in</span>
+	<span class="doccomment">///   `HrmpChannels` as `(I, P)`.</span>
+	<span class="doccomment">/// - for each egress index entry for `P` each item `E` in the index should present in</span>
+	<span class="doccomment">///   `HrmpChannels` as `(P, E)`.</span>
 	<span class="doccomment">/// - there should be no other dangling channels in `HrmpChannels`.</span>
 	<span class="doccomment">/// - the vectors are sorted.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
@@ -2354,27 +2537,28 @@
 		<span class="ident">ValueQuery</span>,
 	<span class="op">&gt;</span>;
 
-	<span class="doccomment">/// Maintains a mapping that can be used to answer the question:</span>
-	<span class="doccomment">/// What paras sent a message at the given block number for a given receiver.</span>
-	<span class="doccomment">/// Invariants:</span>
+	<span class="doccomment">/// Maintains a mapping that can be used to answer the question: What paras sent a message at</span>
+	<span class="doccomment">/// the given block number for a given receiver. Invariants:</span>
 	<span class="doccomment">/// - The inner `Vec&lt;ParaId&gt;` is never empty.</span>
 	<span class="doccomment">/// - The inner `Vec&lt;ParaId&gt;` cannot store two same `ParaId`.</span>
-	<span class="doccomment">/// - The outer vector is sorted ascending by block number and cannot store two items with the same</span>
-	<span class="doccomment">///   block number.</span>
+	<span class="doccomment">/// - The outer vector is sorted ascending by block number and cannot store two items with the</span>
+	<span class="doccomment">///   same block number.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HrmpChannelDigests</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span>
 		<span class="ident">StorageMap</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Twox64Concat</span>, <span class="ident">ParaId</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T::BlockNumber</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>)<span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// Preopen the given HRMP channels.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// The values in the tuple corresponds to `(sender, recipient, max_capacity, max_message_size)`,</span>
-	<span class="doccomment">/// i.e. similar to `init_open_channel`. In fact, the initialization is performed as if</span>
-	<span class="doccomment">/// the `init_open_channel` and `accept_open_channel` were called with the respective parameters</span>
-	<span class="doccomment">/// and the session change take place.</span>
+	<span class="doccomment">/// The values in the tuple corresponds to</span>
+	<span class="doccomment">/// `(sender, recipient, max_capacity, max_message_size)`, i.e. similar to `init_open_channel`.</span>
+	<span class="doccomment">/// In fact, the initialization is performed as if the `init_open_channel` and</span>
+	<span class="doccomment">/// `accept_open_channel` were called with the respective parameters and the session change take</span>
+	<span class="doccomment">///  place.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// As such, each channel initializer should satisfy the same constraints, namely:</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// 1. `max_capacity` and `max_message_size` should be within the limits set by the configuration pallet.</span>
+	<span class="doccomment">/// 1. `max_capacity` and `max_message_size` should be within the limits set by the</span>
+	<span class="doccomment">///    configuration pallet.</span>
 	<span class="doccomment">/// 2. `sender` and `recipient` must be valid paras.</span>
 	<span class="attribute">#[<span class="ident">pallet::genesis_config</span>]</span>
 	<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GenesisConfig</span> {
@@ -2407,7 +2591,7 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// The channel can be opened only after the recipient confirms it and only on a session</span>
 		<span class="doccomment">/// change.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::hrmp_init_open_channel</span>())]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hrmp_init_open_channel</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">recipient</span>: <span class="ident">ParaId</span>,
@@ -2433,7 +2617,7 @@
 		<span class="doccomment">/// Accept a pending open channel request from the given sender.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// The channel will be opened only on the next session boundary.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::hrmp_accept_open_channel</span>())]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hrmp_accept_open_channel</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">sender</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">ensure_parachain</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Origin::from</span>(<span class="ident">origin</span>))<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::accept_open_channel</span>(<span class="ident">origin</span>, <span class="ident">sender</span>)<span class="question-mark">?</span>;
@@ -2445,7 +2629,7 @@
 		<span class="doccomment">/// recipient in the channel being closed.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// The closure can only happen on a session change.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::hrmp_close_channel</span>())]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hrmp_close_channel</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">channel_id</span>: <span class="ident">HrmpChannelId</span>,
@@ -2461,8 +2645,15 @@
 		<span class="doccomment">/// you to trigger the cleanup immediately for a specific parachain.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// Origin must be Root.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_clean_hrmp</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">para</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">DispatchResult</span> {
+		<span class="doccomment">///</span>
+		<span class="doccomment">/// Number of inbound and outbound channels for `para` must be provided as witness data of weighing.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::force_clean_hrmp</span>(<span class="kw-2">*</span><span class="ident">_inbound</span>, <span class="kw-2">*</span><span class="ident">_outbound</span>))]</span>
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_clean_hrmp</span>(
+			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+			<span class="ident">para</span>: <span class="ident">ParaId</span>,
+			<span class="ident">_inbound</span>: <span class="ident">u32</span>,
+			<span class="ident">_outbound</span>: <span class="ident">u32</span>,
+		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::clean_hrmp_after_outgoing</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>);
 			<span class="prelude-val">Ok</span>(())
@@ -2472,8 +2663,10 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// If there are pending HRMP open channel requests, you can use this</span>
 		<span class="doccomment">/// function process all of those requests immediately.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_process_hrmp_open</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
+		<span class="doccomment">///</span>
+		<span class="doccomment">/// Total number of opening channels must be provided as witness data of weighing.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::force_process_hrmp_open</span>(<span class="kw-2">*</span><span class="ident">_channels</span>))]</span>
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_process_hrmp_open</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">_channels</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="kw">let</span> <span class="ident">host_config</span> <span class="op">=</span> <span class="ident">configuration::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::config</span>();
 			<span class="ident"><span class="self">Self</span>::process_hrmp_open_channel_requests</span>(<span class="kw-2">&amp;</span><span class="ident">host_config</span>);
@@ -2484,24 +2677,35 @@
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// If there are pending HRMP close channel requests, you can use this</span>
 		<span class="doccomment">/// function process all of those requests immediately.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_process_hrmp_close</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="ident">DispatchResult</span> {
+		<span class="doccomment">///</span>
+		<span class="doccomment">/// Total number of closing channels must be provided as witness data of weighing.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::force_process_hrmp_close</span>(<span class="kw-2">*</span><span class="ident">_channels</span>))]</span>
+		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_process_hrmp_close</span>(<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">_channels</span>: <span class="ident">u32</span>) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="ident">ensure_root</span>(<span class="ident">origin</span>)<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::process_hrmp_close_channel_requests</span>();
 			<span class="prelude-val">Ok</span>(())
 		}
 
-		<span class="doccomment">/// This cancels a pending open channel request. It can be canceled be either of the sender</span>
+		<span class="doccomment">/// This cancels a pending open channel request. It can be canceled by either of the sender</span>
 		<span class="doccomment">/// or the recipient for that request. The origin must be either of those.</span>
 		<span class="doccomment">///</span>
 		<span class="doccomment">/// The cancellation happens immediately. It is not possible to cancel the request if it is</span>
 		<span class="doccomment">/// already accepted.</span>
-		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="number">0</span>)]</span>
+		<span class="doccomment">///</span>
+		<span class="doccomment">/// Total number of open requests (i.e. `HrmpOpenChannelRequestsList`) must be provided as</span>
+		<span class="doccomment">/// witness data.</span>
+		<span class="attribute">#[<span class="ident">pallet::weight</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::hrmp_cancel_open_request</span>(<span class="kw-2">*</span><span class="ident">open_requests</span>))]</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hrmp_cancel_open_request</span>(
 			<span class="ident">origin</span>: <span class="ident">OriginFor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 			<span class="ident">channel_id</span>: <span class="ident">HrmpChannelId</span>,
+			<span class="ident">open_requests</span>: <span class="ident">u32</span>,
 		) -&gt; <span class="ident">DispatchResult</span> {
 			<span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">ensure_parachain</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Origin::from</span>(<span class="ident">origin</span>))<span class="question-mark">?</span>;
+			<span class="macro">ensure!</span>(
+				<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestsList::decode_len</span>().<span class="ident">unwrap_or_default</span>()
+					<span class="kw">as</span> <span class="ident">u32</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">open_requests</span>,
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::WrongWitness</span>
+			);
 			<span class="ident"><span class="self">Self</span>::cancel_open_request</span>(<span class="ident">origin</span>, <span class="ident">channel_id</span>.<span class="ident">clone</span>())<span class="question-mark">?</span>;
 			<span class="ident"><span class="self">Self</span>::deposit_event</span>(<span class="ident">Event::OpenChannelCanceled</span>(<span class="ident">origin</span>, <span class="ident">channel_id</span>));
 			<span class="prelude-val">Ok</span>(())
@@ -2548,10 +2752,16 @@
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initializer_on_new_session</span>(
 		<span class="ident">notification</span>: <span class="kw-2">&amp;</span><span class="ident">initializer::SessionChangeNotification</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>,
 		<span class="ident">outgoing_paras</span>: <span class="kw-2">&amp;</span>[<span class="ident">ParaId</span>],
-	) {
-		<span class="ident"><span class="self">Self</span>::perform_outgoing_para_cleanup</span>(<span class="kw-2">&amp;</span><span class="ident">notification</span>.<span class="ident">prev_config</span>, <span class="ident">outgoing_paras</span>);
+	) -&gt; <span class="ident">Weight</span> {
+		<span class="kw">let</span> <span class="ident">w1</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::perform_outgoing_para_cleanup</span>(<span class="kw-2">&amp;</span><span class="ident">notification</span>.<span class="ident">prev_config</span>, <span class="ident">outgoing_paras</span>);
 		<span class="ident"><span class="self">Self</span>::process_hrmp_open_channel_requests</span>(<span class="kw-2">&amp;</span><span class="ident">notification</span>.<span class="ident">prev_config</span>);
 		<span class="ident"><span class="self">Self</span>::process_hrmp_close_channel_requests</span>();
+		<span class="ident">w1</span>.<span class="ident">saturating_add</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::force_process_hrmp_open</span>(
+			<span class="ident">outgoing_paras</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>
+		))
+		.<span class="ident">saturating_add</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::force_process_hrmp_close</span>(
+			<span class="ident">outgoing_paras</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>
+		))
 	}
 
 	<span class="doccomment">/// Iterate over all paras that were noted for offboarding and remove all the data</span>
@@ -2559,20 +2769,32 @@
 	<span class="kw">fn</span> <span class="ident">perform_outgoing_para_cleanup</span>(
 		<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>,
 		<span class="ident">outgoing</span>: <span class="kw-2">&amp;</span>[<span class="ident">ParaId</span>],
-	) {
-		<span class="ident"><span class="self">Self</span>::clean_open_channel_requests</span>(<span class="ident">config</span>, <span class="ident">outgoing</span>);
+	) -&gt; <span class="ident">Weight</span> {
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">w</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::clean_open_channel_requests</span>(<span class="ident">config</span>, <span class="ident">outgoing</span>);
 		<span class="kw">for</span> <span class="ident">outgoing_para</span> <span class="kw">in</span> <span class="ident">outgoing</span> {
 			<span class="ident"><span class="self">Self</span>::clean_hrmp_after_outgoing</span>(<span class="ident">outgoing_para</span>);
+
+			<span class="comment">// we need a few extra bits of data to weigh this -- all of this is read internally</span>
+			<span class="comment">// anyways, so no overhead.</span>
+			<span class="kw">let</span> <span class="ident">ingress_count</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpIngressChannelsIndex::decode_len</span>(<span class="ident">outgoing_para</span>)
+				.<span class="ident">unwrap_or_default</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+			<span class="kw">let</span> <span class="ident">egress_count</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpEgressChannelsIndex::decode_len</span>(<span class="ident">outgoing_para</span>)
+				.<span class="ident">unwrap_or_default</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+			<span class="ident">w</span> <span class="op">=</span> <span class="ident">w</span>.<span class="ident">saturating_add</span>(<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::force_clean_hrmp</span>(
+				<span class="ident">ingress_count</span>,
+				<span class="ident">egress_count</span>,
+			));
 		}
+		<span class="ident">w</span>
 	}
 
 	<span class="comment">// Go over the HRMP open channel requests and remove all in which offboarding paras participate.</span>
 	<span class="comment">//</span>
 	<span class="comment">// This will also perform the refunds for the counterparty if it doesn&#39;t offboard.</span>
-	<span class="kw">fn</span> <span class="ident">clean_open_channel_requests</span>(
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">clean_open_channel_requests</span>(
 		<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">HostConfiguration</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span>,
 		<span class="ident">outgoing</span>: <span class="kw-2">&amp;</span>[<span class="ident">ParaId</span>],
-	) {
+	) -&gt; <span class="ident">Weight</span> {
 		<span class="comment">// First collect all the channel ids of the open requests in which there is at least one</span>
 		<span class="comment">// party presents in the outgoing list.</span>
 		<span class="comment">//</span>
@@ -2618,6 +2840,8 @@
 				<span class="ident"><span class="self">Self</span>::decrease_accepted_channel_request_count</span>(<span class="ident">req_id</span>.<span class="ident">recipient</span>);
 			}
 		}
+
+		<span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::WeightInfo::clean_open_channel_requests</span>(<span class="ident">outgoing</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>)
 	}
 
 	<span class="doccomment">/// Remove all storage entries associated with the given para.</span>
@@ -2996,8 +3220,8 @@
 	<span class="doccomment">/// Initiate opening a channel from a parachain to a given recipient with given channel</span>
 	<span class="doccomment">/// parameters.</span>
 	<span class="doccomment">///</span>
-	<span class="doccomment">/// Basically the same as [`hrmp_init_open_channel`](Pallet::hrmp_init_open_channel) but intendend for calling directly from</span>
-	<span class="doccomment">/// other pallets rather than dispatched.</span>
+	<span class="doccomment">/// Basically the same as [`hrmp_init_open_channel`](Pallet::hrmp_init_open_channel) but</span>
+	<span class="doccomment">/// intended for calling directly from other pallets rather than dispatched.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">init_open_channel</span>(
 		<span class="ident">origin</span>: <span class="ident">ParaId</span>,
 		<span class="ident">recipient</span>: <span class="ident">ParaId</span>,
@@ -3050,6 +3274,8 @@
 			<span class="ident">config</span>.<span class="ident">hrmp_sender_deposit</span>.<span class="ident">unique_saturated_into</span>(),
 		)<span class="question-mark">?</span>;
 
+		<span class="comment">// mutating storage directly now -- shall not bail henceforth.</span>
+
 		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestCount::insert</span>(<span class="kw-2">&amp;</span><span class="ident">origin</span>, <span class="ident">open_req_cnt</span> <span class="op">+</span> <span class="number">1</span>);
 		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::insert</span>(
 			<span class="kw-2">&amp;</span><span class="ident">channel_id</span>,
@@ -3080,6 +3306,10 @@
 		{
 			<span class="comment">// this should never happen unless the max downward message size is configured to an</span>
 			<span class="comment">// jokingly small number.</span>
+			<span class="macro">log::error!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::hrmp&quot;</span>,
+				<span class="string">&quot;sending &#39;init_open_channel::notification_bytes&#39; failed.&quot;</span>
+			);
 			<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>);
 		}
 
@@ -3089,7 +3319,7 @@
 	<span class="doccomment">/// Accept a pending open channel request from the given sender.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Basically the same as [`hrmp_accept_open_channel`](Pallet::hrmp_accept_open_channel) but</span>
-	<span class="doccomment">/// intendend for calling directly from other pallets rather than dispatched.</span>
+	<span class="doccomment">/// intended for calling directly from other pallets rather than dispatched.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_open_channel</span>(<span class="ident">origin</span>: <span class="ident">ParaId</span>, <span class="ident">sender</span>: <span class="ident">ParaId</span>) -&gt; <span class="ident">DispatchResult</span> {
 		<span class="kw">let</span> <span class="ident">channel_id</span> <span class="op">=</span> <span class="ident">HrmpChannelId</span> { <span class="ident">sender</span>, <span class="ident">recipient</span>: <span class="ident">origin</span> };
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">channel_req</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::get</span>(<span class="kw-2">&amp;</span><span class="ident">channel_id</span>)
@@ -3134,6 +3364,10 @@
 		{
 			<span class="comment">// this should never happen unless the max downward message size is configured to an</span>
 			<span class="comment">// jokingly small number.</span>
+			<span class="macro">log::error!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::hrmp&quot;</span>,
+				<span class="string">&quot;sending &#39;accept_open_channel::notification_bytes&#39; failed.&quot;</span>
+			);
 			<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>);
 		}
 
@@ -3208,6 +3442,10 @@
 		{
 			<span class="comment">// this should never happen unless the max downward message size is configured to an</span>
 			<span class="comment">// jokingly small number.</span>
+			<span class="macro">log::error!</span>(
+				<span class="ident">target</span>: <span class="string">&quot;runtime::hrmp&quot;</span>,
+				<span class="string">&quot;sending &#39;close_channel::notification_bytes&#39; failed.&quot;</span>
+			);
 			<span class="macro">debug_assert!</span>(<span class="bool-val">false</span>);
 		}
 
@@ -3275,10 +3513,175 @@
 			});
 		});
 	}
+
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>, <span class="ident">test</span>))]</span>
+	<span class="kw">fn</span> <span class="ident">assert_storage_consistency_exhaustive</span>() {
+		<span class="kw">fn</span> <span class="ident">assert_is_sorted</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Ord</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+			<span class="macro">assert!</span>(<span class="ident">slice</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">all</span>(<span class="op">|</span><span class="ident">xs</span><span class="op">|</span> <span class="ident">xs</span>[<span class="number">0</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="ident">xs</span>[<span class="number">1</span>]), <span class="string">&quot;{} supposed to be sorted&quot;</span>, <span class="ident">id</span>);
+		}
+
+		<span class="kw">let</span> <span class="ident">assert_contains_only_onboarded</span> <span class="op">=</span> <span class="op">|</span><span class="ident">paras</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>, <span class="ident">cause</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> {
+			<span class="kw">for</span> <span class="ident">para</span> <span class="kw">in</span> <span class="ident">paras</span> {
+				<span class="macro">assert!</span>(
+					<span class="ident"><span class="kw">crate</span>::paras::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::is_valid_para</span>(<span class="ident">para</span>),
+					<span class="string">&quot;{}: {:?} para is offboarded&quot;</span>,
+					<span class="ident">cause</span>,
+					<span class="ident">para</span>
+				);
+			}
+		};
+
+		<span class="macro">assert_eq!</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
+				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestsList::get</span>()
+				.<span class="ident">into_iter</span>()
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+		);
+
+		<span class="comment">// verify that the set of keys in `HrmpOpenChannelRequestCount` corresponds to the set</span>
+		<span class="comment">// of _senders_ in `HrmpOpenChannelRequests`.</span>
+		<span class="comment">//</span>
+		<span class="comment">// having ensured that, we can go ahead and go over all counts and verify that they match.</span>
+		<span class="macro">assert_eq!</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestCount::iter</span>()
+				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
+				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>.<span class="ident">sender</span>)
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+		);
+		<span class="kw">for</span> (<span class="ident">open_channel_initiator</span>, <span class="ident">expected_num</span>) <span class="kw">in</span>
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestCount::iter</span>()
+		{
+			<span class="kw">let</span> <span class="ident">actual_num</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
+				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="ident">ch</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">ch</span>.<span class="ident">sender</span> <span class="op">==</span> <span class="ident">open_channel_initiator</span>)
+				.<span class="ident">count</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+			<span class="macro">assert_eq!</span>(<span class="ident">expected_num</span>, <span class="ident">actual_num</span>);
+		}
+
+		<span class="comment">// The same as above, but for accepted channel request count. Note that we are interested</span>
+		<span class="comment">// only in confirmed open requests.</span>
+		<span class="macro">assert_eq!</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpAcceptedChannelRequestCount::iter</span>()
+				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
+				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>.<span class="ident">confirmed</span>)
+				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>.<span class="ident">recipient</span>)
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+		);
+		<span class="kw">for</span> (<span class="ident">channel_recipient</span>, <span class="ident">expected_num</span>) <span class="kw">in</span>
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpAcceptedChannelRequestCount::iter</span>()
+		{
+			<span class="kw">let</span> <span class="ident">actual_num</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
+				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="ident">ch</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">ch</span>.<span class="ident">recipient</span> <span class="op">==</span> <span class="ident">channel_recipient</span> <span class="op">&amp;&amp;</span> <span class="ident">v</span>.<span class="ident">confirmed</span>)
+				.<span class="ident">count</span>() <span class="kw">as</span> <span class="ident">u32</span>;
+			<span class="macro">assert_eq!</span>(<span class="ident">expected_num</span>, <span class="ident">actual_num</span>);
+		}
+
+		<span class="macro">assert_eq!</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpCloseChannelRequests::iter</span>()
+				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpCloseChannelRequestsList::get</span>()
+				.<span class="ident">into_iter</span>()
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+		);
+
+		<span class="comment">// A HRMP watermark can be None for an onboarded parachain. However, an offboarded parachain</span>
+		<span class="comment">// cannot have an HRMP watermark: it should&#39;ve been cleanup.</span>
+		<span class="ident">assert_contains_only_onboarded</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpWatermarks::iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="string">&quot;HRMP watermarks should contain only onboarded paras&quot;</span>,
+		);
+
+		<span class="comment">// An entry in `HrmpChannels` indicates that the channel is open. Only open channels can</span>
+		<span class="comment">// have contents.</span>
+		<span class="kw">for</span> (<span class="ident">non_empty_channel</span>, <span class="ident">contents</span>) <span class="kw">in</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannelContents::iter</span>() {
+			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">non_empty_channel</span>));
+
+			<span class="comment">// pedantic check: there should be no empty vectors in storage, those should be modeled</span>
+			<span class="comment">// by a removed kv pair.</span>
+			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">contents</span>.<span class="ident">is_empty</span>());
+		}
+
+		<span class="comment">// Senders and recipients must be onboarded. Otherwise, all channels associated with them</span>
+		<span class="comment">// are removed.</span>
+		<span class="ident">assert_contains_only_onboarded</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::iter</span>()
+				.<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="macro">vec!</span>[<span class="ident">k</span>.<span class="ident">sender</span>, <span class="ident">k</span>.<span class="ident">recipient</span>])
+				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="string">&quot;senders and recipients in all channels should be onboarded&quot;</span>,
+		);
+
+		<span class="comment">// Check the docs for `HrmpIngressChannelsIndex` and `HrmpEgressChannelsIndex` in decl</span>
+		<span class="comment">// storage to get an index what are the channel mappings indexes.</span>
+		<span class="comment">//</span>
+		<span class="comment">// Here, from indexes.</span>
+		<span class="comment">//</span>
+		<span class="comment">// ingress         egress</span>
+		<span class="comment">//</span>
+		<span class="comment">// a -&gt; [x, y]     x -&gt; [a, b]</span>
+		<span class="comment">// b -&gt; [x, z]     y -&gt; [a]</span>
+		<span class="comment">//                 z -&gt; [b]</span>
+		<span class="comment">//</span>
+		<span class="comment">// we derive a list of channels they represent.</span>
+		<span class="comment">//</span>
+		<span class="comment">//   (a, x)         (a, x)</span>
+		<span class="comment">//   (a, y)         (a, y)</span>
+		<span class="comment">//   (b, x)         (b, x)</span>
+		<span class="comment">//   (b, z)         (b, z)</span>
+		<span class="comment">//</span>
+		<span class="comment">// and then that we compare that to the channel list in the `HrmpChannels`.</span>
+		<span class="kw">let</span> <span class="ident">channel_set_derived_from_ingress</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpIngressChannelsIndex::iter</span>()
+			.<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">p</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">i</span>, <span class="ident">p</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>())
+			.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+		<span class="kw">let</span> <span class="ident">channel_set_derived_from_egress</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpEgressChannelsIndex::iter</span>()
+			.<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">p</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> (<span class="ident">p</span>, <span class="ident">e</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>())
+			.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+		<span class="kw">let</span> <span class="ident">channel_set_ground_truth</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::iter</span>()
+			.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> (<span class="ident">k</span>.<span class="ident">sender</span>, <span class="ident">k</span>.<span class="ident">recipient</span>))
+			.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">BTreeSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+		<span class="macro">assert_eq!</span>(<span class="ident">channel_set_derived_from_ingress</span>, <span class="ident">channel_set_derived_from_egress</span>);
+		<span class="macro">assert_eq!</span>(<span class="ident">channel_set_derived_from_egress</span>, <span class="ident">channel_set_ground_truth</span>);
+
+		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpIngressChannelsIndex::iter</span>()
+			.<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>)
+			.<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">assert_is_sorted</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>, <span class="string">&quot;HrmpIngressChannelsIndex&quot;</span>));
+		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpEgressChannelsIndex::iter</span>()
+			.<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>)
+			.<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">assert_is_sorted</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>, <span class="string">&quot;HrmpIngressChannelsIndex&quot;</span>));
+
+		<span class="ident">assert_contains_only_onboarded</span>(
+			<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannelDigests::iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
+			<span class="string">&quot;HRMP channel digests should contain only onboarded paras&quot;</span>,
+		);
+		<span class="kw">for</span> (<span class="ident">_digest_for_para</span>, <span class="ident">digest</span>) <span class="kw">in</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannelDigests::iter</span>() {
+			<span class="comment">// Assert that items are in **strictly** ascending order. The strictness also implies</span>
+			<span class="comment">// there are no duplicates.</span>
+			<span class="macro">assert!</span>(<span class="ident">digest</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">all</span>(<span class="op">|</span><span class="ident">xs</span><span class="op">|</span> <span class="ident">xs</span>[<span class="number">0</span>].<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">xs</span>[<span class="number">1</span>].<span class="number">0</span>));
+
+			<span class="kw">for</span> (<span class="kw">_</span>, <span class="kw-2">mut</span> <span class="ident">senders</span>) <span class="kw">in</span> <span class="ident">digest</span> {
+				<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">senders</span>.<span class="ident">is_empty</span>());
+
+				<span class="comment">// check for duplicates. For that we sort the vector, then perform deduplication.</span>
+				<span class="comment">// if the vector stayed the same, there are no duplicates.</span>
+				<span class="ident">senders</span>.<span class="ident">sort</span>();
+				<span class="kw">let</span> <span class="ident">orig_senders</span> <span class="op">=</span> <span class="ident">senders</span>.<span class="ident">clone</span>();
+				<span class="ident">senders</span>.<span class="ident">dedup</span>();
+				<span class="macro">assert_eq!</span>(
+					<span class="ident">orig_senders</span>, <span class="ident">senders</span>,
+					<span class="string">&quot;duplicates removed implies existence of duplicates&quot;</span>
+				);
+			}
+		}
+	}
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mock</span>::{
 		<span class="ident">new_test_ext</span>, <span class="ident">Configuration</span>, <span class="ident">Event</span> <span class="kw">as</span> <span class="ident">MockEvent</span>, <span class="ident">Hrmp</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">Paras</span>,
@@ -3286,7 +3689,7 @@
 	};
 	<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">assert_noop</span>, <span class="ident">assert_ok</span>, <span class="ident">traits::Currency</span> <span class="kw">as</span> <span class="kw">_</span>};
 	<span class="kw">use</span> <span class="ident">primitives::v1::BlockNumber</span>;
-	<span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">HashSet</span>};
+	<span class="kw">use</span> <span class="ident">std::collections::BTreeMap</span>;
 
 	<span class="kw">fn</span> <span class="ident">run_to_block</span>(<span class="ident">to</span>: <span class="ident">BlockNumber</span>, <span class="ident">new_session</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Configuration::config</span>();
@@ -3330,7 +3733,7 @@
 	}
 
 	<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-	<span class="kw">struct</span> <span class="ident">GenesisConfigBuilder</span> {
+	<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">GenesisConfigBuilder</span> {
 		<span class="ident">hrmp_channel_max_capacity</span>: <span class="ident">u32</span>,
 		<span class="ident">hrmp_channel_max_message_size</span>: <span class="ident">u32</span>,
 		<span class="ident">hrmp_max_parathread_outbound_channels</span>: <span class="ident">u32</span>,
@@ -3361,7 +3764,7 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">GenesisConfigBuilder</span> {
-		<span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::mock::MockGenesisConfig</span> {
+		<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::mock::MockGenesisConfig</span> {
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">genesis</span> <span class="op">=</span> <span class="ident">default_genesis_config</span>();
 			<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">genesis</span>.<span class="ident">configuration</span>.<span class="ident">config</span>;
 			<span class="ident">config</span>.<span class="ident">hrmp_channel_max_capacity</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hrmp_channel_max_capacity</span>;
@@ -3416,167 +3819,10 @@
 		<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::get</span>(<span class="kw-2">&amp;</span><span class="ident">HrmpChannelId</span> { <span class="ident">sender</span>, <span class="ident">recipient</span> }).<span class="ident">is_some</span>()
 	}
 
-	<span class="kw">fn</span> <span class="ident">assert_storage_consistency_exhaustive</span>() {
-		<span class="macro">assert_eq!</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
-				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestsList::get</span>()
-				.<span class="ident">into_iter</span>()
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-		);
-
-		<span class="comment">// verify that the set of keys in `HrmpOpenChannelRequestCount` corresponds to the set</span>
-		<span class="comment">// of _senders_ in `HrmpOpenChannelRequests`.</span>
-		<span class="comment">//</span>
-		<span class="comment">// having ensured that, we can go ahead and go over all counts and verify that they match.</span>
-		<span class="macro">assert_eq!</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestCount::iter</span>()
-				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
-				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>.<span class="ident">sender</span>)
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-		);
-		<span class="kw">for</span> (<span class="ident">open_channel_initiator</span>, <span class="ident">expected_num</span>) <span class="kw">in</span>
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequestCount::iter</span>()
-		{
-			<span class="kw">let</span> <span class="ident">actual_num</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
-				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="ident">ch</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">ch</span>.<span class="ident">sender</span> <span class="op">==</span> <span class="ident">open_channel_initiator</span>)
-				.<span class="ident">count</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-			<span class="macro">assert_eq!</span>(<span class="ident">expected_num</span>, <span class="ident">actual_num</span>);
-		}
-
-		<span class="comment">// The same as above, but for accepted channel request count. Note that we are interested</span>
-		<span class="comment">// only in confirmed open requests.</span>
-		<span class="macro">assert_eq!</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpAcceptedChannelRequestCount::iter</span>()
-				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
-				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>.<span class="ident">confirmed</span>)
-				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>.<span class="ident">recipient</span>)
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-		);
-		<span class="kw">for</span> (<span class="ident">channel_recipient</span>, <span class="ident">expected_num</span>) <span class="kw">in</span>
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpAcceptedChannelRequestCount::iter</span>()
-		{
-			<span class="kw">let</span> <span class="ident">actual_num</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpOpenChannelRequests::iter</span>()
-				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="ident">ch</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">ch</span>.<span class="ident">recipient</span> <span class="op">==</span> <span class="ident">channel_recipient</span> <span class="op">&amp;&amp;</span> <span class="ident">v</span>.<span class="ident">confirmed</span>)
-				.<span class="ident">count</span>() <span class="kw">as</span> <span class="ident">u32</span>;
-			<span class="macro">assert_eq!</span>(<span class="ident">expected_num</span>, <span class="ident">actual_num</span>);
-		}
-
-		<span class="macro">assert_eq!</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpCloseChannelRequests::iter</span>()
-				.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpCloseChannelRequestsList::get</span>()
-				.<span class="ident">into_iter</span>()
-				.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-		);
-
-		<span class="comment">// A HRMP watermark can be None for an onboarded parachain. However, an offboarded parachain</span>
-		<span class="comment">// cannot have an HRMP watermark: it should&#39;ve been cleanup.</span>
-		<span class="ident">assert_contains_only_onboarded</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpWatermarks::iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>),
-			<span class="string">&quot;HRMP watermarks should contain only onboarded paras&quot;</span>,
-		);
-
-		<span class="comment">// An entry in `HrmpChannels` indicates that the channel is open. Only open channels can</span>
-		<span class="comment">// have contents.</span>
-		<span class="kw">for</span> (<span class="ident">non_empty_channel</span>, <span class="ident">contents</span>) <span class="kw">in</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannelContents::iter</span>() {
-			<span class="macro">assert!</span>(<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">non_empty_channel</span>));
-
-			<span class="comment">// pedantic check: there should be no empty vectors in storage, those should be modeled</span>
-			<span class="comment">// by a removed kv pair.</span>
-			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">contents</span>.<span class="ident">is_empty</span>());
-		}
-
-		<span class="comment">// Senders and recipients must be onboarded. Otherwise, all channels associated with them</span>
-		<span class="comment">// are removed.</span>
-		<span class="ident">assert_contains_only_onboarded</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::iter</span>().<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="macro">vec!</span>[<span class="ident">k</span>.<span class="ident">sender</span>, <span class="ident">k</span>.<span class="ident">recipient</span>]),
-			<span class="string">&quot;senders and recipients in all channels should be onboarded&quot;</span>,
-		);
-
-		<span class="comment">// Check the docs for `HrmpIngressChannelsIndex` and `HrmpEgressChannelsIndex` in decl</span>
-		<span class="comment">// storage to get an index what are the channel mappings indexes.</span>
-		<span class="comment">//</span>
-		<span class="comment">// Here, from indexes.</span>
-		<span class="comment">//</span>
-		<span class="comment">// ingress         egress</span>
-		<span class="comment">//</span>
-		<span class="comment">// a -&gt; [x, y]     x -&gt; [a, b]</span>
-		<span class="comment">// b -&gt; [x, z]     y -&gt; [a]</span>
-		<span class="comment">//                 z -&gt; [b]</span>
-		<span class="comment">//</span>
-		<span class="comment">// we derive a list of channels they represent.</span>
-		<span class="comment">//</span>
-		<span class="comment">//   (a, x)         (a, x)</span>
-		<span class="comment">//   (a, y)         (a, y)</span>
-		<span class="comment">//   (b, x)         (b, x)</span>
-		<span class="comment">//   (b, z)         (b, z)</span>
-		<span class="comment">//</span>
-		<span class="comment">// and then that we compare that to the channel list in the `HrmpChannels`.</span>
-		<span class="kw">let</span> <span class="ident">channel_set_derived_from_ingress</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpIngressChannelsIndex::iter</span>()
-			.<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">p</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">i</span>, <span class="ident">p</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>())
-			.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-		<span class="kw">let</span> <span class="ident">channel_set_derived_from_egress</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpEgressChannelsIndex::iter</span>()
-			.<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">p</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> (<span class="ident">p</span>, <span class="ident">e</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>())
-			.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-		<span class="kw">let</span> <span class="ident">channel_set_ground_truth</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannels::iter</span>()
-			.<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> (<span class="ident">k</span>.<span class="ident">sender</span>, <span class="ident">k</span>.<span class="ident">recipient</span>))
-			.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-		<span class="macro">assert_eq!</span>(<span class="ident">channel_set_derived_from_ingress</span>, <span class="ident">channel_set_derived_from_egress</span>);
-		<span class="macro">assert_eq!</span>(<span class="ident">channel_set_derived_from_egress</span>, <span class="ident">channel_set_ground_truth</span>);
-
-		<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpIngressChannelsIndex::iter</span>()
-			.<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>)
-			.<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">assert_is_sorted</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>, <span class="string">&quot;HrmpIngressChannelsIndex&quot;</span>));
-		<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpEgressChannelsIndex::iter</span>()
-			.<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">v</span>)<span class="op">|</span> <span class="ident">v</span>)
-			.<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">assert_is_sorted</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>, <span class="string">&quot;HrmpIngressChannelsIndex&quot;</span>));
-
-		<span class="ident">assert_contains_only_onboarded</span>(
-			<span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannelDigests::iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>),
-			<span class="string">&quot;HRMP channel digests should contain only onboarded paras&quot;</span>,
-		);
-		<span class="kw">for</span> (<span class="ident">_digest_for_para</span>, <span class="ident">digest</span>) <span class="kw">in</span> <span class="op">&lt;</span><span class="ident">Hrmp</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::HrmpChannelDigests::iter</span>() {
-			<span class="comment">// Assert that items are in **strictly** ascending order. The strictness also implies</span>
-			<span class="comment">// there are no duplicates.</span>
-			<span class="macro">assert!</span>(<span class="ident">digest</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">all</span>(<span class="op">|</span><span class="ident">xs</span><span class="op">|</span> <span class="ident">xs</span>[<span class="number">0</span>].<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">xs</span>[<span class="number">1</span>].<span class="number">0</span>));
-
-			<span class="kw">for</span> (<span class="kw">_</span>, <span class="kw-2">mut</span> <span class="ident">senders</span>) <span class="kw">in</span> <span class="ident">digest</span> {
-				<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">senders</span>.<span class="ident">is_empty</span>());
-
-				<span class="comment">// check for duplicates. For that we sort the vector, then perform deduplication.</span>
-				<span class="comment">// if the vector stayed the same, there are no duplicates.</span>
-				<span class="ident">senders</span>.<span class="ident">sort</span>();
-				<span class="kw">let</span> <span class="ident">orig_senders</span> <span class="op">=</span> <span class="ident">senders</span>.<span class="ident">clone</span>();
-				<span class="ident">senders</span>.<span class="ident">dedup</span>();
-				<span class="macro">assert_eq!</span>(
-					<span class="ident">orig_senders</span>, <span class="ident">senders</span>,
-					<span class="string">&quot;duplicates removed implies existence of duplicates&quot;</span>
-				);
-			}
-		}
-
-		<span class="kw">fn</span> <span class="ident">assert_contains_only_onboarded</span>(<span class="ident">iter</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ParaId</span><span class="op">&gt;</span>, <span class="ident">cause</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-			<span class="kw">for</span> <span class="ident">para</span> <span class="kw">in</span> <span class="ident">iter</span> {
-				<span class="macro">assert!</span>(<span class="ident">Paras::is_valid_para</span>(<span class="ident">para</span>), <span class="string">&quot;{}: {} para is offboarded&quot;</span>, <span class="ident">cause</span>, <span class="ident">para</span>);
-			}
-		}
-	}
-
-	<span class="kw">fn</span> <span class="ident">assert_is_sorted</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Ord</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-		<span class="macro">assert!</span>(<span class="ident">slice</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">all</span>(<span class="op">|</span><span class="ident">xs</span><span class="op">|</span> <span class="ident">xs</span>[<span class="number">0</span>] <span class="op">&lt;</span><span class="op">=</span> <span class="ident">xs</span>[<span class="number">1</span>]), <span class="string">&quot;{} supposed to be sorted&quot;</span>, <span class="ident">id</span>);
-	}
-
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">empty_state_consistent_state</span>() {
 		<span class="ident">new_test_ext</span>(<span class="ident">GenesisConfigBuilder::default</span>().<span class="ident">build</span>()).<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 		});
 	}
 
@@ -3594,12 +3840,12 @@
 
 			<span class="ident">run_to_block</span>(<span class="number">5</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">5</span>]));
 			<span class="ident">Hrmp::hrmp_init_open_channel</span>(<span class="ident">para_a_origin</span>.<span class="ident">into</span>(), <span class="ident">para_b</span>, <span class="number">2</span>, <span class="number">8</span>).<span class="ident">unwrap</span>();
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 			<span class="macro">assert!</span>(<span class="ident">System::events</span>().<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">record</span><span class="op">|</span> <span class="ident">record</span>.<span class="ident">event</span> <span class="op">==</span>
 				<span class="ident">MockEvent::Hrmp</span>(<span class="ident">Event::OpenChannelRequested</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>, <span class="number">2</span>, <span class="number">8</span>))));
 
 			<span class="ident">Hrmp::hrmp_accept_open_channel</span>(<span class="ident">para_b_origin</span>.<span class="ident">into</span>(), <span class="ident">para_a</span>).<span class="ident">unwrap</span>();
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 			<span class="macro">assert!</span>(<span class="ident">System::events</span>().<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">record</span><span class="op">|</span> <span class="ident">record</span>.<span class="ident">event</span> <span class="op">==</span>
 				<span class="ident">MockEvent::Hrmp</span>(<span class="ident">Event::OpenChannelAccepted</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>))));
 
@@ -3607,7 +3853,7 @@
 			<span class="comment">// not been created yet.</span>
 			<span class="ident">run_to_block</span>(<span class="number">6</span>, <span class="prelude-val">None</span>);
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 
 			<span class="comment">// Now let the session change happen and thus open the channel.</span>
 			<span class="ident">run_to_block</span>(<span class="number">8</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">8</span>]));
@@ -3637,12 +3883,12 @@
 			<span class="kw">let</span> <span class="ident">channel_id</span> <span class="op">=</span> <span class="ident">HrmpChannelId</span> { <span class="ident">sender</span>: <span class="ident">para_a</span>, <span class="ident">recipient</span>: <span class="ident">para_b</span> };
 			<span class="ident">Hrmp::hrmp_close_channel</span>(<span class="ident">para_b_origin</span>.<span class="ident">into</span>(), <span class="ident">channel_id</span>.<span class="ident">clone</span>()).<span class="ident">unwrap</span>();
 			<span class="macro">assert!</span>(<span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 
 			<span class="comment">// After the session change the channel should be closed.</span>
 			<span class="ident">run_to_block</span>(<span class="number">8</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">8</span>]));
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 			<span class="macro">assert!</span>(<span class="ident">System::events</span>().<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">record</span><span class="op">|</span> <span class="ident">record</span>.<span class="ident">event</span> <span class="op">==</span>
 				<span class="ident">MockEvent::Hrmp</span>(<span class="ident">Event::ChannelClosed</span>(<span class="ident">para_b</span>, <span class="ident">channel_id</span>.<span class="ident">clone</span>()))));
 		});
@@ -3675,14 +3921,14 @@
 			<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Configuration::config</span>();
 			<span class="macro">assert!</span>(<span class="ident">Hrmp::check_outbound_hrmp</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>, <span class="ident">para_a</span>, <span class="kw-2">&amp;</span><span class="ident">msgs</span>).<span class="ident">is_ok</span>());
 			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Hrmp::queue_outbound_hrmp</span>(<span class="ident">para_a</span>, <span class="ident">msgs</span>);
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 
 			<span class="comment">// On Block 7:</span>
 			<span class="comment">// B receives the message sent by A. B sets the watermark to 6.</span>
 			<span class="ident">run_to_block</span>(<span class="number">7</span>, <span class="prelude-val">None</span>);
 			<span class="macro">assert!</span>(<span class="ident">Hrmp::check_hrmp_watermark</span>(<span class="ident">para_b</span>, <span class="number">7</span>, <span class="number">6</span>).<span class="ident">is_ok</span>());
 			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">Hrmp::prune_hrmp</span>(<span class="ident">para_b</span>, <span class="number">6</span>);
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 		});
 	}
 
@@ -3745,7 +3991,7 @@
 			<span class="ident">run_to_block</span>(<span class="number">7</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">6</span>, <span class="number">7</span>]));
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Paras::is_valid_para</span>(<span class="ident">para_a</span>));
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 		});
 	}
 
@@ -3804,7 +4050,7 @@
 				],
 			);
 
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 		});
 	}
 
@@ -3953,7 +4199,7 @@
 			<span class="comment">// The channel should be removed.</span>
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Paras::is_valid_para</span>(<span class="ident">para_a</span>));
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Test</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency::free_balance</span>(<span class="kw-2">&amp;</span><span class="ident">para_a</span>.<span class="ident">into_account</span>()), <span class="number">100</span>);
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Test</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency::free_balance</span>(<span class="kw-2">&amp;</span><span class="ident">para_b</span>.<span class="ident">into_account</span>()), <span class="number">110</span>);
@@ -3991,7 +4237,7 @@
 			<span class="comment">// The outcome we expect is `para_b` should receive the refund.</span>
 			<span class="macro">assert_eq!</span>(<span class="op">&lt;</span><span class="ident">Test</span> <span class="kw">as</span> <span class="ident">Config</span><span class="op">&gt;</span><span class="ident">::Currency::free_balance</span>(<span class="kw-2">&amp;</span><span class="ident">para_b</span>.<span class="ident">into_account</span>()), <span class="number">110</span>);
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 		});
 	}
 
@@ -4020,7 +4266,7 @@
 
 			<span class="ident">run_to_block</span>(<span class="number">10</span>, <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="number">10</span>]));
 			<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">channel_exists</span>(<span class="ident">para_a</span>, <span class="ident">para_b</span>));
-			<span class="ident">assert_storage_consistency_exhaustive</span>();
+			<span class="ident">Hrmp::assert_storage_consistency_exhaustive</span>();
 		});
 	}
 }

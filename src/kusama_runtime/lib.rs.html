@@ -3428,6 +3428,9 @@
 <span id="3428">3428</span>
 <span id="3429">3429</span>
 <span id="3430">3430</span>
+<span id="3431">3431</span>
+<span id="3432">3432</span>
+<span id="3433">3433</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -4660,6 +4663,7 @@
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
 	<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
 	<span class="kw">type</span> <span class="ident">Currency</span> <span class="op">=</span> <span class="ident">Balances</span>;
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::runtime_parachains_hrmp::WeightInfo</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">parachains_paras_inherent::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
@@ -6727,6 +6731,7 @@
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_common::slots</span>, <span class="ident">Slots</span>);
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_common::paras_registrar</span>, <span class="ident">Registrar</span>);
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_parachains::configuration</span>, <span class="ident">Configuration</span>);
+			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_parachains::hrmp</span>, <span class="ident">Hrmp</span>);
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_parachains::disputes</span>, <span class="ident">ParasDisputes</span>);
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_parachains::initializer</span>, <span class="ident">Initializer</span>);
 			<span class="macro">list_benchmark!</span>(<span class="ident">list</span>, <span class="ident">extra</span>, <span class="ident">runtime_parachains::paras_inherent</span>, <span class="ident">ParaInherent</span>);
@@ -6807,6 +6812,7 @@
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_common::slots</span>, <span class="ident">Slots</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_common::paras_registrar</span>, <span class="ident">Registrar</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_parachains::configuration</span>, <span class="ident">Configuration</span>);
+			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_parachains::hrmp</span>, <span class="ident">Hrmp</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_parachains::disputes</span>, <span class="ident">ParasDisputes</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_parachains::initializer</span>, <span class="ident">Initializer</span>);
 			<span class="macro">add_benchmark!</span>(<span class="ident">params</span>, <span class="ident">batches</span>, <span class="ident">runtime_parachains::paras_inherent</span>, <span class="ident">ParaInherent</span>);
