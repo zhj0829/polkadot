@@ -142,9 +142,9 @@
 
 <span class="doccomment">//! A malus or nemesis node launch code.</span>
 
+<span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">AppSettings</span>, <span class="ident">Parser</span>};
 <span class="kw">use</span> <span class="ident">color_eyre::eyre</span>;
 <span class="kw">use</span> <span class="ident">polkadot_cli</span>::{<span class="ident">Cli</span>, <span class="ident">RunCmd</span>};
-<span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">interceptor</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">shared</span>;
@@ -154,9 +154,9 @@
 <span class="kw">use</span> <span class="ident">variants</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Define the different variants of behavior.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">StructOpt</span>)]</span>
-<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Malus - the nemesis of polkadot.&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
+<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Malus - the nemesis of polkadot.&quot;</span>, <span class="ident">version</span>)]</span>
+<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)]</span>
 <span class="kw">enum</span> <span class="ident">NemesisVariant</span> {
 	<span class="doccomment">/// Suggest a candidate with an invalid proof of validity.</span>
 	<span class="ident">SuggestGarbageCandidate</span>(<span class="ident">RunCmd</span>),
@@ -166,18 +166,18 @@
 	<span class="ident">DisputeAncestor</span>(<span class="ident">RunCmd</span>),
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;prepare-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">structopt::clap::AppSettings::Hidden</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;prepare-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">AppSettings::Hidden</span>)]</span>
 	<span class="ident">PvfPrepareWorker</span>(<span class="ident">polkadot_cli::ValidationWorkerCommand</span>),
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;execute-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">structopt::clap::AppSettings::Hidden</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;execute-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">AppSettings::Hidden</span>)]</span>
 	<span class="ident">PvfExecuteWorker</span>(<span class="ident">polkadot_cli::ValidationWorkerCommand</span>),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="kw">struct</span> <span class="ident">MalusCli</span> {
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="kw">pub</span> <span class="ident">variant</span>: <span class="ident">NemesisVariant</span>,
 }
 
@@ -225,7 +225,7 @@
 
 <span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="ident">eyre::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 	<span class="ident">color_eyre::install</span>()<span class="question-mark">?</span>;
-	<span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">MalusCli::from_args</span>();
+	<span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">MalusCli::parse</span>();
 	<span class="ident">cli</span>.<span class="ident">launch</span>()<span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>(())
 }
@@ -236,7 +236,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">subcommand_works</span>() {
-		<span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">MalusCli::from_iter_safe</span>(<span class="ident">IntoIterator::into_iter</span>([
+		<span class="kw">let</span> <span class="ident">cli</span> <span class="op">=</span> <span class="ident">MalusCli::try_parse_from</span>(<span class="ident">IntoIterator::into_iter</span>([
 			<span class="string">&quot;malus&quot;</span>,
 			<span class="string">&quot;dispute-ancestor&quot;</span>,
 			<span class="string">&quot;--bob&quot;</span>,

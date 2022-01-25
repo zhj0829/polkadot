@@ -643,8 +643,6 @@
 <span id="643">643</span>
 <span id="644">644</span>
 <span id="645">645</span>
-<span id="646">646</span>
-<span id="647">647</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -685,13 +683,13 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">signer::get_account_info</span>;
 
+<span class="kw">use</span> <span class="ident">clap::Parser</span>;
 <span class="kw">use</span> <span class="ident">frame_election_provider_support::NposSolver</span>;
 <span class="kw">use</span> <span class="ident">frame_support::traits::Get</span>;
 <span class="kw">use</span> <span class="ident">jsonrpsee::ws_client</span>::{<span class="ident">WsClient</span>, <span class="ident">WsClientBuilder</span>};
 <span class="kw">use</span> <span class="ident">remote_externalities</span>::{<span class="ident">Builder</span>, <span class="ident">Mode</span>, <span class="ident">OnlineConfig</span>};
 <span class="kw">use</span> <span class="ident">sp_npos_elections::ExtendedBalance</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">traits::Block</span> <span class="kw">as</span> <span class="ident">BlockT</span>, <span class="ident">DeserializeOwned</span>};
-<span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">AnyRuntime</span> {
 	<span class="ident">Polkadot</span>,
@@ -919,7 +917,7 @@
 	}
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Command</span> {
 	<span class="doccomment">/// Monitor for the phase being signed, then compute.</span>
 	<span class="ident">Monitor</span>(<span class="ident">MonitorConfig</span>),
@@ -929,14 +927,14 @@
 	<span class="ident">EmergencySolution</span>(<span class="ident">EmergencySolutionConfig</span>),
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Solvers</span> {
 	<span class="ident">SeqPhragmen</span> {
-		<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+		<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
 		<span class="ident">iterations</span>: <span class="ident">usize</span>,
 	},
 	<span class="ident">PhragMMS</span> {
-		<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+		<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
 		<span class="ident">iterations</span>: <span class="ident">usize</span>,
 	},
 }
@@ -948,69 +946,67 @@
 	<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">Balancing</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">ExtendedBalance</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">BalanceIterations::get</span>(), <span class="number">0</span>));
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">struct</span> <span class="ident">MonitorConfig</span> {
 	<span class="doccomment">/// They type of event to listen to.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// Typically, finalized is safer and there is no chance of anything going wrong, but it can be</span>
 	<span class="doccomment">/// slower. It is recommended to use finalized, if the duration of the signed phase is longer</span>
 	<span class="doccomment">/// than the the finality delay.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;head&quot;</span>, <span class="ident">possible_values</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;head&quot;</span>, <span class="string">&quot;finalized&quot;</span>]</span>)]
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;head&quot;</span>, <span class="ident">possible_values</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;head&quot;</span>, <span class="string">&quot;finalized&quot;</span>]</span>)]
 	<span class="ident">listen</span>: <span class="ident">String</span>,
 
 	<span class="doccomment">/// The solver algorithm to use.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">solver</span>: <span class="ident">Solvers</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">struct</span> <span class="ident">EmergencySolutionConfig</span> {
 	<span class="doccomment">/// The block hash at which scraping happens. If none is provided, the latest head is used.</span>
-	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>)]</span>
 	<span class="ident">at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// The solver algorithm to use.</span>
-	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">solver</span>: <span class="ident">Solvers</span>,
 
 	<span class="doccomment">/// The number of top backed winners to take. All are taken, if not provided.</span>
 	<span class="ident">take</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">struct</span> <span class="ident">DryRunConfig</span> {
 	<span class="doccomment">/// The block hash at which scraping happens. If none is provided, the latest head is used.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>)]</span>
 	<span class="ident">at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// The solver algorithm to use.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">solver</span>: <span class="ident">Solvers</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">struct</span> <span class="ident">SharedConfig</span> {
 	<span class="doccomment">/// The `ws` node to connect to.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">short</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="ident">DEFAULT_URI</span>, <span class="ident">env</span> <span class="op">=</span> <span class="string">&quot;URI&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">short</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="ident">DEFAULT_URI</span>, <span class="ident">env</span> <span class="op">=</span> <span class="string">&quot;URI&quot;</span>)]</span>
 	<span class="ident">uri</span>: <span class="ident">String</span>,
 
 	<span class="doccomment">/// The seed of a funded account in hex.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// WARNING: Don&#39;t use an account with a large stash for this. Based on how the bot is</span>
 	<span class="doccomment">/// configured, it might re-try and lose funds through transaction fees/deposits.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">short</span>, <span class="ident">env</span> <span class="op">=</span> <span class="string">&quot;SEED&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">long</span>, <span class="ident">short</span>, <span class="ident">env</span> <span class="op">=</span> <span class="string">&quot;SEED&quot;</span>)]</span>
 	<span class="ident">seed</span>: <span class="ident">String</span>,
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Parser</span>)]</span>
 <span class="kw">struct</span> <span class="ident">Opt</span> {
 	<span class="doccomment">/// The `ws` node to connect to.</span>
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">flatten</span>)]</span>
 	<span class="ident">shared</span>: <span class="ident">SharedConfig</span>,
 
-	<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
 	<span class="ident">command</span>: <span class="ident">Command</span>,
 }
 
@@ -1170,7 +1166,7 @@
 		.<span class="ident">format_module_path</span>(<span class="bool-val">true</span>)
 		.<span class="ident">format_level</span>(<span class="bool-val">true</span>)
 		.<span class="ident">init</span>();
-	<span class="kw">let</span> <span class="ident">Opt</span> { <span class="ident">shared</span>, <span class="ident">command</span> } <span class="op">=</span> <span class="ident">Opt::from_args</span>();
+	<span class="kw">let</span> <span class="ident">Opt</span> { <span class="ident">shared</span>, <span class="ident">command</span> } <span class="op">=</span> <span class="ident">Opt::parse</span>();
 	<span class="macro">log::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;attempting to connect to {:?}&quot;</span>, <span class="ident">shared</span>.<span class="ident">uri</span>);
 
 	<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="kw">loop</span> {

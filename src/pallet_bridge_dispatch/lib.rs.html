@@ -1082,6 +1082,7 @@
 <span id="1082">1082</span>
 <span id="1083">1083</span>
 <span id="1084">1084</span>
+<span id="1085">1085</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -1733,11 +1734,12 @@
 	<span class="kw">fn</span> <span class="ident">should_fail_on_weight_mismatch</span>() {
 		<span class="ident">new_test_ext</span>().<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
-			<span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span> <span class="ident">Call::System</span>(<span class="ident">frame_system::Call::remark</span> { <span class="ident">remark</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] });
+			<span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span>
+				<span class="ident">Call::System</span>(<span class="ident">frame_system::Call::remark_with_event</span> { <span class="ident">remark</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] });
 			<span class="kw">let</span> <span class="ident">call_weight</span> <span class="op">=</span> <span class="ident">call</span>.<span class="ident">get_dispatch_info</span>().<span class="ident">weight</span>;
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">prepare_root_message</span>(<span class="ident">call</span>);
 			<span class="ident">message</span>.<span class="ident">weight</span> <span class="op">=</span> <span class="number">7</span>;
-			<span class="macro">assert!</span>(<span class="ident">call_weight</span> <span class="op">!</span><span class="op">=</span> <span class="number">7</span>, <span class="string">&quot;needed for test to actually trigger a weight mismatch&quot;</span>);
+			<span class="macro">assert!</span>(<span class="ident">call_weight</span> <span class="op">&gt;</span> <span class="number">7</span>, <span class="string">&quot;needed for test to actually trigger a weight mismatch&quot;</span>);
 
 			<span class="ident">System::set_block_number</span>(<span class="number">1</span>);
 			<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Dispatch::dispatch</span>(
