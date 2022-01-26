@@ -590,6 +590,11 @@
 <span id="590">590</span>
 <span id="591">591</span>
 <span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -694,7 +699,7 @@
 		<span class="ident">window_size</span>: <span class="ident">SessionWindowSize</span>,
 		<span class="ident">block_hash</span>: <span class="ident">Hash</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">SessionsUnavailable</span><span class="op">&gt;</span> {
-		<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span> <span class="ident">get_session_index_for_head</span>(<span class="ident">ctx</span>, <span class="ident">block_hash</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+		<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span> <span class="ident">get_session_index_for_child</span>(<span class="ident">ctx</span>, <span class="ident">block_hash</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
 		<span class="kw">let</span> <span class="ident">window_start</span> <span class="op">=</span> <span class="ident">session_index</span>.<span class="ident">saturating_sub</span>(<span class="ident">window_size</span>.<span class="ident">get</span>() <span class="op">-</span> <span class="number">1</span>);
 
@@ -752,7 +757,7 @@
 		<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="kw">impl</span> <span class="ident">SubsystemContext</span> <span class="op">+</span> <span class="ident">overseer::SubsystemContext</span>),
 		<span class="ident">block_hash</span>: <span class="ident">Hash</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SessionWindowUpdate</span>, <span class="ident">SessionsUnavailable</span><span class="op">&gt;</span> {
-		<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span> <span class="ident">get_session_index_for_head</span>(<span class="ident">ctx</span>, <span class="ident">block_hash</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+		<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span> <span class="ident">get_session_index_for_child</span>(<span class="ident">ctx</span>, <span class="ident">block_hash</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
 		<span class="kw">let</span> <span class="ident">old_window_start</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">earliest_session</span>;
 
@@ -804,7 +809,12 @@
 	}
 }
 
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_session_index_for_head</span>(
+<span class="comment">// Returns the session index expected at any child of the `parent` block.</span>
+<span class="comment">//</span>
+<span class="comment">// Note: We could use `RuntimeInfo::get_session_index_for_child` here but it&#39;s</span>
+<span class="comment">// cleaner to just call the runtime API directly without needing to create an instance</span>
+<span class="comment">// of `RuntimeInfo`.</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_session_index_for_child</span>(
 	<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="kw">impl</span> <span class="ident">SubsystemContext</span> <span class="op">+</span> <span class="ident">overseer::SubsystemContext</span>),
 	<span class="ident">block_hash</span>: <span class="ident">Hash</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SessionIndex</span>, <span class="ident">SessionsUnavailable</span><span class="op">&gt;</span> {

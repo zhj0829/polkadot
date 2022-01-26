@@ -2017,6 +2017,7 @@
 <span id="2017">2017</span>
 <span id="2018">2018</span>
 <span id="2019">2019</span>
+<span id="2020">2020</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2643,9 +2644,9 @@
 	<span class="ident">statements</span>: <span class="ident">IndexMap</span><span class="op">&lt;</span><span class="ident">StoredStatementComparator</span>, <span class="ident">SignedFullStatement</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Large statements we are waiting for with associated meta data.</span>
 	<span class="ident">waiting_large_statements</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">CandidateHash</span>, <span class="ident">LargeStatementStatus</span><span class="op">&gt;</span>,
-	<span class="doccomment">/// The validators at this head.</span>
+	<span class="doccomment">/// The parachain validators at the head&#39;s child session index.</span>
 	<span class="ident">validators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidatorId</span><span class="op">&gt;</span>,
-	<span class="doccomment">/// The session index this head is at.</span>
+	<span class="doccomment">/// The current session index of this fork.</span>
 	<span class="ident">session_index</span>: <span class="ident">sp_staking::SessionIndex</span>,
 	<span class="doccomment">/// How many `Seconded` statements we&#39;ve seen per validator.</span>
 	<span class="ident">seconded_counts</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ValidatorIndex</span>, <span class="ident">usize</span><span class="op">&gt;</span>,
@@ -3817,8 +3818,9 @@
 						<span class="string">&quot;New active leaf&quot;</span>,
 					);
 
+					<span class="comment">// Retrieve the parachain validators at the child of the head we track.</span>
 					<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span>
-						<span class="ident">runtime</span>.<span class="ident">get_session_index</span>(<span class="ident">ctx</span>.<span class="ident">sender</span>(), <span class="ident">relay_parent</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+						<span class="ident">runtime</span>.<span class="ident">get_session_index_for_child</span>(<span class="ident">ctx</span>.<span class="ident">sender</span>(), <span class="ident">relay_parent</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 					<span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">runtime</span>
 						.<span class="ident">get_session_info_by_index</span>(<span class="ident">ctx</span>.<span class="ident">sender</span>(), <span class="ident">relay_parent</span>, <span class="ident">session_index</span>)
 						.<span class="kw">await</span><span class="question-mark">?</span>;
