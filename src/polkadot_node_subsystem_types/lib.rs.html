@@ -184,7 +184,7 @@
 <span class="kw">const</span> <span class="ident">ACTIVE_LEAVES_SMALLVEC_CAPACITY</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">8</span>;
 
 <span class="doccomment">/// The status of an activated leaf.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LeafStatus</span> {
 	<span class="doccomment">/// A leaf is fresh when it&#39;s the first time the leaf has been encountered.</span>
 	<span class="doccomment">/// Most leaves should be fresh.</span>

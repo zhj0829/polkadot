@@ -501,7 +501,7 @@
 	<span class="doccomment">/// In other words, for which relay chain parents this candidate is considered live.</span>
 	<span class="doccomment">/// This is updated on every `ActiveLeavesUpdate` and enables us to know when we can safely</span>
 	<span class="doccomment">/// stop keeping track of that candidate/chunk.</span>
-	<span class="ident">live_in</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">live_in</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// We keep the task around in until `live_in` becomes empty, to make</span>
 	<span class="doccomment">/// sure we won&#39;t re-fetch an already fetched candidate.</span>

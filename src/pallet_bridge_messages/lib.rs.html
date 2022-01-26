@@ -2361,6 +2361,8 @@
 <span id="2361">2361</span>
 <span id="2362">2362</span>
 <span id="2363">2363</span>
+<span id="2364">2364</span>
+<span id="2365">2365</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -4562,6 +4564,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="attribute">#[<span class="ident">should_panic</span>]</span>
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
 	<span class="kw">fn</span> <span class="ident">receive_messages_panics_in_debug_mode_if_callback_is_wrong</span>() {
 		<span class="ident">run_test</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="ident">TestOnDeliveryConfirmed1::set_consumed_weight_per_message</span>(
@@ -4694,6 +4697,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="attribute">#[<span class="ident">should_panic</span>]</span>
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
 	<span class="kw">fn</span> <span class="ident">message_accepted_panics_in_debug_mode_if_callback_is_wrong</span>() {
 		<span class="ident">run_test</span>(<span class="op">|</span><span class="op">|</span> {
 			<span class="ident">TestOnMessageAccepted::set_consumed_weight_per_message</span>(

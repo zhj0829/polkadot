@@ -215,6 +215,110 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -244,7 +348,7 @@
 };
 
 <span class="kw">use</span> <span class="ident">futures</span>::{
-	<span class="ident">channel::mpsc</span>,
+	<span class="ident">channel</span>::{<span class="ident">mpsc</span>, <span class="ident">oneshot</span>},
 	<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
 	<span class="ident">Stream</span>,
 };
@@ -252,10 +356,15 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::runtime</span>::{<span class="ident">get_occupied_cores</span>, <span class="ident">RuntimeInfo</span>};
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CandidateHash</span>, <span class="ident">Hash</span>, <span class="ident">OccupiedCore</span>};
 <span class="kw">use</span> <span class="ident">polkadot_subsystem</span>::{
-	<span class="ident">messages::AllMessages</span>, <span class="ident">ActivatedLeaf</span>, <span class="ident">ActiveLeavesUpdate</span>, <span class="ident">LeafStatus</span>, <span class="ident">SubsystemContext</span>,
+	<span class="ident">messages</span>::{<span class="ident">AllMessages</span>, <span class="ident">ChainApiMessage</span>},
+	<span class="ident">ActivatedLeaf</span>, <span class="ident">ActiveLeavesUpdate</span>, <span class="ident">LeafStatus</span>, <span class="ident">SubsystemContext</span>,
 };
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Metrics</span>, <span class="ident">LOG_TARGET</span>};
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Metrics</span>, <span class="prelude-ty">Result</span>, <span class="ident">LOG_TARGET</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::Fatal</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span>;
 
 <span class="doccomment">/// Cache for session information.</span>
 <span class="kw">mod</span> <span class="ident">session_cache</span>;
@@ -292,6 +401,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Requester</span> {
+	<span class="doccomment">/// How many ancestors of the leaf should we consider along with it.</span>
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">LEAF_ANCESTRY_LEN_WITHIN_SESSION</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
+
 	<span class="doccomment">/// Create a new `Requester`.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// You must feed it with `ActiveLeavesUpdate` via `update_fetching_heads` and make it progress</span>
@@ -300,6 +412,7 @@
 		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">mpsc::channel</span>(<span class="number">1</span>);
 		<span class="ident">Requester</span> { <span class="ident">fetches</span>: <span class="ident">HashMap::new</span>(), <span class="ident">session_cache</span>: <span class="ident">SessionCache::new</span>(), <span class="ident">tx</span>, <span class="ident">rx</span>, <span class="ident">metrics</span> }
 	}
+
 	<span class="doccomment">/// Update heads that need availability distribution.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// For all active heads we will be fetching our chunks for availability distribution.</span>
@@ -308,43 +421,72 @@
 		<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
 		<span class="ident">runtime</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RuntimeInfo</span>,
 		<span class="ident">update</span>: <span class="ident">ActiveLeavesUpdate</span>,
-	) -&gt; <span class="ident"><span class="kw">super</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
 	{
 		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">update</span>, <span class="string">&quot;Update fetching heads&quot;</span>);
 		<span class="kw">let</span> <span class="ident">ActiveLeavesUpdate</span> { <span class="ident">activated</span>, <span class="ident">deactivated</span> } <span class="op">=</span> <span class="ident">update</span>;
-		<span class="comment">// Stale leaves happen after a reversion - we don&#39;t want to re-run availability there.</span>
-		<span class="kw">let</span> <span class="ident">activated</span> <span class="op">=</span> <span class="ident">activated</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">h</span>.<span class="ident">status</span> {
-			<span class="ident">LeafStatus::Stale</span> =&gt; <span class="prelude-val">None</span>,
-			<span class="ident">LeafStatus::Fresh</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">h</span>),
-		});
 		<span class="comment">// Order important! We need to handle activated, prior to deactivated, otherwise we might</span>
 		<span class="comment">// cancel still needed jobs.</span>
-		<span class="self">self</span>.<span class="ident">start_requesting_chunks</span>(<span class="ident">ctx</span>, <span class="ident">runtime</span>, <span class="ident">activated</span>.<span class="ident">into_iter</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">activated</span>) <span class="op">=</span> <span class="ident">activated</span> {
+			<span class="comment">// Stale leaves happen after a reversion - we don&#39;t want to re-run availability there.</span>
+			<span class="kw">if</span> <span class="kw">let</span> <span class="ident">LeafStatus::Fresh</span> <span class="op">=</span> <span class="ident">activated</span>.<span class="ident">status</span> {
+				<span class="self">self</span>.<span class="ident">start_requesting_chunks</span>(<span class="ident">ctx</span>, <span class="ident">runtime</span>, <span class="ident">activated</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+			}
+		}
 		<span class="self">self</span>.<span class="ident">stop_requesting_chunks</span>(<span class="ident">deactivated</span>.<span class="ident">into_iter</span>());
 		<span class="prelude-val">Ok</span>(())
 	}
 
-	<span class="doccomment">/// Start requesting chunks for newly imported heads.</span>
+	<span class="doccomment">/// Start requesting chunks for newly imported head.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// This will also request [`SESSION_ANCESTRY_LEN`] leaf ancestors from the same session</span>
+	<span class="doccomment">/// and start requesting chunks for them too.</span>
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">start_requesting_chunks</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>(
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
 		<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
 		<span class="ident">runtime</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RuntimeInfo</span>,
-		<span class="ident">new_heads</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ActivatedLeaf</span><span class="op">&gt;</span>,
-	) -&gt; <span class="ident"><span class="kw">super</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+		<span class="ident">new_head</span>: <span class="ident">ActivatedLeaf</span>,
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
 	{
-		<span class="kw">for</span> <span class="ident">ActivatedLeaf</span> { <span class="ident">hash</span>: <span class="ident">leaf</span>, .. } <span class="kw">in</span> <span class="ident">new_heads</span> {
-			<span class="kw">let</span> <span class="ident">cores</span> <span class="op">=</span> <span class="ident">get_occupied_cores</span>(<span class="ident">ctx</span>, <span class="ident">leaf</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+		<span class="kw">let</span> <span class="ident">ActivatedLeaf</span> { <span class="ident">hash</span>: <span class="ident">leaf</span>, .. } <span class="op">=</span> <span class="ident">new_head</span>;
+		<span class="kw">let</span> <span class="ident">ancestors_in_session</span> <span class="op">=</span> <span class="ident">get_block_ancestors_in_same_session</span>(
+			<span class="ident">ctx</span>,
+			<span class="ident">runtime</span>,
+			<span class="ident">leaf</span>,
+			<span class="ident"><span class="self">Self</span>::LEAF_ANCESTRY_LEN_WITHIN_SESSION</span>,
+		)
+		.<span class="kw">await</span>
+		.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
+			<span class="macro">tracing::debug!</span>(
+				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+				<span class="ident">leaf</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">leaf</span>,
+				<span class="string">&quot;Failed to fetch leaf ancestors in the same session due to an error: {}&quot;</span>,
+				<span class="ident">err</span>
+			);
+			<span class="ident">Vec::new</span>()
+		});
+		<span class="comment">// Also spawn or bump tasks for candidates in ancestry in the same session.</span>
+		<span class="kw">for</span> <span class="ident">hash</span> <span class="kw">in</span> <span class="ident">std::iter::once</span>(<span class="ident">leaf</span>).<span class="ident">chain</span>(<span class="ident">ancestors_in_session</span>) {
+			<span class="kw">let</span> <span class="ident">cores</span> <span class="op">=</span> <span class="ident">get_occupied_cores</span>(<span class="ident">ctx</span>, <span class="ident">hash</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 			<span class="macro">tracing::trace!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">occupied_cores</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">cores</span>,
 				<span class="string">&quot;Query occupied core&quot;</span>
 			);
+			<span class="comment">// Important:</span>
+			<span class="comment">// We mark the whole ancestry as live in the **leaf** hash, so we don&#39;t need to track</span>
+			<span class="comment">// any tasks separately.</span>
+			<span class="comment">//</span>
+			<span class="comment">// The next time the subsystem receives leaf update, some of spawned task will be bumped</span>
+			<span class="comment">// to be live in fresh relay parent, while some might get dropped due to the current leaf</span>
+			<span class="comment">// being deactivated.</span>
 			<span class="self">self</span>.<span class="ident">add_cores</span>(<span class="ident">ctx</span>, <span class="ident">runtime</span>, <span class="ident">leaf</span>, <span class="ident">cores</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 		}
+
 		<span class="prelude-val">Ok</span>(())
 	}
 
@@ -371,7 +513,7 @@
 		<span class="ident">runtime</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RuntimeInfo</span>,
 		<span class="ident">leaf</span>: <span class="ident">Hash</span>,
 		<span class="ident">cores</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">OccupiedCore</span><span class="op">&gt;</span>,
-	) -&gt; <span class="ident"><span class="kw">super</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
 	{
@@ -431,6 +573,72 @@
 			}
 		}
 	}
+}
+
+<span class="doccomment">/// Requests up to `limit` ancestor hashes of relay parent in the same session.</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_block_ancestors_in_same_session</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>(
+	<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
+	<span class="ident">runtime</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RuntimeInfo</span>,
+	<span class="ident">head</span>: <span class="ident">Hash</span>,
+	<span class="ident">limit</span>: <span class="ident">usize</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
+{
+	<span class="comment">// The order is parent, grandparent, ...</span>
+	<span class="comment">//</span>
+	<span class="comment">// `limit + 1` since a session index for the last element in ancestry</span>
+	<span class="comment">// is obtained through its parent. It always gets truncated because</span>
+	<span class="comment">// `session_ancestry_len` can only be incremented `ancestors.len() - 1` times.</span>
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ancestors</span> <span class="op">=</span> <span class="ident">get_block_ancestors</span>(<span class="ident">ctx</span>, <span class="ident">head</span>, <span class="ident">limit</span> <span class="op">+</span> <span class="number">1</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ancestors_iter</span> <span class="op">=</span> <span class="ident">ancestors</span>.<span class="ident">iter</span>();
+
+	<span class="comment">// `head` is the child of the first block in `ancestors`, request its session index.</span>
+	<span class="kw">let</span> <span class="ident">head_session_index</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ancestors_iter</span>.<span class="ident">next</span>() {
+		<span class="prelude-val">Some</span>(<span class="ident">parent</span>) =&gt; <span class="ident">runtime</span>.<span class="ident">get_session_index</span>(<span class="ident">ctx</span>.<span class="ident">sender</span>(), <span class="kw-2">*</span><span class="ident">parent</span>).<span class="kw">await</span><span class="question-mark">?</span>,
+		<span class="prelude-val">None</span> =&gt; {
+			<span class="comment">// No first element, i.e. empty.</span>
+			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ancestors</span>)
+		},
+	};
+
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">session_ancestry_len</span> <span class="op">=</span> <span class="number">0</span>;
+	<span class="comment">// The first parent is skipped.</span>
+	<span class="kw">for</span> <span class="ident">parent</span> <span class="kw">in</span> <span class="ident">ancestors_iter</span> {
+		<span class="comment">// Parent is the i-th ancestor, request session index for its child -- (i-1)th element.</span>
+		<span class="kw">let</span> <span class="ident">session_index</span> <span class="op">=</span> <span class="ident">runtime</span>.<span class="ident">get_session_index</span>(<span class="ident">ctx</span>.<span class="ident">sender</span>(), <span class="kw-2">*</span><span class="ident">parent</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+		<span class="kw">if</span> <span class="ident">session_index</span> <span class="op">==</span> <span class="ident">head_session_index</span> {
+			<span class="ident">session_ancestry_len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+		} <span class="kw">else</span> {
+			<span class="kw">break</span>
+		}
+	}
+
+	<span class="comment">// Drop the rest.</span>
+	<span class="ident">ancestors</span>.<span class="ident">truncate</span>(<span class="ident">session_ancestry_len</span>);
+
+	<span class="prelude-val">Ok</span>(<span class="ident">ancestors</span>)
+}
+
+<span class="doccomment">/// Request up to `limit` ancestor hashes of relay parent from the Chain API.</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_block_ancestors</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>(
+	<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
+	<span class="ident">relay_parent</span>: <span class="ident">Hash</span>,
+	<span class="ident">limit</span>: <span class="ident">usize</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
+{
+	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
+	<span class="ident">ctx</span>.<span class="ident">send_message</span>(<span class="ident">ChainApiMessage::Ancestors</span> {
+		<span class="ident">hash</span>: <span class="ident">relay_parent</span>,
+		<span class="ident">k</span>: <span class="ident">limit</span>,
+		<span class="ident">response_channel</span>: <span class="ident">tx</span>,
+	})
+	.<span class="kw">await</span>;
+
+	<span class="kw">let</span> <span class="ident">ancestors</span> <span class="op">=</span> <span class="ident">rx</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Fatal::ChainApiSenderDropped</span>)<span class="question-mark">?</span>.<span class="ident">map_err</span>(<span class="ident">Fatal::ChainApi</span>)<span class="question-mark">?</span>;
+	<span class="prelude-val">Ok</span>(<span class="ident">ancestors</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="polkadot_availability_distribution" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>

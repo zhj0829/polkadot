@@ -1132,6 +1132,18 @@
 <span id="1132">1132</span>
 <span id="1133">1133</span>
 <span id="1134">1134</span>
+<span id="1135">1135</span>
+<span id="1136">1136</span>
+<span id="1137">1137</span>
+<span id="1138">1138</span>
+<span id="1139">1139</span>
+<span id="1140">1140</span>
+<span id="1141">1141</span>
+<span id="1142">1142</span>
+<span id="1143">1143</span>
+<span id="1144">1144</span>
+<span id="1145">1145</span>
+<span id="1146">1146</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1957,10 +1969,22 @@
 			}
 
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">was_concluded_valid</span> <span class="op">&amp;&amp;</span> <span class="ident">concluded_valid</span> {
+				<span class="macro">tracing::info!</span>(
+					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+					<span class="question-mark">?</span><span class="ident">candidate_hash</span>,
+					<span class="ident">session</span>,
+					<span class="string">&quot;Dispute on candidate concluded with &#39;valid&#39; result&quot;</span>,
+				);
 				<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_concluded_valid</span>();
 			}
 
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">was_concluded_invalid</span> <span class="op">&amp;&amp;</span> <span class="ident">concluded_invalid</span> {
+				<span class="macro">tracing::info!</span>(
+					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+					<span class="question-mark">?</span><span class="ident">candidate_hash</span>,
+					<span class="ident">session</span>,
+					<span class="string">&quot;Dispute on candidate concluded with &#39;invalid&#39; result&quot;</span>,
+				);
 				<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_concluded_invalid</span>();
 			}
 
