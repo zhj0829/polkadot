@@ -673,7 +673,7 @@ impl<BlockNumber: Clone> DisputeStateImporter<BlockNumber> {
 			(true, false) => {
 				log::error!("Dispute statments are never removed. qed");
 				Vec::new()
-			}
+			},
 			(true, true) => {
 				// No change, nothing to do.
 				Vec::new()
@@ -925,12 +925,15 @@ impl<T: Config> Pallet<T> {
 				(false, dispute_state)
 			} else {
 				// No state in storage, this indicates it's the first dispute statement set as well.
-				(true, DisputeState {
-					validators_for: bitvec![BitOrderLsb0, u8; 0; n_validators],
-					validators_against: bitvec![BitOrderLsb0, u8; 0; n_validators],
-					start: now,
-					concluded_at: None,
-				})
+				(
+					true,
+					DisputeState {
+						validators_for: bitvec![BitOrderLsb0, u8; 0; n_validators],
+						validators_against: bitvec![BitOrderLsb0, u8; 0; n_validators],
+						start: now,
+						concluded_at: None,
+					},
+				)
 			}
 		};
 
@@ -1072,14 +1075,15 @@ impl<T: Config> Pallet<T> {
 						// since allowing both of them, even if the spam threshold would be reached
 						// is a good thing.
 						// Overflow is no concern, disputes are limited by weight.
-						DisputeStatement::Valid(_) => {
+						DisputeStatement::Valid(_) =>
 							if Some(true) == summary.new_flags.get(v_i) {
-							vote_for_count += 1;
-						}}
+								vote_for_count += 1;
+							},
 						DisputeStatement::Invalid(_) => {
 							if Some(true) == summary.new_flags.get(v_i) {
-							vote_against_count += 1;
-						}}
+								vote_against_count += 1;
+							}
+						},
 					}
 				});
 				if vote_for_count.is_zero() || vote_against_count.is_zero() {
