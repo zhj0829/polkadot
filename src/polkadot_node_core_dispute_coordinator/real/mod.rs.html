@@ -405,6 +405,10 @@
 <span id="405">405</span>
 <span id="406">406</span>
 <span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -609,6 +613,10 @@
 					<span class="kw">continue</span>
 				},
 			};
+
+			<span class="comment">// Before we move to the initialized state we need to check if we got at</span>
+			<span class="comment">// least on finality notification to prevent large ancestry block scraping,</span>
+			<span class="comment">// when the node is syncing.</span>
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">overlay_db</span> <span class="op">=</span> <span class="ident">OverlayedBackend::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">backend</span>);
 			<span class="kw">let</span> (<span class="ident">participations</span>, <span class="ident">spam_slots</span>, <span class="ident">ordering_provider</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>
