@@ -19,11 +19,11 @@
 use crate::Runtime;
 
 use bp_messages::{
-	source_chain::TargetHeaderChain,
+	source_chain::{SenderOrigin, TargetHeaderChain},
 	target_chain::{ProvedMessages, SourceHeaderChain},
 	InboundLaneData, LaneId, Message, MessageNonce, Parameter as MessagesParameter,
 };
-use bp_runtime::{ChainId, MILLAU_CHAIN_ID, RIALTO_CHAIN_ID};
+use bp_runtime::{Chain, ChainId, MILLAU_CHAIN_ID, RIALTO_CHAIN_ID};
 use bridge_runtime_common::messages::{self, MessageBridge, MessageTransaction};
 use codec::{Decode, Encode};
 use frame_support::{
@@ -64,10 +64,10 @@ pub type FromRialtoMessagePayload =
 pub type FromRialtoEncodedCall = messages::target::FromBridgedChainEncodedMessageCall<crate::Call>;
 
 /// Messages proof for Rialto -> Millau messages.
-type FromRialtoMessagesProof = messages::target::FromBridgedChainMessagesProof<bp_rialto::Hash>;
+pub type FromRialtoMessagesProof = messages::target::FromBridgedChainMessagesProof<bp_rialto::Hash>;
 
 /// Messages delivery proof for Millau -> Rialto messages.
-type ToRialtoMessagesDeliveryProof =
+pub type ToRialtoMessagesDeliveryProof =
 	messages::source::FromBridgedChainMessagesDeliveryProof<bp_rialto::Hash>;
 
 /// Call-dispatch based message dispatch for Rialto -> Millau messages.
@@ -86,7 +86,7 @@ impl MessageBridge for WithRialtoMessageBridge {
 	const RELAYER_FEE_PERCENT: u32 = 10;
 	const THIS_CHAIN_ID: ChainId = MILLAU_CHAIN_ID;
 	const BRIDGED_CHAIN_ID: ChainId = RIALTO_CHAIN_ID;
-	const BRIDGED_MESSAGES_PALLET_NAME: &'static str = bp_rialto::WITH_MILLAU_MESSAGES_PALLET_NAME;
+	const BRIDGED_MESSAGES_PALLET_NAME: &'static str = bp_millau::WITH_MILLAU_MESSAGES_PALLET_NAME;
 
 	type ThisChain = Millau;
 	type BridgedChain = Rialto;
@@ -113,12 +113,23 @@ impl messages::ChainWithMessages for Millau {
 }
 
 impl messages::ThisChainWithMessages for Millau {
+	type Origin = crate::Origin;
 	type Call = crate::Call;
 
-	fn is_outbound_lane_enabled(lane: &LaneId) -> bool {
-		*lane == [0, 0, 0, 0] ||
-			*lane == [0, 0, 0, 1] ||
-			*lane == crate::TokenSwapMessagesLane::get()
+	fn is_message_accepted(send_origin: &Self::Origin, lane: &LaneId) -> bool {
+		// lanes 0x00000000 && 0x00000001 are accepting any paid messages, while
+		// `TokenSwapMessageLane` only accepts messages from token swap pallet
+		let token_swap_dedicated_lane = crate::TokenSwapMessagesLane::get();
+		match *lane {
+			[0, 0, 0, 0] | [0, 0, 0, 1] => send_origin.linked_account().is_some(),
+			_ if *lane == token_swap_dedicated_lane => matches!(
+				send_origin.caller,
+				crate::OriginCaller::BridgeRialtoTokenSwap(
+					pallet_bridge_token_swap::RawOrigin::TokenSwap { .. }
+				)
+			),
+			_ => false,
+		}
 	}
 
 	fn maximal_pending_messages_at_outbound_lane() -> MessageNonce {
@@ -172,13 +183,13 @@ impl messages::ChainWithMessages for Rialto {
 
 impl messages::BridgedChainWithMessages for Rialto {
 	fn maximal_extrinsic_size() -> u32 {
-		bp_rialto::max_extrinsic_size()
+		bp_rialto::Rialto::max_extrinsic_size()
 	}
 
 	fn message_weight_limits(_message_payload: &[u8]) -> RangeInclusive<Weight> {
 		// we don't want to relay too large messages + keep reserve for future upgrades
 		let upper_limit = messages::target::maximal_incoming_message_dispatch_weight(
-			bp_rialto::max_extrinsic_weight(),
+			bp_rialto::Rialto::max_extrinsic_weight(),
 		);
 
 		// we're charging for payload bytes in `WithRialtoMessageBridge::transaction_payment`
@@ -271,6 +282,25 @@ impl SourceHeaderChain<bp_rialto::Balance> for Rialto {
 			Runtime,
 			crate::RialtoGrandpaInstance,
 		>(proof, messages_count)
+	}
+}
+
+impl SenderOrigin<crate::AccountId> for crate::Origin {
+	fn linked_account(&self) -> Option<crate::AccountId> {
+		match self.caller {
+			crate::OriginCaller::system(frame_system::RawOrigin::Signed(ref submitter)) =>
+				Some(submitter.clone()),
+			crate::OriginCaller::system(frame_system::RawOrigin::Root) |
+			crate::OriginCaller::system(frame_system::RawOrigin::None) =>
+				crate::RootAccountForPayments::get(),
+			crate::OriginCaller::BridgeRialtoTokenSwap(
+				pallet_bridge_token_swap::RawOrigin::TokenSwap {
+					ref swap_account_at_this_chain,
+					..
+				},
+			) => Some(swap_account_at_this_chain.clone()),
+			_ => None,
+		}
 	}
 }
 
