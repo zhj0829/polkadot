@@ -692,9 +692,12 @@ name = "bp-header-chain"
 version = "0.1.0"
 dependencies = [
  "assert_matches",
+ "bp-runtime",
  "bp-test-utils",
  "finality-grandpa",
  "frame-support",
+ "hex",
+ "hex-literal",
  "parity-scale-codec",
  "scale-info",
  "serde",
@@ -723,10 +726,13 @@ dependencies = [
  "bp-runtime",
  "frame-support",
  "frame-system",
+ "hex",
+ "hex-literal",
  "impl-trait-for-tuples",
  "parity-scale-codec",
  "scale-info",
  "serde",
+ "sp-core",
  "sp-std",
 ]
 
@@ -819,7 +825,9 @@ dependencies = [
  "bp-runtime",
  "ed25519-dalek",
  "frame-support",
+ "frame-system",
  "hash-db",
+ "pallet-balances",
  "pallet-bridge-dispatch",
  "pallet-bridge-grandpa",
  "pallet-bridge-messages",
@@ -831,6 +839,7 @@ dependencies = [
  "sp-state-machine",
  "sp-std",
  "sp-trie",
+ "sp-version",
 ]
 
 [[package]]
@@ -4926,8 +4935,6 @@ dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
- "hex",
- "hex-literal",
  "log",
  "num-traits",
  "pallet-balances",

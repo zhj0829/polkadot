@@ -19,15 +19,12 @@
 pub use self::{at_rococo::*, at_wococo::*};
 
 use bp_messages::{
-	source_chain::TargetHeaderChain,
+	source_chain::{SenderOrigin, TargetHeaderChain},
 	target_chain::{ProvedMessages, SourceHeaderChain},
 	InboundLaneData, LaneId, Message, MessageNonce,
 };
-use bp_rococo::{
-	max_extrinsic_size, max_extrinsic_weight, EXTRA_STORAGE_PROOF_SIZE,
-	MAXIMAL_ENCODED_ACCOUNT_ID_SIZE,
-};
-use bp_runtime::{ChainId, ROCOCO_CHAIN_ID, WOCOCO_CHAIN_ID};
+use bp_rococo::{EXTRA_STORAGE_PROOF_SIZE, MAXIMAL_ENCODED_ACCOUNT_ID_SIZE, Rococo};
+use bp_runtime::{Chain, ChainId, ROCOCO_CHAIN_ID, WOCOCO_CHAIN_ID};
 use bridge_runtime_common::messages::{
 	source as messages_source, target as messages_target, BridgedChainWithMessages,
 	ChainWithMessages, MessageBridge, MessageTransaction, ThisChainWithMessages,
@@ -43,7 +40,7 @@ use rococo_runtime_constants::fee::WeightToFee;
 
 /// Maximal number of pending outbound messages.
 const MAXIMAL_PENDING_MESSAGES_AT_OUTBOUND_LANE: MessageNonce =
-	bp_rococo::MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE;
+	bp_rococo::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX;
 /// Maximal weight of single message delivery confirmation transaction on Rococo/Wococo chain.
 ///
 /// This value is a result of `pallet_bridge_messages::Pallet::receive_messages_delivery_proof` weight formula
@@ -106,9 +103,10 @@ impl<B, GI> ChainWithMessages for RococoLikeChain<B, GI> {
 }
 
 impl<B, GI> ThisChainWithMessages for RococoLikeChain<B, GI> {
+	type Origin = crate::Origin;
 	type Call = crate::Call;
 
-	fn is_outbound_lane_enabled(lane: &LaneId) -> bool {
+	fn is_message_accepted(_submitter: &crate::Origin, lane: &LaneId) -> bool {
 		*lane == [0, 0, 0, 0]
 	}
 
@@ -148,13 +146,13 @@ impl<B, GI> ThisChainWithMessages for RococoLikeChain<B, GI> {
 
 impl<B, GI> BridgedChainWithMessages for RococoLikeChain<B, GI> {
 	fn maximal_extrinsic_size() -> u32 {
-		max_extrinsic_size()
+		Rococo::max_extrinsic_size()
 	}
 
 	fn message_weight_limits(_message_payload: &[u8]) -> RangeInclusive<Weight> {
 		// we don't want to relay too large messages + keep reserve for future upgrades
 		let upper_limit =
-			messages_target::maximal_incoming_message_dispatch_weight(max_extrinsic_weight());
+			messages_target::maximal_incoming_message_dispatch_weight(Rococo::max_extrinsic_weight());
 
 		// we're charging for payload bytes in `With(Wococo | Rococo)MessageBridge::transaction_payment` function
 		//
@@ -271,6 +269,19 @@ impl Get<crate::Balance> for GetDeliveryConfirmationTransactionFee {
 	}
 }
 
+impl SenderOrigin<crate::AccountId> for crate::Origin {
+	fn linked_account(&self) -> Option<crate::AccountId> {
+		match self.caller {
+			crate::OriginCaller::system(frame_system::RawOrigin::Signed(ref submitter)) =>
+				Some(submitter.clone()),
+			crate::OriginCaller::system(frame_system::RawOrigin::Root) |
+			crate::OriginCaller::system(frame_system::RawOrigin::None) =>
+				crate::RootAccountForPayments::get(),
+			_ => None,
+		}
+	}
+}
+
 /// This module contains definitions that are used by the messages pallet instance, "deployed" at Rococo.
 mod at_rococo {
 	use super::*;
@@ -284,7 +295,7 @@ mod at_rococo {
 		const BRIDGED_CHAIN_ID: ChainId = WOCOCO_CHAIN_ID;
 		const RELAYER_FEE_PERCENT: u32 = 10;
 		const BRIDGED_MESSAGES_PALLET_NAME: &'static str =
-			bp_wococo::WITH_ROCOCO_MESSAGES_PALLET_NAME;
+			bp_rococo::WITH_ROCOCO_MESSAGES_PALLET_NAME;
 
 		type ThisChain = RococoAtRococo;
 		type BridgedChain = WococoAtRococo;
@@ -334,7 +345,7 @@ mod at_wococo {
 		const BRIDGED_CHAIN_ID: ChainId = ROCOCO_CHAIN_ID;
 		const RELAYER_FEE_PERCENT: u32 = 10;
 		const BRIDGED_MESSAGES_PALLET_NAME: &'static str =
-			bp_rococo::WITH_WOCOCO_MESSAGES_PALLET_NAME;
+			bp_wococo::WITH_WOCOCO_MESSAGES_PALLET_NAME;
 
 		type ThisChain = WococoAtWococo;
 		type BridgedChain = RococoAtWococo;
@@ -401,14 +412,14 @@ mod tests {
 		);
 
 		let max_incoming_message_proof_size = bp_rococo::EXTRA_STORAGE_PROOF_SIZE.saturating_add(
-			messages::target::maximal_incoming_message_size(bp_rococo::max_extrinsic_size()),
+			messages::target::maximal_incoming_message_size(Rococo::max_extrinsic_size()),
 		);
 		pallet_bridge_messages::ensure_able_to_receive_message::<Weights>(
-			bp_rococo::max_extrinsic_size(),
-			bp_rococo::max_extrinsic_weight(),
+			Rococo::max_extrinsic_size(),
+			Rococo::max_extrinsic_weight(),
 			max_incoming_message_proof_size,
 			messages::target::maximal_incoming_message_dispatch_weight(
-				bp_rococo::max_extrinsic_weight(),
+				Rococo::max_extrinsic_weight(),
 			),
 		);
 
@@ -420,8 +431,8 @@ mod tests {
 			)
 			.unwrap_or(u32::MAX);
 		pallet_bridge_messages::ensure_able_to_receive_confirmation::<Weights>(
-			bp_rococo::max_extrinsic_size(),
-			bp_rococo::max_extrinsic_weight(),
+			Rococo::max_extrinsic_size(),
+			Rococo::max_extrinsic_weight(),
 			max_incoming_inbound_lane_data_proof_size,
 			bp_rococo::MAX_UNREWARDED_RELAYER_ENTRIES_AT_INBOUND_LANE,
 			bp_rococo::MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE,

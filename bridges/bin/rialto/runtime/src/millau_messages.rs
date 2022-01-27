@@ -19,11 +19,11 @@
 use crate::Runtime;
 
 use bp_messages::{
-	source_chain::TargetHeaderChain,
+	source_chain::{SenderOrigin, TargetHeaderChain},
 	target_chain::{ProvedMessages, SourceHeaderChain},
 	InboundLaneData, LaneId, Message, MessageNonce, Parameter as MessagesParameter,
 };
-use bp_runtime::{ChainId, MILLAU_CHAIN_ID, RIALTO_CHAIN_ID};
+use bp_runtime::{Chain, ChainId, MILLAU_CHAIN_ID, RIALTO_CHAIN_ID};
 use bridge_runtime_common::messages::{self, MessageBridge, MessageTransaction};
 use codec::{Decode, Encode};
 use frame_support::{
@@ -86,7 +86,7 @@ impl MessageBridge for WithMillauMessageBridge {
 	const RELAYER_FEE_PERCENT: u32 = 10;
 	const THIS_CHAIN_ID: ChainId = RIALTO_CHAIN_ID;
 	const BRIDGED_CHAIN_ID: ChainId = MILLAU_CHAIN_ID;
-	const BRIDGED_MESSAGES_PALLET_NAME: &'static str = bp_millau::WITH_RIALTO_MESSAGES_PALLET_NAME;
+	const BRIDGED_MESSAGES_PALLET_NAME: &'static str = bp_rialto::WITH_RIALTO_MESSAGES_PALLET_NAME;
 
 	type ThisChain = Rialto;
 	type BridgedChain = Millau;
@@ -113,10 +113,11 @@ impl messages::ChainWithMessages for Rialto {
 }
 
 impl messages::ThisChainWithMessages for Rialto {
+	type Origin = crate::Origin;
 	type Call = crate::Call;
 
-	fn is_outbound_lane_enabled(lane: &LaneId) -> bool {
-		*lane == [0, 0, 0, 0] || *lane == [0, 0, 0, 1]
+	fn is_message_accepted(send_origin: &Self::Origin, lane: &LaneId) -> bool {
+		send_origin.linked_account().is_some() && (*lane == [0, 0, 0, 0] || *lane == [0, 0, 0, 1])
 	}
 
 	fn maximal_pending_messages_at_outbound_lane() -> MessageNonce {
@@ -170,13 +171,13 @@ impl messages::ChainWithMessages for Millau {
 
 impl messages::BridgedChainWithMessages for Millau {
 	fn maximal_extrinsic_size() -> u32 {
-		bp_millau::max_extrinsic_size()
+		bp_millau::Millau::max_extrinsic_size()
 	}
 
 	fn message_weight_limits(_message_payload: &[u8]) -> RangeInclusive<Weight> {
 		// we don't want to relay too large messages + keep reserve for future upgrades
 		let upper_limit = messages::target::maximal_incoming_message_dispatch_weight(
-			bp_millau::max_extrinsic_weight(),
+			bp_millau::Millau::max_extrinsic_weight(),
 		);
 
 		// we're charging for payload bytes in `WithMillauMessageBridge::transaction_payment`
@@ -272,6 +273,19 @@ impl SourceHeaderChain<bp_millau::Balance> for Millau {
 	}
 }
 
+impl SenderOrigin<crate::AccountId> for crate::Origin {
+	fn linked_account(&self) -> Option<crate::AccountId> {
+		match self.caller {
+			crate::OriginCaller::system(frame_system::RawOrigin::Signed(ref submitter)) =>
+				Some(submitter.clone()),
+			crate::OriginCaller::system(frame_system::RawOrigin::Root) |
+			crate::OriginCaller::system(frame_system::RawOrigin::None) =>
+				crate::RootAccountForPayments::get(),
+			_ => None,
+		}
+	}
+}
+
 /// Rialto -> Millau message lane pallet parameters.
 #[derive(RuntimeDebug, Clone, Encode, Decode, PartialEq, Eq, TypeInfo)]
 pub enum RialtoToMillauMessagesParameter {
@@ -316,7 +330,7 @@ mod tests {
 			SystemConfig::default().build_storage::<Runtime>().unwrap().into();
 		ext.execute_with(|| {
 			let bridge = MILLAU_CHAIN_ID;
-			let call: Call = SystemCall::remark { remark: vec![] }.into();
+			let call: Call = SystemCall::set_heap_pages { pages: 64 }.into();
 			let dispatch_weight = call.get_dispatch_info().weight;
 			let dispatch_fee = <Runtime as pallet_transaction_payment::Config>::WeightToFee::calc(
 				&dispatch_weight,
