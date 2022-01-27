@@ -718,6 +718,7 @@ dependencies = [
  "smallvec",
  "sp-api",
  "sp-std",
+ "sp-version",
 ]
 
 [[package]]
@@ -760,6 +761,7 @@ dependencies = [
  "smallvec",
  "sp-api",
  "sp-std",
+ "sp-version",
 ]
 
 [[package]]
