@@ -22,14 +22,15 @@ pub mod chain_spec;
 
 pub use chain_spec::*;
 use futures::future::Future;
-use jsonrpsee_types::v2::Response as RpcResponse;
 use polkadot_node_primitives::{CollationGenerationConfig, CollatorFn};
 use polkadot_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
 use polkadot_overseer::Handle;
 use polkadot_primitives::v1::{Balance, CollatorPair, HeadData, Id as ParaId, ValidationCode};
 use polkadot_runtime_common::BlockHashCount;
 use polkadot_runtime_parachains::paras::ParaGenesisArgs;
-use polkadot_service::{ClientHandle, Error, ExecuteWithClient, FullClient, IsCollator, NewFull};
+use polkadot_service::{
+	ClientHandle, Error, ExecuteWithClient, FullClient, IsCollator, NewFull, PrometheusConfig,
+};
 use polkadot_test_runtime::{
 	ParasSudoWrapperCall, Runtime, SignedExtra, SignedPayload, SudoCall, UncheckedExtrinsic,
 	VERSION,
@@ -40,18 +41,24 @@ use sc_network::{
 	config::{NetworkConfiguration, TransportConfig},
 	multiaddr,
 };
-use service::{
+use sc_service::{
 	config::{DatabaseSource, KeystoreConfig, MultiaddrWithPeerId, WasmExecutionMethod},
 	BasePath, Configuration, KeepBlocks, Role, RpcHandlers, TaskManager, TransactionStorageMode,
 };
 use sp_arithmetic::traits::SaturatedConversion;
 use sp_blockchain::HeaderBackend;
-use sp_core::Bytes;
 use sp_keyring::Sr25519Keyring;
 use sp_runtime::{codec::Encode, generic, traits::IdentifyAccount, MultiSigner};
 use sp_state_machine::BasicExternalities;
-use std::{path::PathBuf, sync::Arc};
-use substrate_test_client::BlockchainEventsExt;
+use std::{
+	net::{Ipv4Addr, SocketAddr},
+	path::PathBuf,
+	sync::Arc,
+};
+use substrate_test_client::{
+	BlockchainEventsExt, RpcHandlersExt, RpcTransactionError, RpcTransactionOutput,
+};
+
 /// Declare an instance of the native executor named `PolkadotTestExecutorDispatch`. Include the wasm binary as the
 /// equivalent wasm code.
 pub struct PolkadotTestExecutorDispatch;
@@ -99,6 +106,14 @@ impl ClientHandle for TestClient {
 	fn execute_with<T: ExecuteWithClient>(&self, t: T) -> T::Output {
 		T::execute_with_client::<_, _, polkadot_service::FullBackend>(t, self.0.clone())
 	}
+}
+
+/// Returns a prometheus config usable for testing.
+pub fn test_prometheus_config(port: u16) -> PrometheusConfig {
+	PrometheusConfig::new_with_default_registry(
+		SocketAddr::new(Ipv4Addr::LOCALHOST.into(), port),
+		"test-chain".to_string(),
+	)
 }
 
 /// Create a Polkadot `Configuration`.
@@ -159,7 +174,7 @@ pub fn node_config(
 		keep_blocks: KeepBlocks::All,
 		transaction_storage: TransactionStorageMode::BlockBody,
 		chain_spec: Box::new(spec),
-		wasm_method: WasmExecutionMethod::Interpreted,
+		wasm_method: WasmExecutionMethod::Compiled,
 		wasm_runtime_overrides: Default::default(),
 		// NOTE: we enforce the use of the native runtime to make the errors more debuggable
 		execution_strategies: ExecutionStrategies {
@@ -187,27 +202,18 @@ pub fn node_config(
 		tracing_targets: None,
 		tracing_receiver: Default::default(),
 		max_runtime_instances: 8,
+		runtime_cache_size: 2,
 		announce_block: true,
 		base_path: Some(base_path),
 		informant_output_format: Default::default(),
 	}
 }
 
-/// Run a test validator node that uses the test runtime.
-///
-/// The node will be using an in-memory socket, therefore you need to provide boot nodes if you
-/// want it to be connected to other nodes.
-///
-/// The `storage_update_func` function will be executed in an externalities provided environment
-/// and can be used to make adjustments to the runtime genesis storage.
+/// Run a test validator node that uses the test runtime and specified `config`.
 pub fn run_validator_node(
-	tokio_handle: tokio::runtime::Handle,
-	key: Sr25519Keyring,
-	storage_update_func: impl Fn(),
-	boot_nodes: Vec<MultiaddrWithPeerId>,
+	config: Configuration,
 	worker_program_path: Option<PathBuf>,
 ) -> PolkadotTestNode {
-	let config = node_config(storage_update_func, tokio_handle, key, boot_nodes, true);
 	let multiaddr = config.network.listen_addresses[0].clone();
 	let NewFull { task_manager, client, network, rpc_handlers, overseer_handle, .. } =
 		new_full(config, IsCollator::No, worker_program_path)
@@ -270,18 +276,12 @@ impl PolkadotTestNode {
 	/// Send an extrinsic to this node.
 	pub async fn send_extrinsic(
 		&self,
-		call: impl Into<polkadot_test_runtime::Call>,
+		function: impl Into<polkadot_test_runtime::Call>,
 		caller: Sr25519Keyring,
-	) -> Result<String, serde_json::Error> {
-		let extrinsic = construct_extrinsic(&*self.client, call, caller, 0);
-		let payload: Bytes = extrinsic.encode().into();
-		let rpc = self
-			.rpc_handlers
-			.rpc_query("author_submitExtrinsic", vec![payload])
-			.await
-			.expect("in-memory rpc calls work");
+	) -> Result<RpcTransactionOutput, RpcTransactionError> {
+		let extrinsic = construct_extrinsic(&*self.client, function, caller, 0);
 
-		serde_json::from_str::<RpcResponse<String>>(&rpc).map(|result| result.result)
+		self.rpc_handlers.send_transaction(extrinsic.into()).await
 	}
 
 	/// Register a parachain at this relay chain.
@@ -290,7 +290,7 @@ impl PolkadotTestNode {
 		id: ParaId,
 		validation_code: impl Into<ValidationCode>,
 		genesis_head: impl Into<HeadData>,
-	) -> Result<String, serde_json::Error> {
+	) -> Result<(), RpcTransactionError> {
 		let call = ParasSudoWrapperCall::sudo_schedule_para_initialize {
 			id,
 			genesis: ParaGenesisArgs {
@@ -302,6 +302,7 @@ impl PolkadotTestNode {
 
 		self.send_extrinsic(SudoCall::sudo { call: Box::new(call.into()) }, Sr25519Keyring::Alice)
 			.await
+			.map(drop)
 	}
 
 	/// Wait for `count` blocks to be imported in the node and then exit. This function will not return if no blocks
@@ -344,6 +345,7 @@ pub fn construct_extrinsic(
 		BlockHashCount::get().checked_next_power_of_two().map(|c| c / 2).unwrap_or(2) as u64;
 	let tip = 0;
 	let extra: SignedExtra = (
+		frame_system::CheckNonZeroSender::<Runtime>::new(),
 		frame_system::CheckSpecVersion::<Runtime>::new(),
 		frame_system::CheckTxVersion::<Runtime>::new(),
 		frame_system::CheckGenesis::<Runtime>::new(),
@@ -356,6 +358,7 @@ pub fn construct_extrinsic(
 		function.clone(),
 		extra.clone(),
 		(
+			(),
 			VERSION.spec_version,
 			VERSION.transaction_version,
 			genesis_block,

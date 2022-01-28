@@ -29,11 +29,12 @@ pub mod overseer;
 #[cfg(feature = "full-node")]
 pub use self::overseer::{OverseerGen, OverseerGenArgs, RealOverseerGen};
 
-#[cfg(all(test, feature = "disputes"))]
+#[cfg(test)]
 mod tests;
 
 #[cfg(feature = "full-node")]
 use {
+	beefy_gadget::notification::{BeefyBestBlockSender, BeefySignedCommitmentSender},
 	grandpa::{self, FinalityProofProvider as GrandpaFinalityProofProvider},
 	polkadot_node_core_approval_voting::Config as ApprovalVotingConfig,
 	polkadot_node_core_av_store::Config as AvailabilityConfig,
@@ -44,7 +45,7 @@ use {
 	},
 	polkadot_node_core_dispute_coordinator::Config as DisputeCoordinatorConfig,
 	polkadot_overseer::BlockInfo,
-	sc_client_api::ExecutorProvider,
+	sc_client_api::{BlockBackend, ExecutorProvider},
 	sp_trie::PrefixedMemoryDB,
 	tracing::info,
 };
@@ -53,7 +54,7 @@ pub use sp_core::traits::SpawnNamed;
 #[cfg(feature = "full-node")]
 pub use {
 	polkadot_overseer::{Handle, Overseer, OverseerConnector, OverseerHandle},
-	polkadot_primitives::v1::ParachainHost,
+	polkadot_primitives::v2::ParachainHost,
 	relay_chain_selection::SelectRelayChain,
 	sc_client_api::AuxStore,
 	sp_authority_discovery::AuthorityDiscoveryApi,
@@ -69,6 +70,7 @@ use std::{sync::Arc, time::Duration};
 use prometheus_endpoint::Registry;
 #[cfg(feature = "full-node")]
 use service::KeystoreContainer;
+use service::RpcHandlers;
 use telemetry::TelemetryWorker;
 #[cfg(feature = "full-node")]
 use telemetry::{Telemetry, TelemetryWorkerHandle};
@@ -99,8 +101,8 @@ use sc_executor::NativeElseWasmExecutor;
 pub use sc_executor::NativeExecutionDispatch;
 pub use service::{
 	config::{DatabaseSource, PrometheusConfig},
-	ChainSpec, Configuration, PruningMode, Role, RuntimeGenesis, TFullBackend, TFullCallExecutor,
-	TFullClient, TaskManager, TransactionPoolOptions,
+	ChainSpec, Configuration, Error as SubstrateServiceError, PruningMode, Role, RuntimeGenesis,
+	TFullBackend, TFullCallExecutor, TFullClient, TaskManager, TransactionPoolOptions,
 };
 pub use sp_api::{ApiRef, ConstructRuntimeApi, Core as CoreApi, ProvideRuntimeApi, StateBackend};
 pub use sp_runtime::{
@@ -199,7 +201,7 @@ pub enum Error {
 	AddrFormatInvalid(#[from] std::net::AddrParseError),
 
 	#[error(transparent)]
-	Sub(#[from] service::Error),
+	Sub(#[from] SubstrateServiceError),
 
 	#[error(transparent)]
 	Blockchain(#[from] sp_blockchain::Error),
@@ -249,6 +251,9 @@ pub trait IdentifyVariant {
 	/// Returns if this is a configuration for the `Wococo` test network.
 	fn is_wococo(&self) -> bool;
 
+	/// Returns if this is a configuration for the `Versi` test network.
+	fn is_versi(&self) -> bool;
+
 	/// Returns true if this configuration is for a development network.
 	fn is_dev(&self) -> bool;
 }
@@ -266,18 +271,12 @@ impl IdentifyVariant for Box<dyn ChainSpec> {
 	fn is_wococo(&self) -> bool {
 		self.id().starts_with("wococo") || self.id().starts_with("wco")
 	}
+	fn is_versi(&self) -> bool {
+		self.id().starts_with("versi") || self.id().starts_with("vrs")
+	}
 	fn is_dev(&self) -> bool {
 		self.id().ends_with("dev")
 	}
-}
-
-// If we're using prometheus, use a registry with a prefix of `polkadot`.
-fn set_prometheus_registry(config: &mut Configuration) -> Result<(), Error> {
-	if let Some(PrometheusConfig { registry, .. }) = config.prometheus_config.as_mut() {
-		*registry = Registry::new_custom(Some("polkadot".into()), None)?;
-	}
-
-	Ok(())
 }
 
 /// Initialize the `Jeager` collector. The destination must listen
@@ -343,8 +342,6 @@ where
 		RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
 	ExecutorDispatch: NativeExecutionDispatch + 'static,
 {
-	set_prometheus_registry(config)?;
-
 	let telemetry = config
 		.telemetry_endpoints
 		.clone()
@@ -366,6 +363,7 @@ where
 		config.wasm_method,
 		config.default_heap_pages,
 		config.max_runtime_instances,
+		config.runtime_cache_size,
 	);
 
 	let (client, backend, keystore_container, task_manager) =
@@ -408,10 +406,7 @@ fn new_partial<RuntimeApi, ExecutorDispatch, ChainSelection>(
 		sc_consensus::DefaultImportQueue<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		(
-			impl Fn(
-				polkadot_rpc::DenyUnsafe,
-				polkadot_rpc::SubscriptionTaskExecutor,
-			) -> Result<polkadot_rpc::RpcModule<()>, service::Error>,
+			impl service::RpcExtensionBuilder,
 			(
 				babe::BabeBlockImport<
 					Block,
@@ -420,7 +415,7 @@ fn new_partial<RuntimeApi, ExecutorDispatch, ChainSelection>(
 				>,
 				grandpa::LinkHalf<Block, FullClient<RuntimeApi, ExecutorDispatch>, ChainSelection>,
 				babe::BabeLink<Block>,
-				beefy_gadget::notification::BeefySignedCommitmentSender<Block>,
+				(BeefySignedCommitmentSender<Block>, BeefyBestBlockSender<Block>),
 			),
 			grandpa::SharedVoterState,
 			std::time::Duration, // slot-duration
@@ -463,7 +458,7 @@ where
 
 	let justification_import = grandpa_block_import.clone();
 
-	let babe_config = babe::Config::get_or_compute(&*client)?;
+	let babe_config = babe::Config::get(&*client)?;
 	let (block_import, babe_link) =
 		babe::block_import(babe_config.clone(), grandpa_block_import, client.clone())?;
 
@@ -491,8 +486,11 @@ where
 		telemetry.as_ref().map(|x| x.handle()),
 	)?;
 
-	let (beefy_link, beefy_commitment_stream) =
-		beefy_gadget::notification::BeefySignedCommitmentStream::channel();
+	let (beefy_commitment_link, beefy_commitment_stream) =
+		beefy_gadget::notification::BeefySignedCommitmentStream::<Block>::channel();
+	let (beefy_best_block_link, beefy_best_block_stream) =
+		beefy_gadget::notification::BeefyBestBlockStream::<Block>::channel();
+	let beefy_links = (beefy_commitment_link, beefy_best_block_link);
 
 	let justification_stream = grandpa_link.justification_stream();
 	let shared_authority_set = grandpa_link.shared_authority_set().clone();
@@ -502,11 +500,11 @@ where
 		Some(shared_authority_set.clone()),
 	);
 
-	let import_setup = (block_import.clone(), grandpa_link, babe_link.clone(), beefy_link);
-	let rpc_setup = shared_voter_state.clone();
-
 	let shared_epoch_changes = babe_link.epoch_changes().clone();
 	let slot_duration = babe_config.slot_duration();
+
+	let import_setup = (block_import, grandpa_link, babe_link, beefy_links);
+	let rpc_setup = shared_voter_state.clone();
 
 	let rpc_extensions_builder = {
 		let client = client.clone();
@@ -517,7 +515,7 @@ where
 
 		move |deny_unsafe,
 		      subscription_executor: polkadot_rpc::SubscriptionTaskExecutor|
-		      -> Result<polkadot_rpc::RpcModule<()>, service::Error> {
+		      -> Result<polkadot_rpc::RpcExtension, service::Error> {
 			let deps = polkadot_rpc::FullDeps {
 				client: client.clone(),
 				pool: transaction_pool.clone(),
@@ -538,6 +536,7 @@ where
 				},
 				beefy: polkadot_rpc::BeefyDeps {
 					beefy_commitment_stream: beefy_commitment_stream.clone(),
+					beefy_best_block_stream: beefy_best_block_stream.clone(),
 					subscription_executor,
 				},
 			};
@@ -564,7 +563,7 @@ pub struct NewFull<C> {
 	pub client: C,
 	pub overseer_handle: Option<Handle>,
 	pub network: Arc<sc_network::NetworkService<Block, <Block as BlockT>::Hash>>,
-	pub rpc_handlers: service::RpcHandlers,
+	pub rpc_handlers: RpcHandlers,
 	pub backend: Arc<FullBackend>,
 }
 
@@ -694,7 +693,10 @@ where
 	let backoff_authoring_blocks = {
 		let mut backoff = sc_consensus_slots::BackoffAuthoringOnFinalizedHeadLagging::default();
 
-		if config.chain_spec.is_rococo() || config.chain_spec.is_wococo() {
+		if config.chain_spec.is_rococo() ||
+			config.chain_spec.is_wococo() ||
+			config.chain_spec.is_versi()
+		{
 			// it's a testnet that's in flux, finality has stalled sometimes due
 			// to operational issues and it's annoying to slow down block
 			// production to 1 block per hour.
@@ -724,6 +726,14 @@ where
 	let auth_or_collator = role.is_authority() || is_collator.is_collator();
 	let requires_overseer_for_chain_sel = local_keystore.is_some() && auth_or_collator;
 
+	let disputes_enabled = chain_spec.is_rococo() ||
+		chain_spec.is_kusama() ||
+		chain_spec.is_westend() ||
+		chain_spec.is_versi() ||
+		chain_spec.is_wococo();
+
+	let pvf_checker_enabled = !is_collator.is_collator() && chain_spec.is_versi();
+
 	let select_chain = if requires_overseer_for_chain_sel {
 		let metrics =
 			polkadot_node_subsystem_util::metrics::Metrics::register(prometheus_registry.as_ref())?;
@@ -732,6 +742,7 @@ where
 			basics.backend.clone(),
 			overseer_handle.clone(),
 			metrics,
+			disputes_enabled,
 		)
 	} else {
 		SelectRelayChain::new_longest_chain(basics.backend.clone())
@@ -758,10 +769,24 @@ where
 	// Note: GrandPa is pushed before the Polkadot-specific protocols. This doesn't change
 	// anything in terms of behaviour, but makes the logs more consistent with the other
 	// Substrate nodes.
-	config.network.extra_sets.push(grandpa::grandpa_peers_set_config());
+	let grandpa_protocol_name = grandpa::protocol_standard_name(
+		&client.block_hash(0).ok().flatten().expect("Genesis block exists; qed"),
+		&config.chain_spec,
+	);
+	config
+		.network
+		.extra_sets
+		.push(grandpa::grandpa_peers_set_config(grandpa_protocol_name.clone()));
 
-	if chain_spec.is_rococo() || chain_spec.is_wococo() {
-		config.network.extra_sets.push(beefy_gadget::beefy_peers_set_config());
+	let beefy_protocol_name = beefy_gadget::protocol_standard_name(
+		&client.block_hash(0).ok().flatten().expect("Genesis block exists; qed"),
+		&config.chain_spec,
+	);
+	if chain_spec.is_rococo() || chain_spec.is_wococo() || chain_spec.is_versi() {
+		config
+			.network
+			.extra_sets
+			.push(beefy_gadget::beefy_peers_set_config(beefy_protocol_name.clone()));
 	}
 
 	{
@@ -868,14 +893,14 @@ where
 		client: client.clone(),
 		keystore: keystore_container.sync_keystore(),
 		network: network.clone(),
-		rpc_builder: Box::new(rpc_extensions_builder),
+		rpc_extensions_builder: Box::new(rpc_extensions_builder),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
 		system_rpc_tx,
 		telemetry: telemetry.as_mut(),
 	})?;
 
-	let (block_import, link_half, babe_link, beefy_link) = import_setup;
+	let (block_import, link_half, babe_link, beefy_links) = import_setup;
 
 	let overseer_client = client.clone();
 	let spawner = task_manager.spawn_handle();
@@ -955,6 +980,8 @@ where
 					candidate_validation_config,
 					chain_selection_config,
 					dispute_coordinator_config,
+					disputes_enabled,
+					pvf_checker_enabled,
 				},
 			)
 			.map_err(|e| {
@@ -1066,15 +1093,17 @@ where
 		if role.is_authority() { Some(keystore_container.sync_keystore()) } else { None };
 
 	// We currently only run the BEEFY gadget on the Rococo and Wococo testnets.
-	if enable_beefy && (chain_spec.is_rococo() || chain_spec.is_wococo()) {
+	if enable_beefy && (chain_spec.is_rococo() || chain_spec.is_wococo() || chain_spec.is_versi()) {
 		let beefy_params = beefy_gadget::BeefyParams {
 			client: client.clone(),
 			backend: backend.clone(),
 			key_store: keystore_opt.clone(),
 			network: network.clone(),
-			signed_commitment_sender: beefy_link,
+			signed_commitment_sender: beefy_links.0,
+			beefy_best_block_sender: beefy_links.1,
 			min_block_delta: if chain_spec.is_wococo() { 4 } else { 8 },
 			prometheus_registry: prometheus_registry.clone(),
+			protocol_name: beefy_protocol_name,
 		};
 
 		let gadget = beefy_gadget::start_beefy_gadget::<_, _, _, _>(beefy_params);
@@ -1099,6 +1128,7 @@ where
 		keystore: keystore_opt,
 		local_role: role,
 		telemetry: telemetry.as_ref().map(|x| x.handle()),
+		protocol_name: grandpa_protocol_name,
 	};
 
 	let enable_grandpa = !disable_grandpa;
@@ -1197,7 +1227,10 @@ pub fn new_chain_ops(
 	let telemetry_worker_handle = None;
 
 	#[cfg(feature = "rococo-native")]
-	if config.chain_spec.is_rococo() || config.chain_spec.is_wococo() {
+	if config.chain_spec.is_rococo() ||
+		config.chain_spec.is_wococo() ||
+		config.chain_spec.is_versi()
+	{
 		return chain_ops!(config, jaeger_agent, telemetry_worker_handle; rococo_runtime, RococoExecutorDispatch, Rococo)
 	}
 
@@ -1230,7 +1263,10 @@ pub fn build_full(
 	overseer_gen: impl OverseerGen,
 ) -> Result<NewFull<Client>, Error> {
 	#[cfg(feature = "rococo-native")]
-	if config.chain_spec.is_rococo() || config.chain_spec.is_wococo() {
+	if config.chain_spec.is_rococo() ||
+		config.chain_spec.is_wococo() ||
+		config.chain_spec.is_versi()
+	{
 		return new_full::<rococo_runtime::RuntimeApi, RococoExecutorDispatch, _>(
 			config,
 			is_collator,

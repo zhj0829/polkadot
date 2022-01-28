@@ -6,7 +6,7 @@ description = "Statement Distribution Subsystem"
 edition = "2018"
 
 [dependencies]
-futures = "0.3.17"
+futures = "0.3.19"
 tracing = "0.1.29"
 polkadot-primitives = { path = "../../../primitives" }
 sp-staking = { git = "https://github.com/paritytech/substrate", default-features = false , branch = "dp-jsonrpsee-integration-2" }
@@ -32,3 +32,4 @@ sp-tracing = { git = "https://github.com/paritytech/substrate", branch = "dp-jso
 sc-keystore = { git = "https://github.com/paritytech/substrate", branch = "dp-jsonrpsee-integration-2" }
 sc-network = { git = "https://github.com/paritytech/substrate", branch = "dp-jsonrpsee-integration-2" }
 futures-timer = "3.0.2"
+polkadot-primitives-test-helpers = { path = "../../../primitives/test-helpers" }

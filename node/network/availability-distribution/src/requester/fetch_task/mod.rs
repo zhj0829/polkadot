@@ -64,7 +64,7 @@ pub struct FetchTask {
 	/// In other words, for which relay chain parents this candidate is considered live.
 	/// This is updated on every `ActiveLeavesUpdate` and enables us to know when we can safely
 	/// stop keeping track of that candidate/chunk.
-	live_in: HashSet<Hash>,
+	pub(crate) live_in: HashSet<Hash>,
 
 	/// We keep the task around in until `live_in` becomes empty, to make
 	/// sure we won't re-fetch an already fetched candidate.
@@ -203,7 +203,9 @@ impl FetchTask {
 	/// Remove leaves and cancel the task, if it was the last one and the task has still been
 	/// fetching.
 	pub fn remove_leaves(&mut self, leaves: &HashSet<Hash>) {
-		self.live_in.difference(leaves);
+		for leaf in leaves {
+			self.live_in.remove(leaf);
+		}
 		if self.live_in.is_empty() && !self.is_finished() {
 			self.state = FetchedState::Canceled
 		}
