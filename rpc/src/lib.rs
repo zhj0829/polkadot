@@ -168,11 +168,11 @@ where
 	)?;
 
 	module.merge(
-		BeefyRpcHandler::new(
+		BeefyRpcHandler::<Block>::new(
 			beefy.beefy_commitment_stream,
 			beefy.beefy_best_block_stream,
 			beefy.subscription_executor
-		).into_rpc(),
+		)?.into_rpc(),
 	)?;
 
 	Ok(module)

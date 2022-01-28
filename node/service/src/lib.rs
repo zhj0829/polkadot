@@ -406,7 +406,10 @@ fn new_partial<RuntimeApi, ExecutorDispatch, ChainSelection>(
 		sc_consensus::DefaultImportQueue<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		sc_transaction_pool::FullPool<Block, FullClient<RuntimeApi, ExecutorDispatch>>,
 		(
-			impl service::RpcExtensionBuilder,
+			impl Fn(
+				polkadot_rpc::DenyUnsafe,
+				polkadot_rpc::SubscriptionTaskExecutor,
+			) -> Result<polkadot_rpc::RpcModule<()>, SubstrateServiceError>,
 			(
 				babe::BabeBlockImport<
 					Block,
@@ -515,7 +518,7 @@ where
 
 		move |deny_unsafe,
 		      subscription_executor: polkadot_rpc::SubscriptionTaskExecutor|
-		      -> Result<polkadot_rpc::RpcExtension, service::Error> {
+		      -> Result<polkadot_rpc::RpcModule<()>, service::Error> {
 			let deps = polkadot_rpc::FullDeps {
 				client: client.clone(),
 				pool: transaction_pool.clone(),
@@ -893,7 +896,7 @@ where
 		client: client.clone(),
 		keystore: keystore_container.sync_keystore(),
 		network: network.clone(),
-		rpc_extensions_builder: Box::new(rpc_extensions_builder),
+		rpc_builder: Box::new(rpc_extensions_builder),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
 		system_rpc_tx,
