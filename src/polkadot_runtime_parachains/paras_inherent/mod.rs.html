@@ -1316,6 +1316,7 @@
 <span id="1316">1316</span>
 <span id="1317">1317</span>
 <span id="1318">1318</span>
+<span id="1319">1319</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2028,6 +2029,7 @@
 			<span class="kw">let</span> <span class="ident">scheduled</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">scheduler::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::scheduled</span>();
 
 			<span class="kw">let</span> <span class="ident">relay_parent_number</span> <span class="op">=</span> <span class="ident">now</span> <span class="op">-</span> <span class="ident">One::one</span>();
+			<span class="kw">let</span> <span class="ident">parent_storage_root</span> <span class="op">=</span> <span class="ident">parent_header</span>.<span class="ident">state_root</span>().<span class="ident">clone</span>();
 
 			<span class="kw">let</span> <span class="ident">check_ctx</span> <span class="op">=</span> <span class="ident">CandidateCheckContext</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="ident">now</span>, <span class="ident">relay_parent_number</span>);
 			<span class="kw">let</span> <span class="ident">backed_candidates</span> <span class="op">=</span> <span class="ident">sanitize_backed_candidates</span>::<span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">_</span><span class="op">&gt;</span>(
@@ -2043,7 +2045,7 @@
 							<span class="comment">// That way we avoid possible duplicate checks while assuring all</span>
 							<span class="comment">// backed candidates fine to pass on.</span>
 							<span class="ident">check_ctx</span>
-								.<span class="ident">verify_backed_candidate</span>(<span class="ident">parent_hash</span>, <span class="ident">candidate_idx</span>, <span class="ident">backed_candidate</span>)
+								.<span class="ident">verify_backed_candidate</span>(<span class="ident">parent_hash</span>, <span class="ident">parent_storage_root</span>, <span class="ident">candidate_idx</span>, <span class="ident">backed_candidate</span>)
 								.<span class="ident">is_err</span>()
 				},
 				<span class="kw-2">&amp;</span><span class="ident">scheduled</span>[..],

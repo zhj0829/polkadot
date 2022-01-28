@@ -1055,6 +1055,21 @@
 <span id="1055">1055</span>
 <span id="1056">1056</span>
 <span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1581,11 +1596,26 @@
 				<span class="ident">candidates</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>()
 			{
 				<span class="kw">if</span> <span class="kw">let</span> <span class="ident">FullCheck::Yes</span> <span class="op">=</span> <span class="ident">full_check</span> {
-					<span class="ident">check_ctx</span>.<span class="ident">verify_backed_candidate</span>(
+					<span class="kw">match</span> <span class="ident">check_ctx</span>.<span class="ident">verify_backed_candidate</span>(
 						<span class="ident">parent_hash</span>,
+						<span class="ident">parent_storage_root</span>,
 						<span class="ident">candidate_idx</span>,
 						<span class="ident">backed_candidate</span>,
-					)<span class="question-mark">?</span>;
+					)<span class="question-mark">?</span> {
+						<span class="prelude-val">Err</span>(<span class="ident">FailedToCreatePVD</span>) =&gt; {
+							<span class="macro">log::debug!</span>(
+								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+								<span class="string">&quot;Failed to create PVD for candidate {} on relay parent {:?}&quot;</span>,
+								<span class="ident">candidate_idx</span>,
+								<span class="ident">parent_hash</span>,
+							);
+							<span class="comment">// We don&#39;t want to error out here because it will</span>
+							<span class="comment">// brick the relay-chain. So we return early without</span>
+							<span class="comment">// doing anything.</span>
+							<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ProcessedCandidates::default</span>())
+						},
+						<span class="prelude-val">Ok</span>(<span class="ident">rpn</span>) =&gt; <span class="ident">rpn</span>,
+					}
 				}
 
 				<span class="kw">let</span> <span class="ident">para_id</span> <span class="op">=</span> <span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span>;
@@ -1599,32 +1629,6 @@
 							<span class="macro">ensure!</span>(
 								<span class="ident">required_collator</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>().<span class="ident">collator</span>,
 								<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::WrongCollator</span>,
-							);
-						}
-
-						{
-							<span class="comment">// this should never fail because the para is registered</span>
-							<span class="kw">let</span> <span class="ident">persisted_validation_data</span> <span class="op">=</span>
-								<span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::util::make_persisted_validation_data</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
-									<span class="ident">para_id</span>,
-									<span class="ident">relay_parent_number</span>,
-									<span class="ident">parent_storage_root</span>,
-								) {
-									<span class="prelude-val">Some</span>(<span class="ident">l</span>) =&gt; <span class="ident">l</span>,
-									<span class="prelude-val">None</span> =&gt; {
-										<span class="comment">// We don&#39;t want to error out here because it will</span>
-										<span class="comment">// brick the relay-chain. So we return early without</span>
-										<span class="comment">// doing anything.</span>
-										<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ProcessedCandidates::default</span>())
-									},
-								};
-
-							<span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">persisted_validation_data</span>.<span class="ident">hash</span>();
-
-							<span class="macro">ensure!</span>(
-								<span class="ident">expected</span> <span class="op">==</span>
-									<span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>().<span class="ident">persisted_validation_data_hash</span>,
-								<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::ValidationDataHashMismatch</span>,
 							);
 						}
 
@@ -2009,6 +2013,10 @@
 	<span class="ident">relay_parent_number</span>: <span class="ident">T::BlockNumber</span>,
 }
 
+<span class="doccomment">/// An error indicating that creating Persisted Validation Data failed</span>
+<span class="doccomment">/// while checking a candidate&#39;s validity.</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">FailedToCreatePVD</span>;
+
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">CandidateCheckContext</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">now</span>: <span class="ident">T::BlockNumber</span>, <span class="ident">relay_parent_number</span>: <span class="ident">T::BlockNumber</span>) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span> { <span class="ident">config</span>: <span class="op">&lt;</span><span class="ident">configuration::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::config</span>(), <span class="ident">now</span>, <span class="ident">relay_parent_number</span> }
@@ -2024,10 +2032,32 @@
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">verify_backed_candidate</span>(
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">parent_hash</span>: <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Hash</span>,
+		<span class="ident">parent_storage_root</span>: <span class="ident">T::Hash</span>,
 		<span class="ident">candidate_idx</span>: <span class="ident">usize</span>,
 		<span class="ident">backed_candidate</span>: <span class="kw-2">&amp;</span><span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::Hash</span><span class="op">&gt;</span>,
-	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">FailedToCreatePVD</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">para_id</span> <span class="op">=</span> <span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span>;
+		<span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::block_number</span>();
+		<span class="kw">let</span> <span class="ident">relay_parent_number</span> <span class="op">=</span> <span class="ident">now</span> <span class="op">-</span> <span class="ident">One::one</span>();
+
+		{
+			<span class="comment">// this should never fail because the para is registered</span>
+			<span class="kw">let</span> <span class="ident">persisted_validation_data</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::util::make_persisted_validation_data</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
+				<span class="ident">para_id</span>,
+				<span class="ident">relay_parent_number</span>,
+				<span class="ident">parent_storage_root</span>,
+			) {
+				<span class="prelude-val">Some</span>(<span class="ident">l</span>) =&gt; <span class="ident">l</span>,
+				<span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">FailedToCreatePVD</span>)),
+			};
+
+			<span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">persisted_validation_data</span>.<span class="ident">hash</span>();
+
+			<span class="macro">ensure!</span>(
+				<span class="ident">expected</span> <span class="op">==</span> <span class="ident">backed_candidate</span>.<span class="ident">descriptor</span>().<span class="ident">persisted_validation_data_hash</span>,
+				<span class="ident">Error</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::ValidationDataHashMismatch</span>,
+			);
+		}
 
 		<span class="comment">// we require that the candidate is in the context of the parent block.</span>
 		<span class="macro">ensure!</span>(
@@ -2071,7 +2101,7 @@
 			);
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>.<span class="ident">strip_into_dispatch_err</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>())<span class="question-mark">?</span>;
 		};
-		<span class="prelude-val">Ok</span>(())
+		<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(()))
 	}
 
 	<span class="doccomment">/// Check the given outputs after candidate validation on whether it passes the acceptance</span>
