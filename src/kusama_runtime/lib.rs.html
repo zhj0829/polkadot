@@ -3404,6 +3404,10 @@
 <span id="3404">3404</span>
 <span id="3405">3405</span>
 <span id="3406">3406</span>
+<span id="3407">3407</span>
+<span id="3408">3408</span>
+<span id="3409">3409</span>
+<span id="3410">3410</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -6380,6 +6384,7 @@
 		<span class="comment">// Substrate</span>
 		[<span class="ident">pallet_balances</span>, <span class="ident">Balances</span>]
 		[<span class="ident">pallet_bags_list</span>, <span class="ident">BagsList</span>]
+		[<span class="ident">frame_benchmarking::baseline</span>, <span class="ident">Baseline</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>]
 		[<span class="ident">pallet_bounties</span>, <span class="ident">Bounties</span>]
 		[<span class="ident">pallet_collective</span>, <span class="ident">Council</span>]
 		[<span class="ident">pallet_collective</span>, <span class="ident">TechnicalCommittee</span>]
@@ -6746,6 +6751,7 @@
 			<span class="kw">use</span> <span class="ident">pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
 			<span class="kw">use</span> <span class="ident">pallet_offences_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">OffencesBench</span>;
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
+			<span class="kw">use</span> <span class="ident">frame_benchmarking::baseline::Pallet</span> <span class="kw">as</span> <span class="ident">Baseline</span>;
 
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">BenchmarkList</span><span class="op">&gt;</span><span class="ident">::new</span>();
 			<span class="macro">list_benchmarks!</span>(<span class="ident">list</span>, <span class="ident">extra</span>);
@@ -6766,10 +6772,12 @@
 			<span class="kw">use</span> <span class="ident">pallet_session_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SessionBench</span>;
 			<span class="kw">use</span> <span class="ident">pallet_offences_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">OffencesBench</span>;
 			<span class="kw">use</span> <span class="ident">frame_system_benchmarking::Pallet</span> <span class="kw">as</span> <span class="ident">SystemBench</span>;
+			<span class="kw">use</span> <span class="ident">frame_benchmarking::baseline::Pallet</span> <span class="kw">as</span> <span class="ident">Baseline</span>;
 
 			<span class="kw">impl</span> <span class="ident">pallet_session_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 			<span class="kw">impl</span> <span class="ident">pallet_offences_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 			<span class="kw">impl</span> <span class="ident">frame_system_benchmarking::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
+			<span class="kw">impl</span> <span class="ident">frame_benchmarking::baseline::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {}
 
 			<span class="kw">let</span> <span class="ident">whitelist</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TrackedStorageKey</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
 				<span class="comment">// Block Number</span>
