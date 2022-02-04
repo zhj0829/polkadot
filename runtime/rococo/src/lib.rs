@@ -1104,6 +1104,8 @@ mod benches {
 		[runtime_parachains::disputes, ParasDisputes]
 		[runtime_parachains::paras_inherent, ParaInherent]
 		[runtime_parachains::paras, Paras]
+		[pallet_bridge_grandpa, BridgeRococoGrandpa]
+		[pallet_bridge_messages, MessagesBench::<Runtime, AtWococoWithRococoMessagesInstance>]
 	);
 }
 
@@ -1526,6 +1528,7 @@ sp_api::impl_runtime_apis! {
 		) {
 			use frame_benchmarking::{Benchmarking, BenchmarkList};
 			use frame_support::traits::StorageInfoTrait;
+			use pallet_bridge_messages::benchmarking::Pallet as MessagesBench;
 
 			let mut list = Vec::<BenchmarkList>::new();
 			list_benchmarks!(list, extra);
@@ -1541,6 +1544,7 @@ sp_api::impl_runtime_apis! {
 			sp_runtime::RuntimeString,
 		> {
 			use frame_benchmarking::{Benchmarking, BenchmarkBatch, TrackedStorageKey};
+			use pallet_bridge_messages::benchmarking::Pallet as MessagesBench;
 
 			let mut batches = Vec::<BenchmarkBatch>::new();
 			let whitelist: Vec<TrackedStorageKey> = vec![

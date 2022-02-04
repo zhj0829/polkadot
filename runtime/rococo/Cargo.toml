@@ -161,6 +161,7 @@ std = [
 # in WASM.
 disable-runtime-api = []
 runtime-benchmarks = [
+	"bridge-runtime-common/runtime-benchmarks",
 	"runtime-common/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",

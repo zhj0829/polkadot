@@ -18,25 +18,47 @@
 
 pub use self::{at_rococo::*, at_wococo::*};
 
+use crate::{Balances, Runtime};
+
 use bp_messages::{
 	source_chain::{SenderOrigin, TargetHeaderChain},
 	target_chain::{ProvedMessages, SourceHeaderChain},
 	InboundLaneData, LaneId, Message, MessageNonce,
 };
-use bp_rococo::{EXTRA_STORAGE_PROOF_SIZE, MAXIMAL_ENCODED_ACCOUNT_ID_SIZE, Rococo};
+use bp_rococo::{EXTRA_STORAGE_PROOF_SIZE, MAXIMAL_ENCODED_ACCOUNT_ID_SIZE, Balance, Rococo};
 use bp_runtime::{Chain, ChainId, ROCOCO_CHAIN_ID, WOCOCO_CHAIN_ID};
 use bridge_runtime_common::messages::{
 	source as messages_source, target as messages_target, BridgedChainWithMessages,
 	ChainWithMessages, MessageBridge, MessageTransaction, ThisChainWithMessages,
+	transaction_payment,
 };
 use frame_support::{
 	traits::Get,
 	weights::{Weight, WeightToFeePolynomial},
 	RuntimeDebug,
 };
+use rococo_runtime_constants::fee::WeightToFee;
 use sp_std::{convert::TryFrom, marker::PhantomData, ops::RangeInclusive};
 
-use rococo_runtime_constants::fee::WeightToFee;
+#[cfg(feature = "runtime-benchmarks")]
+use crate::Event;
+#[cfg(feature = "runtime-benchmarks")]
+use bp_rococo::{Hasher, Header};
+#[cfg(feature = "runtime-benchmarks")]
+use bridge_runtime_common::messages_benchmarking::{
+	prepare_message_delivery_proof,
+	prepare_message_proof,
+	prepare_outbound_message,
+};
+#[cfg(feature = "runtime-benchmarks")]
+use frame_support::traits::Currency;
+#[cfg(feature = "runtime-benchmarks")]
+use pallet_bridge_messages::benchmarking::{
+	Config as MessagesConfig,
+	MessageDeliveryProofParams,
+	MessageParams,
+	MessageProofParams,
+};
 
 /// Maximal number of pending outbound messages.
 const MAXIMAL_PENDING_MESSAGES_AT_OUTBOUND_LANE: MessageNonce =
@@ -99,7 +121,7 @@ impl<B, GI> ChainWithMessages for RococoLikeChain<B, GI> {
 	type Signer = primitives::v1::AccountPublic;
 	type Signature = crate::Signature;
 	type Weight = Weight;
-	type Balance = crate::Balance;
+	type Balance = Balance;
 }
 
 impl<B, GI> ThisChainWithMessages for RococoLikeChain<B, GI> {
@@ -130,14 +152,14 @@ impl<B, GI> ThisChainWithMessages for RococoLikeChain<B, GI> {
 		}
 	}
 
-	fn transaction_payment(transaction: MessageTransaction<Weight>) -> crate::Balance {
+	fn transaction_payment(transaction: MessageTransaction<Weight>) -> Balance {
 		// current fee multiplier is used here
-		bridge_runtime_common::messages::transaction_payment(
+		transaction_payment(
 			crate::BlockWeights::get()
 				.get(frame_support::weights::DispatchClass::Normal)
 				.base_extrinsic,
 			crate::TransactionByteFee::get(),
-			pallet_transaction_payment::Pallet::<crate::Runtime>::next_fee_multiplier(),
+			pallet_transaction_payment::Pallet::<Runtime>::next_fee_multiplier(),
 			|weight| WeightToFee::calc(&weight),
 			transaction,
 		)
@@ -187,14 +209,14 @@ impl<B, GI> BridgedChainWithMessages for RococoLikeChain<B, GI> {
 		}
 	}
 
-	fn transaction_payment(transaction: MessageTransaction<Weight>) -> crate::Balance {
+	fn transaction_payment(transaction: MessageTransaction<Weight>) -> Balance {
 		// current fee multiplier is used here
 		bridge_runtime_common::messages::transaction_payment(
 			crate::BlockWeights::get()
 				.get(frame_support::weights::DispatchClass::Normal)
 				.base_extrinsic,
 			crate::TransactionByteFee::get(),
-			pallet_transaction_payment::Pallet::<crate::Runtime>::next_fee_multiplier(),
+			pallet_transaction_payment::Pallet::<Runtime>::next_fee_multiplier(),
 			|weight| WeightToFee::calc(&weight),
 			transaction,
 		)
@@ -208,8 +230,8 @@ where
 	B::ThisChain: ChainWithMessages<AccountId = crate::AccountId>,
 	B::BridgedChain: ChainWithMessages<Hash = crate::Hash>,
 	GI: 'static,
-	crate::Runtime: pallet_bridge_grandpa::Config<GI>,
-	<<crate::Runtime as pallet_bridge_grandpa::Config<GI>>::BridgedChain as bp_runtime::Chain>::Hash: From<crate::Hash>,
+	Runtime: pallet_bridge_grandpa::Config<GI>,
+	<<Runtime as pallet_bridge_grandpa::Config<GI>>::BridgedChain as bp_runtime::Chain>::Hash: From<crate::Hash>,
 {
 	type Error = &'static str;
 	type MessagesDeliveryProof = messages_source::FromBridgedChainMessagesDeliveryProof<crate::Hash>;
@@ -221,17 +243,17 @@ where
 	fn verify_messages_delivery_proof(
 		proof: Self::MessagesDeliveryProof,
 	) -> Result<(LaneId, InboundLaneData<crate::AccountId>), Self::Error> {
-		messages_source::verify_messages_delivery_proof::<B, crate::Runtime, GI>(proof)
+		messages_source::verify_messages_delivery_proof::<B, Runtime, GI>(proof)
 	}
 }
 
-impl<B, GI> SourceHeaderChain<crate::Balance> for RococoLikeChain<B, GI>
+impl<B, GI> SourceHeaderChain<Balance> for RococoLikeChain<B, GI>
 where
 	B: MessageBridge,
-	B::BridgedChain: ChainWithMessages<Balance = crate::Balance, Hash = crate::Hash>,
+	B::BridgedChain: ChainWithMessages<Balance = Balance, Hash = crate::Hash>,
 	GI: 'static,
-	crate::Runtime: pallet_bridge_grandpa::Config<GI>,
-	<<crate::Runtime as pallet_bridge_grandpa::Config<GI>>::BridgedChain as bp_runtime::Chain>::Hash: From<crate::Hash>,
+	Runtime: pallet_bridge_grandpa::Config<GI>,
+	<<Runtime as pallet_bridge_grandpa::Config<GI>>::BridgedChain as bp_runtime::Chain>::Hash: From<crate::Hash>,
 {
 	type Error = &'static str;
 	type MessagesProof = messages_target::FromBridgedChainMessagesProof<crate::Hash>;
@@ -239,8 +261,8 @@ where
 	fn verify_messages_proof(
 		proof: Self::MessagesProof,
 		messages_count: u32,
-	) -> Result<ProvedMessages<Message<crate::Balance>>, Self::Error> {
-		messages_target::verify_messages_proof::<B, crate::Runtime, GI>(proof, messages_count).and_then(verify_inbound_messages_lane)
+	) -> Result<ProvedMessages<Message<Balance>>, Self::Error> {
+		messages_target::verify_messages_proof::<B, Runtime, GI>(proof, messages_count).and_then(verify_inbound_messages_lane)
 	}
 }
 
@@ -249,8 +271,8 @@ const INBOUND_LANE_DISABLED: &str = "The inbound message lane is disabled.";
 
 /// Verify that lanes of inbound messages are enabled.
 fn verify_inbound_messages_lane(
-	messages: ProvedMessages<Message<crate::Balance>>,
-) -> Result<ProvedMessages<Message<crate::Balance>>, &'static str> {
+	messages: ProvedMessages<Message<Balance>>,
+) -> Result<ProvedMessages<Message<Balance>>, &'static str> {
 	let allowed_incoming_lanes = [[0, 0, 0, 0]];
 	if messages.keys().any(|lane_id| !allowed_incoming_lanes.contains(lane_id)) {
 		return Err(INBOUND_LANE_DISABLED)
@@ -261,8 +283,8 @@ fn verify_inbound_messages_lane(
 /// The cost of delivery confirmation transaction.
 pub struct GetDeliveryConfirmationTransactionFee;
 
-impl Get<crate::Balance> for GetDeliveryConfirmationTransactionFee {
-	fn get() -> crate::Balance {
+impl Get<Balance> for GetDeliveryConfirmationTransactionFee {
+	fn get() -> Balance {
 		<RococoAtRococo as ThisChainWithMessages>::transaction_payment(
 			RococoAtRococo::estimate_delivery_confirmation_transaction(),
 		)
@@ -326,8 +348,8 @@ mod at_rococo {
 	/// Call-dispatch based message dispatch for Wococo -> Rococo messages.
 	pub type FromWococoMessageDispatch = messages_target::FromBridgedChainMessageDispatch<
 		AtRococoWithWococoMessageBridge,
-		crate::Runtime,
-		pallet_balances::Pallet<crate::Runtime>,
+		Runtime,
+		Balances,
 		crate::AtRococoFromWococoMessagesDispatch,
 	>;
 }
@@ -376,10 +398,65 @@ mod at_wococo {
 	/// Call-dispatch based message dispatch for Rococo -> Wococo messages.
 	pub type FromRococoMessageDispatch = messages_target::FromBridgedChainMessageDispatch<
 		AtWococoWithRococoMessageBridge,
-		crate::Runtime,
-		pallet_balances::Pallet<crate::Runtime>,
+		Runtime,
+		Balances,
 		crate::AtWococoFromRococoMessagesDispatch,
 	>;
+}
+
+#[cfg(feature = "runtime-benchmarks")]
+impl MessagesConfig<crate::AtWococoWithRococoMessagesInstance> for Runtime {
+	fn maximal_message_size() -> u32 {
+		messages_source::maximal_message_size::<AtWococoWithRococoMessageBridge>()
+	}
+
+	fn bridged_relayer_id() -> Self::InboundRelayer {
+		[0u8; 32].into()
+	}
+
+	fn account_balance(account: &Self::AccountId) -> Self::OutboundMessageFee {
+		Balances::free_balance(account)
+	}
+
+	fn endow_account(account: &Self::AccountId) {
+		Balances::make_free_balance_be(account, Balance::MAX / 100);
+	}
+
+	fn prepare_outbound_message(
+		params: MessageParams<Self::AccountId>,
+	) -> (ToRococoMessagePayload, Balance) {
+		(prepare_outbound_message::<AtWococoWithRococoMessageBridge>(params), Self::message_fee())
+	}
+
+	fn prepare_message_proof(
+		params: MessageProofParams,
+	) -> (messages_target::FromBridgedChainMessagesProof<crate::Hash>, bp_messages::Weight) {
+		prepare_message_proof::<Runtime, (), (), AtWococoWithRococoMessageBridge, Header, Hasher>(
+			params,
+			&crate::VERSION,
+			Balance::MAX / 100,
+		)
+	}
+
+	fn prepare_message_delivery_proof(
+		params: MessageDeliveryProofParams<Self::AccountId>,
+	) -> messages_source::FromBridgedChainMessagesDeliveryProof<crate::Hash> {
+		prepare_message_delivery_proof::<Runtime, (), AtWococoWithRococoMessageBridge, Header, Hasher>(
+			params,
+		)
+	}
+
+	fn is_message_dispatched(nonce: bp_messages::MessageNonce) -> bool {
+		frame_system::Pallet::<Runtime>::events()
+			.into_iter()
+			.map(|event_record| event_record.event)
+			.any(|event| matches!(
+				event,
+				Event::BridgeRococoMessagesDispatch(pallet_bridge_dispatch::Event::<Runtime, _>::MessageDispatched(
+					_, ([0, 0, 0, 0], nonce_from_event), _,
+				)) if nonce_from_event == nonce
+			))
+	}
 }
 
 #[cfg(test)]
@@ -401,7 +478,7 @@ mod tests {
 
 		// we don't have any knowledge of messages-at-Rococo weights, so we'll be using
 		// weights of one of our testnets, which should be accurate enough
-		type Weights = pallet_bridge_messages::weights::RialtoWeight<crate::Runtime>;
+		type Weights = pallet_bridge_messages::weights::MillauWeight<Runtime>;
 
 		pallet_bridge_messages::ensure_weights_are_correct::<Weights>(
 			DEFAULT_MESSAGE_DELIVERY_TX_WEIGHT,
@@ -426,16 +503,16 @@ mod tests {
 		let max_incoming_inbound_lane_data_proof_size =
 			bp_messages::InboundLaneData::<()>::encoded_size_hint(
 				bp_rococo::MAXIMAL_ENCODED_ACCOUNT_ID_SIZE,
-				bp_rococo::MAX_UNREWARDED_RELAYER_ENTRIES_AT_INBOUND_LANE as _,
-				bp_rococo::MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE as _,
+				bp_rococo::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX as _,
+				bp_rococo::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX as _,
 			)
 			.unwrap_or(u32::MAX);
 		pallet_bridge_messages::ensure_able_to_receive_confirmation::<Weights>(
 			Rococo::max_extrinsic_size(),
 			Rococo::max_extrinsic_weight(),
 			max_incoming_inbound_lane_data_proof_size,
-			bp_rococo::MAX_UNREWARDED_RELAYER_ENTRIES_AT_INBOUND_LANE,
-			bp_rococo::MAX_UNCONFIRMED_MESSAGES_AT_INBOUND_LANE,
+			bp_rococo::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
+			bp_rococo::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
 			crate::RocksDbWeight::get(),
 		);
 	}
@@ -476,7 +553,7 @@ mod tests {
 		);
 	}
 
-	fn proved_messages(lane_id: LaneId) -> ProvedMessages<Message<crate::Balance>> {
+	fn proved_messages(lane_id: LaneId) -> ProvedMessages<Message<Balance>> {
 		vec![(
 			lane_id,
 			ProvedLaneMessages {
