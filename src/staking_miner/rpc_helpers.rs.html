@@ -92,12 +92,12 @@
 <span class="doccomment">//! Helper method for RPC.</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">jsonrpsee::types::traits::Client</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">jsonrpsee::types::v2::ParamsSer</span>;
+<span class="kw">use</span> <span class="ident">jsonrpsee::core::client::ClientT</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">jsonrpsee::types::ParamsSer</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">frame_support::DebugNoBound</span>, <span class="ident">thiserror::Error</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">RpcHelperError</span> {
-	<span class="ident">JsonRpsee</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">jsonrpsee::types::Error</span>),
+	<span class="ident">JsonRpsee</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">jsonrpsee::core::Error</span>),
 	<span class="ident">Codec</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">codec::Error</span>),
 }
 

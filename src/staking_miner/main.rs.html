@@ -873,7 +873,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">frame_support::DebugNoBound</span>, <span class="ident">thiserror::Error</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span><span class="op">&gt;</span> {
 	<span class="ident">Io</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std::io::Error</span>),
-	<span class="ident">JsonRpsee</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">jsonrpsee::types::Error</span>),
+	<span class="ident">JsonRpsee</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">jsonrpsee::core::Error</span>),
 	<span class="ident">RpcHelperError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">rpc_helpers::RpcHelperError</span>),
 	<span class="ident">Codec</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">codec::Error</span>),
 	<span class="ident">Crypto</span>(<span class="ident">sp_core::crypto::SecretStringError</span>),
@@ -1247,7 +1247,7 @@
 
 	<span class="kw">let</span> <span class="ident">outcome</span> <span class="op">=</span> <span class="macro">any_runtime!</span> {
 		<span class="kw">match</span> <span class="ident">command</span>.<span class="ident">clone</span>() {
-			<span class="ident">Command::Monitor</span>(<span class="ident">c</span>) =&gt; <span class="ident">monitor_cmd</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>, <span class="ident">shared</span>, <span class="ident">c</span>, <span class="ident">signer_account</span>).<span class="kw">await</span>
+			<span class="ident">Command::Monitor</span>(<span class="ident">c</span>) =&gt; <span class="ident">monitor_cmd</span>(<span class="ident">client</span>, <span class="ident">shared</span>, <span class="ident">c</span>, <span class="ident">signer_account</span>).<span class="kw">await</span>
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
 					<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Monitor error: {:?}&quot;</span>, <span class="ident">e</span>);
 				}),

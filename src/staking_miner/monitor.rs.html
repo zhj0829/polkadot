@@ -185,6 +185,134 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -206,13 +334,17 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">rpc_helpers</span>::<span class="kw-2">*</span>, <span class="ident">signer::Signer</span>, <span class="ident">Error</span>, <span class="ident">MonitorConfig</span>, <span class="ident">SharedConfig</span>};
 <span class="kw">use</span> <span class="ident">codec::Encode</span>;
 <span class="kw">use</span> <span class="ident">jsonrpsee</span>::{
+	<span class="ident">core</span>::{
+		<span class="ident">client</span>::{<span class="ident">Subscription</span>, <span class="ident">SubscriptionClientT</span>},
+		<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">RpcError</span>,
+	},
 	<span class="ident">rpc_params</span>,
-	<span class="ident">types</span>::{<span class="ident">traits::SubscriptionClient</span>, <span class="ident">Subscription</span>},
 	<span class="ident">ws_client::WsClient</span>,
 };
-
 <span class="kw">use</span> <span class="ident">sc_transaction_pool_api::TransactionStatus</span>;
 <span class="kw">use</span> <span class="ident">sp_core::storage::StorageKey</span>;
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">tokio::sync::mpsc</span>;
 
 <span class="doccomment">/// Ensure that now is the signed phase.</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">ensure_signed_phase</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EPM::Config</span>, <span class="ident">B</span>: <span class="ident">BlockT</span><span class="op">&gt;</span>(
@@ -251,14 +383,16 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">monitor_cmd_for</span> { (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span>:<span class="ident">tt</span>) =&gt; { <span class="macro">paste::paste!</span> {
+
 	<span class="doccomment">/// The monitor command.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async</span> <span class="kw">fn</span> [<span class="op">&lt;</span><span class="ident">monitor_cmd_</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span><span class="op">&gt;</span>](
-		<span class="ident">client</span>: <span class="kw-2">&amp;</span><span class="ident">WsClient</span>,
+		<span class="ident">client</span>: <span class="ident">WsClient</span>,
 		<span class="ident">shared</span>: <span class="ident">SharedConfig</span>,
 		<span class="ident">config</span>: <span class="ident">MonitorConfig</span>,
 		<span class="ident">signer</span>: <span class="ident">Signer</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">crate</span>::[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span> <span class="ident">_runtime_exports</span><span class="op">&gt;</span>]<span class="ident">::Runtime</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span> <span class="ident">_runtime_exports</span><span class="op">&gt;</span>]::<span class="kw-2">*</span>;
+		<span class="kw">type</span> <span class="ident">StakingMinerError</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">crate</span>::[<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span> <span class="ident">_runtime_exports</span><span class="op">&gt;</span>]<span class="ident">::Runtime</span><span class="op">&gt;</span>;
 
 		<span class="kw">let</span> (<span class="ident">sub</span>, <span class="ident">unsub</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">listen</span> <span class="op">==</span> <span class="string">&quot;head&quot;</span> {
 			(<span class="string">&quot;chain_subscribeNewHeads&quot;</span>, <span class="string">&quot;chain_unsubscribeNewHeads&quot;</span>)
@@ -266,66 +400,143 @@
 			(<span class="string">&quot;chain_subscribeFinalizedHeads&quot;</span>, <span class="string">&quot;chain_unsubscribeFinalizedHeads&quot;</span>)
 		};
 
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">subscription</span>: <span class="ident">Subscription</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">subscribe</span>(<span class="kw-2">&amp;</span><span class="ident">sub</span>, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">unsub</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+
+		<span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">client</span>);
+		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="kw-2">mut</span> <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">mpsc::unbounded_channel</span>::<span class="op">&lt;</span><span class="ident">StakingMinerError</span><span class="op">&gt;</span>();
+
 		<span class="kw">loop</span> {
-			<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;subscribing to {:?} / {:?}&quot;</span>, <span class="ident">sub</span>, <span class="ident">unsub</span>);
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">subscription</span>: <span class="ident">Subscription</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">client</span>
-				.<span class="ident">subscribe</span>(<span class="kw-2">&amp;</span><span class="ident">sub</span>, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">unsub</span>)
-				.<span class="kw">await</span>
-				.<span class="ident">unwrap</span>();
-
-			<span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">now</span>) <span class="op">=</span> <span class="ident">subscription</span>.<span class="ident">next</span>().<span class="kw">await</span><span class="question-mark">?</span> {
-				<span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="ident">now</span>.<span class="ident">hash</span>();
-				<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;new event at #{:?} ({:?})&quot;</span>, <span class="ident">now</span>.<span class="ident">number</span>, <span class="ident">hash</span>);
-
-				<span class="comment">// if the runtime version has changed, terminate.</span>
-				<span class="ident"><span class="kw">crate</span>::check_versions</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">client</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-
-				<span class="comment">// we prefer doing this check before fetching anything into a remote-ext.</span>
-				<span class="kw">if</span> <span class="ident">ensure_signed_phase</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="ident">client</span>, <span class="ident">hash</span>).<span class="kw">await</span>.<span class="ident">is_err</span>() {
-					<span class="macro">log::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;phase closed, not interested in this block at all.&quot;</span>);
-					<span class="kw">continue</span>;
-				};
-
-				<span class="comment">// grab an externalities without staking, just the election snapshot.</span>
-				<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ext</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::create_election_ext</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(
-					<span class="ident">shared</span>.<span class="ident">uri</span>.<span class="ident">clone</span>(),
-					<span class="prelude-val">Some</span>(<span class="ident">hash</span>),
-					<span class="macro">vec!</span>[],
-				).<span class="kw">await</span><span class="question-mark">?</span>;
-
-				<span class="kw">if</span> <span class="ident">ensure_no_previous_solution</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ext</span>, <span class="kw-2">&amp;</span><span class="ident">signer</span>.<span class="ident">account</span>).<span class="kw">await</span>.<span class="ident">is_err</span>() {
-					<span class="macro">log::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;We already have a solution in this phase, skipping.&quot;</span>);
-					<span class="kw">continue</span>;
+			<span class="kw">let</span> <span class="ident">at</span> <span class="op">=</span> <span class="macro">tokio::select!</span> {
+				<span class="ident">maybe_rp</span> <span class="op">=</span> <span class="ident">subscription</span>.<span class="ident">next</span>() =&gt; {
+					<span class="kw">match</span> <span class="ident">maybe_rp</span> {
+						<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">r</span>)) =&gt; <span class="ident">r</span>,
+						<span class="comment">// Custom `jsonrpsee` message sent by the server if the subscription was closed on the server side.</span>
+						<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">RpcError::SubscriptionClosed</span>(<span class="ident">reason</span>))) =&gt; {
+							<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;subscription to {} terminated: {:?}. Retrying..&quot;</span>, <span class="ident">sub</span>, <span class="ident">reason</span>);
+							<span class="ident">subscription</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">subscribe</span>(<span class="kw-2">&amp;</span><span class="ident">sub</span>, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">unsub</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+							<span class="kw">continue</span>;
+						}
+						<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) =&gt; {
+							<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;subscription failed to decode Header {:?}, this is bug please file an issue&quot;</span>, <span class="ident">e</span>);
+							<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>());
+						}
+						<span class="comment">// The subscription was dropped, should only happen if:</span>
+						<span class="comment">//	- the connection was closed.</span>
+						<span class="comment">//	- the subscription could not keep up with the server.</span>
+						<span class="prelude-val">None</span> =&gt; {
+							<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;subscription to {} terminated. Retrying..&quot;</span>, <span class="ident">sub</span>);
+							<span class="ident">subscription</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">subscribe</span>(<span class="kw-2">&amp;</span><span class="ident">sub</span>, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">unsub</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+							<span class="kw">continue</span>
+						}
+					}
+				},
+				<span class="ident">maybe_err</span> <span class="op">=</span> <span class="ident">rx</span>.<span class="ident">recv</span>() =&gt; {
+					<span class="kw">match</span> <span class="ident">maybe_err</span> {
+						<span class="prelude-val">Some</span>(<span class="ident">err</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+						<span class="prelude-val">None</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;at least one sender kept in the main loop should always return Some; qed&quot;</span>),
+					}
 				}
+			};
 
-				<span class="comment">// mine a solution, and run feasibility check on it as well.</span>
-				<span class="kw">let</span> (<span class="ident">raw_solution</span>, <span class="ident">witness</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::mine_with</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">solver</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ext</span>, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
-				<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;mined solution with {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">raw_solution</span>.<span class="ident">score</span>);
+			<span class="comment">// Spawn task and non-recoverable errors are sent back to the main task</span>
+			<span class="comment">// such as if the connection has been closed.</span>
+			<span class="ident">tokio::spawn</span>(
+				<span class="ident">send_and_watch_extrinsic</span>(<span class="ident">client</span>.<span class="ident">clone</span>(), <span class="ident">tx</span>.<span class="ident">clone</span>(), <span class="ident">at</span>, <span class="ident">signer</span>.<span class="ident">clone</span>(), <span class="ident">shared</span>.<span class="ident">clone</span>(), <span class="ident">config</span>.<span class="ident">clone</span>())
+			);
+		}
 
-				<span class="kw">let</span> <span class="ident">nonce</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::get_account_info</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">client</span>, <span class="kw-2">&amp;</span><span class="ident">signer</span>.<span class="ident">account</span>, <span class="prelude-val">Some</span>(<span class="ident">hash</span>))
-					.<span class="kw">await</span><span class="question-mark">?</span>
-					.<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">nonce</span>)
-					.<span class="ident">expect</span>(<span class="ident"><span class="kw">crate</span>::signer::SIGNER_ACCOUNT_WILL_EXIST</span>);
-				<span class="kw">let</span> <span class="ident">tip</span> <span class="op">=</span> <span class="number">0</span> <span class="kw">as</span> <span class="ident">Balance</span>;
-				<span class="kw">let</span> <span class="ident">period</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::BlockHashCount::get</span>() <span class="op">/</span> <span class="number">2</span>;
-				<span class="kw">let</span> <span class="ident">current_block</span> <span class="op">=</span> <span class="ident">now</span>.<span class="ident">number</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>);
-				<span class="kw">let</span> <span class="ident">era</span> <span class="op">=</span> <span class="ident">sp_runtime::generic::Era::mortal</span>(<span class="ident">period</span>.<span class="ident">into</span>(), <span class="ident">current_block</span>.<span class="ident">into</span>());
-				<span class="macro">log::trace!</span>(
-					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;transaction mortality: {:?} -&gt; {:?}&quot;</span>,
-					<span class="ident">era</span>.<span class="ident">birth</span>(<span class="ident">current_block</span>.<span class="ident">into</span>()),
-					<span class="ident">era</span>.<span class="ident">death</span>(<span class="ident">current_block</span>.<span class="ident">into</span>()),
-				);
-				<span class="kw">let</span> <span class="ident">extrinsic</span> <span class="op">=</span> <span class="ident">ext</span>.<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">create_uxt</span>(<span class="ident">raw_solution</span>, <span class="ident">witness</span>, <span class="ident">signer</span>.<span class="ident">clone</span>(), <span class="ident">nonce</span>, <span class="ident">tip</span>, <span class="ident">era</span>));
-				<span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">sp_core::Bytes</span>(<span class="ident">extrinsic</span>.<span class="ident">encode</span>());
+		<span class="doccomment">/// Construct extrinsic at given block and watch it.</span>
+		<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_and_watch_extrinsic</span>(
+			<span class="ident">client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">WsClient</span><span class="op">&gt;</span>,
+			<span class="ident">tx</span>: <span class="ident">mpsc::UnboundedSender</span><span class="op">&lt;</span><span class="ident">StakingMinerError</span><span class="op">&gt;</span>,
+			<span class="ident">at</span>: <span class="ident">Header</span>,
+			<span class="ident">signer</span>: <span class="ident">Signer</span>,
+			<span class="ident">shared</span>: <span class="ident">SharedConfig</span>,
+			<span class="ident">config</span>: <span class="ident">MonitorConfig</span>,
+		) {
 
-				<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tx_subscription</span>: <span class="ident">Subscription</span><span class="op">&lt;</span>
+			<span class="kw">let</span> <span class="ident">hash</span> <span class="op">=</span> <span class="ident">at</span>.<span class="ident">hash</span>();
+			<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;new event at #{:?} ({:?})&quot;</span>, <span class="ident">at</span>.<span class="ident">number</span>, <span class="ident">hash</span>);
+
+			<span class="comment">// if the runtime version has changed, terminate.</span>
+			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::check_versions</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client</span>).<span class="kw">await</span> {
+				<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">err</span>.<span class="ident">into</span>());
+				<span class="kw">return</span>;
+			}
+
+			<span class="comment">// we prefer doing this check before fetching anything into a remote-ext.</span>
+			<span class="kw">if</span> <span class="ident">ensure_signed_phase</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client</span>, <span class="ident">hash</span>).<span class="kw">await</span>.<span class="ident">is_err</span>() {
+				<span class="macro">log::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;phase closed, not interested in this block at all.&quot;</span>);
+				<span class="kw">return</span>;
+			}
+
+			<span class="comment">// grab an externalities without staking, just the election snapshot.</span>
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ext</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::create_election_ext</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(
+				<span class="ident">shared</span>.<span class="ident">uri</span>.<span class="ident">clone</span>(),
+				<span class="prelude-val">Some</span>(<span class="ident">hash</span>),
+				<span class="macro">vec!</span>[],
+			).<span class="kw">await</span> {
+				<span class="prelude-val">Ok</span>(<span class="ident">ext</span>) =&gt; <span class="ident">ext</span>,
+				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
+					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">err</span>);
+					<span class="kw">return</span>;
+				}
+			};
+
+			<span class="kw">if</span> <span class="ident">ensure_no_previous_solution</span>::<span class="op">&lt;</span><span class="ident">Runtime</span>, <span class="ident">Block</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ext</span>, <span class="kw-2">&amp;</span><span class="ident">signer</span>.<span class="ident">account</span>).<span class="kw">await</span>.<span class="ident">is_err</span>() {
+				<span class="macro">log::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;We already have a solution in this phase, skipping.&quot;</span>);
+				<span class="kw">return</span>;
+			}
+
+			<span class="comment">// mine a solution, and run feasibility check on it as well.</span>
+			<span class="kw">let</span> (<span class="ident">raw_solution</span>, <span class="ident">witness</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::mine_with</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">solver</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ext</span>, <span class="bool-val">true</span>) {
+				<span class="prelude-val">Ok</span>(<span class="ident">r</span>) =&gt; <span class="ident">r</span>,
+				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
+					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">err</span>.<span class="ident">into</span>());
+					<span class="kw">return</span>;
+				}
+			};
+
+			<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;mined solution with {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">raw_solution</span>.<span class="ident">score</span>);
+
+			<span class="kw">let</span> <span class="ident">nonce</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident"><span class="kw">crate</span>::get_account_info</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client</span>, <span class="kw-2">&amp;</span><span class="ident">signer</span>.<span class="ident">account</span>, <span class="prelude-val">Some</span>(<span class="ident">hash</span>)).<span class="kw">await</span> {
+				<span class="prelude-val">Ok</span>(<span class="ident">maybe_account</span>) =&gt; {
+					<span class="kw">let</span> <span class="ident">acc</span> <span class="op">=</span> <span class="ident">maybe_account</span>.<span class="ident">expect</span>(<span class="ident"><span class="kw">crate</span>::signer::SIGNER_ACCOUNT_WILL_EXIST</span>);
+					<span class="ident">acc</span>.<span class="ident">nonce</span>
+				}
+				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
+					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">err</span>);
+					<span class="kw">return</span>;
+				}
+			};
+
+			<span class="kw">let</span> <span class="ident">tip</span> <span class="op">=</span> <span class="number">0</span> <span class="kw">as</span> <span class="ident">Balance</span>;
+			<span class="kw">let</span> <span class="ident">period</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Runtime</span> <span class="kw">as</span> <span class="ident">frame_system::Config</span><span class="op">&gt;</span><span class="ident">::BlockHashCount::get</span>() <span class="op">/</span> <span class="number">2</span>;
+			<span class="kw">let</span> <span class="ident">current_block</span> <span class="op">=</span> <span class="ident">at</span>.<span class="ident">number</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>);
+			<span class="kw">let</span> <span class="ident">era</span> <span class="op">=</span> <span class="ident">sp_runtime::generic::Era::mortal</span>(<span class="ident">period</span>.<span class="ident">into</span>(), <span class="ident">current_block</span>.<span class="ident">into</span>());
+
+			<span class="macro">log::trace!</span>(
+				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;transaction mortality: {:?} -&gt; {:?}&quot;</span>,
+				<span class="ident">era</span>.<span class="ident">birth</span>(<span class="ident">current_block</span>.<span class="ident">into</span>()),
+				<span class="ident">era</span>.<span class="ident">death</span>(<span class="ident">current_block</span>.<span class="ident">into</span>()),
+			);
+
+			<span class="kw">let</span> <span class="ident">extrinsic</span> <span class="op">=</span> <span class="ident">ext</span>.<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">create_uxt</span>(<span class="ident">raw_solution</span>, <span class="ident">witness</span>, <span class="ident">signer</span>.<span class="ident">clone</span>(), <span class="ident">nonce</span>, <span class="ident">tip</span>, <span class="ident">era</span>));
+			<span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">sp_core::Bytes</span>(<span class="ident">extrinsic</span>.<span class="ident">encode</span>());
+
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tx_subscription</span>: <span class="ident">Subscription</span><span class="op">&lt;</span>
 					<span class="ident">TransactionStatus</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span>, <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span><span class="op">&gt;</span>
-				<span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">client</span>
-					.<span class="ident">subscribe</span>(<span class="kw-2">&amp;</span><span class="string">&quot;author_submitAndWatchExtrinsic&quot;</span>, <span class="macro">rpc_params!</span> { <span class="ident">bytes</span> }, <span class="string">&quot;author_unwatchExtrinsic&quot;</span>)
-					.<span class="kw">await</span>
-				{
-					<span class="prelude-val">Ok</span>(<span class="ident">sub</span>) =&gt; <span class="ident">sub</span>,
-					<span class="prelude-val">Err</span>(<span class="ident">why</span>) =&gt; {
+			<span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">client</span>.<span class="ident">subscribe</span>(
+				<span class="string">&quot;author_submitAndWatchExtrinsic&quot;</span>,
+				<span class="macro">rpc_params!</span> { <span class="ident">bytes</span> },
+				<span class="string">&quot;author_unwatchExtrinsic&quot;</span>
+			).<span class="kw">await</span> {
+				<span class="prelude-val">Ok</span>(<span class="ident">sub</span>) =&gt; <span class="ident">sub</span>,
+				<span class="prelude-val">Err</span>(<span class="ident">RpcError::RestartNeeded</span>(<span class="ident">e</span>)) =&gt; {
+					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">RpcError::RestartNeeded</span>(<span class="ident">e</span>).<span class="ident">into</span>());
+					<span class="kw">return</span>
+				},
+				<span class="prelude-val">Err</span>(<span class="ident">why</span>) =&gt; {
 					<span class="comment">// This usually happens when we&#39;ve been busy with mining for a few blocks, and</span>
 					<span class="comment">// now we&#39;re receiving the subscriptions of blocks in which we were busy. In</span>
 					<span class="comment">// these blocks, we still don&#39;t have a solution, so we re-compute a new solution</span>
@@ -333,38 +544,83 @@
 					<span class="comment">// error. NOTE: to improve this overall, and to be able to introduce an array of</span>
 					<span class="comment">// other fancy features, we should make this multi-threaded and do the</span>
 					<span class="comment">// computation outside of this callback.</span>
-						<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;failing to submit a transaction {:?}. continuing...&quot;</span>, <span class="ident">why</span>);
-						<span class="kw">continue</span>
-					}
+					<span class="macro">log::warn!</span>(
+						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+						<span class="string">&quot;failing to submit a transaction {:?}. ignore block: {}&quot;</span>,
+						<span class="ident">why</span>, <span class="ident">at</span>.<span class="ident">number</span>
+					);
+					<span class="kw">return</span>;
+				},
+			};
+
+			<span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rp</span>) <span class="op">=</span> <span class="ident">tx_subscription</span>.<span class="ident">next</span>().<span class="kw">await</span> {
+				<span class="kw">let</span> <span class="ident">status_update</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rp</span> {
+					<span class="prelude-val">Ok</span>(<span class="ident">r</span>) =&gt; <span class="ident">r</span>,
+					<span class="comment">// Custom `jsonrpsee` message sent by the server if the subscription was closed on the server side.</span>
+					<span class="prelude-val">Err</span>(<span class="ident">RpcError::SubscriptionClosed</span>(<span class="ident">reason</span>)) =&gt; {
+						<span class="macro">log::warn!</span>(
+							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+							<span class="string">&quot;tx subscription closed by the server: {:?}; skip block: {}&quot;</span>,
+							<span class="ident">reason</span>, <span class="ident">at</span>.<span class="ident">number</span>
+						);
+						<span class="kw">return</span>;
+					},
+					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+						<span class="macro">log::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;subscription failed to decode TransactionStatus {:?}, this is a bug please file an issue&quot;</span>, <span class="ident">e</span>);
+						<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">e</span>.<span class="ident">into</span>());
+						<span class="kw">return</span>;
+					},
 				};
 
-				<span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">status_update</span>) <span class="op">=</span> <span class="ident">tx_subscription</span>.<span class="ident">next</span>().<span class="kw">await</span><span class="question-mark">?</span> {
-					<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;status update {:?}&quot;</span>, <span class="ident">status_update</span>);
-					<span class="kw">match</span> <span class="ident">status_update</span> {
-						<span class="ident">TransactionStatus::Ready</span> <span class="op">|</span> <span class="ident">TransactionStatus::Broadcast</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">TransactionStatus::Future</span> =&gt; <span class="kw">continue</span>,
-						<span class="ident">TransactionStatus::InBlock</span>(<span class="ident">hash</span>) =&gt; {
-							<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;included at {:?}&quot;</span>, <span class="ident">hash</span>);
-							<span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">StorageKey</span>(<span class="ident">frame_support::storage::storage_prefix</span>(<span class="string">b&quot;System&quot;</span>,<span class="string">b&quot;Events&quot;</span>).<span class="ident">to_vec</span>());
-							<span class="kw">let</span> <span class="ident">events</span> <span class="op">=</span> <span class="ident">get_storage</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_system::EventRecord</span><span class="op">&lt;</span><span class="ident">Event</span>, <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-							<span class="op">&gt;</span>(<span class="ident">client</span>, <span class="macro">rpc_params!</span>{ <span class="ident">key</span>, <span class="ident">hash</span> }).<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">unwrap_or_default</span>();
-							<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;events at inclusion {:?}&quot;</span>, <span class="ident">events</span>);
-						}
-						<span class="ident">TransactionStatus::Retracted</span>(<span class="ident">hash</span>) =&gt; {
-							<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Retracted at {:?}&quot;</span>, <span class="ident">hash</span>);
-						}
-						<span class="ident">TransactionStatus::Finalized</span>(<span class="ident">hash</span>) =&gt; {
-							<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Finalized at {:?}&quot;</span>, <span class="ident">hash</span>);
-							<span class="kw">break</span>
-						}
-						<span class="kw">_</span> =&gt; {
-							<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Stopping listen due to other status {:?}&quot;</span>, <span class="ident">status_update</span>);
-							<span class="kw">break</span>
-						}
-					}
+				<span class="macro">log::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;status update {:?}&quot;</span>, <span class="ident">status_update</span>);
+				<span class="kw">match</span> <span class="ident">status_update</span> {
+					<span class="ident">TransactionStatus::Ready</span> <span class="op">|</span>
+					<span class="ident">TransactionStatus::Broadcast</span>(<span class="kw">_</span>) <span class="op">|</span>
+					<span class="ident">TransactionStatus::Future</span> =&gt; <span class="kw">continue</span>,
+					<span class="ident">TransactionStatus::InBlock</span>(<span class="ident">hash</span>) =&gt; {
+						<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;included at {:?}&quot;</span>, <span class="ident">hash</span>);
+						<span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">StorageKey</span>(
+							<span class="ident">frame_support::storage::storage_prefix</span>(<span class="string">b&quot;System&quot;</span>, <span class="string">b&quot;Events&quot;</span>).<span class="ident">to_vec</span>(),
+						);
+						<span class="kw">let</span> <span class="ident">key2</span> <span class="op">=</span> <span class="ident">key</span>.<span class="ident">clone</span>();
+
+						<span class="kw">let</span> <span class="ident">events</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_storage</span>::<span class="op">&lt;</span>
+							<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">frame_system::EventRecord</span><span class="op">&lt;</span><span class="ident">Event</span>, <span class="op">&lt;</span><span class="ident">Block</span> <span class="kw">as</span> <span class="ident">BlockT</span><span class="op">&gt;</span><span class="ident">::Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+						<span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">client</span>, <span class="macro">rpc_params!</span> { <span class="ident">key</span>, <span class="ident">hash</span> })
+						.<span class="kw">await</span> {
+							<span class="prelude-val">Ok</span>(<span class="ident">rp</span>) =&gt; <span class="ident">rp</span>.<span class="ident">unwrap_or_default</span>(),
+							<span class="prelude-val">Err</span>(<span class="ident">RpcHelperError::JsonRpsee</span>(<span class="ident">RpcError::RestartNeeded</span>(<span class="ident">e</span>))) =&gt; {
+								<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">RpcError::RestartNeeded</span>(<span class="ident">e</span>).<span class="ident">into</span>());
+								<span class="kw">return</span>;
+							}
+							<span class="comment">// Decoding or other RPC error =&gt; just terminate the task.</span>
+							<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+								<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;get_storage [key: {:?}, hash: {:?}] failed: {:?}; skip block: {}&quot;</span>,
+									<span class="ident">key2</span>, <span class="ident">hash</span>, <span class="ident">e</span>, <span class="ident">at</span>.<span class="ident">number</span>
+								);
+								<span class="kw">return</span>;
+							}
+						};
+
+						<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;events at inclusion {:?}&quot;</span>, <span class="ident">events</span>);
+					},
+					<span class="ident">TransactionStatus::Retracted</span>(<span class="ident">hash</span>) =&gt; {
+						<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Retracted at {:?}&quot;</span>, <span class="ident">hash</span>);
+					},
+					<span class="ident">TransactionStatus::Finalized</span>(<span class="ident">hash</span>) =&gt; {
+						<span class="macro">log::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Finalized at {:?}&quot;</span>, <span class="ident">hash</span>);
+						<span class="kw">break</span>
+					},
+					<span class="kw">_</span> =&gt; {
+						<span class="macro">log::warn!</span>(
+							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+							<span class="string">&quot;Stopping listen due to other status {:?}&quot;</span>,
+							<span class="ident">status_update</span>
+						);
+						<span class="kw">break</span>
+					},
 				};
 			}
-
-			<span class="macro">log::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;subscription to {} terminated. Retrying..&quot;</span>, <span class="ident">sub</span>)
 		}
 	}
 }}}
