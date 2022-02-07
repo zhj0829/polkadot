@@ -476,6 +476,36 @@
 <span id="476">476</span>
 <span id="477">477</span>
 <span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -735,6 +765,29 @@
 	}
 }
 
+<span class="doccomment">/// A type that represents a maybe compressed [`PoV`].</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MaybeCompressedPoV</span> {
+	<span class="doccomment">/// A raw [`PoV`], aka not compressed.</span>
+	<span class="ident">Raw</span>(<span class="ident">PoV</span>),
+	<span class="doccomment">/// The given [`PoV`] is already compressed.</span>
+	<span class="ident">Compressed</span>(<span class="ident">PoV</span>),
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
+<span class="kw">impl</span> <span class="ident">MaybeCompressedPoV</span> {
+	<span class="doccomment">/// Convert into a compressed [`PoV`].</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// If `self == Raw` it is compressed using [`maybe_compress_pov`].</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_compressed</span>(<span class="self">self</span>) -&gt; <span class="ident">PoV</span> {
+		<span class="kw">match</span> <span class="self">self</span> {
+			<span class="ident"><span class="self">Self</span>::Raw</span>(<span class="ident">raw</span>) =&gt; <span class="ident">maybe_compress_pov</span>(<span class="ident">raw</span>),
+			<span class="ident"><span class="self">Self</span>::Compressed</span>(<span class="ident">compressed</span>) =&gt; <span class="ident">compressed</span>,
+		}
+	}
+}
+
 <span class="doccomment">/// The output of a collator.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This differs from `CandidateCommitments` in two ways:</span>
@@ -742,6 +795,7 @@
 <span class="doccomment">/// - does not contain the erasure root; that&#39;s computed at the Polkadot level, not at Cumulus</span>
 <span class="doccomment">/// - contains a proof of validity.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Collation</span><span class="op">&lt;</span><span class="ident">BlockNumber</span> <span class="op">=</span> <span class="ident">polkadot_primitives::v1::BlockNumber</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Messages destined to be interpreted by the Relay chain itself.</span>
 	<span class="kw">pub</span> <span class="ident">upward_messages</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">UpwardMessage</span><span class="op">&gt;</span>,
@@ -752,7 +806,7 @@
 	<span class="doccomment">/// The head-data produced as a result of execution.</span>
 	<span class="kw">pub</span> <span class="ident">head_data</span>: <span class="ident">HeadData</span>,
 	<span class="doccomment">/// Proof to verify the state transition of the parachain.</span>
-	<span class="kw">pub</span> <span class="ident">proof_of_validity</span>: <span class="ident">PoV</span>,
+	<span class="kw">pub</span> <span class="ident">proof_of_validity</span>: <span class="ident">MaybeCompressedPoV</span>,
 	<span class="doccomment">/// The number of messages processed from the DMQ.</span>
 	<span class="kw">pub</span> <span class="ident">processed_downward_messages</span>: <span class="ident">u32</span>,
 	<span class="doccomment">/// The mark which specifies the block number up to which all inbound HRMP messages are processed.</span>
@@ -761,6 +815,7 @@
 
 <span class="doccomment">/// Signal that is being returned when a collation was seconded by a validator.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CollationSecondedSignal</span> {
 	<span class="doccomment">/// The hash of the relay chain block that was used as context to sign [`Self::statement`].</span>
 	<span class="kw">pub</span> <span class="ident">relay_parent</span>: <span class="ident">Hash</span>,
@@ -771,6 +826,7 @@
 }
 
 <span class="doccomment">/// Result of the [`CollatorFn`] invocation.</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CollationResult</span> {
 	<span class="doccomment">/// The collation that was build.</span>
 	<span class="kw">pub</span> <span class="ident">collation</span>: <span class="ident">Collation</span>,
@@ -782,6 +838,7 @@
 	<span class="kw">pub</span> <span class="ident">result_sender</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">futures::channel::oneshot::Sender</span><span class="op">&lt;</span><span class="ident">CollationSecondedSignal</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">impl</span> <span class="ident">CollationResult</span> {
 	<span class="doccomment">/// Convert into the inner values.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(
@@ -797,6 +854,7 @@
 <span class="doccomment">/// [`ValidationData`] that provides information about the state of the parachain on the relay chain.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Returns an optional [`CollationResult`].</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">CollatorFn</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span>
 	<span class="kw">dyn</span> <span class="ident">Fn</span>(
 			<span class="ident">Hash</span>,
@@ -807,6 +865,7 @@
 <span class="op">&gt;</span>;
 
 <span class="doccomment">/// Configuration for the collation generator</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CollationGenerationConfig</span> {
 	<span class="doccomment">/// Collator&#39;s authentication key, so it can sign things.</span>
 	<span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">CollatorPair</span>,
@@ -816,6 +875,7 @@
 	<span class="kw">pub</span> <span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>))]</span>
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">CollationGenerationConfig</span> {
 	<span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
 		<span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;CollationGenerationConfig {{ ... }}&quot;</span>)
@@ -849,8 +909,8 @@
 	}
 }
 
+<span class="doccomment">/// Possible errors when converting from `Vec&lt;Vec&lt;u8&gt;&gt;` into [`Proof`].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">thiserror::Error</span>, <span class="ident">Debug</span>)]</span>
-<span class="doccomment">///</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MerkleProofError</span> {
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Merkle max proof depth exceeded {0} &gt; {} .&quot;</span>, <span class="ident">MERKLE_PROOF_MAX_DEPTH</span>)]</span>
 	<span class="doccomment">/// This error signifies that the Proof length exceeds the trie&#39;s max depth</span>

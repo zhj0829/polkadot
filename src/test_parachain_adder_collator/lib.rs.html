@@ -329,6 +329,12 @@
 <span id="329">329</span>
 <span id="330">330</span>
 <span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -351,7 +357,8 @@
 <span class="kw">use</span> <span class="ident">futures_timer::Delay</span>;
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{
-	<span class="ident">Collation</span>, <span class="ident">CollationResult</span>, <span class="ident">CollationSecondedSignal</span>, <span class="ident">CollatorFn</span>, <span class="ident">PoV</span>, <span class="ident">Statement</span>,
+	<span class="ident">Collation</span>, <span class="ident">CollationResult</span>, <span class="ident">CollationSecondedSignal</span>, <span class="ident">CollatorFn</span>, <span class="ident">MaybeCompressedPoV</span>, <span class="ident">PoV</span>,
+	<span class="ident">Statement</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CollatorId</span>, <span class="ident">CollatorPair</span>};
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">traits::SpawnNamed</span>, <span class="ident">Pair</span>};
@@ -506,7 +513,7 @@
 				<span class="ident">horizontal_messages</span>: <span class="ident">Vec::new</span>(),
 				<span class="ident">new_validation_code</span>: <span class="prelude-val">None</span>,
 				<span class="ident">head_data</span>: <span class="ident">head_data</span>.<span class="ident">encode</span>().<span class="ident">into</span>(),
-				<span class="ident">proof_of_validity</span>: <span class="ident">pov</span>.<span class="ident">clone</span>(),
+				<span class="ident">proof_of_validity</span>: <span class="ident">MaybeCompressedPoV::Raw</span>(<span class="ident">pov</span>.<span class="ident">clone</span>()),
 				<span class="ident">processed_downward_messages</span>: <span class="number">0</span>,
 				<span class="ident">hrmp_watermark</span>: <span class="ident">validation_data</span>.<span class="ident">relay_parent_number</span>,
 			};
@@ -604,11 +611,16 @@
 	<span class="kw">fn</span> <span class="ident">validate_collation</span>(<span class="ident">collator</span>: <span class="kw-2">&amp;</span><span class="ident">Collator</span>, <span class="ident">parent_head</span>: <span class="ident">HeadData</span>, <span class="ident">collation</span>: <span class="ident">Collation</span>) {
 		<span class="kw">use</span> <span class="ident">polkadot_node_core_pvf::testing::validate_candidate</span>;
 
+		<span class="kw">let</span> <span class="ident">block_data</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">collation</span>.<span class="ident">proof_of_validity</span> {
+			<span class="ident">MaybeCompressedPoV::Raw</span>(<span class="ident">pov</span>) =&gt; <span class="ident">pov</span>.<span class="ident">block_data</span>,
+			<span class="ident">MaybeCompressedPoV::Compressed</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Only works with uncompressed povs&quot;</span>),
+		};
+
 		<span class="kw">let</span> <span class="ident">ret_buf</span> <span class="op">=</span> <span class="ident">validate_candidate</span>(
 			<span class="ident">collator</span>.<span class="ident">validation_code</span>(),
 			<span class="kw-2">&amp;</span><span class="ident">ValidationParams</span> {
 				<span class="ident">parent_head</span>: <span class="ident">parent_head</span>.<span class="ident">encode</span>().<span class="ident">into</span>(),
-				<span class="ident">block_data</span>: <span class="ident">collation</span>.<span class="ident">proof_of_validity</span>.<span class="ident">block_data</span>,
+				<span class="ident">block_data</span>,
 				<span class="ident">relay_parent_number</span>: <span class="number">1</span>,
 				<span class="ident">relay_parent_storage_root</span>: <span class="ident">Default::default</span>(),
 			}
