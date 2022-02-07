@@ -1286,6 +1286,31 @@
 <span id="1286">1286</span>
 <span id="1287">1287</span>
 <span id="1288">1288</span>
+<span id="1289">1289</span>
+<span id="1290">1290</span>
+<span id="1291">1291</span>
+<span id="1292">1292</span>
+<span id="1293">1293</span>
+<span id="1294">1294</span>
+<span id="1295">1295</span>
+<span id="1296">1296</span>
+<span id="1297">1297</span>
+<span id="1298">1298</span>
+<span id="1299">1299</span>
+<span id="1300">1300</span>
+<span id="1301">1301</span>
+<span id="1302">1302</span>
+<span id="1303">1303</span>
+<span id="1304">1304</span>
+<span id="1305">1305</span>
+<span id="1306">1306</span>
+<span id="1307">1307</span>
+<span id="1308">1308</span>
+<span id="1309">1309</span>
+<span id="1310">1310</span>
+<span id="1311">1311</span>
+<span id="1312">1312</span>
+<span id="1313">1313</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2067,14 +2092,21 @@
 		<span class="comment">// There is one exception: A sufficiently sophisticated attacker could prevent</span>
 		<span class="comment">// us from seeing the backing votes by witholding arbitrary blocks, and hence we do</span>
 		<span class="comment">// not have a `CandidateReceipt` available.</span>
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">votes</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">overlay_db</span>
+		<span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">votes</span>, <span class="kw-2">mut</span> <span class="ident">votes_changed</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">overlay_db</span>
 			.<span class="ident">load_candidate_votes</span>(<span class="ident">session</span>, <span class="kw-2">&amp;</span><span class="ident">candidate_hash</span>)<span class="question-mark">?</span>
 			.<span class="ident">map</span>(<span class="ident">CandidateVotes::from</span>)
 		{
-			<span class="prelude-val">Some</span>(<span class="ident">votes</span>) =&gt; <span class="ident">votes</span>,
+			<span class="prelude-val">Some</span>(<span class="ident">votes</span>) =&gt; (<span class="ident">votes</span>, <span class="bool-val">false</span>),
 			<span class="prelude-val">None</span> =&gt;
 				<span class="kw">if</span> <span class="kw">let</span> <span class="ident">MaybeCandidateReceipt::Provides</span>(<span class="ident">candidate_receipt</span>) <span class="op">=</span> <span class="ident">candidate_receipt</span> {
-					<span class="ident">CandidateVotes</span> { <span class="ident">candidate_receipt</span>, <span class="ident">valid</span>: <span class="ident">Vec::new</span>(), <span class="ident">invalid</span>: <span class="ident">Vec::new</span>() }
+					(
+						<span class="ident">CandidateVotes</span> {
+							<span class="ident">candidate_receipt</span>,
+							<span class="ident">valid</span>: <span class="ident">Vec::new</span>(),
+							<span class="ident">invalid</span>: <span class="ident">Vec::new</span>(),
+						},
+						<span class="bool-val">true</span>,
+					)
 				} <span class="kw">else</span> {
 					<span class="macro">tracing::warn!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
@@ -2129,22 +2161,34 @@
 
 			<span class="kw">match</span> <span class="ident">statement</span>.<span class="ident">statement</span>().<span class="ident">clone</span>() {
 				<span class="ident">DisputeStatement::Valid</span>(<span class="ident">valid_kind</span>) =&gt; {
-					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_valid_vote</span>();
-					<span class="ident">insert_into_statement_vec</span>(
+					<span class="kw">let</span> <span class="ident">fresh</span> <span class="op">=</span> <span class="ident">insert_into_statement_vec</span>(
 						<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">votes</span>.<span class="ident">valid</span>,
 						<span class="ident">valid_kind</span>,
 						<span class="kw-2">*</span><span class="ident">val_index</span>,
 						<span class="ident">statement</span>.<span class="ident">validator_signature</span>().<span class="ident">clone</span>(),
 					);
+
+					<span class="kw">if</span> <span class="op">!</span><span class="ident">fresh</span> {
+						<span class="kw">continue</span>
+					}
+
+					<span class="ident">votes_changed</span> <span class="op">=</span> <span class="bool-val">true</span>;
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_valid_vote</span>();
 				},
 				<span class="ident">DisputeStatement::Invalid</span>(<span class="ident">invalid_kind</span>) =&gt; {
-					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_invalid_vote</span>();
-					<span class="ident">insert_into_statement_vec</span>(
+					<span class="kw">let</span> <span class="ident">fresh</span> <span class="op">=</span> <span class="ident">insert_into_statement_vec</span>(
 						<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">votes</span>.<span class="ident">invalid</span>,
 						<span class="ident">invalid_kind</span>,
 						<span class="kw-2">*</span><span class="ident">val_index</span>,
 						<span class="ident">statement</span>.<span class="ident">validator_signature</span>().<span class="ident">clone</span>(),
 					);
+
+					<span class="kw">if</span> <span class="op">!</span><span class="ident">fresh</span> {
+						<span class="kw">continue</span>
+					}
+
+					<span class="ident">votes_changed</span> <span class="op">=</span> <span class="bool-val">true</span>;
+					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_invalid_vote</span>();
 				},
 			}
 		}
@@ -2159,7 +2203,7 @@
 
 		<span class="comment">// Potential spam:</span>
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">is_confirmed</span> {
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">free_spam_slots</span> <span class="op">=</span> <span class="bool-val">false</span>;
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">free_spam_slots</span> <span class="op">=</span> <span class="ident">statements</span>.<span class="ident">is_empty</span>();
 			<span class="kw">for</span> (<span class="ident">statement</span>, <span class="ident">index</span>) <span class="kw">in</span> <span class="ident">statements</span>.<span class="ident">iter</span>() {
 				<span class="ident">free_spam_slots</span> <span class="op">|</span><span class="op">=</span> <span class="ident">statement</span>.<span class="ident">statement</span>().<span class="ident">is_backing</span>() <span class="op">|</span><span class="op">|</span>
 					<span class="self">self</span>.<span class="ident">spam_slots</span>.<span class="ident">add_unconfirmed</span>(<span class="ident">session</span>, <span class="ident">candidate_hash</span>, <span class="kw-2">*</span><span class="ident">index</span>);
@@ -2276,7 +2320,10 @@
 			<span class="ident">overlay_db</span>.<span class="ident">write_recent_disputes</span>(<span class="ident">recent_disputes</span>);
 		}
 
-		<span class="ident">overlay_db</span>.<span class="ident">write_candidate_votes</span>(<span class="ident">session</span>, <span class="ident">candidate_hash</span>, <span class="ident">votes</span>.<span class="ident">into</span>());
+		<span class="comment">// Only write when votes have changed.</span>
+		<span class="kw">if</span> <span class="ident">votes_changed</span> {
+			<span class="ident">overlay_db</span>.<span class="ident">write_candidate_votes</span>(<span class="ident">session</span>, <span class="ident">candidate_hash</span>, <span class="ident">votes</span>.<span class="ident">into</span>());
+		}
 
 		<span class="prelude-val">Ok</span>(<span class="ident">ImportStatementsResult::ValidImport</span>)
 	}
@@ -2433,18 +2480,21 @@
 	}
 }
 
+<span class="comment">// Returns &#39;true&#39; if no other vote by that validator was already</span>
+<span class="comment">// present and &#39;false&#39; otherwise. Same semantics as `HashSet`.</span>
 <span class="kw">fn</span> <span class="ident">insert_into_statement_vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
 	<span class="ident">vec</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>)<span class="op">&gt;</span>,
 	<span class="ident">tag</span>: <span class="ident">T</span>,
 	<span class="ident">val_index</span>: <span class="ident">ValidatorIndex</span>,
 	<span class="ident">val_signature</span>: <span class="ident">ValidatorSignature</span>,
-) {
+) -&gt; <span class="ident">bool</span> {
 	<span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">vec</span>.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">val_index</span>, <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">1</span>) {
-		<span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span>, <span class="comment">// no duplicates needed.</span>
+		<span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="bool-val">false</span>, <span class="comment">// no duplicates needed.</span>
 		<span class="prelude-val">Err</span>(<span class="ident">p</span>) =&gt; <span class="ident">p</span>,
 	};
 
 	<span class="ident">vec</span>.<span class="ident">insert</span>(<span class="ident">pos</span>, (<span class="ident">tag</span>, <span class="ident">val_index</span>, <span class="ident">val_signature</span>));
+	<span class="bool-val">true</span>
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
