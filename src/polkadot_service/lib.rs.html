@@ -1337,6 +1337,15 @@
 <span id="1337">1337</span>
 <span id="1338">1338</span>
 <span id="1339">1339</span>
+<span id="1340">1340</span>
+<span id="1341">1341</span>
+<span id="1342">1342</span>
+<span id="1343">1343</span>
+<span id="1344">1344</span>
+<span id="1345">1345</span>
+<span id="1346">1346</span>
+<span id="1347">1347</span>
+<span id="1348">1348</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2596,6 +2605,14 @@
 	<span class="prelude-val">Err</span>(<span class="ident">Error::NoRuntime</span>)
 }
 
+<span class="doccomment">/// Build a full node.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The actual &quot;flavor&quot;, aka if it will use `Polkadot`, `Rococo` or `Kusama` is determined based on</span>
+<span class="doccomment">/// [`IdentifyVariant`] using the chain spec.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `overseer_enable_anyways` always enables the overseer, based on the provided `OverseerGenerator`,</span>
+<span class="doccomment">/// regardless of the role the node has. The relay chain selection (longest or disputes-aware) is</span>
+<span class="doccomment">/// still determined based on the role of the node. Likewise for authority discovery.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full-node&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_full</span>(
 	<span class="ident">config</span>: <span class="ident">Configuration</span>,
@@ -2604,6 +2621,7 @@
 	<span class="ident">enable_beefy</span>: <span class="ident">bool</span>,
 	<span class="ident">jaeger_agent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std::net::SocketAddr</span><span class="op">&gt;</span>,
 	<span class="ident">telemetry_worker_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TelemetryWorkerHandle</span><span class="op">&gt;</span>,
+	<span class="ident">overseer_enable_anyways</span>: <span class="ident">bool</span>,
 	<span class="ident">overseer_gen</span>: <span class="kw">impl</span> <span class="ident">OverseerGen</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NewFull</span><span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
 	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rococo-native&quot;</span>)]</span>
@@ -2619,7 +2637,7 @@
 			<span class="ident">jaeger_agent</span>,
 			<span class="ident">telemetry_worker_handle</span>,
 			<span class="prelude-val">None</span>,
-			<span class="bool-val">false</span>,
+			<span class="ident">overseer_enable_anyways</span>,
 			<span class="ident">overseer_gen</span>,
 		)
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">full</span><span class="op">|</span> <span class="ident">full</span>.<span class="ident">with_client</span>(<span class="ident">Client::Rococo</span>))
@@ -2635,7 +2653,7 @@
 			<span class="ident">jaeger_agent</span>,
 			<span class="ident">telemetry_worker_handle</span>,
 			<span class="prelude-val">None</span>,
-			<span class="bool-val">false</span>,
+			<span class="ident">overseer_enable_anyways</span>,
 			<span class="ident">overseer_gen</span>,
 		)
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">full</span><span class="op">|</span> <span class="ident">full</span>.<span class="ident">with_client</span>(<span class="ident">Client::Kusama</span>))
@@ -2651,7 +2669,7 @@
 			<span class="ident">jaeger_agent</span>,
 			<span class="ident">telemetry_worker_handle</span>,
 			<span class="prelude-val">None</span>,
-			<span class="bool-val">false</span>,
+			<span class="ident">overseer_enable_anyways</span>,
 			<span class="ident">overseer_gen</span>,
 		)
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">full</span><span class="op">|</span> <span class="ident">full</span>.<span class="ident">with_client</span>(<span class="ident">Client::Westend</span>))
@@ -2667,7 +2685,7 @@
 			<span class="ident">jaeger_agent</span>,
 			<span class="ident">telemetry_worker_handle</span>,
 			<span class="prelude-val">None</span>,
-			<span class="bool-val">false</span>,
+			<span class="ident">overseer_enable_anyways</span>,
 			<span class="ident">overseer_gen</span>,
 		)
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">full</span><span class="op">|</span> <span class="ident">full</span>.<span class="ident">with_client</span>(<span class="ident">Client::Polkadot</span>))
