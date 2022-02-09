@@ -379,8 +379,8 @@
 	<span class="ident">HeadSupportsParachains</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_overseer</span>::{
-	<span class="ident">metrics::Metrics</span> <span class="kw">as</span> <span class="ident">OverseerMetrics</span>, <span class="ident">BlockInfo</span>, <span class="ident">MetricsTrait</span>, <span class="ident">Overseer</span>, <span class="ident">OverseerBuilder</span>,
-	<span class="ident">OverseerConnector</span>, <span class="ident">OverseerHandle</span>,
+	<span class="ident">metrics::Metrics</span> <span class="kw">as</span> <span class="ident">OverseerMetrics</span>, <span class="ident">BlockInfo</span>, <span class="ident">InitializedOverseerBuilder</span>, <span class="ident">MetricsTrait</span>,
+	<span class="ident">Overseer</span>, <span class="ident">OverseerConnector</span>, <span class="ident">OverseerHandle</span>,
 };
 
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v2::ParachainHost</span>;
@@ -491,7 +491,7 @@
 		<span class="ident">pvf_checker_enabled</span>,
 	}: <span class="ident">OverseerGenArgs</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Spawner</span>, <span class="ident">RuntimeClient</span><span class="op">&gt;</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">OverseerBuilder</span><span class="op">&lt;</span>
+	<span class="ident">InitializedOverseerBuilder</span><span class="op">&lt;</span>
 		<span class="ident">Spawner</span>,
 		<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RuntimeClient</span><span class="op">&gt;</span>,
 		<span class="ident">CandidateValidationSubsystem</span>,

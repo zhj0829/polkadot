@@ -211,8 +211,8 @@
 <span class="comment">// along with Polkadot.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">prometheus::Registry</span>, <span class="ident">AllMessages</span>, <span class="ident">HeadSupportsParachains</span>, <span class="ident">MetricsTrait</span>, <span class="ident">Overseer</span>,
-	<span class="ident">OverseerBuilder</span>, <span class="ident">OverseerMetrics</span>, <span class="ident">OverseerSignal</span>, <span class="ident">OverseerSubsystemContext</span>, <span class="ident">SpawnNamed</span>,
+	<span class="ident">prometheus::Registry</span>, <span class="ident">AllMessages</span>, <span class="ident">HeadSupportsParachains</span>, <span class="ident">InitializedOverseerBuilder</span>,
+	<span class="ident">MetricsTrait</span>, <span class="ident">Overseer</span>, <span class="ident">OverseerMetrics</span>, <span class="ident">OverseerSignal</span>, <span class="ident">OverseerSubsystemContext</span>, <span class="ident">SpawnNamed</span>,
 	<span class="ident">KNOWN_LEAVES_CACHE_SIZE</span>,
 };
 <span class="kw">use</span> <span class="ident">lru::LruCache</span>;
@@ -262,7 +262,7 @@
 	<span class="ident">supports_parachains</span>: <span class="ident">SupportsParachains</span>,
 	<span class="ident">registry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Registry</span><span class="op">&gt;</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">OverseerBuilder</span><span class="op">&lt;</span>
+	<span class="ident">InitializedOverseerBuilder</span><span class="op">&lt;</span>
 		<span class="ident">Spawner</span>,
 		<span class="ident">SupportsParachains</span>,
 		<span class="ident">DummySubsystem</span>,
@@ -303,7 +303,7 @@
 	<span class="ident">subsystem</span>: <span class="ident">Sub</span>,
 	<span class="ident">registry</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Registry</span><span class="op">&gt;</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-	<span class="ident">OverseerBuilder</span><span class="op">&lt;</span>
+	<span class="ident">InitializedOverseerBuilder</span><span class="op">&lt;</span>
 		<span class="ident">Spawner</span>,
 		<span class="ident">SupportsParachains</span>,
 		<span class="ident">Sub</span>,

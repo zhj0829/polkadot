@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;syn-1.0.84&#x2F;src&#x2F;gen&#x2F;visit_mut.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>visit_mut.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../syn/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;syn-1.0.86&#x2F;src&#x2F;gen&#x2F;visit_mut.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>visit_mut.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../syn/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3777,8 +3777,6 @@
 <span id="3777">3777</span>
 <span id="3778">3778</span>
 <span id="3779">3779</span>
-<span id="3780">3780</span>
-<span id="3781">3781</span>
 </pre><pre class="rust"><code><span class="comment">// This file is @generated by syn-internal-codegen.</span>
 <span class="comment">// It is not intended for manual editing.</span>
 
@@ -3798,7 +3796,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)))]</span>
 <span class="macro">macro_rules!</span> <span class="ident">full</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) =&gt; {
-        <span class="macro">unreachable!</span>()
+        <span class="ident">unreachable</span> <span class="op">!</span> ()
     };
 }
 <span class="macro">macro_rules!</span> <span class="ident">skip</span> {
@@ -4279,7 +4277,10 @@
         <span class="ident">visit_nested_meta_mut</span>(<span class="self">self</span>, <span class="ident">i</span>);
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">visit_parenthesized_generic_arguments_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ParenthesizedGenericArguments</span>) {
+    <span class="kw">fn</span> <span class="ident">visit_parenthesized_generic_arguments_mut</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ParenthesizedGenericArguments</span>,
+    ) {
         <span class="ident">visit_parenthesized_generic_arguments_mut</span>(<span class="self">self</span>, <span class="ident">i</span>);
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -4562,18 +4563,19 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">extern_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">name</span> {
         <span class="ident">v</span>.<span class="ident">visit_lit_str_mut</span>(<span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_angle_bracketed_generic_arguments_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(
     <span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>,
     <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AngleBracketedGenericArguments</span>,
-) <span class="kw">where</span>
+)
+<span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon2_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lt_token</span>.<span class="ident">spans</span>);
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">args</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
@@ -4596,12 +4598,12 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">guard</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">span</span>);
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">fat_arrow_token</span>.<span class="ident">spans</span>);
     <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">body</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">comma</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_attr_style_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AttrStyle</span>)
@@ -4637,7 +4639,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">name</span> {
         <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>);
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ty</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -4781,10 +4783,10 @@
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ty</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">eq_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">default</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_constraint_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Constraint</span>)
@@ -4842,7 +4844,7 @@
     <span class="ident">v</span>.<span class="ident">visit_fields_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">fields</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_data_union_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DataUnion</span>)
@@ -5046,7 +5048,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">async_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">capture</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_block_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">block</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -5083,7 +5085,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">label</span> {
         <span class="ident">v</span>.<span class="ident">visit_label_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_block_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">block</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -5108,10 +5110,10 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">break_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">label</span> {
         <span class="ident">v</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">expr</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_call_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprCall</span>)
@@ -5151,15 +5153,15 @@
     <span class="kw">for</span> <span class="ident">it</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">attrs</span> {
         <span class="ident">v</span>.<span class="ident">visit_attribute_mut</span>(<span class="ident">it</span>);
     }
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">asyncness</span> {
-        <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">movability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">asyncness</span> {
+        <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">capture</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">or1_token</span>.<span class="ident">spans</span>);
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">inputs</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
@@ -5183,7 +5185,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">continue_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">label</span> {
         <span class="ident">v</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_field_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprField</span>)
@@ -5207,7 +5209,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">label</span> {
         <span class="ident">v</span>.<span class="ident">visit_label_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">for_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_pat_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">pat</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">in_token</span>.<span class="ident">span</span>);
@@ -5239,7 +5241,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">else_branch</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">span</span>);
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_index_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprIndex</span>)
@@ -5286,7 +5288,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">label</span> {
         <span class="ident">v</span>.<span class="ident">visit_label_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">loop_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_block_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">body</span>);
 }
@@ -5328,7 +5330,7 @@
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">method</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">turbofish</span> {
         <span class="ident">v</span>.<span class="ident">visit_method_turbofish_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">paren_token</span>.<span class="ident">span</span>);
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">args</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
@@ -5359,7 +5361,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">qself</span> {
         <span class="ident">v</span>.<span class="ident">visit_qself_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_path_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">path</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -5372,11 +5374,11 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">from</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_range_limits_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">limits</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">to</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_reference_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprReference</span>)
@@ -5389,7 +5391,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">and_token</span>.<span class="ident">spans</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">expr</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -5416,7 +5418,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">return_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">expr</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_struct_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprStruct</span>)
@@ -5437,10 +5439,10 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">dot2_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">rest</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_try_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExprTry</span>)
@@ -5525,7 +5527,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">label</span> {
         <span class="ident">v</span>.<span class="ident">visit_label_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">while_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">cond</span>);
     <span class="ident">v</span>.<span class="ident">visit_block_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">body</span>);
@@ -5541,7 +5543,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">yield_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">expr</span> {
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_field_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Field</span>)
@@ -5554,10 +5556,10 @@
     <span class="ident">v</span>.<span class="ident">visit_visibility_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">vis</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span> {
         <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ty</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -5571,7 +5573,7 @@
     <span class="ident">v</span>.<span class="ident">visit_member_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">member</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_pat_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">pat</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -5585,7 +5587,7 @@
     <span class="ident">v</span>.<span class="ident">visit_member_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">member</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">expr</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -5705,7 +5707,7 @@
     <span class="ident">v</span>.<span class="ident">visit_macro_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mac</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_foreign_item_static_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ForeignItemStatic</span>)
@@ -5719,7 +5721,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">static_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span>.<span class="ident">spans</span>);
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">ty</span>);
@@ -5799,7 +5801,7 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lt_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">params</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_generic_param_mut</span>(<span class="ident">it</span>);
@@ -5809,10 +5811,10 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">gt_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">where_clause</span> {
         <span class="ident">v</span>.<span class="ident">visit_where_clause_mut</span>(<span class="ident">it</span>);
-    };
+    }
 }
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_ident_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Ident</span>)
 <span class="kw">where</span>
@@ -5857,7 +5859,7 @@
     <span class="ident">v</span>.<span class="ident">visit_visibility_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">vis</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">defaultness</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">const_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span>.<span class="ident">spans</span>);
@@ -5877,7 +5879,7 @@
     <span class="ident">v</span>.<span class="ident">visit_macro_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mac</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_impl_item_method_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ImplItemMethod</span>)
@@ -5890,7 +5892,7 @@
     <span class="ident">v</span>.<span class="ident">visit_visibility_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">vis</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">defaultness</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_signature_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">sig</span>);
     <span class="ident">v</span>.<span class="ident">visit_block_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">block</span>);
 }
@@ -5905,7 +5907,7 @@
     <span class="ident">v</span>.<span class="ident">visit_visibility_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">vis</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">defaultness</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">type_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="ident">v</span>.<span class="ident">visit_generics_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">generics</span>);
@@ -6034,7 +6036,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">rename</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">span</span>);
         <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span>.<span class="ident">spans</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -6073,19 +6075,19 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">defaultness</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">unsafety</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">impl_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_generics_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">generics</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">trait_</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-        };
+        }
         <span class="ident">v</span>.<span class="ident">visit_path_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span>);
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">2</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">self_ty</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">brace_token</span>.<span class="ident">span</span>);
     <span class="kw">for</span> <span class="ident">it</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">items</span> {
@@ -6102,11 +6104,11 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span> {
         <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_macro_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mac</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_item_macro2_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemMacro2</span>)
@@ -6137,10 +6139,10 @@
         <span class="kw">for</span> <span class="ident">it</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span> {
             <span class="ident">v</span>.<span class="ident">visit_item_mut</span>(<span class="ident">it</span>);
         }
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_item_static_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemStatic</span>)
@@ -6154,7 +6156,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">static_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span>.<span class="ident">spans</span>);
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">ty</span>);
@@ -6177,7 +6179,7 @@
     <span class="ident">v</span>.<span class="ident">visit_fields_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">fields</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_item_trait_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ItemTrait</span>)
@@ -6190,16 +6192,16 @@
     <span class="ident">v</span>.<span class="ident">visit_visibility_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">vis</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">unsafety</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">auto_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">trait_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="ident">v</span>.<span class="ident">visit_generics_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">generics</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">supertraits</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_type_param_bound_mut</span>(<span class="ident">it</span>);
@@ -6276,7 +6278,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">use_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">leading_colon</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_use_tree_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">tree</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span>.<span class="ident">spans</span>);
 }
@@ -6306,7 +6308,7 @@
     <span class="ident">v</span>.<span class="ident">visit_lifetime_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lifetime</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">bounds</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">it</span>);
@@ -6356,33 +6358,27 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_byte_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LitByte</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_byte_str_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LitByteStr</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_char_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LitChar</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_float_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LitFloat</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_int_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LitInt</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_str_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LitStr</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_local_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Local</span>)
 <span class="kw">where</span>
@@ -6396,7 +6392,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">init</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">spans</span>);
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span>.<span class="ident">spans</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -6515,7 +6511,8 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_parenthesized_generic_arguments_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(
     <span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>,
     <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ParenthesizedGenericArguments</span>,
-) <span class="kw">where</span>
+)
+<span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
 {
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">paren_token</span>.<span class="ident">span</span>);
@@ -6606,15 +6603,15 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">by_ref</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">subpat</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">spans</span>);
         <span class="ident">v</span>.<span class="ident">visit_pat_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_pat_lit_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PatLit</span>)
@@ -6646,7 +6643,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">leading_vert</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">cases</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_pat_mut</span>(<span class="ident">it</span>);
@@ -6665,7 +6662,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">qself</span> {
         <span class="ident">v</span>.<span class="ident">visit_qself_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_path_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">path</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -6691,7 +6688,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">and_token</span>.<span class="ident">spans</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_pat_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">pat</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -6740,7 +6737,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">dot2_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_pat_tuple_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PatTuple</span>)
@@ -6799,7 +6796,7 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">leading_colon</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">segments</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_path_segment_mut</span>(<span class="ident">it</span>);
@@ -6862,7 +6859,7 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lifetimes</span> {
         <span class="ident">v</span>.<span class="ident">visit_bound_lifetimes_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">bounded_ty</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span>.<span class="ident">spans</span>);
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">bounds</span>) {
@@ -6883,7 +6880,7 @@
     <span class="macro">skip!</span>(<span class="ident">node</span>.<span class="ident">position</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">as_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">gt_token</span>.<span class="ident">spans</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -6912,11 +6909,11 @@
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">spans</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span> {
             <span class="ident">v</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">it</span>);
-        };
-    };
+        }
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">self_token</span>.<span class="ident">span</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -6939,16 +6936,16 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">constness</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">asyncness</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">unsafety</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">abi</span> {
         <span class="ident">v</span>.<span class="ident">visit_abi_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">fn_token</span>.<span class="ident">span</span>);
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="ident">v</span>.<span class="ident">visit_generics_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">generics</span>);
@@ -6962,14 +6959,13 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">variadic</span> {
         <span class="ident">v</span>.<span class="ident">visit_variadic_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_return_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">output</span>);
 }
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_span_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Span</span>)
 <span class="kw">where</span>
     <span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>,
-{
-}
+{}
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_stmt_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Stmt</span>)
 <span class="kw">where</span>
@@ -6998,11 +6994,11 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">paren_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_trait_bound_modifier_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">modifier</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lifetimes</span> {
         <span class="ident">v</span>.<span class="ident">visit_bound_lifetimes_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_path_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">path</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -7056,7 +7052,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">default</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">spans</span>);
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span>.<span class="ident">spans</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
@@ -7070,7 +7066,7 @@
     <span class="ident">v</span>.<span class="ident">visit_macro_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mac</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_trait_item_method_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TraitItemMethod</span>)
@@ -7083,10 +7079,10 @@
     <span class="ident">v</span>.<span class="ident">visit_signature_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">sig</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">default</span> {
         <span class="ident">v</span>.<span class="ident">visit_block_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_trait_item_type_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TraitItemType</span>)
@@ -7101,7 +7097,7 @@
     <span class="ident">v</span>.<span class="ident">visit_generics_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">generics</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">bounds</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_type_param_bound_mut</span>(<span class="ident">it</span>);
@@ -7112,7 +7108,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">default</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">spans</span>);
         <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">semi_token</span>.<span class="ident">spans</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -7186,13 +7182,13 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lifetimes</span> {
         <span class="ident">v</span>.<span class="ident">visit_bound_lifetimes_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">unsafety</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">abi</span> {
         <span class="ident">v</span>.<span class="ident">visit_abi_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">fn_token</span>.<span class="ident">span</span>);
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">paren_token</span>.<span class="ident">span</span>);
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">inputs</span>) {
@@ -7204,7 +7200,7 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">variadic</span> {
         <span class="ident">v</span>.<span class="ident">visit_variadic_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_return_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">output</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -7261,7 +7257,7 @@
     <span class="ident">v</span>.<span class="ident">visit_ident_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">ident</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">colon_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">bounds</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_type_param_bound_mut</span>(<span class="ident">it</span>);
@@ -7271,10 +7267,10 @@
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">eq_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">spans</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">default</span> {
         <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="ident">it</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_type_param_bound_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TypeParamBound</span>)
@@ -7305,7 +7301,7 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">qself</span> {
         <span class="ident">v</span>.<span class="ident">visit_qself_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_path_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">path</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -7316,10 +7312,10 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">star_token</span>.<span class="ident">spans</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">const_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">elem</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -7330,10 +7326,10 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">and_token</span>.<span class="ident">spans</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">lifetime</span> {
         <span class="ident">v</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">it</span>);
-    };
+    }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">mutability</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">elem</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -7351,7 +7347,7 @@
 {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">dyn_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="kw">for</span> <span class="ident">el</span> <span class="kw">in</span> <span class="ident">Punctuated::pairs_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">bounds</span>) {
         <span class="kw">let</span> (<span class="ident">it</span>, <span class="ident">p</span>) <span class="op">=</span> <span class="ident">el</span>.<span class="ident">into_tuple</span>();
         <span class="ident">v</span>.<span class="ident">visit_type_param_bound_mut</span>(<span class="ident">it</span>);
@@ -7483,7 +7479,7 @@
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">discriminant</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">0</span>.<span class="ident">spans</span>);
         <span class="ident">v</span>.<span class="ident">visit_expr_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="ident">it</span>).<span class="number">1</span>);
-    };
+    }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_vis_crate_mut</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VisCrate</span>)
@@ -7508,7 +7504,7 @@
     <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">paren_token</span>.<span class="ident">span</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">it</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">node</span>.<span class="ident">in_token</span> {
         <span class="ident">tokens_helper</span>(<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">it</span>.<span class="ident">span</span>);
-    };
+    }
     <span class="ident">v</span>.<span class="ident">visit_path_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">node</span>.<span class="ident">path</span>);
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
