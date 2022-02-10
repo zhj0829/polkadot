@@ -672,6 +672,12 @@ where
 			debug_assert_eq!(block.number.saturating_sub(1), number);
 			update.deactivated.push(block.parent_hash);
 			self.on_head_deactivated(&block.parent_hash);
+		} else {
+			tracing::warn!(
+				target: LOG_TARGET,
+				block = ?block,
+				"Missing parent of the imported block",
+			);
 		}
 
 		self.clean_up_external_listeners();
