@@ -672,11 +672,15 @@ where
 			debug_assert_eq!(block.number.saturating_sub(1), number);
 			update.deactivated.push(block.parent_hash);
 			self.on_head_deactivated(&block.parent_hash);
-		} else {
+		}
+
+		// The parent block might've been already finalized and removed from `active_leaves`.
+		// Thus, look in the cache.
+		if !self.known_leaves.contains(&block.parent_hash) {
 			tracing::warn!(
 				target: LOG_TARGET,
 				block = ?block,
-				"Missing parent of the imported block",
+				"Missing parent of the imported block in the cache",
 			);
 		}
 
