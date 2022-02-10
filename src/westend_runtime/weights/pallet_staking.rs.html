@@ -413,6 +413,11 @@
 <span id="413">413</span>
 <span id="414">414</span>
 <span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -826,6 +831,11 @@
 		(<span class="number">64_678_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">11</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">6</span> <span class="kw">as</span> <span class="ident">Weight</span>))
+	}
+	<span class="kw">fn</span> <span class="ident">force_apply_min_commission</span>() -&gt; <span class="ident">Weight</span> {
+		(<span class="number">9_652_000</span> <span class="kw">as</span> <span class="ident">Weight</span>)
+			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">reads</span>(<span class="number">2</span> <span class="kw">as</span> <span class="ident">Weight</span>))
+			.<span class="ident">saturating_add</span>(<span class="ident">T::DbWeight::get</span>().<span class="ident">writes</span>(<span class="number">1</span> <span class="kw">as</span> <span class="ident">Weight</span>))
 	}
 }
 </code></pre></div>
