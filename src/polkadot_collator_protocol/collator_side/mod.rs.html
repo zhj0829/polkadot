@@ -1076,6 +1076,14 @@
 <span id="1076">1076</span>
 <span id="1077">1077</span>
 <span id="1078">1078</span>
+<span id="1079">1079</span>
+<span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2036,6 +2044,7 @@
 	<span class="comment">// but can also include the previous group at</span>
 	<span class="comment">// rotation boundaries and considering forks</span>
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">group_validators</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
+	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">maybe_core</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
 	<span class="kw">for</span> <span class="ident">relay_parent</span> <span class="kw">in</span> <span class="ident">state</span>.<span class="ident">view</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>() {
 		<span class="macro">tracing::debug!</span>(
@@ -2048,7 +2057,10 @@
 		<span class="comment">// Determine our assigned core.</span>
 		<span class="comment">// If it is not scheduled then ignore the relay parent.</span>
 		<span class="kw">let</span> (<span class="ident">our_core</span>, <span class="ident">num_cores</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">determine_core</span>(<span class="ident">ctx</span>, <span class="ident">id</span>, <span class="ident">relay_parent</span>).<span class="kw">await</span><span class="question-mark">?</span> {
-			<span class="prelude-val">Some</span>(<span class="ident">core</span>) =&gt; <span class="ident">core</span>,
+			<span class="prelude-val">Some</span>(<span class="ident">core</span>) =&gt; {
+				<span class="ident">maybe_core</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">core</span>);
+				<span class="ident">core</span>
+			},
 			<span class="prelude-val">None</span> =&gt; <span class="kw">continue</span>,
 		};
 
@@ -2065,7 +2077,11 @@
 	<span class="kw">let</span> <span class="ident">validators</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">group_validators</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
 	<span class="kw">let</span> <span class="ident">no_one_is_assigned</span> <span class="op">=</span> <span class="ident">validators</span>.<span class="ident">is_empty</span>();
 	<span class="kw">if</span> <span class="ident">no_one_is_assigned</span> {
-		<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;No validators assigned to our core.&quot;</span>,);
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">core</span>) <span class="op">=</span> <span class="ident">maybe_core</span> {
+			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">core</span>, <span class="string">&quot;No validators assigned to our core.&quot;</span>);
+		} <span class="kw">else</span> {
+			<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Core is occupied for all active leaves.&quot;</span>);
+		}
 		<span class="kw">return</span> <span class="prelude-val">Ok</span>(())
 	}
 	<span class="macro">tracing::debug!</span>(
