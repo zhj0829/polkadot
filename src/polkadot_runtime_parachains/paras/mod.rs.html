@@ -2493,10 +2493,10 @@
 		<span class="doccomment">/// The given para either initiated or subscribed to a PVF check for the given validation</span>
 		<span class="doccomment">/// code. `code_hash` `para_id`</span>
 		<span class="ident">PvfCheckStarted</span>(<span class="ident">ValidationCodeHash</span>, <span class="ident">ParaId</span>),
-		<span class="doccomment">/// The given validation code was rejected by the PVF pre-checking vote.</span>
+		<span class="doccomment">/// The given validation code was accepted by the PVF pre-checking vote.</span>
 		<span class="doccomment">/// `code_hash` `para_id`</span>
 		<span class="ident">PvfCheckAccepted</span>(<span class="ident">ValidationCodeHash</span>, <span class="ident">ParaId</span>),
-		<span class="doccomment">/// The given validation code was accepted by the PVF pre-checking vote.</span>
+		<span class="doccomment">/// The given validation code was rejected by the PVF pre-checking vote.</span>
 		<span class="doccomment">/// `code_hash` `para_id`</span>
 		<span class="ident">PvfCheckRejected</span>(<span class="ident">ValidationCodeHash</span>, <span class="ident">ParaId</span>),
 	}
