@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["ParamsSer","Serializable JSON-RPC parameters"],["RpcHelperError",""]],"fn":[["get_storage","Get the storage item."],["rpc","Make the rpc request, returning `Ret`."],["rpc_decode","Make the rpc request, decode the outcome into `Dec`. Don’t use for storage, it will fail for non-existent storage items."]]});
