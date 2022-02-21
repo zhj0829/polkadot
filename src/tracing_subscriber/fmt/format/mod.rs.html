@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;tracing-subscriber-0.3.8&#x2F;src&#x2F;fmt&#x2F;format&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../tracing_subscriber/index.html'><div class='logo-container rust-logo'><img src='https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;tokio-rs&#x2F;tracing&#x2F;master&#x2F;assets&#x2F;logo-type.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;tracing-subscriber-0.3.9&#x2F;src&#x2F;fmt&#x2F;format&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../tracing_subscriber/index.html'><div class='logo-container rust-logo'><img src='https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;tokio-rs&#x2F;tracing&#x2F;master&#x2F;assets&#x2F;logo-type.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2089,7 +2089,114 @@
 <span id="2089">2089</span>
 <span id="2090">2090</span>
 <span id="2091">2091</span>
+<span id="2092">2092</span>
+<span id="2093">2093</span>
+<span id="2094">2094</span>
+<span id="2095">2095</span>
+<span id="2096">2096</span>
+<span id="2097">2097</span>
+<span id="2098">2098</span>
+<span id="2099">2099</span>
+<span id="2100">2100</span>
+<span id="2101">2101</span>
+<span id="2102">2102</span>
+<span id="2103">2103</span>
+<span id="2104">2104</span>
+<span id="2105">2105</span>
+<span id="2106">2106</span>
+<span id="2107">2107</span>
+<span id="2108">2108</span>
+<span id="2109">2109</span>
+<span id="2110">2110</span>
+<span id="2111">2111</span>
+<span id="2112">2112</span>
+<span id="2113">2113</span>
+<span id="2114">2114</span>
+<span id="2115">2115</span>
+<span id="2116">2116</span>
+<span id="2117">2117</span>
+<span id="2118">2118</span>
+<span id="2119">2119</span>
+<span id="2120">2120</span>
+<span id="2121">2121</span>
+<span id="2122">2122</span>
+<span id="2123">2123</span>
+<span id="2124">2124</span>
+<span id="2125">2125</span>
+<span id="2126">2126</span>
+<span id="2127">2127</span>
+<span id="2128">2128</span>
+<span id="2129">2129</span>
+<span id="2130">2130</span>
+<span id="2131">2131</span>
+<span id="2132">2132</span>
+<span id="2133">2133</span>
+<span id="2134">2134</span>
+<span id="2135">2135</span>
+<span id="2136">2136</span>
+<span id="2137">2137</span>
+<span id="2138">2138</span>
+<span id="2139">2139</span>
+<span id="2140">2140</span>
+<span id="2141">2141</span>
+<span id="2142">2142</span>
+<span id="2143">2143</span>
+<span id="2144">2144</span>
+<span id="2145">2145</span>
+<span id="2146">2146</span>
+<span id="2147">2147</span>
+<span id="2148">2148</span>
+<span id="2149">2149</span>
+<span id="2150">2150</span>
+<span id="2151">2151</span>
+<span id="2152">2152</span>
+<span id="2153">2153</span>
+<span id="2154">2154</span>
+<span id="2155">2155</span>
+<span id="2156">2156</span>
+<span id="2157">2157</span>
+<span id="2158">2158</span>
+<span id="2159">2159</span>
+<span id="2160">2160</span>
+<span id="2161">2161</span>
+<span id="2162">2162</span>
+<span id="2163">2163</span>
+<span id="2164">2164</span>
+<span id="2165">2165</span>
+<span id="2166">2166</span>
+<span id="2167">2167</span>
+<span id="2168">2168</span>
+<span id="2169">2169</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Formatters for logging `tracing` events.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This module provides several formatter implementations, as well as utilities</span>
+<span class="doccomment">//! for implementing custom formatters.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Formatters</span>
+<span class="doccomment">//! This module provides a number of formatter implementations:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * [`Full`]: The default formatter. This emits human-readable,</span>
+<span class="doccomment">//!   single-line logs for each event that occurs, with the current span context</span>
+<span class="doccomment">//!   displayed before the formatted representation of the event. See</span>
+<span class="doccomment">//!   [here](Full#example-output) for sample output.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * [`Compact`]: A variant of the default formatter, optimized for</span>
+<span class="doccomment">//!   short line lengths. Fields from the current span context are appended to</span>
+<span class="doccomment">//!   the fields of the formatted event, and span names are not shown; the</span>
+<span class="doccomment">//!   verbosity level is abbreviated to a single character. See</span>
+<span class="doccomment">//!   [here](Compact#example-output) for sample output.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * [`Pretty`]: Emits excessively pretty, multi-line logs, optimized</span>
+<span class="doccomment">//!   for human readability. This is primarily intended to be used in local</span>
+<span class="doccomment">//!   development and debugging, or for command-line applications, where</span>
+<span class="doccomment">//!   automated analysis and compact storage of logs is less of a priority than</span>
+<span class="doccomment">//!   readability and visual appeal. See [here](Pretty#example-output)</span>
+<span class="doccomment">//!   for sample output.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * [`Json`]: Outputs newline-delimited JSON logs. This is intended</span>
+<span class="doccomment">//!   for production use with systems where structured logs are consumed as JSON</span>
+<span class="doccomment">//!   by analysis and viewing tools. The JSON output is not optimized for human</span>
+<span class="doccomment">//!   readability. See [here](Json#example-output) for sample output.</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::time</span>::{<span class="ident">FormatTime</span>, <span class="ident">SystemTime</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">field</span>::{<span class="ident">MakeOutput</span>, <span class="ident">MakeVisitor</span>, <span class="ident">RecordFields</span>, <span class="ident">VisitFmt</span>, <span class="ident">VisitOutput</span>},
@@ -2388,19 +2495,65 @@
     <span class="ident">writer</span>: <span class="ident">Writer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     <span class="ident">result</span>: <span class="ident">fmt::Result</span>,
 }
-<span class="doccomment">/// Marker for `Format` that indicates that the compact log format should be used.</span>
+<span class="doccomment">/// Marker for [`Format`] that indicates that the compact log format should be used.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The compact format includes fields from all currently entered spans, after</span>
-<span class="doccomment">/// the event&#39;s fields. Span fields are not grouped by span, and span names are</span>
-<span class="doccomment">/// not shown. In addition, a more compact representation of each event&#39;s</span>
-<span class="doccomment">/// [`Level`](tracing::Level) is used.</span>
+<span class="doccomment">/// the event&#39;s fields. Span names are listed in order before fields are</span>
+<span class="doccomment">/// displayed.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example Output</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// &lt;pre&gt;&lt;font color=&quot;#4E9A06&quot;&gt;&lt;b&gt;:;&lt;/b&gt;&lt;/font&gt; &lt;font color=&quot;#4E9A06&quot;&gt;cargo&lt;/font&gt; run --example fmt-compact</span>
+<span class="doccomment">/// &lt;font color=&quot;#4E9A06&quot;&gt;&lt;b&gt;    Finished&lt;/b&gt;&lt;/font&gt; dev [unoptimized + debuginfo] target(s) in 0.08s</span>
+<span class="doccomment">/// &lt;font color=&quot;#4E9A06&quot;&gt;&lt;b&gt;     Running&lt;/b&gt;&lt;/font&gt; `target/debug/examples/fmt-compact`</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809287Z &lt;/font&gt;&lt;font color=&quot;#4E9A06&quot;&gt; INFO&lt;/font&gt; &lt;b&gt;fmt_compact&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: preparing to shave yaks &lt;/font&gt;&lt;i&gt;number_of_yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809367Z &lt;/font&gt;&lt;font color=&quot;#4E9A06&quot;&gt; INFO&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: shaving yaks &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809414Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;:&lt;b&gt;shave&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: hello! I&amp;apos;m gonna shave a yak &lt;/font&gt;&lt;i&gt;excitement&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=&amp;quot;yay!&amp;quot; &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yak&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809443Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;:&lt;b&gt;shave&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: yak shaved successfully &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yak&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809477Z &lt;/font&gt;&lt;font color=&quot;#3465A4&quot;&gt;DEBUG&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;yak_events&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1 &lt;/font&gt;&lt;i&gt;shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=true &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809500Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: &lt;/font&gt;&lt;i&gt;yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809531Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;:&lt;b&gt;shave&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: hello! I&amp;apos;m gonna shave a yak &lt;/font&gt;&lt;i&gt;excitement&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=&amp;quot;yay!&amp;quot; &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yak&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809554Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;:&lt;b&gt;shave&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: yak shaved successfully &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yak&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809581Z &lt;/font&gt;&lt;font color=&quot;#3465A4&quot;&gt;DEBUG&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;yak_events&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2 &lt;/font&gt;&lt;i&gt;shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=true &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809606Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: &lt;/font&gt;&lt;i&gt;yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809635Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;:&lt;b&gt;shave&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: hello! I&amp;apos;m gonna shave a yak &lt;/font&gt;&lt;i&gt;excitement&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=&amp;quot;yay!&amp;quot; &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yak&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809664Z &lt;/font&gt;&lt;font color=&quot;#C4A000&quot;&gt; WARN&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;:&lt;b&gt;shave&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: could not locate yak &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yak&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809693Z &lt;/font&gt;&lt;font color=&quot;#3465A4&quot;&gt;DEBUG&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;yak_events&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;i&gt;shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=false &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809717Z &lt;/font&gt;&lt;font color=&quot;#CC0000&quot;&gt;ERROR&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: failed to shave yak &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;i&gt;error&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=missing yak &lt;/font&gt;&lt;i&gt;error.sources&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=[out of space, out of cash] &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809743Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks&lt;/b&gt;: &lt;b&gt;fmt_compact::yak_shave&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: &lt;/font&gt;&lt;i&gt;yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2 &lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;/font&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-17T19:51:05.809768Z &lt;/font&gt;&lt;font color=&quot;#4E9A06&quot;&gt; INFO&lt;/font&gt; &lt;b&gt;fmt_compact&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: yak shaving completed &lt;/font&gt;&lt;i&gt;all_yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=false&lt;/font&gt;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// &lt;/pre&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Compact</span>;
 
-<span class="doccomment">/// Marker for `Format` that indicates that the default log format should be used.</span>
+<span class="doccomment">/// Marker for [`Format`] that indicates that the default log format should be used.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This format shows the span context before printing event data. Spans are</span>
+<span class="doccomment">/// This formatter shows the span context before printing event data. Spans are</span>
 <span class="doccomment">/// displayed including their names and fields.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example Output</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// &lt;pre&gt;&lt;font color=&quot;#4E9A06&quot;&gt;&lt;b&gt;:;&lt;/b&gt;&lt;/font&gt; &lt;font color=&quot;#4E9A06&quot;&gt;cargo&lt;/font&gt; run --example fmt</span>
+<span class="doccomment">/// &lt;font color=&quot;#4E9A06&quot;&gt;&lt;b&gt;    Finished&lt;/b&gt;&lt;/font&gt; dev [unoptimized + debuginfo] target(s) in 0.08s</span>
+<span class="doccomment">/// &lt;font color=&quot;#4E9A06&quot;&gt;&lt;b&gt;     Running&lt;/b&gt;&lt;/font&gt; `target/debug/examples/fmt`</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.289898Z &lt;/font&gt;&lt;font color=&quot;#4E9A06&quot;&gt; INFO&lt;/font&gt; fmt: preparing to shave yaks &lt;i&gt;number_of_yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.289974Z &lt;/font&gt;&lt;font color=&quot;#4E9A06&quot;&gt; INFO&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: shaving yaks&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290011Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;:&lt;/font&gt;&lt;b&gt;shave{&lt;/b&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: hello! I&amp;apos;m gonna shave a yak &lt;/font&gt;&lt;i&gt;excitement&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=&amp;quot;yay!&amp;quot;&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290038Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;:&lt;/font&gt;&lt;b&gt;shave{&lt;/b&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: yak shaved successfully&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290070Z &lt;/font&gt;&lt;font color=&quot;#3465A4&quot;&gt;DEBUG&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: yak_events: &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1 &lt;/font&gt;&lt;i&gt;shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=true&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290089Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: &lt;/font&gt;&lt;i&gt;yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=1&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290114Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;:&lt;/font&gt;&lt;b&gt;shave{&lt;/b&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: hello! I&amp;apos;m gonna shave a yak &lt;/font&gt;&lt;i&gt;excitement&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=&amp;quot;yay!&amp;quot;&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290134Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;:&lt;/font&gt;&lt;b&gt;shave{&lt;/b&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: yak shaved successfully&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290157Z &lt;/font&gt;&lt;font color=&quot;#3465A4&quot;&gt;DEBUG&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: yak_events: &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2 &lt;/font&gt;&lt;i&gt;shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=true&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290174Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: &lt;/font&gt;&lt;i&gt;yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290198Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;:&lt;/font&gt;&lt;b&gt;shave{&lt;/b&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: hello! I&amp;apos;m gonna shave a yak &lt;/font&gt;&lt;i&gt;excitement&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=&amp;quot;yay!&amp;quot;&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290222Z &lt;/font&gt;&lt;font color=&quot;#C4A000&quot;&gt; WARN&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;:&lt;/font&gt;&lt;b&gt;shave{&lt;/b&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: could not locate yak&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290247Z &lt;/font&gt;&lt;font color=&quot;#3465A4&quot;&gt;DEBUG&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: yak_events: &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;i&gt;shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=false&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290268Z &lt;/font&gt;&lt;font color=&quot;#CC0000&quot;&gt;ERROR&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: failed to shave yak &lt;/font&gt;&lt;i&gt;yak&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3 &lt;/font&gt;&lt;i&gt;error&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=missing yak &lt;/font&gt;&lt;i&gt;error.sources&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=[out of space, out of cash]&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290287Z &lt;/font&gt;&lt;font color=&quot;#75507B&quot;&gt;TRACE&lt;/font&gt; &lt;b&gt;shaving_yaks{&lt;/b&gt;&lt;i&gt;yaks&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=3&lt;/font&gt;&lt;b&gt;}&lt;/b&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;: fmt::yak_shave: &lt;/font&gt;&lt;i&gt;yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=2&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;font color=&quot;#AAAAAA&quot;&gt;2022-02-15T18:40:14.290309Z &lt;/font&gt;&lt;font color=&quot;#4E9A06&quot;&gt; INFO&lt;/font&gt; fmt: yak shaving completed. &lt;i&gt;all_yaks_shaved&lt;/i&gt;&lt;font color=&quot;#AAAAAA&quot;&gt;=false&lt;/font&gt;</span>
+<span class="doccomment">/// &lt;/pre&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Full</span>;
 
@@ -2409,8 +2562,11 @@
 <span class="doccomment">/// You will usually want to use this as the `FormatEvent` for a `FmtSubscriber`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The default logging format, [`Full`] includes all fields in each event and its containing</span>
-<span class="doccomment">/// spans. The [`Compact`] logging format includes only the fields from the most-recently-entered</span>
-<span class="doccomment">/// span.</span>
+<span class="doccomment">/// spans. The [`Compact`] logging format is intended to produce shorter log</span>
+<span class="doccomment">/// lines; it displays each event&#39;s fields, along with fields from the current</span>
+<span class="doccomment">/// span context, but other information is abbreviated. The [`Pretty`] logging</span>
+<span class="doccomment">/// format is an extra-verbose, multi-line human-readable logging format</span>
+<span class="doccomment">/// intended for use in development.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Format</span><span class="op">&lt;</span><span class="ident">F</span> <span class="op">=</span> <span class="ident">Full</span>, <span class="ident">T</span> <span class="op">=</span> <span class="ident">SystemTime</span><span class="op">&gt;</span> {
     <span class="ident">format</span>: <span class="ident">F</span>,
