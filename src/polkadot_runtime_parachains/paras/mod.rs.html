@@ -2010,6 +2010,20 @@
 <span id="2010">2010</span>
 <span id="2011">2011</span>
 <span id="2012">2012</span>
+<span id="2013">2013</span>
+<span id="2014">2014</span>
+<span id="2015">2015</span>
+<span id="2016">2016</span>
+<span id="2017">2017</span>
+<span id="2018">2018</span>
+<span id="2019">2019</span>
+<span id="2020">2020</span>
+<span id="2021">2021</span>
+<span id="2022">2022</span>
+<span id="2023">2023</span>
+<span id="2024">2024</span>
+<span id="2025">2025</span>
+<span id="2026">2026</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2549,6 +2563,8 @@
 		<span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidationCodeHash</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
 
 	<span class="doccomment">/// All parachains. Ordered ascending by `ParaId`. Parathreads are not included.</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// Consider using the [`ParachainsCache`] type of modifying.</span>
 	<span class="attribute">#[<span class="ident">pallet::storage</span>]</span>
 	<span class="attribute">#[<span class="ident">pallet::getter</span>(<span class="kw">fn</span> <span class="ident">parachains</span>)]</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">Parachains</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">StorageValue</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>, <span class="ident">ValueQuery</span><span class="op">&gt;</span>;
@@ -2695,30 +2711,14 @@
 	<span class="attribute">#[<span class="ident">pallet::genesis_build</span>]</span>
 	<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">GenesisBuild</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GenesisConfig</span> {
 		<span class="kw">fn</span> <span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parachains</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
-				.<span class="ident">paras</span>
-				.<span class="ident">iter</span>()
-				.<span class="ident">filter</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">args</span>)<span class="op">|</span> <span class="ident">args</span>.<span class="ident">parachain</span>)
-				.<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="kw-2">ref</span> <span class="ident">id</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">id</span>)
-				.<span class="ident">cloned</span>()
-				.<span class="ident">collect</span>();
-
-			<span class="ident">parachains</span>.<span class="ident">sort</span>();
-			<span class="ident">parachains</span>.<span class="ident">dedup</span>();
-
-			<span class="ident">Parachains</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="kw-2">&amp;</span><span class="ident">parachains</span>);
-
+			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parachains</span> <span class="op">=</span> <span class="ident">ParachainsCache::new</span>();
 			<span class="kw">for</span> (<span class="ident">id</span>, <span class="ident">genesis_args</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">paras</span> {
-				<span class="kw">let</span> <span class="ident">code_hash</span> <span class="op">=</span> <span class="ident">genesis_args</span>.<span class="ident">validation_code</span>.<span class="ident">hash</span>();
-				<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::increase_code_ref</span>(<span class="kw-2">&amp;</span><span class="ident">code_hash</span>, <span class="kw-2">&amp;</span><span class="ident">genesis_args</span>.<span class="ident">validation_code</span>);
-				<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::CurrentCodeHash::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">code_hash</span>);
-				<span class="op">&lt;</span><span class="ident">Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::Heads::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">genesis_args</span>.<span class="ident">genesis_head</span>);
-				<span class="kw">if</span> <span class="ident">genesis_args</span>.<span class="ident">parachain</span> {
-					<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">ParaLifecycle::Parachain</span>);
-				} <span class="kw">else</span> {
-					<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">ParaLifecycle::Parathread</span>);
+				<span class="kw">if</span> <span class="ident">genesis_args</span>.<span class="ident">validation_code</span>.<span class="number">0</span>.<span class="ident">is_empty</span>() {
+					<span class="macro">panic!</span>(<span class="string">&quot;empty validation code is not allowed in genesis&quot;</span>);
 				}
+				<span class="ident">Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::initialize_para_now</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parachains</span>, <span class="kw-2">*</span><span class="ident">id</span>, <span class="ident">genesis_args</span>);
 			}
+			<span class="comment">// parachains are flushed on drop</span>
 		}
 	}
 
@@ -3094,7 +3094,7 @@
 	<span class="comment">// Returns the list of outgoing paras from the actions queue.</span>
 	<span class="kw">fn</span> <span class="ident">apply_actions_queue</span>(<span class="ident">session</span>: <span class="ident">SessionIndex</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">actions</span> <span class="op">=</span> <span class="ident">ActionsQueue</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::take</span>(<span class="ident">session</span>);
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parachains</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::Parachains::get</span>();
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parachains</span> <span class="op">=</span> <span class="ident">ParachainsCache::new</span>();
 		<span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">frame_system::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::block_number</span>();
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">outgoing</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
@@ -3105,49 +3105,23 @@
 				},
 				<span class="prelude-val">Some</span>(<span class="ident">ParaLifecycle::Onboarding</span>) =&gt; {
 					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">genesis_data</span>) <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::UpcomingParasGenesis::take</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>) {
-						<span class="kw">if</span> <span class="ident">genesis_data</span>.<span class="ident">parachain</span> {
-							<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">parachains</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>) {
-								<span class="ident">parachains</span>.<span class="ident">insert</span>(<span class="ident">i</span>, <span class="ident">para</span>);
-							}
-							<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>, <span class="ident">ParaLifecycle::Parachain</span>);
-						} <span class="kw">else</span> {
-							<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>, <span class="ident">ParaLifecycle::Parathread</span>);
-						}
-
-						<span class="comment">// HACK: see the notice in `schedule_para_initialize`.</span>
-						<span class="comment">//</span>
-						<span class="comment">// Apparently, this is left over from a prior version of the runtime.</span>
-						<span class="comment">// To handle this we just insert the code and link the current code hash</span>
-						<span class="comment">// to it.</span>
-						<span class="kw">if</span> <span class="op">!</span><span class="ident">genesis_data</span>.<span class="ident">validation_code</span>.<span class="number">0</span>.<span class="ident">is_empty</span>() {
-							<span class="kw">let</span> <span class="ident">code_hash</span> <span class="op">=</span> <span class="ident">genesis_data</span>.<span class="ident">validation_code</span>.<span class="ident">hash</span>();
-							<span class="ident"><span class="self">Self</span>::increase_code_ref</span>(<span class="kw-2">&amp;</span><span class="ident">code_hash</span>, <span class="kw-2">&amp;</span><span class="ident">genesis_data</span>.<span class="ident">validation_code</span>);
-							<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::CurrentCodeHash::insert</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>, <span class="ident">code_hash</span>);
-						}
-
-						<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::Heads::insert</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>, <span class="ident">genesis_data</span>.<span class="ident">genesis_head</span>);
+						<span class="ident"><span class="self">Self</span>::initialize_para_now</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">parachains</span>, <span class="ident">para</span>, <span class="kw-2">&amp;</span><span class="ident">genesis_data</span>);
 					}
 				},
 				<span class="comment">// Upgrade a parathread to a parachain</span>
 				<span class="prelude-val">Some</span>(<span class="ident">ParaLifecycle::UpgradingParathread</span>) =&gt; {
-					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">parachains</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>) {
-						<span class="ident">parachains</span>.<span class="ident">insert</span>(<span class="ident">i</span>, <span class="ident">para</span>);
-					}
+					<span class="ident">parachains</span>.<span class="ident">add</span>(<span class="ident">para</span>);
 					<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>, <span class="ident">ParaLifecycle::Parachain</span>);
 				},
 				<span class="comment">// Downgrade a parachain to a parathread</span>
 				<span class="prelude-val">Some</span>(<span class="ident">ParaLifecycle::DowngradingParachain</span>) =&gt; {
-					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">parachains</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>) {
-						<span class="ident">parachains</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
-					}
+					<span class="ident">parachains</span>.<span class="ident">remove</span>(<span class="ident">para</span>);
 					<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>, <span class="ident">ParaLifecycle::Parathread</span>);
 				},
 				<span class="comment">// Offboard a parathread or parachain from the system</span>
 				<span class="prelude-val">Some</span>(<span class="ident">ParaLifecycle::OffboardingParachain</span>) <span class="op">|</span>
 				<span class="prelude-val">Some</span>(<span class="ident">ParaLifecycle::OffboardingParathread</span>) =&gt; {
-					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">parachains</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>) {
-						<span class="ident">parachains</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
-					}
+					<span class="ident">parachains</span>.<span class="ident">remove</span>(<span class="ident">para</span>);
 
 					<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::Heads::remove</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>);
 					<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::FutureCodeUpgrades::remove</span>(<span class="kw-2">&amp;</span><span class="ident">para</span>);
@@ -3190,8 +3164,8 @@
 			});
 		}
 
-		<span class="comment">// Place the new parachains set in storage.</span>
-		<span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Store</span><span class="op">&gt;</span><span class="ident">::Parachains::set</span>(<span class="ident">parachains</span>);
+		<span class="comment">// Persist parachains into the storage explicitly.</span>
+		<span class="ident">drop</span>(<span class="ident">parachains</span>);
 
 		<span class="kw">return</span> <span class="ident">outgoing</span>
 	}
@@ -4006,20 +3980,74 @@
 		<span class="ident">Heads</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="ident">para_id</span>, <span class="ident">head_data</span>);
 	}
 
-	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime-benchmarks&quot;</span>)]</span>
-	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initialize_para_now</span>(<span class="ident">id</span>: <span class="ident">ParaId</span>, <span class="ident">genesis</span>: <span class="ident">ParaGenesisArgs</span>) -&gt; <span class="ident">DispatchResult</span> {
-		<span class="comment">// first queue this para actions..</span>
-		<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::schedule_para_initialize</span>(<span class="ident">id</span>, <span class="ident">genesis</span>)<span class="question-mark">?</span>;
+	<span class="doccomment">/// A low-level function to eagerly initialize a given para.</span>
+	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">initialize_para_now</span>(
+		<span class="ident">parachains</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ParachainsCache</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+		<span class="ident">id</span>: <span class="ident">ParaId</span>,
+		<span class="ident">genesis_data</span>: <span class="kw-2">&amp;</span><span class="ident">ParaGenesisArgs</span>,
+	) {
+		<span class="kw">if</span> <span class="ident">genesis_data</span>.<span class="ident">parachain</span> {
+			<span class="ident">parachains</span>.<span class="ident">add</span>(<span class="ident">id</span>);
+			<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">ParaLifecycle::Parachain</span>);
+		} <span class="kw">else</span> {
+			<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">ParaLifecycle::Parathread</span>);
+		}
 
-		<span class="comment">// .. and immediately apply them.</span>
-		<span class="ident"><span class="self">Self</span>::apply_actions_queue</span>(<span class="ident"><span class="self">Self</span>::scheduled_session</span>());
+		<span class="comment">// HACK: see the notice in `schedule_para_initialize`.</span>
+		<span class="comment">//</span>
+		<span class="comment">// Apparently, this is left over from a prior version of the runtime.</span>
+		<span class="comment">// To handle this we just insert the code and link the current code hash</span>
+		<span class="comment">// to it.</span>
+		<span class="kw">if</span> <span class="op">!</span><span class="ident">genesis_data</span>.<span class="ident">validation_code</span>.<span class="number">0</span>.<span class="ident">is_empty</span>() {
+			<span class="kw">let</span> <span class="ident">code_hash</span> <span class="op">=</span> <span class="ident">genesis_data</span>.<span class="ident">validation_code</span>.<span class="ident">hash</span>();
+			<span class="ident"><span class="self">Self</span>::increase_code_ref</span>(<span class="kw-2">&amp;</span><span class="ident">code_hash</span>, <span class="kw-2">&amp;</span><span class="ident">genesis_data</span>.<span class="ident">validation_code</span>);
+			<span class="ident">CurrentCodeHash</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">code_hash</span>);
+		}
 
-		<span class="comment">// ensure it has become a para.</span>
-		<span class="macro">ensure!</span>(
-			<span class="ident">ParaLifecycles</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>(<span class="ident">id</span>) <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">ParaLifecycle::Parachain</span>),
-			<span class="string">&quot;Parachain not created properly&quot;</span>
-		);
-		<span class="prelude-val">Ok</span>(())
+		<span class="ident">Heads</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::insert</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">genesis_data</span>.<span class="ident">genesis_head</span>);
+	}
+}
+
+<span class="doccomment">/// An overlay over the `Parachains` storage entry that provides a convenient interface for adding</span>
+<span class="doccomment">/// or removing parachains in bulk.</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ParachainsCache</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> {
+	<span class="comment">// `None` here means the parachains list has not been accessed yet, nevermind modified.</span>
+	<span class="ident">parachains</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">_config</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">ParachainsCache</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
+		<span class="self">Self</span> { <span class="ident">parachains</span>: <span class="prelude-val">None</span>, <span class="ident">_config</span>: <span class="ident">PhantomData</span> }
+	}
+
+	<span class="kw">fn</span> <span class="ident">ensure_initialized</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span> {
+		<span class="self">self</span>.<span class="ident">parachains</span>.<span class="ident">get_or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Parachains</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::get</span>())
+	}
+
+	<span class="doccomment">/// Adds the given para id to the list.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) {
+		<span class="kw">let</span> <span class="ident">parachains</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ensure_initialized</span>();
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">parachains</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
+			<span class="ident">parachains</span>.<span class="ident">insert</span>(<span class="ident">i</span>, <span class="ident">id</span>);
+		}
+	}
+
+	<span class="doccomment">/// Removes the given para id from the list of parachains. Does nothing if the id is not in the</span>
+	<span class="doccomment">/// list.</span>
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">id</span>: <span class="ident">ParaId</span>) {
+		<span class="kw">let</span> <span class="ident">parachains</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ensure_initialized</span>();
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">i</span>) <span class="op">=</span> <span class="ident">parachains</span>.<span class="ident">binary_search</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
+			<span class="ident">parachains</span>.<span class="ident">remove</span>(<span class="ident">i</span>);
+		}
+	}
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Config</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ParachainsCache</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+	<span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">parachains</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parachains</span>.<span class="ident">take</span>() {
+			<span class="ident">Parachains</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::put</span>(<span class="kw-2">&amp;</span><span class="ident">parachains</span>);
+		}
 	}
 }
 </code></pre></div>

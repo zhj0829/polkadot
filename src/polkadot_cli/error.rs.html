@@ -34,6 +34,20 @@
 <span id="34">34</span>
 <span id="35">35</span>
 <span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -66,6 +80,20 @@
 
 	<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
 	<span class="ident">PerfCheck</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">polkadot_performance_test::PerfCheckError</span>),
+
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pyroscope&quot;</span>))]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Binary was not compiled with `--feature=pyroscope`&quot;</span>)]</span>
+	<span class="ident">PyroscopeNotCompiledIn</span>,
+
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pyroscope&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Failed to connect to pyroscope agent&quot;</span>)]</span>
+	<span class="ident">PyroscopeError</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">pyro::error::PyroscopeError</span>),
+
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Failed to resolve provided URL&quot;</span>)]</span>
+	<span class="ident">AddressResolutionFailure</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">std::io::Error</span>),
+
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;URL did not resolve to anything&quot;</span>)]</span>
+	<span class="ident">AddressResolutionMissing</span>,
 
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Other: {0}&quot;</span>)]</span>
 	<span class="ident">Other</span>(<span class="ident">String</span>),
