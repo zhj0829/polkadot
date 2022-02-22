@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;5cdbaa3&#x2F;client&#x2F;executor&#x2F;src&#x2F;native_executor.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>native_executor.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../sc_executor/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;usr&#x2F;local&#x2F;cargo&#x2F;git&#x2F;checkouts&#x2F;substrate-7e08433d4c370a21&#x2F;42b2d62&#x2F;client&#x2F;executor&#x2F;src&#x2F;native_executor.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>native_executor.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../sc_executor/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -680,6 +680,16 @@
 <span id="680">680</span>
 <span id="681">681</span>
 <span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
 </pre><pre class="rust"><code><span class="comment">// This file is part of Substrate.</span>
 
 <span class="comment">// Copyright (C) 2017-2022 Parity Technologies (UK) Ltd.</span>
@@ -717,7 +727,6 @@
 };
 
 <span class="kw">use</span> <span class="ident">codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
-<span class="kw">use</span> <span class="ident">log::trace</span>;
 <span class="kw">use</span> <span class="ident">sc_executor_common</span>::{
 	<span class="ident">runtime_blob::RuntimeBlob</span>,
 	<span class="ident">wasm_runtime</span>::{<span class="ident">InvokeMethod</span>, <span class="ident">WasmInstance</span>, <span class="ident">WasmModule</span>},
@@ -983,6 +992,12 @@
 		<span class="ident">_use_native</span>: <span class="ident">bool</span>,
 		<span class="ident">_native_call</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NC</span><span class="op">&gt;</span>,
 	) -&gt; (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NativeOrEncoded</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">bool</span>) {
+		<span class="macro">tracing::trace!</span>(
+			<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
+			<span class="op">%</span><span class="ident">method</span>,
+			<span class="string">&quot;Executing function&quot;</span>,
+		);
+
 		<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">with_instance</span>(
 			<span class="ident">runtime_code</span>,
 			<span class="ident">ext</span>,
@@ -1104,10 +1119,10 @@
 				<span class="kw">let</span> <span class="ident">async_ext</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">new_async_externalities</span>(<span class="ident">scheduler</span>.<span class="ident">clone</span>()) {
 					<span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
 					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-						<span class="macro">log::error!</span>(
+						<span class="macro">tracing::error!</span>(
 							<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
-							<span class="string">&quot;Failed to setup externalities for async context: {}&quot;</span>,
-							<span class="ident">e</span>,
+							<span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">e</span>,
+							<span class="string">&quot;Failed to setup externalities for async context.&quot;</span>,
 						);
 
 						<span class="comment">// This will drop sender and receiver end will panic</span>
@@ -1120,10 +1135,10 @@
 				)) {
 					<span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
 					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-						<span class="macro">log::error!</span>(
+						<span class="macro">tracing::error!</span>(
 							<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
-							<span class="string">&quot;Failed to setup runtime extension for async externalities: {}&quot;</span>,
-							<span class="ident">e</span>,
+							<span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">e</span>,
+							<span class="string">&quot;Failed to setup runtime extension for async externalities&quot;</span>,
 						);
 
 						<span class="comment">// This will drop sender and receiver end will panic</span>
@@ -1158,7 +1173,7 @@
 					<span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
 						<span class="comment">// If execution is panicked, the `join` in the original runtime code will</span>
 						<span class="comment">// panic as well, since the sender is dropped without sending anything.</span>
-						<span class="macro">log::error!</span>(<span class="string">&quot;Call error in spawned task: {}&quot;</span>, <span class="ident">error</span>);
+						<span class="macro">tracing::error!</span>(<span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">error</span>, <span class="string">&quot;Call error in spawned task&quot;</span>);
 					},
 				}
 			}),
@@ -1200,10 +1215,10 @@
 			<span class="ident">RuntimeInstanceSpawn::with_externalities_and_module</span>(<span class="ident">module</span>, <span class="ident">ext</span>)
 		{
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">ext</span>.<span class="ident">register_extension</span>(<span class="ident">RuntimeSpawnExt</span>(<span class="ident">Box::new</span>(<span class="ident">runtime_spawn</span>))) {
-				<span class="macro">trace!</span>(
+				<span class="macro">tracing::trace!</span>(
 					<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
-					<span class="string">&quot;Failed to register `RuntimeSpawnExt` instance on externalities: {:?}&quot;</span>,
-					<span class="ident">e</span>,
+					<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
+					<span class="string">&quot;Failed to register `RuntimeSpawnExt` instance on externalities&quot;</span>,
 				)
 			}
 		}
@@ -1225,6 +1240,12 @@
 		<span class="ident">use_native</span>: <span class="ident">bool</span>,
 		<span class="ident">native_call</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NC</span><span class="op">&gt;</span>,
 	) -&gt; (<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NativeOrEncoded</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">bool</span>) {
+		<span class="macro">tracing::trace!</span>(
+			<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
+			<span class="ident">function</span> <span class="op">=</span> <span class="op">%</span><span class="ident">method</span>,
+			<span class="string">&quot;Executing function&quot;</span>,
+		);
+
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">used_native</span> <span class="op">=</span> <span class="bool-val">false</span>;
 		<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">wasm</span>.<span class="ident">with_instance</span>(
 			<span class="ident">runtime_code</span>,
@@ -1240,11 +1261,11 @@
 				<span class="kw">match</span> (<span class="ident">use_native</span>, <span class="ident">can_call_with</span>, <span class="ident">native_call</span>) {
 					(<span class="kw">_</span>, <span class="bool-val">false</span>, <span class="kw">_</span>) <span class="op">|</span> (<span class="bool-val">false</span>, <span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
 						<span class="kw">if</span> <span class="op">!</span><span class="ident">can_call_with</span> {
-							<span class="macro">trace!</span>(
+							<span class="macro">tracing::trace!</span>(
 								<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
-								<span class="string">&quot;Request for native execution failed (native: {}, chain: {})&quot;</span>,
-								<span class="self">self</span>.<span class="ident">native_version</span>.<span class="ident">runtime_version</span>,
-								<span class="ident">onchain_version</span>,
+								<span class="ident">native</span> <span class="op">=</span> <span class="op">%</span><span class="self">self</span>.<span class="ident">native_version</span>.<span class="ident">runtime_version</span>,
+								<span class="ident">chain</span> <span class="op">=</span> <span class="op">%</span><span class="ident">onchain_version</span>,
+								<span class="string">&quot;Request for native execution failed&quot;</span>,
 							);
 						}
 
@@ -1254,12 +1275,11 @@
 						})
 					},
 					(<span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="prelude-val">Some</span>(<span class="ident">call</span>)) =&gt; {
-						<span class="macro">trace!</span>(
+						<span class="macro">tracing::trace!</span>(
 							<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
-							<span class="string">&quot;Request for native execution with native call succeeded \
-							(native: {}, chain: {}).&quot;</span>,
-							<span class="self">self</span>.<span class="ident">native_version</span>.<span class="ident">runtime_version</span>,
-							<span class="ident">onchain_version</span>,
+							<span class="ident">native</span> <span class="op">=</span> <span class="op">%</span><span class="self">self</span>.<span class="ident">native_version</span>.<span class="ident">runtime_version</span>,
+							<span class="ident">chain</span> <span class="op">=</span> <span class="op">%</span><span class="ident">onchain_version</span>,
+							<span class="string">&quot;Request for native execution with native call succeeded&quot;</span>
 						);
 
 						<span class="ident">used_native</span> <span class="op">=</span> <span class="bool-val">true</span>;
@@ -1269,11 +1289,11 @@
 						<span class="prelude-val">Ok</span>(<span class="ident">res</span>)
 					},
 					<span class="kw">_</span> =&gt; {
-						<span class="macro">trace!</span>(
+						<span class="macro">tracing::trace!</span>(
 							<span class="ident">target</span>: <span class="string">&quot;executor&quot;</span>,
-							<span class="string">&quot;Request for native execution succeeded (native: {}, chain: {})&quot;</span>,
-							<span class="self">self</span>.<span class="ident">native_version</span>.<span class="ident">runtime_version</span>,
-							<span class="ident">onchain_version</span>
+							<span class="ident">native</span> <span class="op">=</span> <span class="op">%</span><span class="self">self</span>.<span class="ident">native_version</span>.<span class="ident">runtime_version</span>,
+							<span class="ident">chain</span> <span class="op">=</span> <span class="op">%</span><span class="ident">onchain_version</span>,
+							<span class="string">&quot;Request for native execution succeeded&quot;</span>,
 						);
 
 						<span class="ident">used_native</span> <span class="op">=</span> <span class="bool-val">true</span>;

@@ -1766,7 +1766,7 @@
 				(<span class="ident">BeefySignedCommitmentSender</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>, <span class="ident">BeefyBestBlockSender</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span>),
 			),
 			<span class="ident">grandpa::SharedVoterState</span>,
-			<span class="ident">std::time::Duration</span>, <span class="comment">// slot-duration</span>
+			<span class="ident">sp_consensus_babe::SlotDuration</span>,
 			<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Telemetry</span><span class="op">&gt;</span>,
 		),
 	<span class="op">&gt;</span>,
@@ -1821,7 +1821,7 @@
 			<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
 			<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span>
-				<span class="ident">sp_consensus_babe::inherents::InherentDataProvider::from_timestamp_and_duration</span>(
+				<span class="ident">sp_consensus_babe::inherents::InherentDataProvider::from_timestamp_and_slot_duration</span>(
 					<span class="kw-2">*</span><span class="ident">timestamp</span>,
 					<span class="ident">slot_duration</span>,
 				);
@@ -2419,7 +2419,7 @@
 					<span class="kw">let</span> <span class="ident">timestamp</span> <span class="op">=</span> <span class="ident">sp_timestamp::InherentDataProvider::from_system_time</span>();
 
 					<span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span>
-						<span class="ident">sp_consensus_babe::inherents::InherentDataProvider::from_timestamp_and_duration</span>(
+						<span class="ident">sp_consensus_babe::inherents::InherentDataProvider::from_timestamp_and_slot_duration</span>(
 							<span class="kw-2">*</span><span class="ident">timestamp</span>,
 							<span class="ident">slot_duration</span>,
 						);
