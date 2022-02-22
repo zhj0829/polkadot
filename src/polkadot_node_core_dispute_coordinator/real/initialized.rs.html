@@ -1320,6 +1320,10 @@
 <span id="1320">1320</span>
 <span id="1321">1321</span>
 <span id="1322">1322</span>
+<span id="1323">1323</span>
+<span id="1324">1324</span>
+<span id="1325">1325</span>
+<span id="1326">1326</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2153,6 +2157,9 @@
 			.<span class="ident">find</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">index</span>)<span class="op">|</span> <span class="ident">controlled_indices</span>.<span class="ident">contains</span>(<span class="ident">index</span>))
 			.<span class="ident">is_some</span>();
 
+		<span class="comment">// Indexes of the validators issued &#39;invalid&#39; statements. Will be used to populate spam slots.</span>
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fresh_invalid_statement_issuers</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+
 		<span class="comment">// Update candidate votes.</span>
 		<span class="kw">for</span> (<span class="ident">statement</span>, <span class="ident">val_index</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">statements</span> {
 			<span class="kw">if</span> <span class="ident">validators</span>
@@ -2198,6 +2205,7 @@
 						<span class="kw">continue</span>
 					}
 
+					<span class="ident">fresh_invalid_statement_issuers</span>.<span class="ident">push</span>(<span class="kw-2">*</span><span class="ident">val_index</span>);
 					<span class="ident">votes_changed</span> <span class="op">=</span> <span class="bool-val">true</span>;
 					<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_invalid_vote</span>();
 				},
@@ -2214,17 +2222,17 @@
 			<span class="ident">byzantine_threshold</span>(<span class="ident">n_validators</span>);
 
 		<span class="comment">// Potential spam:</span>
-		<span class="kw">if</span> <span class="op">!</span><span class="ident">is_confirmed</span> {
+		<span class="kw">if</span> <span class="op">!</span><span class="ident">is_confirmed</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">fresh_invalid_statement_issuers</span>.<span class="ident">is_empty</span>() {
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">free_spam_slots_available</span> <span class="op">=</span> <span class="bool-val">true</span>;
 			<span class="comment">// Only allow import if all validators voting invalid, have not exceeded</span>
 			<span class="comment">// their spam slots:</span>
-			<span class="kw">for</span> (<span class="ident">statement</span>, <span class="ident">index</span>) <span class="kw">in</span> <span class="ident">statements</span>.<span class="ident">iter</span>() {
+			<span class="kw">for</span> <span class="ident">index</span> <span class="kw">in</span> <span class="ident">fresh_invalid_statement_issuers</span> {
 				<span class="comment">// Disputes can only be triggered via an invalidity stating vote, thus we only</span>
 				<span class="comment">// need to increase spam slots on invalid votes. (If we did not, we would also</span>
 				<span class="comment">// increase spam slots for backing validators for example - as validators have to</span>
 				<span class="comment">// provide some opposing vote for dispute-distribution).</span>
-				<span class="ident">free_spam_slots_available</span> <span class="op">&amp;=</span> <span class="ident">statement</span>.<span class="ident">statement</span>().<span class="ident">indicates_validity</span>() <span class="op">|</span><span class="op">|</span>
-					<span class="self">self</span>.<span class="ident">spam_slots</span>.<span class="ident">add_unconfirmed</span>(<span class="ident">session</span>, <span class="ident">candidate_hash</span>, <span class="kw-2">*</span><span class="ident">index</span>);
+				<span class="ident">free_spam_slots_available</span> <span class="op">&amp;=</span>
+					<span class="self">self</span>.<span class="ident">spam_slots</span>.<span class="ident">add_unconfirmed</span>(<span class="ident">session</span>, <span class="ident">candidate_hash</span>, <span class="ident">index</span>);
 			}
 			<span class="comment">// Only validity stating votes or validator had free spam slot?</span>
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">free_spam_slots_available</span> {
