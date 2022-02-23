@@ -151,7 +151,7 @@
 
 <span class="doccomment">//! Polkadot CLI library.</span>
 
-<span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">AppSettings</span>, <span class="ident">Parser</span>};
+<span class="kw">use</span> <span class="ident">clap::Parser</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Parser</span>)]</span>
@@ -178,11 +178,11 @@
 	<span class="ident">Revert</span>(<span class="ident">sc_cli::RevertCmd</span>),
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;prepare-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">AppSettings::Hidden</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;prepare-worker&quot;</span>, <span class="ident">hide</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
 	<span class="ident">PvfPrepareWorker</span>(<span class="ident">ValidationWorkerCommand</span>),
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;execute-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">AppSettings::Hidden</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;execute-worker&quot;</span>, <span class="ident">hide</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
 	<span class="ident">PvfExecuteWorker</span>(<span class="ident">ValidationWorkerCommand</span>),
 
 	<span class="doccomment">/// The custom benchmark subcommand benchmarking runtime pallets.</span>

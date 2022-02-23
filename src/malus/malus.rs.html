@@ -142,7 +142,7 @@
 
 <span class="doccomment">//! A malus or nemesis node launch code.</span>
 
-<span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">AppSettings</span>, <span class="ident">Parser</span>};
+<span class="kw">use</span> <span class="ident">clap::Parser</span>;
 <span class="kw">use</span> <span class="ident">color_eyre::eyre</span>;
 <span class="kw">use</span> <span class="ident">polkadot_cli</span>::{<span class="ident">Cli</span>, <span class="ident">RunCmd</span>};
 
@@ -166,11 +166,11 @@
 	<span class="ident">DisputeAncestor</span>(<span class="ident">RunCmd</span>),
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;prepare-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">AppSettings::Hidden</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;prepare-worker&quot;</span>, <span class="ident">hide</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
 	<span class="ident">PvfPrepareWorker</span>(<span class="ident">polkadot_cli::ValidationWorkerCommand</span>),
 
 	<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
-	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;execute-worker&quot;</span>, <span class="ident">setting</span> <span class="op">=</span> <span class="ident">AppSettings::Hidden</span>)]</span>
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;execute-worker&quot;</span>, <span class="ident">hide</span> <span class="op">=</span> <span class="bool-val">true</span>)]</span>
 	<span class="ident">PvfExecuteWorker</span>(<span class="ident">polkadot_cli::ValidationWorkerCommand</span>),
 }
 
