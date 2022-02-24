@@ -779,8 +779,6 @@
 <span id="779">779</span>
 <span id="780">780</span>
 <span id="781">781</span>
-<span id="782">782</span>
-<span id="783">783</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1033,8 +1031,6 @@
 	<span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">ValidatorId</span>,
 	<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ValidatorSignature</span><span class="op">&gt;</span>, <span class="ident">KeystoreError</span><span class="op">&gt;</span> {
-	<span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
-
 	<span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span>
 		<span class="ident">CryptoStore::sign_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">keystore</span>, <span class="ident">ValidatorId::ID</span>, <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">into</span>(), <span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
