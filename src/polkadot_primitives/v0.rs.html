@@ -1741,7 +1741,7 @@
 	<span class="doccomment">/// Validity attestations.</span>
 	<span class="kw">pub</span> <span class="ident">validity_votes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidityAttestation</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Indices of the corresponding validity votes.</span>
-	<span class="kw">pub</span> <span class="ident">validator_indices</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">validator_indices</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">AttestedCandidate</span> {

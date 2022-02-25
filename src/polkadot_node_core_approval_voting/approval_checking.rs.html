@@ -1512,7 +1512,7 @@
 			<span class="kw">let</span> <span class="ident">n_assigned</span> <span class="op">=</span> <span class="ident">assigned_mask</span>.<span class="ident">count_ones</span>();
 
 			<span class="comment">// Filter the amount of assigned validators by those which have approved.</span>
-			<span class="ident">assigned_mask</span> <span class="op">&amp;=</span> <span class="ident">approvals</span>.<span class="ident">iter</span>().<span class="ident">by_val</span>();
+			<span class="ident">assigned_mask</span> <span class="op">&amp;=</span> <span class="ident">approvals</span>;
 			<span class="kw">let</span> <span class="ident">n_approved</span> <span class="op">=</span> <span class="ident">assigned_mask</span>.<span class="ident">count_ones</span>();
 
 			<span class="comment">// note: the process of computing `required` only chooses `exact` if</span>
@@ -1709,7 +1709,7 @@
 <span class="doccomment">///  - if `tick` &gt;  `clock_drift`: the value is equal to `tick` + `no_show_duration`.</span>
 <span class="kw">fn</span> <span class="ident">count_no_shows</span>(
 	<span class="ident">assignments</span>: <span class="kw-2">&amp;</span>[(<span class="ident">ValidatorIndex</span>, <span class="ident">Tick</span>)],
-	<span class="ident">approvals</span>: <span class="kw-2">&amp;</span><span class="ident">BitSlice</span><span class="op">&lt;</span><span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
+	<span class="ident">approvals</span>: <span class="kw-2">&amp;</span><span class="ident">BitSlice</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span><span class="op">&gt;</span>,
 	<span class="ident">clock_drift</span>: <span class="ident">Tick</span>,
 	<span class="ident">block_tick</span>: <span class="ident">Tick</span>,
 	<span class="ident">no_show_duration</span>: <span class="ident">Tick</span>,
@@ -1750,7 +1750,7 @@
 <span class="doccomment">/// Determine the amount of tranches of assignments needed to determine approval of a candidate.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tranches_to_approve</span>(
 	<span class="ident">approval_entry</span>: <span class="kw-2">&amp;</span><span class="ident">ApprovalEntry</span>,
-	<span class="ident">approvals</span>: <span class="kw-2">&amp;</span><span class="ident">BitSlice</span><span class="op">&lt;</span><span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
+	<span class="ident">approvals</span>: <span class="kw-2">&amp;</span><span class="ident">BitSlice</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span><span class="op">&gt;</span>,
 	<span class="ident">tranche_now</span>: <span class="ident">DelayTranche</span>,
 	<span class="ident">block_tick</span>: <span class="ident">Tick</span>,
 	<span class="ident">no_show_duration</span>: <span class="ident">Tick</span>,
@@ -1884,7 +1884,7 @@
 			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
 			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
-			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>],
+			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">10</span>],
 		}
 		.<span class="ident">into</span>();
 
@@ -1907,7 +1907,7 @@
 					<span class="ident">assignments</span>: (<span class="number">5</span>..<span class="number">10</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">ValidatorIndex</span>(<span class="ident">i</span>), <span class="number">0</span>.<span class="ident">into</span>())).<span class="ident">collect</span>(),
 				},
 			],
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; <span class="number">10</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">1</span>; <span class="number">10</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -1956,7 +1956,7 @@
 			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
 			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
-			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>],
+			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">10</span>],
 		}
 		.<span class="ident">into</span>();
 
@@ -1979,7 +1979,7 @@
 					<span class="ident">assignments</span>: (<span class="number">6</span>..<span class="number">10</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">ValidatorIndex</span>(<span class="ident">i</span>), <span class="number">0</span>.<span class="ident">into</span>())).<span class="ident">collect</span>(),
 				},
 			],
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; <span class="number">10</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">1</span>; <span class="number">10</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2032,7 +2032,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approval_entry</span>: <span class="ident">ApprovalEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">5</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">5</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2048,7 +2048,7 @@
 
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">2</span>, <span class="ident">ValidatorIndex</span>(<span class="number">4</span>), <span class="ident">block_tick</span> <span class="op">+</span> <span class="number">2</span>);
 
-		<span class="kw">let</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; <span class="number">5</span>];
+		<span class="kw">let</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">1</span>; <span class="number">5</span>];
 
 		<span class="macro">assert_eq!</span>(
 			<span class="ident">tranches_to_approve</span>(
@@ -2076,7 +2076,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approval_entry</span>: <span class="ident">ApprovalEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">10</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2087,7 +2087,7 @@
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">0</span>, <span class="ident">ValidatorIndex</span>(<span class="number">0</span>), <span class="ident">block_tick</span>);
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">1</span>, <span class="ident">ValidatorIndex</span>(<span class="number">2</span>), <span class="ident">block_tick</span>);
 
-		<span class="kw">let</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>];
+		<span class="kw">let</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">10</span>];
 
 		<span class="kw">let</span> <span class="ident">tranche_now</span> <span class="op">=</span> <span class="number">2</span>;
 		<span class="macro">assert_eq!</span>(
@@ -2116,7 +2116,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approval_entry</span>: <span class="ident">ApprovalEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">10</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2129,7 +2129,7 @@
 
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">1</span>, <span class="ident">ValidatorIndex</span>(<span class="number">2</span>), <span class="ident">block_tick</span>);
 
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">10</span>];
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">10</span>];
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">0</span>, <span class="bool-val">true</span>);
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">1</span>, <span class="bool-val">true</span>);
 
@@ -2161,7 +2161,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approval_entry</span>: <span class="ident">ApprovalEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2175,7 +2175,7 @@
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">1</span>, <span class="ident">ValidatorIndex</span>(<span class="number">2</span>), <span class="ident">block_tick</span>);
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">1</span>, <span class="ident">ValidatorIndex</span>(<span class="number">3</span>), <span class="ident">block_tick</span>);
 
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">0</span>, <span class="bool-val">true</span>);
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">1</span>, <span class="bool-val">true</span>);
 		<span class="comment">// skip 2</span>
@@ -2228,7 +2228,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approval_entry</span>: <span class="ident">ApprovalEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2245,7 +2245,7 @@
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">2</span>, <span class="ident">ValidatorIndex</span>(<span class="number">4</span>), <span class="ident">block_tick</span> <span class="op">+</span> <span class="ident">no_show_duration</span> <span class="op">+</span> <span class="number">2</span>);
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">2</span>, <span class="ident">ValidatorIndex</span>(<span class="number">5</span>), <span class="ident">block_tick</span> <span class="op">+</span> <span class="ident">no_show_duration</span> <span class="op">+</span> <span class="number">2</span>);
 
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">0</span>, <span class="bool-val">true</span>);
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">1</span>, <span class="bool-val">true</span>);
 		<span class="comment">// skip 2</span>
@@ -2319,7 +2319,7 @@
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approval_entry</span>: <span class="ident">ApprovalEntry</span> <span class="op">=</span> <span class="ident">approval_db::v1::ApprovalEntry</span> {
 			<span class="ident">tranches</span>: <span class="ident">Vec::new</span>(),
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2336,7 +2336,7 @@
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">2</span>, <span class="ident">ValidatorIndex</span>(<span class="number">4</span>), <span class="ident">block_tick</span> <span class="op">+</span> <span class="ident">no_show_duration</span> <span class="op">+</span> <span class="number">2</span>);
 		<span class="ident">approval_entry</span>.<span class="ident">import_assignment</span>(<span class="number">2</span>, <span class="ident">ValidatorIndex</span>(<span class="number">5</span>), <span class="ident">block_tick</span> <span class="op">+</span> <span class="ident">no_show_duration</span> <span class="op">+</span> <span class="number">2</span>);
 
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">0</span>, <span class="bool-val">true</span>);
 		<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="number">1</span>, <span class="bool-val">true</span>);
 		<span class="comment">// skip 2</span>
@@ -2416,7 +2416,7 @@
 			<span class="ident">candidate</span>: <span class="ident">dummy_candidate_receipt</span>(<span class="ident">dummy_hash</span>()),
 			<span class="ident">session</span>: <span class="number">0</span>,
 			<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::default</span>(),
-			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">3</span>],
+			<span class="ident">approvals</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">3</span>],
 		}
 		.<span class="ident">into</span>();
 
@@ -2432,7 +2432,7 @@
 					<span class="ident">assignments</span>: (<span class="number">2</span>..<span class="number">5</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">ValidatorIndex</span>(<span class="ident">i</span>), <span class="number">1</span>.<span class="ident">into</span>())).<span class="ident">collect</span>(),
 				},
 			],
-			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; <span class="number">3</span>],
+			<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">1</span>; <span class="number">3</span>],
 			<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 			<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
 			<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
@@ -2440,7 +2440,7 @@
 		}
 		.<span class="ident">into</span>();
 
-		<span class="kw">let</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">3</span>];
+		<span class="kw">let</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">3</span>];
 
 		<span class="kw">let</span> <span class="ident">tranche_now</span> <span class="op">=</span> <span class="number">10</span>;
 		<span class="macro">assert_eq!</span>(
@@ -2482,7 +2482,7 @@
 				<span class="ident">backing_group</span>: <span class="ident">GroupIndex</span>(<span class="number">0</span>),
 				<span class="ident">our_assignment</span>: <span class="prelude-val">None</span>,
 				<span class="ident">our_approval_sig</span>: <span class="prelude-val">None</span>,
-				<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="number">3</span>],
+				<span class="ident">assignments</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="number">3</span>],
 				<span class="ident">approved</span>: <span class="bool-val">false</span>,
 			}
 			.<span class="ident">into</span>();
@@ -2520,7 +2520,7 @@
 		<span class="kw">let</span> <span class="ident">n_validators</span> <span class="op">=</span> <span class="number">4</span>;
 		<span class="kw">let</span> <span class="ident">block_tick</span> <span class="op">=</span> <span class="number">20</span>;
 
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">approvals</span> <span class="op">=</span> <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>];
 		<span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">v_index</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">test</span>.<span class="ident">approvals</span> {
 			<span class="ident">approvals</span>.<span class="ident">set</span>(<span class="ident">v_index</span>, <span class="bool-val">true</span>);
 		}

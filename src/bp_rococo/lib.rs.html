@@ -172,8 +172,6 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
-<span id="175">175</span>
-<span id="176">176</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -193,8 +191,6 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="comment">// RuntimeApi generated functions</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="comment">// Runtime-generated DecodeLimit::decode_all_with_depth_limit</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::unnecessary_mut_passed</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">bp_messages</span>::{<span class="ident">LaneId</span>, <span class="ident">MessageDetails</span>, <span class="ident">MessageNonce</span>, <span class="ident">UnrewardedRelayersState</span>};
 <span class="kw">use</span> <span class="ident">frame_support::weights</span>::{

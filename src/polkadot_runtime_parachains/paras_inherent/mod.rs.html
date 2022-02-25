@@ -1398,10 +1398,10 @@
 <span class="doccomment">/// A bitfield concerning concluded disputes for candidates</span>
 <span class="doccomment">/// associated to the core index equivalent to the bit position.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">DisputedBitfield</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>);
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">DisputedBitfield</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>);
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DisputedBitfield</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inner</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DisputedBitfield</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inner</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
 		<span class="self">Self</span>(<span class="ident">inner</span>)
 	}
 }
@@ -1410,7 +1410,7 @@
 <span class="kw">impl</span> <span class="ident">DisputedBitfield</span> {
 	<span class="doccomment">/// Create a new bitfield, where each bit is set to `false`.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zeros</span>(<span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-		<span class="ident"><span class="self">Self</span>::from</span>(<span class="ident">BitVec</span>::<span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::repeat</span>(<span class="bool-val">false</span>, <span class="ident">n</span>))
+		<span class="ident"><span class="self">Self</span>::from</span>(<span class="ident">BitVec</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span><span class="ident">::repeat</span>(<span class="bool-val">false</span>, <span class="ident">n</span>))
 	}
 }
 
@@ -2281,7 +2281,7 @@
 		<span class="kw">return</span> <span class="macro">vec!</span>[]
 	}
 
-	<span class="kw">let</span> <span class="ident">all_zeros</span> <span class="op">=</span> <span class="ident">BitVec</span>::<span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::repeat</span>(<span class="bool-val">false</span>, <span class="ident">expected_bits</span>);
+	<span class="kw">let</span> <span class="ident">all_zeros</span> <span class="op">=</span> <span class="ident">BitVec</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span><span class="ident">::repeat</span>(<span class="bool-val">false</span>, <span class="ident">expected_bits</span>);
 	<span class="kw">let</span> <span class="ident">signing_context</span> <span class="op">=</span> <span class="ident">SigningContext</span> { <span class="ident">parent_hash</span>, <span class="ident">session_index</span> };
 	<span class="kw">for</span> <span class="ident">unchecked_bitfield</span> <span class="kw">in</span> <span class="ident">unchecked_bitfields</span> {
 		<span class="comment">// Find and skip invalid bitfields.</span>

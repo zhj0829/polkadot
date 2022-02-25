@@ -2365,8 +2365,8 @@
 	<span class="comment">// makes a vote. Once a 1 is set for either of the vectors, that validator cannot vote anymore.</span>
 	<span class="comment">// Since the active validator set changes each session, the bit vectors are reinitialized as</span>
 	<span class="comment">// well: zeroed and resized so that each validator gets its own bit.</span>
-	<span class="ident">votes_accept</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
-	<span class="ident">votes_reject</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
+	<span class="ident">votes_accept</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span><span class="op">&gt;</span>,
+	<span class="ident">votes_reject</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span><span class="op">&gt;</span>,
 
 	<span class="doccomment">/// The number of session changes this PVF vote has observed. Therefore, this number is</span>
 	<span class="doccomment">/// increased at each session boundary. When created, it is initialized with 0.</span>
@@ -2385,8 +2385,8 @@
 		<span class="ident">causes</span>.<span class="ident">push</span>(<span class="ident">cause</span>);
 		<span class="self">Self</span> {
 			<span class="ident">created_at</span>: <span class="ident">now</span>,
-			<span class="ident">votes_accept</span>: <span class="macro">bitvec::bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
-			<span class="ident">votes_reject</span>: <span class="macro">bitvec::bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+			<span class="ident">votes_accept</span>: <span class="macro">bitvec::bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+			<span class="ident">votes_reject</span>: <span class="macro">bitvec::bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
 			<span class="ident">age</span>: <span class="number">0</span>,
 			<span class="ident">causes</span>,
 		}

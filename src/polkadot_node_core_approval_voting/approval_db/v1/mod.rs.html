@@ -478,7 +478,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Tick</span>(<span class="ident">u64</span>);
 
 <span class="doccomment">/// Convenience type definition</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bitfield</span> <span class="op">=</span> <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bitfield</span> <span class="op">=</span> <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// The database config.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>

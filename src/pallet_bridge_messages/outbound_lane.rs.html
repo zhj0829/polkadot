@@ -722,7 +722,7 @@
 		<span class="ident">DeliveredMessages</span> {
 			<span class="ident">begin</span>: <span class="kw-2">*</span><span class="ident">nonces</span>.<span class="ident">start</span>(),
 			<span class="ident">end</span>: <span class="kw-2">*</span><span class="ident">nonces</span>.<span class="ident">end</span>(),
-			<span class="ident">dispatch_results</span>: <span class="macro">bitvec!</span>[<span class="ident">Msb0</span>, <span class="ident">u8</span>; <span class="number">1</span>; (<span class="ident">nonces</span>.<span class="ident">end</span>() <span class="op">-</span> <span class="ident">nonces</span>.<span class="ident">start</span>() <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="kw">_</span>],
+			<span class="ident">dispatch_results</span>: <span class="macro">bitvec!</span>[<span class="ident">u8</span>, <span class="ident">Msb0</span>; <span class="number">1</span>; (<span class="ident">nonces</span>.<span class="ident">end</span>() <span class="op">-</span> <span class="ident">nonces</span>.<span class="ident">start</span>() <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="kw">_</span>],
 		}
 	}
 

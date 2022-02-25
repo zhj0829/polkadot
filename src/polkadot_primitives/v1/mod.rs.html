@@ -1983,10 +1983,10 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Every bit refers to an availability core index.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">TypeInfo</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AvailabilityBitfield</span>(<span class="kw">pub</span> <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AvailabilityBitfield</span>(<span class="kw">pub</span> <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>);
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AvailabilityBitfield</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inner</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AvailabilityBitfield</span> {
+	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inner</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">AvailabilityBitfield</span>(<span class="ident">inner</span>)
 	}
 }
@@ -2012,7 +2012,7 @@
 	<span class="doccomment">/// The validity votes themselves, expressed as signatures.</span>
 	<span class="kw">pub</span> <span class="ident">validity_votes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ValidityAttestation</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The indices of the validators within the group, expressed as a bitfield.</span>
-	<span class="kw">pub</span> <span class="ident">validator_indices</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">validator_indices</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> <span class="ident">BackedCandidate</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
@@ -2248,7 +2248,7 @@
 	<span class="doccomment">/// validators has attested to availability on-chain. A 2/3+ majority of `1` bits means that</span>
 	<span class="doccomment">/// this will be available.</span>
 	<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">ignore_malloc_size_of</span> <span class="op">=</span> <span class="string">&quot;outside type&quot;</span>)]</span>
-	<span class="kw">pub</span> <span class="ident">availability</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">availability</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The group assigned to distribute availability pieces of this candidate.</span>
 	<span class="kw">pub</span> <span class="ident">group_responsible</span>: <span class="ident">GroupIndex</span>,
 	<span class="doccomment">/// The hash of the candidate occupying the core.</span>
@@ -2769,9 +2769,9 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Encode</span>, <span class="ident">Decode</span>, <span class="ident">Clone</span>, <span class="ident">RuntimeDebug</span>, <span class="ident">PartialEq</span>, <span class="ident">TypeInfo</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DisputeState</span><span class="op">&lt;</span><span class="ident">N</span> <span class="op">=</span> <span class="ident">BlockNumber</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// A bitfield indicating all validators for the candidate.</span>
-	<span class="kw">pub</span> <span class="ident">validators_for</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>, <span class="comment">// one bit per validator.</span>
+	<span class="kw">pub</span> <span class="ident">validators_for</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>, <span class="comment">// one bit per validator.</span>
 	<span class="doccomment">/// A bitfield indicating all validators against the candidate.</span>
-	<span class="kw">pub</span> <span class="ident">validators_against</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">bitvec::order::Lsb0</span>, <span class="ident">u8</span><span class="op">&gt;</span>, <span class="comment">// one bit per validator.</span>
+	<span class="kw">pub</span> <span class="ident">validators_against</span>: <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">bitvec::order::Lsb0</span><span class="op">&gt;</span>, <span class="comment">// one bit per validator.</span>
 	<span class="doccomment">/// The block number at which the dispute started on-chain.</span>
 	<span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">N</span>,
 	<span class="doccomment">/// The block number at which the dispute concluded on-chain.</span>

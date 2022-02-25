@@ -558,7 +558,7 @@
 						<span class="ident">candidate</span>,
 						<span class="ident">session</span>,
 						<span class="ident">block_assignments</span>: <span class="ident">BTreeMap::new</span>(),
-						<span class="ident">approvals</span>: <span class="macro">bitvec::bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+						<span class="ident">approvals</span>: <span class="macro">bitvec::bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
 					}
 				});
 
@@ -569,7 +569,7 @@
 					<span class="ident">backing_group</span>,
 					<span class="ident">our_assignment</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">into</span>()),
 					<span class="prelude-val">None</span>,
-					<span class="macro">bitvec::bitvec!</span>[<span class="ident">BitOrderLsb0</span>, <span class="ident">u8</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
+					<span class="macro">bitvec::bitvec!</span>[<span class="ident">u8</span>, <span class="ident">BitOrderLsb0</span>; <span class="number">0</span>; <span class="ident">n_validators</span>],
 					<span class="bool-val">false</span>,
 				),
 			);

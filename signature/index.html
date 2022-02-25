@@ -124,16 +124,18 @@ traits which are based on the <a href="https://docs.rs/digest/"><code>Digest</co
 These traits are used for representing signature systems based on the
 <a href="https://en.wikipedia.org/wiki/Fiat%E2%80%93Shamir_heuristic">Fiat-Shamir heuristic</a> which compute a random challenge value to sign
 by computing a cryptographically secure digest of the input message.</li>
-<li><code>rand-preview</code>: enables the [<code>RandomizedSigner</code>] trait for signature
+<li><code>rand-preview</code>: enables the <a href="trait.RandomizedSigner.html" title="RandomizedSigner"><code>RandomizedSigner</code></a> trait for signature
 systems which rely on a cryptographically secure random number generator
 for security.</li>
 </ul>
 <p>NOTE: the <a href="https://docs.rs/async-signature"><code>async-signature</code></a> crate contains experimental <code>async</code> support
 for <a href="trait.Signer.html" title="Signer"><code>Signer</code></a> and [<code>DigestSigner</code>].</p>
-</div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+</div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left import-item"><code>pub use <a class="mod" href="../rand_core/index.html" title="mod rand_core">rand_core</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Error.html" title="signature::Error struct">Error</a></div><div class="item-right docblock-short"><p>Signature errors.</p>
 </div></div></div><h2 id="traits" class="section-header"><a href="#traits">Traits</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Signature.html" title="signature::Signature trait">Signature</a></div><div class="item-right docblock-short"><p>Trait impl’d by concrete types that represent digital signatures.</p>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.RandomizedSigner.html" title="signature::RandomizedSigner trait">RandomizedSigner</a></div><div class="item-right docblock-short"><p>Sign the given message using the provided external randomness source.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Signature.html" title="signature::Signature trait">Signature</a></div><div class="item-right docblock-short"><p>Trait impl’d by concrete types that represent digital signatures.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Signer.html" title="signature::Signer trait">Signer</a></div><div class="item-right docblock-short"><p>Sign the provided message bytestring using <code>Self</code> (e.g. a cryptographic key
 or connection to an HSM), returning a digital signature.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.SignerMut.html" title="signature::SignerMut trait">SignerMut</a></div><div class="item-right docblock-short"><p>Sign the provided message bytestring using <code>&amp;mut Self</code> (e.g., an evolving
