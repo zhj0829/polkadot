@@ -434,8 +434,6 @@
 <span id="434">434</span>
 <span id="435">435</span>
 <span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -467,12 +465,10 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::runtime::get_validation_code_by_hash</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">BlockNumber</span>, <span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">Hash</span>, <span class="ident">SessionIndex</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">error</span>::{<span class="ident">Fatal</span>, <span class="ident">FatalResult</span>, <span class="ident">NonFatal</span>, <span class="prelude-ty">Result</span>},
-	<span class="ident">LOG_TARGET</span>,
-};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::real::LOG_TARGET</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::ordering::CandidateComparator</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error</span>::{<span class="ident">FatalError</span>, <span class="ident">FatalResult</span>, <span class="ident">JfyiError</span>, <span class="prelude-ty">Result</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
@@ -481,7 +477,7 @@
 
 <span class="kw">mod</span> <span class="ident">queues</span>;
 <span class="kw">use</span> <span class="ident">queues::Queues</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">queues</span>::{<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">QueueError</span>, <span class="ident">ParticipationRequest</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">queues</span>::{<span class="ident">ParticipationRequest</span>, <span class="ident">QueueError</span>};
 
 <span class="doccomment">/// How many participation processes do we want to run in parallel the most.</span>
 <span class="doccomment">///</span>
@@ -599,7 +595,7 @@
 			}
 		}
 		<span class="comment">// Out of capacity/no recent block yet - queue:</span>
-		<span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">queue</span>(<span class="ident">comparator</span>, <span class="ident">req</span>).<span class="ident">map_err</span>(<span class="ident">NonFatal::QueueError</span>)<span class="question-mark">?</span>)
+		<span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">queue</span>.<span class="ident">queue</span>(<span class="ident">comparator</span>, <span class="ident">req</span>).<span class="ident">map_err</span>(<span class="ident">JfyiError::QueueError</span>)<span class="question-mark">?</span>)
 	}
 
 	<span class="doccomment">/// Message from a worker task was received - get the outcome.</span>
@@ -677,7 +673,7 @@
 				<span class="string">&quot;participation-worker&quot;</span>,
 				<span class="ident">participate</span>(<span class="self">self</span>.<span class="ident">worker_sender</span>.<span class="ident">clone</span>(), <span class="ident">sender</span>, <span class="ident">recent_head</span>, <span class="ident">req</span>).<span class="ident">boxed</span>(),
 			)
-			.<span class="ident">map_err</span>(<span class="ident">Fatal::SpawnFailed</span>)<span class="question-mark">?</span>;
+			.<span class="ident">map_err</span>(<span class="ident">FatalError::SpawnFailed</span>)<span class="question-mark">?</span>;
 		}
 		<span class="prelude-val">Ok</span>(())
 	}

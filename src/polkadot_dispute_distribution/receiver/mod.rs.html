@@ -390,6 +390,7 @@
 <span id="390">390</span>
 <span id="391">391</span>
 <span id="392">392</span>
+<span id="393">393</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -424,7 +425,7 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol</span>::{
 	<span class="ident">authority_discovery::AuthorityDiscovery</span>,
 	<span class="ident">request_response</span>::{
-		<span class="ident">incoming</span>::{<span class="ident">OutgoingResponse</span>, <span class="ident">OutgoingResponseSender</span>},
+		<span class="ident">incoming</span>::{<span class="self">self</span>, <span class="ident">OutgoingResponse</span>, <span class="ident">OutgoingResponseSender</span>},
 		<span class="ident">v1</span>::{<span class="ident">DisputeRequest</span>, <span class="ident">DisputeResponse</span>},
 		<span class="ident">IncomingRequest</span>, <span class="ident">IncomingRequestReceiver</span>,
 	},
@@ -443,7 +444,7 @@
 };
 
 <span class="kw">mod</span> <span class="ident">error</span>;
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::error</span>::{<span class="ident">log_error</span>, <span class="ident">NonFatal</span>, <span class="ident">NonFatalResult</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::error</span>::{<span class="ident">log_error</span>, <span class="ident">JfyiError</span>, <span class="ident">JfyiErrorResult</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">const</span> <span class="ident">COST_INVALID_REQUEST</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::CostMajor</span>(<span class="string">&quot;Received message could not be decoded.&quot;</span>);
 <span class="kw">const</span> <span class="ident">COST_INVALID_SIGNATURE</span>: <span class="ident">Rep</span> <span class="op">=</span> <span class="ident">Rep::Malicious</span>(<span class="string">&quot;Signatures were invalid.&quot;</span>);
@@ -493,7 +494,7 @@
 	<span class="doccomment">/// - We need to make sure responses are actually sent (therefore we need to await futures</span>
 	<span class="doccomment">/// promptly).</span>
 	<span class="doccomment">/// - We need to update `banned_peers` accordingly to the result.</span>
-	<span class="ident">ConfirmedImport</span>(<span class="ident">NonFatalResult</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ImportStatementsResult</span>)<span class="op">&gt;</span>),
+	<span class="ident">ConfirmedImport</span>(<span class="ident">JfyiErrorResult</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ImportStatementsResult</span>)<span class="op">&gt;</span>),
 
 	<span class="doccomment">/// A new request has arrived and should be handled.</span>
 	<span class="ident">NewRequest</span>(<span class="ident">IncomingRequest</span><span class="op">&lt;</span><span class="ident">DisputeRequest</span><span class="op">&gt;</span>),
@@ -509,7 +510,7 @@
 			<span class="macro">pin_mut!</span>(<span class="ident">next_req</span>);
 			<span class="kw">if</span> <span class="kw">let</span> <span class="ident">Poll::Ready</span>(<span class="ident">r</span>) <span class="op">=</span> <span class="ident">next_req</span>.<span class="ident">poll</span>(<span class="ident">ctx</span>) {
 				<span class="kw">return</span> <span class="kw">match</span> <span class="ident">r</span> {
-					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>())),
+					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">incoming::Error::from</span>(<span class="ident">e</span>).<span class="ident">into</span>())),
 					<span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::NewRequest</span>(<span class="ident">v</span>))),
 				}
 			}
@@ -596,9 +597,9 @@
 					<span class="ident">reputation_changes</span>: <span class="macro">vec!</span>[<span class="ident">COST_NOT_A_VALIDATOR</span>],
 					<span class="ident">sent_feedback</span>: <span class="prelude-val">None</span>,
 				})
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::SendResponse</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
+				.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::SendResponse</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
 
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">NonFatal::NotAValidator</span>(<span class="ident">peer</span>).<span class="ident">into</span>())
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">JfyiError::NotAValidator</span>(<span class="ident">peer</span>).<span class="ident">into</span>())
 		}
 
 		<span class="comment">// Immediately drop requests from peers that already have requests in flight or have</span>
@@ -647,9 +648,9 @@
 						<span class="ident">reputation_changes</span>: <span class="macro">vec!</span>[<span class="ident">COST_INVALID_SIGNATURE</span>],
 						<span class="ident">sent_feedback</span>: <span class="prelude-val">None</span>,
 					})
-					.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::SetPeerReputation</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
+					.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::SetPeerReputation</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
 
-				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">NonFatal::InvalidSignature</span>(<span class="ident">peer</span>)))
+				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">JfyiError::InvalidSignature</span>(<span class="ident">peer</span>)))
 			},
 			<span class="prelude-val">Ok</span>(<span class="ident">votes</span>) =&gt; <span class="ident">votes</span>,
 		};
@@ -677,8 +678,8 @@
 	<span class="doccomment">/// In addition we report import metrics.</span>
 	<span class="kw">fn</span> <span class="ident">ban_bad_peer</span>(
 		<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-		<span class="ident">result</span>: <span class="ident">NonFatalResult</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ImportStatementsResult</span>)<span class="op">&gt;</span>,
-	) -&gt; <span class="ident">NonFatalResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+		<span class="ident">result</span>: <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ImportStatementsResult</span>)<span class="op">&gt;</span>,
+	) -&gt; <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="ident">result</span><span class="question-mark">?</span> {
 			(<span class="kw">_</span>, <span class="ident">ImportStatementsResult::ValidImport</span>) =&gt; {
 				<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_imported</span>(<span class="ident">SUCCEEDED</span>);
@@ -695,7 +696,8 @@
 <span class="doccomment">/// Manage pending imports in a way that preserves invariants.</span>
 <span class="kw">struct</span> <span class="ident">PendingImports</span> {
 	<span class="doccomment">/// Futures in flight.</span>
-	<span class="ident">futures</span>: <span class="ident">FuturesUnordered</span><span class="op">&lt;</span><span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">PeerId</span>, <span class="ident">NonFatalResult</span><span class="op">&lt;</span><span class="ident">ImportStatementsResult</span><span class="op">&gt;</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">futures</span>:
+		<span class="ident">FuturesUnordered</span><span class="op">&lt;</span><span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">PeerId</span>, <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span><span class="ident">ImportStatementsResult</span><span class="op">&gt;</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Peers whose requests are currently in flight.</span>
 	<span class="ident">peers</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">PeerId</span><span class="op">&gt;</span>,
 }
@@ -733,7 +735,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Stream</span> <span class="kw">for</span> <span class="ident">PendingImports</span> {
-	<span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">NonFatalResult</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ImportStatementsResult</span>)<span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span>(<span class="ident">PeerId</span>, <span class="ident">ImportStatementsResult</span>)<span class="op">&gt;</span>;
 	<span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">futures</span>).<span class="ident">poll_next</span>(<span class="ident">ctx</span>) {
 			<span class="ident">Poll::Pending</span> =&gt; <span class="ident">Poll::Pending</span>,
@@ -760,8 +762,8 @@
 	<span class="ident">peer</span>: <span class="ident">PeerId</span>,
 	<span class="ident">handled</span>: <span class="ident">oneshot::Receiver</span><span class="op">&lt;</span><span class="ident">ImportStatementsResult</span><span class="op">&gt;</span>,
 	<span class="ident">pending_response</span>: <span class="ident">OutgoingResponseSender</span><span class="op">&lt;</span><span class="ident">DisputeRequest</span><span class="op">&gt;</span>,
-) -&gt; <span class="ident">NonFatalResult</span><span class="op">&lt;</span><span class="ident">ImportStatementsResult</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">handled</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::ImportCanceled</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
+) -&gt; <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span><span class="ident">ImportStatementsResult</span><span class="op">&gt;</span> {
+	<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">handled</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::ImportCanceled</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
 
 	<span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">result</span> {
 		<span class="ident">ImportStatementsResult::ValidImport</span> =&gt; <span class="ident">OutgoingResponse</span> {
@@ -778,7 +780,7 @@
 
 	<span class="ident">pending_response</span>
 		.<span class="ident">send_outgoing_response</span>(<span class="ident">response</span>)
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::SendResponse</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::SendResponse</span>(<span class="ident">peer</span>))<span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">result</span>)
 }

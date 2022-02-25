@@ -365,6 +365,7 @@
 <span id="365">365</span>
 <span id="366">366</span>
 <span id="367">367</span>
+<span id="368">368</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -404,9 +405,9 @@
 
 <span class="doccomment">/// Error and [`Result`] type for sender</span>
 <span class="kw">mod</span> <span class="ident">error</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error</span>::{<span class="ident">Error</span>, <span class="ident">Fatal</span>, <span class="ident">NonFatal</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error</span>::{<span class="ident">Error</span>, <span class="ident">FatalError</span>, <span class="ident">JfyiError</span>, <span class="prelude-ty">Result</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::error::NonFatalResult</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::error::JfyiErrorResult</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Metrics</span>, <span class="ident">LOG_TARGET</span>};
 
 <span class="doccomment">/// The `DisputeSender` keeps track of all ongoing disputes we need to send statements out.</span>
@@ -575,7 +576,7 @@
 					<span class="prelude-val">None</span>
 				}
 			})
-			.<span class="ident">ok_or</span>(<span class="ident">NonFatal::NoActiveHeads</span>)<span class="question-mark">?</span>;
+			.<span class="ident">ok_or</span>(<span class="ident">JfyiError::NoActiveHeads</span>)<span class="question-mark">?</span>;
 
 		<span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">runtime</span>
 			.<span class="ident">get_session_info_by_index</span>(<span class="ident">ctx</span>.<span class="ident">sender</span>(), <span class="kw-2">*</span><span class="ident">ref_head</span>, <span class="ident">session_index</span>)
@@ -610,11 +611,12 @@
 
 		<span class="kw">let</span> (<span class="ident">valid_vote</span>, <span class="ident">invalid_vote</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">our_valid_vote</span>) <span class="op">=</span> <span class="ident">our_valid_vote</span> {
 			<span class="comment">// Get some invalid vote as well:</span>
-			<span class="kw">let</span> <span class="ident">invalid_vote</span> <span class="op">=</span> <span class="ident">votes</span>.<span class="ident">invalid</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">ok_or</span>(<span class="ident">NonFatal::MissingVotesFromCoordinator</span>)<span class="question-mark">?</span>;
+			<span class="kw">let</span> <span class="ident">invalid_vote</span> <span class="op">=</span>
+				<span class="ident">votes</span>.<span class="ident">invalid</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">ok_or</span>(<span class="ident">JfyiError::MissingVotesFromCoordinator</span>)<span class="question-mark">?</span>;
 			(<span class="ident">our_valid_vote</span>, <span class="ident">invalid_vote</span>)
 		} <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">our_invalid_vote</span>) <span class="op">=</span> <span class="ident">our_invalid_vote</span> {
 			<span class="comment">// Get some valid vote as well:</span>
-			<span class="kw">let</span> <span class="ident">valid_vote</span> <span class="op">=</span> <span class="ident">votes</span>.<span class="ident">valid</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">ok_or</span>(<span class="ident">NonFatal::MissingVotesFromCoordinator</span>)<span class="question-mark">?</span>;
+			<span class="kw">let</span> <span class="ident">valid_vote</span> <span class="op">=</span> <span class="ident">votes</span>.<span class="ident">valid</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">ok_or</span>(<span class="ident">JfyiError::MissingVotesFromCoordinator</span>)<span class="question-mark">?</span>;
 			(<span class="ident">valid_vote</span>, <span class="ident">our_invalid_vote</span>)
 		} <span class="kw">else</span> {
 			<span class="comment">// There is no vote from us yet - nothing to do.</span>
@@ -625,7 +627,7 @@
 			.<span class="ident">session_info</span>
 			.<span class="ident">validators</span>
 			.<span class="ident">get</span>(<span class="ident">valid_index</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>)
-			.<span class="ident">ok_or</span>(<span class="ident">NonFatal::InvalidStatementFromCoordinator</span>)<span class="question-mark">?</span>;
+			.<span class="ident">ok_or</span>(<span class="ident">JfyiError::InvalidStatementFromCoordinator</span>)<span class="question-mark">?</span>;
 		<span class="kw">let</span> <span class="ident">valid_signed</span> <span class="op">=</span> <span class="ident">SignedDisputeStatement::new_checked</span>(
 			<span class="ident">DisputeStatement::Valid</span>(<span class="ident">kind</span>.<span class="ident">clone</span>()),
 			<span class="ident">candidate_hash</span>,
@@ -633,14 +635,14 @@
 			<span class="ident">valid_public</span>.<span class="ident">clone</span>(),
 			<span class="ident">signature</span>.<span class="ident">clone</span>(),
 		)
-		.<span class="ident">map_err</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">NonFatal::InvalidStatementFromCoordinator</span>)<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">JfyiError::InvalidStatementFromCoordinator</span>)<span class="question-mark">?</span>;
 
 		<span class="kw">let</span> (<span class="ident">kind</span>, <span class="ident">invalid_index</span>, <span class="ident">signature</span>) <span class="op">=</span> <span class="ident">invalid_vote</span>;
 		<span class="kw">let</span> <span class="ident">invalid_public</span> <span class="op">=</span> <span class="ident">info</span>
 			.<span class="ident">session_info</span>
 			.<span class="ident">validators</span>
 			.<span class="ident">get</span>(<span class="ident">invalid_index</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>)
-			.<span class="ident">ok_or</span>(<span class="ident">NonFatal::InvalidValidatorIndexFromCoordinator</span>)<span class="question-mark">?</span>;
+			.<span class="ident">ok_or</span>(<span class="ident">JfyiError::InvalidValidatorIndexFromCoordinator</span>)<span class="question-mark">?</span>;
 		<span class="kw">let</span> <span class="ident">invalid_signed</span> <span class="op">=</span> <span class="ident">SignedDisputeStatement::new_checked</span>(
 			<span class="ident">DisputeStatement::Invalid</span>(<span class="ident">kind</span>.<span class="ident">clone</span>()),
 			<span class="ident">candidate_hash</span>,
@@ -648,7 +650,7 @@
 			<span class="ident">invalid_public</span>.<span class="ident">clone</span>(),
 			<span class="ident">signature</span>.<span class="ident">clone</span>(),
 		)
-		.<span class="ident">map_err</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">NonFatal::InvalidValidatorIndexFromCoordinator</span>)<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">JfyiError::InvalidValidatorIndexFromCoordinator</span>)<span class="question-mark">?</span>;
 
 		<span class="comment">// Reconstructing the checked signed dispute statements is hardly useful here and wasteful,</span>
 		<span class="comment">// but I don&#39;t want to enable a bypass for the below smart constructor and this code path</span>
@@ -664,7 +666,7 @@
 			<span class="ident">votes</span>.<span class="ident">candidate_receipt</span>,
 			<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">session_info</span>,
 		)
-		.<span class="ident">map_err</span>(<span class="ident">NonFatal::InvalidDisputeFromCoordinator</span>)<span class="question-mark">?</span>;
+		.<span class="ident">map_err</span>(<span class="ident">JfyiError::InvalidDisputeFromCoordinator</span>)<span class="question-mark">?</span>;
 
 		<span class="comment">// Finally, get the party started:</span>
 		<span class="self">self</span>.<span class="ident">start_sender</span>(<span class="ident">ctx</span>, <span class="ident">runtime</span>, <span class="ident">message</span>).<span class="kw">await</span>
@@ -708,13 +710,13 @@
 <span class="doccomment">/// Retrieve Set of active disputes from the dispute coordinator.</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_active_disputes</span><span class="op">&lt;</span><span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&gt;</span>(
 	<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
-) -&gt; <span class="ident">NonFatalResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">SessionIndex</span>, <span class="ident">CandidateHash</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
 	<span class="ident">ctx</span>.<span class="ident">send_message</span>(<span class="ident">AllMessages::DisputeCoordinator</span>(<span class="ident">DisputeCoordinatorMessage::ActiveDisputes</span>(
 		<span class="ident">tx</span>,
 	)))
 	.<span class="kw">await</span>;
-	<span class="ident">rx</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::AskActiveDisputesCanceled</span>)
+	<span class="ident">rx</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::AskActiveDisputesCanceled</span>)
 }
 
 <span class="doccomment">/// Get all locally available dispute votes for a given dispute.</span>
@@ -722,7 +724,7 @@
 	<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
 	<span class="ident">session_index</span>: <span class="ident">SessionIndex</span>,
 	<span class="ident">candidate_hash</span>: <span class="ident">CandidateHash</span>,
-) -&gt; <span class="ident">NonFatalResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CandidateVotes</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">JfyiErrorResult</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CandidateVotes</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
 	<span class="ident">ctx</span>.<span class="ident">send_message</span>(<span class="ident">AllMessages::DisputeCoordinator</span>(
 		<span class="ident">DisputeCoordinatorMessage::QueryCandidateVotes</span>(<span class="macro">vec!</span>[(<span class="ident">session_index</span>, <span class="ident">candidate_hash</span>)], <span class="ident">tx</span>),
@@ -730,7 +732,7 @@
 	.<span class="kw">await</span>;
 	<span class="ident">rx</span>.<span class="kw">await</span>
 		.<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">inner</span><span class="op">|</span> <span class="ident">inner</span>.<span class="ident">to_owned</span>().<span class="number">2</span>))
-		.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::AskCandidateVotesCanceled</span>)
+		.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::AskCandidateVotesCanceled</span>)
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="polkadot_dispute_distribution" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>

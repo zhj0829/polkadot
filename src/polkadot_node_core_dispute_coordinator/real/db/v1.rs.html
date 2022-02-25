@@ -492,7 +492,6 @@
 <span id="492">492</span>
 <span id="493">493</span>
 <span id="494">494</span>
-<span id="495">495</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -523,13 +522,12 @@
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">error</span>::{<span class="ident">Fatal</span>, <span class="ident">FatalResult</span>},
+	<span class="ident">error</span>::{<span class="ident">FatalError</span>, <span class="ident">FatalResult</span>},
+	<span class="ident">real</span>::{
+		<span class="ident">backend</span>::{<span class="ident">Backend</span>, <span class="ident">BackendWriteOp</span>, <span class="ident">OverlayedBackend</span>},
+		<span class="ident">DISPUTE_WINDOW</span>,
+	},
 	<span class="ident">status::DisputeStatus</span>,
-};
-
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::real</span>::{
-	<span class="ident">backend</span>::{<span class="ident">Backend</span>, <span class="ident">BackendWriteOp</span>, <span class="ident">OverlayedBackend</span>},
-	<span class="ident">DISPUTE_WINDOW</span>,
 };
 
 <span class="kw">const</span> <span class="ident">RECENT_DISPUTES_KEY</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="number">15</span>] <span class="op">=</span> <span class="string">b&quot;recent-disputes&quot;</span>;
@@ -595,7 +593,7 @@
 			}
 		}
 
-		<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">write</span>(<span class="ident">tx</span>).<span class="ident">map_err</span>(<span class="ident">Fatal::DbWriteFailed</span>)
+		<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">write</span>(<span class="ident">tx</span>).<span class="ident">map_err</span>(<span class="ident">FatalError::DbWriteFailed</span>)
 	}
 }
 
@@ -663,8 +661,8 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::error::Error</span> {
 	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">Error</span>) -&gt; <span class="self">Self</span> {
 		<span class="kw">match</span> <span class="ident">err</span> {
-			<span class="ident">Error::Io</span>(<span class="ident">io</span>) =&gt; <span class="ident"><span class="self">Self</span>::NonFatal</span>(<span class="ident"><span class="kw">crate</span>::error::NonFatal::Io</span>(<span class="ident">io</span>)),
-			<span class="ident">Error::Codec</span>(<span class="ident">e</span>) =&gt; <span class="ident"><span class="self">Self</span>::NonFatal</span>(<span class="ident"><span class="kw">crate</span>::error::NonFatal::Codec</span>(<span class="ident">e</span>)),
+			<span class="ident">Error::Io</span>(<span class="ident">io</span>) =&gt; <span class="ident"><span class="self">Self</span>::Io</span>(<span class="ident">io</span>),
+			<span class="ident">Error::Codec</span>(<span class="ident">e</span>) =&gt; <span class="ident"><span class="self">Self</span>::Codec</span>(<span class="ident">e</span>),
 		}
 	}
 }

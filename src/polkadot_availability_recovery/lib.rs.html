@@ -1069,13 +1069,14 @@
 <span class="kw">use</span> <span class="ident">lru::LruCache</span>;
 <span class="kw">use</span> <span class="ident">rand::seq::SliceRandom</span>;
 
+<span class="kw">use</span> <span class="ident">fatality::Nested</span>;
 <span class="kw">use</span> <span class="ident">polkadot_erasure_coding</span>::{<span class="ident">branch_hash</span>, <span class="ident">branches</span>, <span class="ident">obtain_chunks_v1</span>, <span class="ident">recovery_threshold</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol::request_response::CHUNK_REQUEST_TIMEOUT</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol</span>::{
 	<span class="ident">request_response</span>::{
-		<span class="self">self</span> <span class="kw">as</span> <span class="ident">req_res</span>, <span class="ident">incoming</span>, <span class="ident">outgoing::RequestError</span>, <span class="ident">v1</span> <span class="kw">as</span> <span class="ident">request_v1</span>,
-		<span class="ident">IncomingRequestReceiver</span>, <span class="ident">OutgoingRequest</span>, <span class="ident">Recipient</span>, <span class="ident">Requests</span>,
+		<span class="self">self</span> <span class="kw">as</span> <span class="ident">req_res</span>, <span class="ident">outgoing::RequestError</span>, <span class="ident">v1</span> <span class="kw">as</span> <span class="ident">request_v1</span>, <span class="ident">IncomingRequestReceiver</span>,
+		<span class="ident">OutgoingRequest</span>, <span class="ident">Recipient</span>, <span class="ident">Requests</span>,
 	},
 	<span class="ident">IfDisconnected</span>, <span class="ident">UnifiedReputationChange</span> <span class="kw">as</span> <span class="ident">Rep</span>,
 };
@@ -2025,7 +2026,7 @@
 					}
 				}
 				<span class="ident">in_req</span> <span class="op">=</span> <span class="ident">recv_req</span> =&gt; {
-					<span class="kw">match</span> <span class="ident">in_req</span> {
+					<span class="kw">match</span> <span class="ident">in_req</span>.<span class="ident">into_nested</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">fatal</span><span class="op">|</span> <span class="ident">SubsystemError::with_origin</span>(<span class="string">&quot;availability-recovery&quot;</span>, <span class="ident">fatal</span>))<span class="question-mark">?</span> {
 						<span class="prelude-val">Ok</span>(<span class="ident">req</span>) =&gt; {
 							<span class="kw">match</span> <span class="ident">query_full_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ctx</span>, <span class="ident">req</span>.<span class="ident">payload</span>.<span class="ident">candidate_hash</span>).<span class="kw">await</span> {
 								<span class="prelude-val">Ok</span>(<span class="ident">res</span>) =&gt; {
@@ -2042,11 +2043,10 @@
 								}
 							}
 						}
-						<span class="prelude-val">Err</span>(<span class="ident">incoming::Error::Fatal</span>(<span class="ident">f</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SubsystemError::with_origin</span>(<span class="string">&quot;availability-recovery&quot;</span>, <span class="ident">f</span>)),
-						<span class="prelude-val">Err</span>(<span class="ident">incoming::Error::NonFatal</span>(<span class="ident">err</span>)) =&gt; {
+						<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>) =&gt; {
 							<span class="macro">tracing::debug!</span>(
 								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-								<span class="question-mark">?</span><span class="ident">err</span>,
+								<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>,
 								<span class="string">&quot;Decoding incoming request failed&quot;</span>
 							);
 							<span class="kw">continue</span>

@@ -111,36 +111,6 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
-<span id="114">114</span>
-<span id="115">115</span>
-<span id="116">116</span>
-<span id="117">117</span>
-<span id="118">118</span>
-<span id="119">119</span>
-<span id="120">120</span>
-<span id="121">121</span>
-<span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -160,9 +130,9 @@
 
 <span class="doccomment">//! Error handling related code and Error/Result definitions.</span>
 
+<span class="kw">use</span> <span class="ident">fatality::Nested</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol::request_response::outgoing::RequestError</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1::SessionIndex</span>;
-<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="kw">use</span> <span class="ident">futures::channel::oneshot</span>;
 
@@ -171,117 +141,87 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::LOG_TARGET</span>;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>, <span class="ident">derive_more::From</span>)]</span>
-<span class="attribute">#[<span class="ident">error</span>(<span class="ident">transparent</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
+<span class="attribute">#[<span class="ident">fatality::fatality</span>(<span class="ident">splitable</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
-	<span class="doccomment">/// All fatal errors.</span>
-	<span class="ident">Fatal</span>(<span class="ident">Fatal</span>),
-	<span class="doccomment">/// All nonfatal/potentially recoverable errors.</span>
-	<span class="ident">NonFatal</span>(<span class="ident">NonFatal</span>),
-}
-
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">runtime::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-	<span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">o</span>: <span class="ident">runtime::Error</span>) -&gt; <span class="self">Self</span> {
-		<span class="kw">match</span> <span class="ident">o</span> {
-			<span class="ident">runtime::Error::Fatal</span>(<span class="ident">f</span>) =&gt; <span class="ident"><span class="self">Self</span>::Fatal</span>(<span class="ident">Fatal::Runtime</span>(<span class="ident">f</span>)),
-			<span class="ident">runtime::Error::NonFatal</span>(<span class="ident">f</span>) =&gt; <span class="ident"><span class="self">Self</span>::NonFatal</span>(<span class="ident">NonFatal::Runtime</span>(<span class="ident">f</span>)),
-		}
-	}
-}
-
-<span class="doccomment">/// Fatal errors of this subsystem.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Fatal</span> {
-	<span class="doccomment">/// Spawning a running task failed.</span>
+	<span class="attribute">#[<span class="ident">fatal</span>]</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Spawning subsystem task failed: {0}&quot;</span>)]</span>
 	<span class="ident">SpawnTask</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">SubsystemError</span>),
 
-	<span class="doccomment">/// Requester stream exhausted.</span>
+	<span class="attribute">#[<span class="ident">fatal</span>]</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Erasure chunk requester stream exhausted&quot;</span>)]</span>
 	<span class="ident">RequesterExhausted</span>,
 
+	<span class="attribute">#[<span class="ident">fatal</span>]</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Receive channel closed: {0}&quot;</span>)]</span>
 	<span class="ident">IncomingMessageChannel</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">SubsystemError</span>),
 
-	<span class="doccomment">/// Errors coming from runtime::Runtime.</span>
+	<span class="attribute">#[<span class="ident">fatal</span>(<span class="ident">forward</span>)]</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Error while accessing runtime information: {0}&quot;</span>)]</span>
-	<span class="ident">Runtime</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">runtime::Fatal</span>),
+	<span class="ident">Runtime</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">runtime::Error</span>),
 
+	<span class="attribute">#[<span class="ident">fatal</span>]</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Oneshot for receiving response from Chain API got cancelled&quot;</span>)]</span>
 	<span class="ident">ChainApiSenderDropped</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">oneshot::Canceled</span>),
 
+	<span class="attribute">#[<span class="ident">fatal</span>]</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Retrieving response from Chain API unexpectedly failed with error: {0}&quot;</span>)]</span>
 	<span class="ident">ChainApi</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">ChainApiError</span>),
-}
 
-<span class="doccomment">/// Non-fatal errors of this subsystem.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Error</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">NonFatal</span> {
-	<span class="doccomment">/// av-store will drop the sender on any error that happens.</span>
+	<span class="comment">// av-store will drop the sender on any error that happens.</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Response channel to obtain chunk failed&quot;</span>)]</span>
 	<span class="ident">QueryChunkResponseChannel</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">oneshot::Canceled</span>),
 
-	<span class="doccomment">/// av-store will drop the sender on any error that happens.</span>
+	<span class="comment">// av-store will drop the sender on any error that happens.</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Response channel to obtain available data failed&quot;</span>)]</span>
 	<span class="ident">QueryAvailableDataResponseChannel</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">oneshot::Canceled</span>),
 
-	<span class="doccomment">/// We tried accessing a session that was not cached.</span>
+	<span class="comment">// We tried accessing a session that was not cached.</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Session {missing_session} is not cached, cached sessions: {available_sessions:?}.&quot;</span>)]</span>
 	<span class="ident">NoSuchCachedSession</span> { <span class="ident">available_sessions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SessionIndex</span><span class="op">&gt;</span>, <span class="ident">missing_session</span>: <span class="ident">SessionIndex</span> },
 
-	<span class="doccomment">/// Sending request response failed (Can happen on timeouts for example).</span>
+	<span class="comment">// Sending request response failed (Can happen on timeouts for example).</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Sending a request&#39;s response failed.&quot;</span>)]</span>
 	<span class="ident">SendResponse</span>,
 
-	<span class="doccomment">/// Fetching PoV failed with `RequestError`.</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;FetchPoV request error: {0}&quot;</span>)]</span>
 	<span class="ident">FetchPoV</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">RequestError</span>),
 
-	<span class="doccomment">/// Fetching PoV failed as the received PoV did not match the expected hash.</span>
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Fetched PoV does not match expected hash&quot;</span>)]</span>
 	<span class="ident">UnexpectedPoV</span>,
 
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Remote responded with `NoSuchPoV`&quot;</span>)]</span>
 	<span class="ident">NoSuchPoV</span>,
 
-	<span class="doccomment">/// No validator with the index could be found in current session.</span>
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Given validator index could not be found&quot;</span>)]</span>
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Given validator index could not be found in current session&quot;</span>)]</span>
 	<span class="ident">InvalidValidatorIndex</span>,
-
-	<span class="doccomment">/// Errors coming from runtime::Runtime.</span>
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Error while accessing runtime information: {0}&quot;</span>)]</span>
-	<span class="ident">Runtime</span>(<span class="attribute">#[<span class="ident">from</span>]</span> <span class="ident">runtime::NonFatal</span>),
 }
 
-<span class="doccomment">/// General result type for fatal/nonfatal errors.</span>
+<span class="doccomment">/// General result abbreviation type alias.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
-
-<span class="doccomment">/// Results which are never fatal.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">NonFatalResult</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">NonFatal</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Utility for eating top level errors and log them.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// We basically always want to try and continue on error. This utility function is meant to</span>
 <span class="doccomment">/// consume top-level errors by simply logging them</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_error</span>(<span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">Fatal</span><span class="op">&gt;</span> {
-	<span class="kw">match</span> <span class="ident">result</span> {
-		<span class="prelude-val">Err</span>(<span class="ident">Error::Fatal</span>(<span class="ident">f</span>)) =&gt; <span class="prelude-val">Err</span>(<span class="ident">f</span>),
-		<span class="prelude-val">Err</span>(<span class="ident">Error::NonFatal</span>(<span class="ident">error</span>)) =&gt; {
-			<span class="kw">match</span> <span class="ident">error</span> {
-				<span class="ident">NonFatal::UnexpectedPoV</span> <span class="op">|</span>
-				<span class="ident">NonFatal::InvalidValidatorIndex</span> <span class="op">|</span>
-				<span class="ident">NonFatal::NoSuchCachedSession</span> { .. } <span class="op">|</span>
-				<span class="ident">NonFatal::QueryAvailableDataResponseChannel</span>(<span class="kw">_</span>) <span class="op">|</span>
-				<span class="ident">NonFatal::QueryChunkResponseChannel</span>(<span class="kw">_</span>) =&gt;
-					<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">error</span>, <span class="ident">ctx</span>),
-				<span class="ident">NonFatal::FetchPoV</span>(<span class="kw">_</span>) <span class="op">|</span>
-				<span class="ident">NonFatal::SendResponse</span> <span class="op">|</span>
-				<span class="ident">NonFatal::NoSuchPoV</span> <span class="op">|</span>
-				<span class="ident">NonFatal::Runtime</span>(<span class="kw">_</span>) =&gt; <span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">error</span>, <span class="ident">ctx</span>),
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_error</span>(<span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">FatalError</span><span class="op">&gt;</span> {
+	<span class="kw">match</span> <span class="ident">result</span>.<span class="ident">into_nested</span>()<span class="question-mark">?</span> {
+		<span class="prelude-val">Ok</span>(()) =&gt; <span class="prelude-val">Ok</span>(()),
+		<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>) =&gt; {
+			<span class="kw">match</span> <span class="ident">jfyi</span> {
+				<span class="ident">JfyiError::UnexpectedPoV</span> <span class="op">|</span>
+				<span class="ident">JfyiError::InvalidValidatorIndex</span> <span class="op">|</span>
+				<span class="ident">JfyiError::NoSuchCachedSession</span> { .. } <span class="op">|</span>
+				<span class="ident">JfyiError::QueryAvailableDataResponseChannel</span>(<span class="kw">_</span>) <span class="op">|</span>
+				<span class="ident">JfyiError::QueryChunkResponseChannel</span>(<span class="kw">_</span>) =&gt;
+					<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>),
+				<span class="ident">JfyiError::FetchPoV</span>(<span class="kw">_</span>) <span class="op">|</span>
+				<span class="ident">JfyiError::SendResponse</span> <span class="op">|</span>
+				<span class="ident">JfyiError::NoSuchPoV</span> <span class="op">|</span>
+				<span class="ident">JfyiError::Runtime</span>(<span class="kw">_</span>) =&gt; <span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>),
 			}
 			<span class="prelude-val">Ok</span>(())
 		},
-		<span class="prelude-val">Ok</span>(()) =&gt; <span class="prelude-val">Ok</span>(()),
 	}
 }
 </code></pre></div>

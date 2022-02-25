@@ -451,13 +451,13 @@
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorPair</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">error</span>::{<span class="ident">Error</span>, <span class="ident">FatalResult</span>, <span class="ident">NonFatal</span>, <span class="prelude-ty">Result</span>},
+	<span class="ident">error</span>::{<span class="ident">FatalResult</span>, <span class="ident">JfyiError</span>, <span class="prelude-ty">Result</span>},
 	<span class="ident">metrics::Metrics</span>,
 	<span class="ident">status</span>::{<span class="ident">get_active_with_status</span>, <span class="ident">SystemClock</span>},
 };
-
 <span class="kw">use</span> <span class="ident">backend</span>::{<span class="ident">Backend</span>, <span class="ident">OverlayedBackend</span>};
 <span class="kw">use</span> <span class="ident">db::v1::DbBackend</span>;
+<span class="kw">use</span> <span class="ident">fatality::Split</span>;
 
 <span class="kw">use</span> <span class="self">self</span>::{
 	<span class="ident">ordering::CandidateComparator</span>,
@@ -607,9 +607,8 @@
 					<span class="macro">tracing::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;received `Conclude` signal, exiting&quot;</span>);
 					<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 				},
-				<span class="prelude-val">Err</span>(<span class="ident">Error::Fatal</span>(<span class="ident">f</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">f</span>),
-				<span class="prelude-val">Err</span>(<span class="ident">Error::NonFatal</span>(<span class="ident">e</span>)) =&gt; {
-					<span class="ident">e</span>.<span class="ident">log</span>();
+				<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+					<span class="ident">e</span>.<span class="ident">split</span>()<span class="question-mark">?</span>.<span class="ident">log</span>();
 					<span class="kw">continue</span>
 				},
 			};
@@ -630,9 +629,8 @@
 				.<span class="kw">await</span>
 			{
 				<span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
-				<span class="prelude-val">Err</span>(<span class="ident">Error::Fatal</span>(<span class="ident">f</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">f</span>),
-				<span class="prelude-val">Err</span>(<span class="ident">Error::NonFatal</span>(<span class="ident">e</span>)) =&gt; {
-					<span class="ident">e</span>.<span class="ident">log</span>();
+				<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+					<span class="ident">e</span>.<span class="ident">split</span>()<span class="question-mark">?</span>.<span class="ident">log</span>();
 					<span class="kw">continue</span>
 				},
 			};
@@ -782,7 +780,7 @@
 			<span class="ident">leaf</span>.<span class="ident">clone</span>(),
 			<span class="ident">RollingSessionWindow::new</span>(<span class="ident">ctx</span>, <span class="ident">DISPUTE_WINDOW</span>, <span class="ident">leaf</span>.<span class="ident">hash</span>)
 				.<span class="kw">await</span>
-				.<span class="ident">map_err</span>(<span class="ident">NonFatal::RollingSessionWindow</span>)<span class="question-mark">?</span>,
+				.<span class="ident">map_err</span>(<span class="ident">JfyiError::RollingSessionWindow</span>)<span class="question-mark">?</span>,
 		)))
 	} <span class="kw">else</span> {
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
@@ -812,11 +810,13 @@
 			<span class="comment">// available). So instead of telling subsystems, everything is fine, because of an</span>
 			<span class="comment">// hour old database state, we should rather cancel contained oneshots and delay</span>
 			<span class="comment">// finality until we are fully functional.</span>
+			{
 				<span class="macro">tracing::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">msg</span>,
 					<span class="string">&quot;Received msg before first active leaves update. This is not expected - message will be dropped.&quot;</span>
-				),
+				)
+			},
 		}
 	}
 }

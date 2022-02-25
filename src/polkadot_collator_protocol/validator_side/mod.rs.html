@@ -1526,9 +1526,9 @@
 	<span class="ident">overseer</span>, <span class="ident">FromOverseer</span>, <span class="ident">OverseerSignal</span>, <span class="ident">PerLeafSpan</span>, <span class="ident">SubsystemContext</span>, <span class="ident">SubsystemSender</span>,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::FatalResult</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::Result</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">modify_reputation</span>, <span class="prelude-ty">Result</span>, <span class="ident">LOG_TARGET</span>};
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">modify_reputation</span>, <span class="ident">LOG_TARGET</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
@@ -2604,7 +2604,7 @@
 	<span class="ident">keystore</span>: <span class="ident">SyncCryptoStorePtr</span>,
 	<span class="ident">eviction_policy</span>: <span class="ident"><span class="kw">crate</span>::CollatorEvictionPolicy</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
-) -&gt; <span class="ident">FatalResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="kw">crate</span>::error::FatalError</span><span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Context</span>: <span class="ident">overseer::SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">CollatorProtocolMessage</span><span class="op">&gt;</span>,
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">CollatorProtocolMessage</span><span class="op">&gt;</span>,

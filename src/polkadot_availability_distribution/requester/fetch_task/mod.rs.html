@@ -476,7 +476,7 @@
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">error</span>::{<span class="ident">Fatal</span>, <span class="prelude-ty">Result</span>},
+	<span class="ident">error</span>::{<span class="ident">FatalError</span>, <span class="prelude-ty">Result</span>},
 	<span class="ident">metrics</span>::{<span class="ident">Metrics</span>, <span class="ident">FAILED</span>, <span class="ident">SUCCEEDED</span>},
 	<span class="ident">requester::session_cache</span>::{<span class="ident">BadValidators</span>, <span class="ident">SessionInfo</span>},
 	<span class="ident">LOG_TARGET</span>,
@@ -622,7 +622,7 @@
 			<span class="kw">let</span> (<span class="ident">handle</span>, <span class="ident">kill</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
 
 			<span class="ident">ctx</span>.<span class="ident">spawn</span>(<span class="string">&quot;chunk-fetcher&quot;</span>, <span class="ident">running</span>.<span class="ident">run</span>(<span class="ident">kill</span>).<span class="ident">boxed</span>())
-				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Fatal::SpawnTask</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
+				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">FatalError::SpawnTask</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
 
 			<span class="prelude-val">Ok</span>(<span class="ident">FetchTask</span> { <span class="ident">live_in</span>, <span class="ident">state</span>: <span class="ident">FetchedState::Started</span>(<span class="ident">handle</span>) })
 		} <span class="kw">else</span> {

@@ -334,7 +334,7 @@
 	<span class="ident">SubsystemContext</span>,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::error</span>::{<span class="ident">Fatal</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::error</span>::{<span class="ident">FatalError</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
 	<span class="ident">metrics</span>::{<span class="ident">FAILED</span>, <span class="ident">SUCCEEDED</span>},
@@ -565,7 +565,7 @@
 		);
 
 		<span class="kw">let</span> (<span class="ident">remote</span>, <span class="ident">remote_handle</span>) <span class="op">=</span> <span class="ident">fut</span>.<span class="ident">remote_handle</span>();
-		<span class="ident">ctx</span>.<span class="ident">spawn</span>(<span class="string">&quot;dispute-sender&quot;</span>, <span class="ident">remote</span>.<span class="ident">boxed</span>()).<span class="ident">map_err</span>(<span class="ident">Fatal::SpawnTask</span>)<span class="question-mark">?</span>;
+		<span class="ident">ctx</span>.<span class="ident">spawn</span>(<span class="string">&quot;dispute-sender&quot;</span>, <span class="ident">remote</span>.<span class="ident">boxed</span>()).<span class="ident">map_err</span>(<span class="ident">FatalError::SpawnTask</span>)<span class="question-mark">?</span>;
 		<span class="ident">statuses</span>.<span class="ident">insert</span>(<span class="ident">receiver</span>, <span class="ident">DeliveryStatus::Pending</span>(<span class="ident">remote_handle</span>));
 	}
 

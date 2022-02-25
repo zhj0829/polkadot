@@ -118,6 +118,7 @@
 <span id="118">118</span>
 <span id="119">119</span>
 <span id="120">120</span>
+<span id="121">121</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// Polkadot is free software: you can redistribute it and/or modify</span>
 <span class="comment">// it under the terms of the GNU General Public License as published by</span>
@@ -140,9 +141,10 @@
 	<span class="ident">SinkExt</span>, <span class="ident">StreamExt</span>,
 };
 
+<span class="kw">use</span> <span class="ident">fatality::Nested</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_network_protocol</span>::{
 	<span class="ident">request_response</span>::{
-		<span class="ident">incoming</span>::{<span class="self">self</span>, <span class="ident">OutgoingResponse</span>},
+		<span class="ident">incoming::OutgoingResponse</span>,
 		<span class="ident">v1</span>::{<span class="ident">StatementFetchingRequest</span>, <span class="ident">StatementFetchingResponse</span>},
 		<span class="ident">IncomingRequestReceiver</span>, <span class="ident">MAX_PARALLEL_STATEMENT_REQUESTS</span>,
 	},
@@ -194,16 +196,16 @@
 			<span class="ident">pending_out</span>.<span class="ident">next</span>().<span class="kw">await</span>;
 		}
 
-		<span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">receiver</span>.<span class="ident">recv</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">vec!</span>[<span class="ident">COST_INVALID_REQUEST</span>]).<span class="kw">await</span> {
-			<span class="prelude-val">Err</span>(<span class="ident">incoming::Error::Fatal</span>(<span class="ident">f</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">f</span>, <span class="string">&quot;Shutting down request responder&quot;</span>);
+		<span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">receiver</span>.<span class="ident">recv</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">vec!</span>[<span class="ident">COST_INVALID_REQUEST</span>]).<span class="kw">await</span>.<span class="ident">into_nested</span>() {
+			<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">v</span>)) =&gt; <span class="ident">v</span>,
+			<span class="prelude-val">Err</span>(<span class="ident">fatal</span>) =&gt; {
+				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">fatal</span>, <span class="string">&quot;Shutting down request responder&quot;</span>);
 				<span class="kw">return</span>
 			},
-			<span class="prelude-val">Err</span>(<span class="ident">incoming::Error::NonFatal</span>(<span class="ident">err</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Decoding request failed&quot;</span>);
+			<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>)) =&gt; {
+				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="string">&quot;Decoding request failed&quot;</span>);
 				<span class="kw">continue</span>
 			},
-			<span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
 		};
 
 		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();

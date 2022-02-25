@@ -161,7 +161,8 @@
 <span class="doccomment">//! The Collator Protocol allows collators and validators talk to each other.</span>
 <span class="doccomment">//! This subsystem implements both sides of the collator protocol.</span>
 
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">unused_crate_dependencies</span>)]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">unused_crate_dependencies</span>)]</span>
 <span class="attribute">#![<span class="ident">recursion_limit</span> <span class="op">=</span> <span class="string">&quot;256&quot;</span>]</span>
 
 <span class="kw">use</span> <span class="ident">std::time::Duration</span>;
@@ -183,7 +184,6 @@
 };
 
 <span class="kw">mod</span> <span class="ident">error</span>;
-<span class="kw">use</span> <span class="ident">error</span>::{<span class="ident">FatalResult</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">mod</span> <span class="ident">collator_side</span>;
 <span class="kw">mod</span> <span class="ident">validator_side</span>;
@@ -242,7 +242,7 @@
 		<span class="self">Self</span> { <span class="ident">protocol_side</span> }
 	}
 
-	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">ctx</span>: <span class="ident">Context</span>) -&gt; <span class="ident">FatalResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">ctx</span>: <span class="ident">Context</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">error::FatalError</span><span class="op">&gt;</span>
 	<span class="kw">where</span>
 		<span class="ident">Context</span>: <span class="ident">overseer::SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">CollatorProtocolMessage</span><span class="op">&gt;</span>,
 		<span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">CollatorProtocolMessage</span><span class="op">&gt;</span>,

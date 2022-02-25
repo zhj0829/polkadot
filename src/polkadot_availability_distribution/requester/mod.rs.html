@@ -327,6 +327,8 @@
 <span id="327">327</span>
 <span id="328">328</span>
 <span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -368,8 +370,7 @@
 	<span class="ident">ActivatedLeaf</span>, <span class="ident">ActiveLeavesUpdate</span>, <span class="ident">LeafStatus</span>, <span class="ident">SubsystemContext</span>,
 };
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Metrics</span>, <span class="prelude-ty">Result</span>, <span class="ident">LOG_TARGET</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error::Fatal</span>;
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">FatalError</span>, <span class="ident">Metrics</span>, <span class="prelude-ty">Result</span>, <span class="ident">LOG_TARGET</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
@@ -653,7 +654,10 @@
 	})
 	.<span class="kw">await</span>;
 
-	<span class="kw">let</span> <span class="ident">ancestors</span> <span class="op">=</span> <span class="ident">rx</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Fatal::ChainApiSenderDropped</span>)<span class="question-mark">?</span>.<span class="ident">map_err</span>(<span class="ident">Fatal::ChainApi</span>)<span class="question-mark">?</span>;
+	<span class="kw">let</span> <span class="ident">ancestors</span> <span class="op">=</span> <span class="ident">rx</span>
+		.<span class="kw">await</span>
+		.<span class="ident">map_err</span>(<span class="ident">FatalError::ChainApiSenderDropped</span>)<span class="question-mark">?</span>
+		.<span class="ident">map_err</span>(<span class="ident">FatalError::ChainApi</span>)<span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>(<span class="ident">ancestors</span>)
 }
 </code></pre></div>

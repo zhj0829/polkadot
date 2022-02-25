@@ -1379,7 +1379,7 @@
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">error</span>::{<span class="ident">log_error</span>, <span class="ident">Error</span>, <span class="ident">Fatal</span>, <span class="ident">FatalResult</span>, <span class="ident">NonFatal</span>, <span class="ident">NonFatalResult</span>, <span class="prelude-ty">Result</span>},
+	<span class="ident">error</span>::{<span class="ident">log_error</span>, <span class="ident">Error</span>, <span class="ident">FatalError</span>, <span class="ident">FatalResult</span>, <span class="ident">JfyiError</span>, <span class="ident">JfyiResult</span>, <span class="prelude-ty">Result</span>},
 	<span class="ident">metrics::Metrics</span>,
 	<span class="ident">real</span>::{<span class="ident">ordering::get_finalized_block_number</span>, <span class="ident">DisputeCoordinatorSubsystem</span>},
 	<span class="ident">status</span>::{<span class="ident">get_active_with_status</span>, <span class="ident">Clock</span>, <span class="ident">DisputeStatus</span>, <span class="ident">Timestamp</span>},
@@ -1936,7 +1936,7 @@
 		<span class="ident">overlay_db</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">OverlayedBackend</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="kw">impl</span> <span class="ident">Backend</span><span class="op">&gt;</span>,
 		<span class="ident">message</span>: <span class="ident">DisputeCoordinatorMessage</span>,
 		<span class="ident">now</span>: <span class="ident">Timestamp</span>,
-	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() -&gt; <span class="ident">NonFatalResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() -&gt; <span class="ident">JfyiResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">match</span> <span class="ident">message</span> {
 			<span class="ident">DisputeCoordinatorMessage::ImportStatements</span> {
 				<span class="ident">candidate_hash</span>,
@@ -1959,7 +1959,7 @@
 				<span class="kw">let</span> <span class="ident">report</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
 					<span class="ident">pending_confirmation</span>
 						.<span class="ident">send</span>(<span class="ident">outcome</span>)
-						.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::DisputeImportOneshotSend</span>)
+						.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">JfyiError::DisputeImportOneshotSend</span>)
 				};
 				<span class="kw">match</span> <span class="ident">outcome</span> {
 					<span class="ident">ImportStatementsResult::InvalidImport</span> =&gt; {
@@ -2059,7 +2059,7 @@
 	<span class="comment">// Helper function for checking subsystem errors in message processing.</span>
 	<span class="kw">fn</span> <span class="ident">ensure_available_session_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">subsystem_error</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">error</span>.<span class="ident">clone</span>() {
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::NonFatal</span>(<span class="ident">NonFatal::RollingSessionWindow</span>(<span class="ident">subsystem_error</span>)))
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::RollingSessionWindow</span>(<span class="ident">subsystem_error</span>))
 		}
 
 		<span class="prelude-val">Ok</span>(())
@@ -2500,8 +2500,8 @@
 		<span class="kw">let</span> <span class="ident">from_overseer</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">recv</span>().<span class="ident">fuse</span>();
 		<span class="macro">futures::pin_mut!</span>(<span class="ident">from_overseer</span>, <span class="ident">from_sender</span>);
 		<span class="macro">futures::select!</span>(
-			<span class="ident">msg</span> <span class="op">=</span> <span class="ident">from_overseer</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Subsystem</span>(<span class="ident">msg</span>.<span class="ident">map_err</span>(<span class="ident">Fatal::SubsystemReceive</span>)<span class="question-mark">?</span>)),
-			<span class="ident">msg</span> <span class="op">=</span> <span class="ident">from_sender</span>.<span class="ident">next</span>() =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Participation</span>(<span class="ident">msg</span>.<span class="ident">ok_or</span>(<span class="ident">Fatal::ParticipationWorkerReceiverExhausted</span>)<span class="question-mark">?</span>)),
+			<span class="ident">msg</span> <span class="op">=</span> <span class="ident">from_overseer</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Subsystem</span>(<span class="ident">msg</span>.<span class="ident">map_err</span>(<span class="ident">FatalError::SubsystemReceive</span>)<span class="question-mark">?</span>)),
+			<span class="ident">msg</span> <span class="op">=</span> <span class="ident">from_sender</span>.<span class="ident">next</span>() =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Participation</span>(<span class="ident">msg</span>.<span class="ident">ok_or</span>(<span class="ident">FatalError::ParticipationWorkerReceiverExhausted</span>)<span class="question-mark">?</span>)),
 		)
 	}
 }

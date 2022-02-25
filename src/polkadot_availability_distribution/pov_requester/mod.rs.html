@@ -256,7 +256,7 @@
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-	<span class="ident">error</span>::{<span class="ident">Fatal</span>, <span class="ident">NonFatal</span>},
+	<span class="ident">error</span>::{<span class="ident">Error</span>, <span class="ident">FatalError</span>, <span class="ident">JfyiError</span>, <span class="prelude-ty">Result</span>},
 	<span class="ident">metrics</span>::{<span class="ident">FAILED</span>, <span class="ident">NOT_FOUND</span>, <span class="ident">SUCCEEDED</span>},
 	<span class="ident">Metrics</span>, <span class="ident">LOG_TARGET</span>,
 };
@@ -271,7 +271,7 @@
 	<span class="ident">pov_hash</span>: <span class="ident">Hash</span>,
 	<span class="ident">tx</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PoV</span><span class="op">&gt;</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
-) -&gt; <span class="ident"><span class="kw">super</span>::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 <span class="kw">where</span>
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
 {
@@ -279,7 +279,7 @@
 	<span class="kw">let</span> <span class="ident">authority_id</span> <span class="op">=</span> <span class="ident">info</span>
 		.<span class="ident">discovery_keys</span>
 		.<span class="ident">get</span>(<span class="ident">from_validator</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>)
-		.<span class="ident">ok_or</span>(<span class="ident">NonFatal::InvalidValidatorIndex</span>)<span class="question-mark">?</span>
+		.<span class="ident">ok_or</span>(<span class="ident">JfyiError::InvalidValidatorIndex</span>)<span class="question-mark">?</span>
 		.<span class="ident">clone</span>();
 	<span class="kw">let</span> (<span class="ident">req</span>, <span class="ident">pending_response</span>) <span class="op">=</span> <span class="ident">OutgoingRequest::new</span>(
 		<span class="ident">Recipient::Authority</span>(<span class="ident">authority_id</span>.<span class="ident">clone</span>()),
@@ -300,7 +300,7 @@
 		<span class="string">&quot;pov-fetcher&quot;</span>,
 		<span class="ident">fetch_pov_job</span>(<span class="ident">pov_hash</span>, <span class="ident">authority_id</span>, <span class="ident">pending_response</span>.<span class="ident">boxed</span>(), <span class="ident">span</span>, <span class="ident">tx</span>, <span class="ident">metrics</span>).<span class="ident">boxed</span>(),
 	)
-	.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Fatal::SpawnTask</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
+	.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">FatalError::SpawnTask</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
 	<span class="prelude-val">Ok</span>(())
 }
 
@@ -308,7 +308,7 @@
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">fetch_pov_job</span>(
 	<span class="ident">pov_hash</span>: <span class="ident">Hash</span>,
 	<span class="ident">authority_id</span>: <span class="ident">AuthorityDiscoveryId</span>,
-	<span class="ident">pending_response</span>: <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PoVFetchingResponse</span>, <span class="ident">RequestError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">pending_response</span>: <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">PoVFetchingResponse</span>, <span class="ident">RequestError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">span</span>: <span class="ident">jaeger::Span</span>,
 	<span class="ident">tx</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PoV</span><span class="op">&gt;</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
@@ -321,17 +321,17 @@
 <span class="doccomment">/// Do the actual work of waiting for the response.</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">do_fetch_pov</span>(
 	<span class="ident">pov_hash</span>: <span class="ident">Hash</span>,
-	<span class="ident">pending_response</span>: <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PoVFetchingResponse</span>, <span class="ident">RequestError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+	<span class="ident">pending_response</span>: <span class="ident">BoxFuture</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">PoVFetchingResponse</span>, <span class="ident">RequestError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="ident">_span</span>: <span class="ident">jaeger::Span</span>,
 	<span class="ident">tx</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span><span class="ident">PoV</span><span class="op">&gt;</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
-) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">NonFatal</span><span class="op">&gt;</span> {
-	<span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">pending_response</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">NonFatal::FetchPoV</span>);
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+	<span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">pending_response</span>.<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="ident">Error::FetchPoV</span>);
 	<span class="kw">let</span> <span class="ident">pov</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">response</span> {
 		<span class="prelude-val">Ok</span>(<span class="ident">PoVFetchingResponse::PoV</span>(<span class="ident">pov</span>)) =&gt; <span class="ident">pov</span>,
 		<span class="prelude-val">Ok</span>(<span class="ident">PoVFetchingResponse::NoSuchPoV</span>) =&gt; {
 			<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">NOT_FOUND</span>);
-			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">NonFatal::NoSuchPoV</span>)
+			<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::NoSuchPoV</span>)
 		},
 		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
 			<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">FAILED</span>);
@@ -340,10 +340,10 @@
 	};
 	<span class="kw">if</span> <span class="ident">pov</span>.<span class="ident">hash</span>() <span class="op">==</span> <span class="ident">pov_hash</span> {
 		<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">SUCCEEDED</span>);
-		<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">pov</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">NonFatal::SendResponse</span>)
+		<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">pov</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Error::SendResponse</span>)
 	} <span class="kw">else</span> {
 		<span class="ident">metrics</span>.<span class="ident">on_fetched_pov</span>(<span class="ident">FAILED</span>);
-		<span class="prelude-val">Err</span>(<span class="ident">NonFatal::UnexpectedPoV</span>)
+		<span class="prelude-val">Err</span>(<span class="ident">Error::UnexpectedPoV</span>)
 	}
 }
 
