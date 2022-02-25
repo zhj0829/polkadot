@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Error",""],["FatalError",""],["JfyiError",""]],"struct":[["Metrics","Statement Distribution metrics."],["StatementDistributionSubsystem","The statement distribution subsystem."]],"type":[["Result","General result."]]});
+initSidebarItems({"enum":[["Error",""],["FatalError",""],["JfyiError",""]],"struct":[["StatementDistributionSubsystem","The statement distribution subsystem."]],"type":[["Result","General result."]]});

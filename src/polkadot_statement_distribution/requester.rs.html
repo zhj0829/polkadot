@@ -219,6 +219,8 @@
 <span id="219">219</span>
 <span id="220">220</span>
 <span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// Polkadot is free software: you can redistribute it and/or modify</span>
 <span class="comment">// it under the terms of the GNU General Public License as published by</span>
@@ -253,7 +255,7 @@
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CandidateHash</span>, <span class="ident">CommittedCandidateReceipt</span>, <span class="ident">Hash</span>};
 <span class="kw">use</span> <span class="ident">polkadot_subsystem</span>::{<span class="ident">Span</span>, <span class="ident">Stage</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Metrics</span>, <span class="ident">COST_WRONG_HASH</span>, <span class="ident">LOG_TARGET</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">metrics::Metrics</span>, <span class="ident">COST_WRONG_HASH</span>, <span class="ident">LOG_TARGET</span>};
 
 <span class="comment">// In case we failed fetching from our known peers, how long we should wait before attempting a</span>
 <span class="comment">// retry, even though we have not yet discovered any new peers. Or in other words how long to</span>
@@ -338,6 +340,7 @@
 				<span class="prelude-val">Ok</span>(<span class="ident">StatementFetchingResponse::Statement</span>(<span class="ident">statement</span>)) =&gt; {
 					<span class="kw">if</span> <span class="ident">statement</span>.<span class="ident">hash</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">candidate_hash</span> {
 						<span class="ident">metrics</span>.<span class="ident">on_received_response</span>(<span class="bool-val">false</span>);
+						<span class="ident">metrics</span>.<span class="ident">on_unexpected_statement_large</span>();
 
 						<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span>
 							<span class="ident">sender</span>.<span class="ident">feed</span>(<span class="ident">RequesterMessage::ReportPeer</span>(<span class="ident">peer</span>, <span class="ident">COST_WRONG_HASH</span>)).<span class="kw">await</span>
@@ -382,6 +385,7 @@
 					);
 
 					<span class="ident">metrics</span>.<span class="ident">on_received_response</span>(<span class="bool-val">false</span>);
+					<span class="ident">metrics</span>.<span class="ident">on_unexpected_statement_large</span>();
 				},
 			}
 

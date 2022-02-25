@@ -552,6 +552,22 @@
 <span id="552">552</span>
 <span id="553">553</span>
 <span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1028,6 +1044,22 @@
 			}
 			<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>))]</span>
 			<span class="macro">panic!</span>(<span class="string">&quot;No runtime feature (polkadot, kusama, westend, rococo) is enabled&quot;</span>)
+		},
+		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::BenchmarkStorage</span>(<span class="ident">cmd</span>)) =&gt; {
+			<span class="kw">let</span> <span class="ident">runner</span> <span class="op">=</span> <span class="ident">cli</span>.<span class="ident">create_runner</span>(<span class="ident">cmd</span>)<span class="question-mark">?</span>;
+			<span class="kw">let</span> <span class="ident">chain_spec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">runner</span>.<span class="ident">config</span>().<span class="ident">chain_spec</span>;
+			<span class="ident">set_default_ss58_version</span>(<span class="ident">chain_spec</span>);
+
+			<span class="prelude-val">Ok</span>(<span class="ident">runner</span>.<span class="ident">async_run</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">config</span><span class="op">|</span> {
+				<span class="kw">let</span> (<span class="ident">client</span>, <span class="ident">backend</span>, <span class="kw">_</span>, <span class="ident">task_manager</span>) <span class="op">=</span> <span class="ident">service::new_chain_ops</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">config</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
+				<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">backend</span>.<span class="ident">expose_db</span>();
+				<span class="kw">let</span> <span class="ident">storage</span> <span class="op">=</span> <span class="ident">backend</span>.<span class="ident">expose_storage</span>();
+
+				<span class="prelude-val">Ok</span>((
+					<span class="ident">cmd</span>.<span class="ident">run</span>(<span class="ident">config</span>, <span class="ident">client</span>, <span class="ident">db</span>, <span class="ident">storage</span>).<span class="ident">map_err</span>(<span class="ident">Error::SubstrateCli</span>),
+					<span class="ident">task_manager</span>,
+				))
+			})<span class="question-mark">?</span>)
 		},
 		<span class="prelude-val">Some</span>(<span class="ident">Subcommand::HostPerfCheck</span>) =&gt; {
 			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">sc_cli::LoggerBuilder::new</span>(<span class="string">&quot;&quot;</span>);

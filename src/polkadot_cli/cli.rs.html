@@ -133,6 +133,9 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -188,6 +191,9 @@
 	<span class="doccomment">/// The custom benchmark subcommand benchmarking runtime pallets.</span>
 	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;benchmark&quot;</span>, <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Benchmark runtime pallets.&quot;</span>)]</span>
 	<span class="ident">Benchmark</span>(<span class="ident">frame_benchmarking_cli::BenchmarkCmd</span>),
+
+	<span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;benchmark-storage&quot;</span>, <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Benchmark storage speed.&quot;</span>)]</span>
+	<span class="ident">BenchmarkStorage</span>(<span class="ident">frame_benchmarking_cli::StorageCmd</span>),
 
 	<span class="doccomment">/// Runs performance checks such as PVF compilation in order to measure machine</span>
 	<span class="doccomment">/// capabilities of running a validator.</span>
