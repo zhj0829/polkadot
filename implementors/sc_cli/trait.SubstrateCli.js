@@ -1,4 +1,5 @@
 (function() {var implementors = {};
 implementors["adder_collator"] = [{"text":"impl <a class=\"trait\" href=\"sc_cli/trait.SubstrateCli.html\" title=\"trait sc_cli::SubstrateCli\">SubstrateCli</a> for <a class=\"struct\" href=\"adder_collator/cli/struct.Cli.html\" title=\"struct adder_collator::cli::Cli\">Cli</a>","synthetic":false,"types":["adder_collator::cli::Cli"]}];
 implementors["polkadot_cli"] = [{"text":"impl <a class=\"trait\" href=\"sc_cli/trait.SubstrateCli.html\" title=\"trait sc_cli::SubstrateCli\">SubstrateCli</a> for <a class=\"struct\" href=\"polkadot_cli/struct.Cli.html\" title=\"struct polkadot_cli::Cli\">Cli</a>","synthetic":false,"types":["polkadot_cli::cli::Cli"]}];
+implementors["undying_collator"] = [{"text":"impl <a class=\"trait\" href=\"sc_cli/trait.SubstrateCli.html\" title=\"trait sc_cli::SubstrateCli\">SubstrateCli</a> for <a class=\"struct\" href=\"undying_collator/cli/struct.Cli.html\" title=\"struct undying_collator::cli::Cli\">Cli</a>","synthetic":false,"types":["undying_collator::cli::Cli"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

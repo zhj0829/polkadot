@@ -200,7 +200,7 @@
 	}
 
 	<span class="kw">fn</span> <span class="ident">executable_name</span>() -&gt; <span class="ident">String</span> {
-		<span class="string">&quot;polkadot&quot;</span>.<span class="ident">into</span>()
+		<span class="string">&quot;adder-collator&quot;</span>.<span class="ident">into</span>()
 	}
 
 	<span class="kw">fn</span> <span class="ident">load_spec</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">sc_service::ChainSpec</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
