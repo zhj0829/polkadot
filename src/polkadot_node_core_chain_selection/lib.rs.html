@@ -684,10 +684,10 @@
 	<span class="ident">messages</span>::{<span class="ident">ChainApiMessage</span>, <span class="ident">ChainSelectionMessage</span>},
 	<span class="ident">overseer</span>, <span class="ident">FromOverseer</span>, <span class="ident">OverseerSignal</span>, <span class="ident">SpawnedSubsystem</span>, <span class="ident">SubsystemContext</span>, <span class="ident">SubsystemError</span>,
 };
+<span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::database::Database</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">BlockNumber</span>, <span class="ident">ConsensusLog</span>, <span class="ident">Hash</span>, <span class="ident">Header</span>};
 
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">channel::oneshot</span>, <span class="ident">future::Either</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
-<span class="kw">use</span> <span class="ident">kvdb::KeyValueDB</span>;
 <span class="kw">use</span> <span class="ident">parity_scale_codec::Error</span> <span class="kw">as</span> <span class="ident">CodecError</span>;
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -968,13 +968,13 @@
 <span class="doccomment">/// The chain selection subsystem.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChainSelectionSubsystem</span> {
 	<span class="ident">config</span>: <span class="ident">Config</span>,
-	<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">ChainSelectionSubsystem</span> {
 	<span class="doccomment">/// Create a new instance of the subsystem with the given config</span>
 	<span class="doccomment">/// and key-value store.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">Config</span>, <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">Config</span>, <span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">ChainSelectionSubsystem</span> { <span class="ident">config</span>, <span class="ident">db</span> }
 	}
 }

@@ -2579,7 +2579,6 @@
 <span class="doccomment">//! of others. It uses this information to determine when candidates and blocks have</span>
 <span class="doccomment">//! been sufficiently approved to finalize.</span>
 
-<span class="kw">use</span> <span class="ident">kvdb::KeyValueDB</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_jaeger</span> <span class="kw">as</span> <span class="ident">jaeger</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{
 	<span class="ident">approval</span>::{
@@ -2601,6 +2600,7 @@
 	<span class="ident">SubsystemResult</span>, <span class="ident">SubsystemSender</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util</span>::{
+	<span class="ident">database::Database</span>,
 	<span class="ident">metrics</span>::{<span class="self">self</span>, <span class="ident">prometheus</span>},
 	<span class="ident">rolling_session_window</span>::{
 		<span class="ident">new_session_window_size</span>, <span class="ident">RollingSessionWindow</span>, <span class="ident">SessionWindowSize</span>, <span class="ident">SessionWindowUpdate</span>,
@@ -2698,7 +2698,7 @@
 	<span class="ident">keystore</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LocalKeystore</span><span class="op">&gt;</span>,
 	<span class="ident">db_config</span>: <span class="ident">DatabaseConfig</span>,
 	<span class="ident">slot_duration_millis</span>: <span class="ident">u64</span>,
-	<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">mode</span>: <span class="ident">Mode</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 }
@@ -2887,7 +2887,7 @@
 	<span class="doccomment">/// Create a new approval voting subsystem with the given keystore, config, and database.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_config</span>(
 		<span class="ident">config</span>: <span class="ident">Config</span>,
-		<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+		<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 		<span class="ident">keystore</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LocalKeystore</span><span class="op">&gt;</span>,
 		<span class="ident">sync_oracle</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SyncOracle</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span>,
 		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,

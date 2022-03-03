@@ -130,12 +130,12 @@
 <span class="doccomment">/// The real implementation.</span>
 <span class="kw">mod</span> <span class="ident">real</span>;
 
-<span class="kw">use</span> <span class="ident">kvdb::KeyValueDB</span>;
 <span class="kw">use</span> <span class="ident">metrics::Metrics</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{
 	<span class="ident">messages::DisputeCoordinatorMessage</span>, <span class="ident">overseer</span>, <span class="ident">SpawnedSubsystem</span>, <span class="ident">SubsystemContext</span>,
 	<span class="ident">SubsystemError</span>,
 };
+<span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::database::Database</span>;
 <span class="kw">use</span> <span class="ident">sc_keystore::LocalKeystore</span>;
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
@@ -157,7 +157,7 @@
 
 	<span class="doccomment">/// Create a new instance of the subsystem.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-		<span class="ident">store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+		<span class="ident">store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 		<span class="ident">config</span>: <span class="ident">real::Config</span>,
 		<span class="ident">keystore</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">LocalKeystore</span><span class="op">&gt;</span>,
 		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,

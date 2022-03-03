@@ -1304,8 +1304,8 @@
 
 <span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">channel::oneshot</span>, <span class="ident">future</span>, <span class="ident">select</span>, <span class="ident">FutureExt</span>};
 <span class="kw">use</span> <span class="ident">futures_timer::Delay</span>;
-<span class="kw">use</span> <span class="ident">kvdb</span>::{<span class="ident">DBTransaction</span>, <span class="ident">KeyValueDB</span>};
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>, <span class="ident">Error</span> <span class="kw">as</span> <span class="ident">CodecError</span>, <span class="ident">Input</span>};
+<span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::database</span>::{<span class="ident">DBTransaction</span>, <span class="ident">Database</span>};
 
 <span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>, <span class="ident">vec::BitVec</span>};
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{<span class="ident">AvailableData</span>, <span class="ident">ErasureChunk</span>};
@@ -1428,7 +1428,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">query_inner</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Decode</span><span class="op">&gt;</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">column</span>: <span class="ident">u32</span>,
 	<span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
@@ -1457,7 +1457,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">load_available_data</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">hash</span>: <span class="kw-2">&amp;</span><span class="ident">CandidateHash</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AvailableData</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
@@ -1473,7 +1473,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">load_chunk</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">candidate_hash</span>: <span class="kw-2">&amp;</span><span class="ident">CandidateHash</span>,
 	<span class="ident">chunk_index</span>: <span class="ident">ValidatorIndex</span>,
@@ -1507,7 +1507,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">load_meta</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">hash</span>: <span class="kw-2">&amp;</span><span class="ident">CandidateHash</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CandidateMeta</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
@@ -1719,7 +1719,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AvailabilityStoreSubsystem</span> {
 	<span class="ident">pruning_config</span>: <span class="ident">PruningConfig</span>,
 	<span class="ident">config</span>: <span class="ident">Config</span>,
-	<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">known_blocks</span>: <span class="ident">KnownUnfinalizedBlocks</span>,
 	<span class="ident">finalized_number</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span>,
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
@@ -1728,7 +1728,7 @@
 
 <span class="kw">impl</span> <span class="ident">AvailabilityStoreSubsystem</span> {
 	<span class="doccomment">/// Create a new `AvailabilityStoreSubsystem` with a given config on disk.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>, <span class="ident">config</span>: <span class="ident">Config</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>, <span class="ident">config</span>: <span class="ident">Config</span>, <span class="ident">metrics</span>: <span class="ident">Metrics</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident"><span class="self">Self</span>::with_pruning_config_and_clock</span>(
 			<span class="ident">db</span>,
 			<span class="ident">config</span>,
@@ -1740,7 +1740,7 @@
 
 	<span class="doccomment">/// Create a new `AvailabilityStoreSubsystem` with a given config on disk.</span>
 	<span class="kw">fn</span> <span class="ident">with_pruning_config_and_clock</span>(
-		<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+		<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 		<span class="ident">config</span>: <span class="ident">Config</span>,
 		<span class="ident">pruning_config</span>: <span class="ident">PruningConfig</span>,
 		<span class="ident">clock</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Clock</span><span class="op">&gt;</span>,
@@ -1937,7 +1937,7 @@
 
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">process_new_head</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span>(
 	<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>,
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">db_transaction</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DBTransaction</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">pruning_config</span>: <span class="kw-2">&amp;</span><span class="ident">PruningConfig</span>,
@@ -1987,7 +1987,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">note_block_backed</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">db_transaction</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DBTransaction</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">pruning_config</span>: <span class="kw-2">&amp;</span><span class="ident">PruningConfig</span>,
@@ -2016,7 +2016,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">note_block_included</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">db_transaction</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DBTransaction</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">pruning_config</span>: <span class="kw-2">&amp;</span><span class="ident">PruningConfig</span>,
@@ -2404,7 +2404,7 @@
 
 <span class="comment">// Ok(true) on success, Ok(false) on failure, and Err on internal error.</span>
 <span class="kw">fn</span> <span class="ident">store_chunk</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
 	<span class="ident">candidate_hash</span>: <span class="ident">CandidateHash</span>,
 	<span class="ident">chunk</span>: <span class="ident">ErasureChunk</span>,
@@ -2498,7 +2498,7 @@
 	<span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn</span> <span class="ident">prune_all</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">clock</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Clock</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">prune_all</span>(<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">clock</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Clock</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">clock</span>.<span class="ident">now</span>()<span class="question-mark">?</span>;
 	<span class="kw">let</span> (<span class="ident">range_start</span>, <span class="ident">range_end</span>) <span class="op">=</span> <span class="ident">pruning_range</span>(<span class="ident">now</span>);
 

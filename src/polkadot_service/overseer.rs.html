@@ -427,7 +427,7 @@
 	<span class="doccomment">/// Runtime client generic, providing the `ProvieRuntimeApi` trait besides others.</span>
 	<span class="kw">pub</span> <span class="ident">runtime_client</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RuntimeClient</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The underlying key value store for the parachains.</span>
-	<span class="kw">pub</span> <span class="ident">parachains_db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">kvdb::KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">parachains_db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">polkadot_node_subsystem_util::database::Database</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Underlying network service implementation.</span>
 	<span class="kw">pub</span> <span class="ident">network_service</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">sc_network::NetworkService</span><span class="op">&lt;</span><span class="ident">Block</span>, <span class="ident">Hash</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Underlying authority discovery service.</span>

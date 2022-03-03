@@ -602,6 +602,13 @@
 <span id="602">602</span>
 <span id="603">603</span>
 <span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -644,8 +651,8 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives::BlockWeight</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">BlockNumber</span>, <span class="ident">Hash</span>};
 
-<span class="kw">use</span> <span class="ident">kvdb</span>::{<span class="ident">DBTransaction</span>, <span class="ident">KeyValueDB</span>};
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
+<span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::database</span>::{<span class="ident">DBTransaction</span>, <span class="ident">Database</span>};
 
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
@@ -798,14 +805,14 @@
 
 <span class="doccomment">/// The database backend.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DbBackend</span> {
-	<span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>,
+	<span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>,
 	<span class="ident">config</span>: <span class="ident">Config</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">DbBackend</span> {
 	<span class="doccomment">/// Create a new [`DbBackend`] with the supplied key-value store and</span>
 	<span class="doccomment">/// config.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span><span class="op">&gt;</span>, <span class="ident">config</span>: <span class="ident">Config</span>) -&gt; <span class="self">Self</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">db</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span>, <span class="ident">config</span>: <span class="ident">Config</span>) -&gt; <span class="self">Self</span> {
 		<span class="ident">DbBackend</span> { <span class="ident">inner</span>: <span class="ident">db</span>, <span class="ident">config</span> }
 	}
 }
@@ -930,7 +937,7 @@
 }
 
 <span class="kw">fn</span> <span class="ident">load_decode</span><span class="op">&lt;</span><span class="ident">D</span>: <span class="ident">Decode</span><span class="op">&gt;</span>(
-	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">KeyValueDB</span>,
+	<span class="ident">db</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Database</span>,
 	<span class="ident">col_data</span>: <span class="ident">u32</span>,
 	<span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
@@ -991,6 +998,13 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
+	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+	<span class="kw">fn</span> <span class="ident">test_db</span>() -&gt; <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Database</span><span class="op">&gt;</span> {
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>);
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">polkadot_node_subsystem_util::database::kvdb_impl::DbAdapter::new</span>(<span class="ident">db</span>, <span class="kw-2">&amp;</span>[<span class="number">0</span>]);
+		<span class="ident">Arc::new</span>(<span class="ident">db</span>)
+	}
+
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">block_height_key_decodes</span>() {
 		<span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">block_height_key</span>(<span class="number">5</span>);
@@ -1029,7 +1043,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">write_read_block_entry</span>() {
-		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>));
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">test_db</span>();
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Config</span> { <span class="ident">col_data</span>: <span class="number">0</span> };
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">DbBackend::new</span>(<span class="ident">db</span>, <span class="ident">config</span>);
@@ -1059,7 +1073,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">delete_block_entry</span>() {
-		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>));
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">test_db</span>();
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Config</span> { <span class="ident">col_data</span>: <span class="number">0</span> };
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">DbBackend::new</span>(<span class="ident">db</span>, <span class="ident">config</span>);
@@ -1090,7 +1104,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">earliest_block_number</span>() {
-		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>));
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">test_db</span>();
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Config</span> { <span class="ident">col_data</span>: <span class="number">0</span> };
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">DbBackend::new</span>(<span class="ident">db</span>, <span class="ident">config</span>);
@@ -1119,7 +1133,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">stagnant_at_up_to</span>() {
-		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>));
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">test_db</span>();
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Config</span> { <span class="ident">col_data</span>: <span class="number">0</span> };
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">DbBackend::new</span>(<span class="ident">db</span>, <span class="ident">config</span>);
@@ -1175,7 +1189,7 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">write_read_blocks_at_height</span>() {
-		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>));
+		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">test_db</span>();
 		<span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Config</span> { <span class="ident">col_data</span>: <span class="number">0</span> };
 
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">DbBackend::new</span>(<span class="ident">db</span>, <span class="ident">config</span>);
