@@ -117,7 +117,6 @@
 <span id="117">117</span>
 <span id="118">118</span>
 <span id="119">119</span>
-<span id="120">120</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Parity Bridges Common.</span>
 
@@ -208,8 +207,7 @@
 	<span class="kw">let</span> <span class="ident">proof</span> <span class="op">=</span> <span class="ident">StorageProof::new</span>(
 		<span class="ident">prove_read</span>(<span class="ident">backend</span>, <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="string">b&quot;key1&quot;</span>[..], <span class="kw-2">&amp;</span><span class="string">b&quot;key2&quot;</span>[..], <span class="kw-2">&amp;</span><span class="string">b&quot;key22&quot;</span>[..]])
 			.<span class="ident">unwrap</span>()
-			.<span class="ident">iter_nodes</span>()
-			.<span class="ident">collect</span>(),
+			.<span class="ident">iter_nodes</span>(),
 	);
 
 	(<span class="ident">root</span>, <span class="ident">proof</span>)
