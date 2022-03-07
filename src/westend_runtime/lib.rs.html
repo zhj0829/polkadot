@@ -1619,6 +1619,15 @@
 <span id="1619">1619</span>
 <span id="1620">1620</span>
 <span id="1621">1621</span>
+<span id="1622">1622</span>
+<span id="1623">1623</span>
+<span id="1624">1624</span>
+<span id="1625">1625</span>
+<span id="1626">1626</span>
+<span id="1627">1627</span>
+<span id="1628">1628</span>
+<span id="1629">1629</span>
+<span id="1630">1630</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1661,9 +1670,9 @@
 <span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">collections::btree_map::BTreeMap</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
 
 <span class="kw">use</span> <span class="ident">runtime_parachains</span>::{
-	<span class="ident">configuration</span> <span class="kw">as</span> <span class="ident">parachains_configuration</span>, <span class="ident">dmp</span> <span class="kw">as</span> <span class="ident">parachains_dmp</span>, <span class="ident">hrmp</span> <span class="kw">as</span> <span class="ident">parachains_hrmp</span>,
-	<span class="ident">inclusion</span> <span class="kw">as</span> <span class="ident">parachains_inclusion</span>, <span class="ident">initializer</span> <span class="kw">as</span> <span class="ident">parachains_initializer</span>,
-	<span class="ident">origin</span> <span class="kw">as</span> <span class="ident">parachains_origin</span>, <span class="ident">paras</span> <span class="kw">as</span> <span class="ident">parachains_paras</span>,
+	<span class="ident">configuration</span> <span class="kw">as</span> <span class="ident">parachains_configuration</span>, <span class="ident">disputes</span> <span class="kw">as</span> <span class="ident">parachains_disputes</span>,
+	<span class="ident">dmp</span> <span class="kw">as</span> <span class="ident">parachains_dmp</span>, <span class="ident">hrmp</span> <span class="kw">as</span> <span class="ident">parachains_hrmp</span>, <span class="ident">inclusion</span> <span class="kw">as</span> <span class="ident">parachains_inclusion</span>,
+	<span class="ident">initializer</span> <span class="kw">as</span> <span class="ident">parachains_initializer</span>, <span class="ident">origin</span> <span class="kw">as</span> <span class="ident">parachains_origin</span>, <span class="ident">paras</span> <span class="kw">as</span> <span class="ident">parachains_paras</span>,
 	<span class="ident">paras_inherent</span> <span class="kw">as</span> <span class="ident">parachains_paras_inherent</span>, <span class="ident">reward_points</span> <span class="kw">as</span> <span class="ident">parachains_reward_points</span>,
 	<span class="ident">runtime_api_impl::v1</span> <span class="kw">as</span> <span class="ident">parachains_runtime_api_impl</span>, <span class="ident">scheduler</span> <span class="kw">as</span> <span class="ident">parachains_scheduler</span>,
 	<span class="ident">session_info</span> <span class="kw">as</span> <span class="ident">parachains_session_info</span>, <span class="ident">shared</span> <span class="kw">as</span> <span class="ident">parachains_shared</span>, <span class="ident">ump</span> <span class="kw">as</span> <span class="ident">parachains_ump</span>,
@@ -2449,7 +2458,7 @@
 
 <span class="kw">impl</span> <span class="ident">parachains_inclusion::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
 	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-	<span class="kw">type</span> <span class="ident">DisputesHandler</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">DisputesHandler</span> <span class="op">=</span> <span class="ident">ParasDisputes</span>;
 	<span class="kw">type</span> <span class="ident">RewardValidators</span> <span class="op">=</span> <span class="ident">parachains_reward_points::RewardValidatorsWithEraPoints</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
@@ -2517,6 +2526,13 @@
 	<span class="kw">type</span> <span class="ident">MaxPermanentSlots</span> <span class="op">=</span> <span class="ident">MaxPermanentSlots</span>;
 	<span class="kw">type</span> <span class="ident">MaxTemporarySlots</span> <span class="op">=</span> <span class="ident">MaxTemporarySlots</span>;
 	<span class="kw">type</span> <span class="ident">MaxTemporarySlotPerLeasePeriod</span> <span class="op">=</span> <span class="ident">MaxTemporarySlotPerLeasePeriod</span>;
+}
+
+<span class="kw">impl</span> <span class="ident">parachains_disputes::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">RewardValidators</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">PunishValidators</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::runtime_parachains_disputes::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
 <span class="macro">parameter_types!</span> {
@@ -2663,6 +2679,7 @@
 		<span class="ident">Ump</span>: <span class="ident">parachains_ump</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span>} <span class="op">=</span> <span class="number">50</span>,
 		<span class="ident">Hrmp</span>: <span class="ident">parachains_hrmp</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">51</span>,
 		<span class="ident">ParaSessionInfo</span>: <span class="ident">parachains_session_info</span>::{<span class="ident">Pallet</span>, <span class="ident">Storage</span>} <span class="op">=</span> <span class="number">52</span>,
+		<span class="ident">ParasDisputes</span>: <span class="ident">parachains_disputes</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">53</span>,
 
 		<span class="comment">// Parachain Onboarding Pallets. Start indices at 60 to leave room.</span>
 		<span class="ident">Registrar</span>: <span class="ident">paras_registrar</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Config</span>} <span class="op">=</span> <span class="number">60</span>,
@@ -2745,6 +2762,7 @@
 		[<span class="ident">runtime_common::paras_registrar</span>, <span class="ident">Registrar</span>]
 		[<span class="ident">runtime_common::slots</span>, <span class="ident">Slots</span>]
 		[<span class="ident">runtime_parachains::configuration</span>, <span class="ident">Configuration</span>]
+		[<span class="ident">runtime_parachains::disputes</span>, <span class="ident">ParasDisputes</span>]
 		[<span class="ident">runtime_parachains::hrmp</span>, <span class="ident">Hrmp</span>]
 		[<span class="ident">runtime_parachains::initializer</span>, <span class="ident">Initializer</span>]
 		[<span class="ident">runtime_parachains::paras</span>, <span class="ident">Paras</span>]
