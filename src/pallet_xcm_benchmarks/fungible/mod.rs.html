@@ -45,6 +45,10 @@
 <span id="45">45</span>
 <span id="46">46</span>
 <span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -84,6 +88,10 @@
 
 		<span class="doccomment">/// A trusted location which we allow teleports from, and the asset we allow to teleport.</span>
 		<span class="kw">type</span> <span class="ident">TrustedTeleporter</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">xcm::latest::MultiLocation</span>, <span class="ident">xcm::latest::MultiAsset</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
+
+		<span class="doccomment">/// A trusted location where reserve assets are stored, and the asset we allow to be</span>
+		<span class="doccomment">/// reserves.</span>
+		<span class="kw">type</span> <span class="ident">TrustedReserve</span>: <span class="ident">Get</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">xcm::latest::MultiLocation</span>, <span class="ident">xcm::latest::MultiAsset</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
 
 		<span class="doccomment">/// Give me a fungible asset that your asset transactor is going to accept.</span>
 		<span class="kw">fn</span> <span class="ident">get_multi_asset</span>() -&gt; <span class="ident">xcm::latest::MultiAsset</span>;
