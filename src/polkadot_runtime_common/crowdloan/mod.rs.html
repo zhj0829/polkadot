@@ -2226,7 +2226,7 @@
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
-<span class="kw">use</span> <span class="ident">primitives::v1::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
+<span class="kw">use</span> <span class="ident">primitives::v2::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
 	<span class="ident">traits</span>::{
@@ -3005,7 +3005,7 @@
 		<span class="ident">assert_noop</span>, <span class="ident">assert_ok</span>, <span class="ident">parameter_types</span>,
 		<span class="ident">traits</span>::{<span class="ident">OnFinalize</span>, <span class="ident">OnInitialize</span>},
 	};
-	<span class="kw">use</span> <span class="ident">primitives::v1::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
+	<span class="kw">use</span> <span class="ident">primitives::v2::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
 	<span class="kw">use</span> <span class="ident">sp_core::H256</span>;
 	<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell::RefCell</span>, <span class="ident">collections::BTreeMap</span>, <span class="ident">sync::Arc</span>};
 	<span class="comment">// The testing primitives are very useful for avoiding having to work with signatures</span>

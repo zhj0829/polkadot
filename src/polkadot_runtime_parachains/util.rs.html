@@ -135,7 +135,7 @@
 <span class="doccomment">//! Utilities that don&#39;t belong to any particular module but may draw</span>
 <span class="doccomment">//! on all modules.</span>
 
-<span class="kw">use</span> <span class="ident">primitives::v1</span>::{<span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">PersistedValidationData</span>, <span class="ident">ValidatorIndex</span>};
+<span class="kw">use</span> <span class="ident">primitives::v2</span>::{<span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">PersistedValidationData</span>, <span class="ident">ValidatorIndex</span>};
 <span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">collections::btree_set::BTreeSet</span>, <span class="ident">vec::Vec</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">configuration</span>, <span class="ident">hrmp</span>, <span class="ident">paras</span>};
@@ -221,7 +221,7 @@
 	<span class="kw">use</span> <span class="ident">sp_std::vec::Vec</span>;
 
 	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::util</span>::{<span class="ident">split_active_subset</span>, <span class="ident">take_active_subset</span>};
-	<span class="kw">use</span> <span class="ident">primitives::v1::ValidatorIndex</span>;
+	<span class="kw">use</span> <span class="ident">primitives::v2::ValidatorIndex</span>;
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">take_active_subset_is_compatible_with_split_active_subset</span>() {

@@ -442,7 +442,7 @@
 	<span class="ident">maybe_compress_pov</span>, <span class="ident">Collation</span>, <span class="ident">CollationResult</span>, <span class="ident">CollationSecondedSignal</span>, <span class="ident">CollatorFn</span>,
 	<span class="ident">MaybeCompressedPoV</span>, <span class="ident">PoV</span>, <span class="ident">Statement</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">CollatorId</span>, <span class="ident">CollatorPair</span>, <span class="ident">Hash</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">CollatorId</span>, <span class="ident">CollatorPair</span>, <span class="ident">Hash</span>};
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">traits::SpawnNamed</span>, <span class="ident">Pair</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
 	<span class="ident">collections::HashMap</span>,
@@ -748,7 +748,7 @@
 
 	<span class="kw">use</span> <span class="ident">futures::executor::block_on</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_parachain::primitives</span>::{<span class="ident">ValidationParams</span>, <span class="ident">ValidationResult</span>};
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Hash</span>, <span class="ident">PersistedValidationData</span>};
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Hash</span>, <span class="ident">PersistedValidationData</span>};
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">collator_works</span>() {

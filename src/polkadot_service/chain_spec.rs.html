@@ -1998,7 +1998,7 @@
 <span class="kw">use</span> <span class="ident">kusama_runtime_constants::currency::UNITS</span> <span class="kw">as</span> <span class="ident">KSM</span>;
 <span class="kw">use</span> <span class="ident">pallet_im_online::sr25519::AuthorityId</span> <span class="kw">as</span> <span class="ident">ImOnlineId</span>;
 <span class="kw">use</span> <span class="ident">pallet_staking::Forcing</span>;
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">AccountId</span>, <span class="ident">AccountPublic</span>, <span class="ident">AssignmentId</span>, <span class="ident">ValidatorId</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">AccountId</span>, <span class="ident">AccountPublic</span>, <span class="ident">AssignmentId</span>, <span class="ident">ValidatorId</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">polkadot_runtime</span> <span class="kw">as</span> <span class="ident">polkadot</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;polkadot-native&quot;</span>)]</span>
@@ -2038,9 +2038,9 @@
 <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;camelCase&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Extensions</span> {
 	<span class="doccomment">/// Block numbers with known hashes.</span>
-	<span class="kw">pub</span> <span class="ident">fork_blocks</span>: <span class="ident">sc_client_api::ForkBlocks</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v1::Block</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">fork_blocks</span>: <span class="ident">sc_client_api::ForkBlocks</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v2::Block</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// Known bad block hashes.</span>
-	<span class="kw">pub</span> <span class="ident">bad_blocks</span>: <span class="ident">sc_client_api::BadBlocks</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v1::Block</span><span class="op">&gt;</span>,
+	<span class="kw">pub</span> <span class="ident">bad_blocks</span>: <span class="ident">sc_client_api::BadBlocks</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v2::Block</span><span class="op">&gt;</span>,
 	<span class="doccomment">/// The light sync state.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// This value will be set by the `sync-state rpc` implementation.</span>
@@ -2148,9 +2148,9 @@
 ))]</span>
 <span class="kw">fn</span> <span class="ident">default_parachains_host_configuration</span>(
 ) -&gt; <span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span><span class="op">&lt;</span>
-	<span class="ident">polkadot_primitives::v1::BlockNumber</span>,
+	<span class="ident">polkadot_primitives::v2::BlockNumber</span>,
 <span class="op">&gt;</span> {
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">MAX_CODE_SIZE</span>, <span class="ident">MAX_POV_SIZE</span>};
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">MAX_CODE_SIZE</span>, <span class="ident">MAX_POV_SIZE</span>};
 
 	<span class="ident">polkadot_runtime_parachains::configuration::HostConfiguration</span> {
 		<span class="ident">validation_upgrade_cooldown</span>: <span class="number">2u32</span>,
@@ -2543,7 +2543,7 @@
 		},
 		<span class="ident">paras</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">registrar</span>: <span class="ident">westend_runtime::RegistrarConfig</span> {
-			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v1::LOWEST_PUBLIC_ID</span>,
+			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v2::LOWEST_PUBLIC_ID</span>,
 		},
 		<span class="ident">xcm_pallet</span>: <span class="ident">Default::default</span>(),
 	}
@@ -3036,7 +3036,7 @@
 			<span class="ident">config</span>: <span class="ident">default_parachains_host_configuration</span>(),
 		},
 		<span class="ident">registrar</span>: <span class="ident">rococo_runtime::RegistrarConfig</span> {
-			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v1::LOWEST_PUBLIC_ID</span>,
+			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v2::LOWEST_PUBLIC_ID</span>,
 		},
 		<span class="ident">xcm_pallet</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">transaction_payment</span>: <span class="ident">Default::default</span>(),
@@ -3476,7 +3476,7 @@
 		},
 		<span class="ident">paras</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">registrar</span>: <span class="ident">westend_runtime::RegistrarConfig</span> {
-			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v1::LOWEST_PUBLIC_ID</span>,
+			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v2::LOWEST_PUBLIC_ID</span>,
 		},
 		<span class="ident">xcm_pallet</span>: <span class="ident">Default::default</span>(),
 	}
@@ -3550,7 +3550,7 @@
 		},
 		<span class="ident">paras</span>: <span class="ident">rococo_runtime::ParasConfig</span> { <span class="ident">paras</span>: <span class="macro">vec!</span>[] },
 		<span class="ident">registrar</span>: <span class="ident">rococo_runtime::RegistrarConfig</span> {
-			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v1::LOWEST_PUBLIC_ID</span>,
+			<span class="ident">next_free_para_id</span>: <span class="ident">polkadot_primitives::v2::LOWEST_PUBLIC_ID</span>,
 		},
 		<span class="ident">xcm_pallet</span>: <span class="ident">Default::default</span>(),
 		<span class="ident">transaction_payment</span>: <span class="ident">Default::default</span>(),

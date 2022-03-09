@@ -72,7 +72,7 @@
 <span class="doccomment">//! provide a dummy implementation for the native runtime to avoid cluttering the runtime code</span>
 <span class="doccomment">//! with `#[cfg(feature = &quot;runtime-metrics&quot;)]`.</span>
 
-<span class="kw">use</span> <span class="ident">primitives::v1::metric_definitions</span>::{<span class="ident">CounterDefinition</span>, <span class="ident">CounterVecDefinition</span>};
+<span class="kw">use</span> <span class="ident">primitives::v2::metric_definitions</span>::{<span class="ident">CounterDefinition</span>, <span class="ident">CounterVecDefinition</span>};
 
 <span class="doccomment">/// A dummy `Counter`.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Counter</span>;

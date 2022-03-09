@@ -170,7 +170,7 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{
 	<span class="ident">errors::SubsystemError</span>, <span class="ident">messages::ProvisionerMessage</span>, <span class="ident">overseer::Handle</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Block</span>, <span class="ident">Hash</span>, <span class="ident">InherentData</span> <span class="kw">as</span> <span class="ident">ParachainsInherentData</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Block</span>, <span class="ident">Hash</span>, <span class="ident">InherentData</span> <span class="kw">as</span> <span class="ident">ParachainsInherentData</span>};
 <span class="kw">use</span> <span class="ident">sp_blockchain::HeaderBackend</span>;
 <span class="kw">use</span> <span class="ident">sp_runtime::generic::BlockId</span>;
 <span class="kw">use</span> <span class="ident">std::time</span>;
@@ -254,7 +254,7 @@
 		<span class="ident">dst_inherent_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sp_inherents::InherentData</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">sp_inherents::Error</span><span class="op">&gt;</span> {
 		<span class="ident">dst_inherent_data</span>
-			.<span class="ident">put_data</span>(<span class="ident">polkadot_primitives::v1::PARACHAINS_INHERENT_IDENTIFIER</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inherent_data</span>)
+			.<span class="ident">put_data</span>(<span class="ident">polkadot_primitives::v2::PARACHAINS_INHERENT_IDENTIFIER</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inherent_data</span>)
 	}
 
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">try_handle_error</span>(

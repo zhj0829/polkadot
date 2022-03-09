@@ -514,7 +514,7 @@
 
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{<span class="ident">SubsystemError</span>, <span class="ident">SubsystemResult</span>};
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::database</span>::{<span class="ident">DBTransaction</span>, <span class="ident">Database</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
 	<span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">Hash</span>, <span class="ident">InvalidDisputeStatementKind</span>, <span class="ident">SessionIndex</span>,
 	<span class="ident">ValidDisputeStatementKind</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
 };
@@ -760,7 +760,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 	<span class="kw">use</span> <span class="ident">::test_helpers</span>::{<span class="ident">dummy_candidate_receipt</span>, <span class="ident">dummy_hash</span>};
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>};
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Hash</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>};
 
 	<span class="kw">fn</span> <span class="ident">make_db</span>() -&gt; <span class="ident">DbBackend</span> {
 		<span class="kw">let</span> <span class="ident">db</span> <span class="op">=</span> <span class="ident">kvdb_memorydb::create</span>(<span class="number">1</span>);

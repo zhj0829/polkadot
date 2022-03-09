@@ -143,7 +143,7 @@
 
 <span class="doccomment">/// Money matters.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">currency</span> {
-	<span class="kw">use</span> <span class="ident">primitives::v0::Balance</span>;
+	<span class="kw">use</span> <span class="ident">primitives::v2::Balance</span>;
 
 	<span class="doccomment">/// The existential deposit.</span>
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EXISTENTIAL_DEPOSIT</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="ident">CENTS</span>;
@@ -160,7 +160,7 @@
 
 <span class="doccomment">/// Time and blocks.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">time</span> {
-	<span class="kw">use</span> <span class="ident">primitives::v0</span>::{<span class="ident">BlockNumber</span>, <span class="ident">Moment</span>};
+	<span class="kw">use</span> <span class="ident">primitives::v2</span>::{<span class="ident">BlockNumber</span>, <span class="ident">Moment</span>};
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MILLISECS_PER_BLOCK</span>: <span class="ident">Moment</span> <span class="op">=</span> <span class="number">6000</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SLOT_DURATION</span>: <span class="ident">Moment</span> <span class="op">=</span> <span class="ident">MILLISECS_PER_BLOCK</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EPOCH_DURATION_IN_SLOTS</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">4</span> <span class="op">*</span> <span class="ident">HOURS</span>;
@@ -180,7 +180,7 @@
 	<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{
 		<span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>, <span class="ident">WeightToFeePolynomial</span>,
 	};
-	<span class="kw">use</span> <span class="ident">primitives::v0::Balance</span>;
+	<span class="kw">use</span> <span class="ident">primitives::v2::Balance</span>;
 	<span class="kw">use</span> <span class="ident">runtime_common::ExtrinsicBaseWeight</span>;
 	<span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
 	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;

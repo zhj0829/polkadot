@@ -633,7 +633,7 @@
 <span class="kw">use</span> <span class="ident">futures::channel::oneshot</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem_util::metrics</span>::{<span class="self">self</span>, <span class="ident">prometheus</span>};
 <span class="kw">use</span> <span class="ident">polkadot_overseer</span>::{<span class="ident">AllMessages</span>, <span class="ident">Handle</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
 	<span class="ident">Block</span> <span class="kw">as</span> <span class="ident">PolkadotBlock</span>, <span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">Header</span> <span class="kw">as</span> <span class="ident">PolkadotHeader</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_subsystem::messages</span>::{
@@ -648,7 +648,7 @@
 <span class="doccomment">/// This is a safety net that should be removed at some point in the future.</span>
 <span class="comment">// Until it&#39;s not, make sure to also update `MAX_HEADS_LOOK_BACK` in `approval-voting`</span>
 <span class="comment">// and `MAX_BATCH_SCRAPE_ANCESTORS` in `dispute-coordinator` when changing its value.</span>
-<span class="kw">const</span> <span class="ident">MAX_FINALITY_LAG</span>: <span class="ident">polkadot_primitives::v1::BlockNumber</span> <span class="op">=</span> <span class="number">500</span>;
+<span class="kw">const</span> <span class="ident">MAX_FINALITY_LAG</span>: <span class="ident">polkadot_primitives::v2::BlockNumber</span> <span class="op">=</span> <span class="number">500</span>;
 
 <span class="kw">const</span> <span class="ident">LOG_TARGET</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;parachain::chain-selection&quot;</span>;
 

@@ -418,7 +418,7 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{<span class="ident">CollationGenerationConfig</span>, <span class="ident">CollatorFn</span>};
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem::messages</span>::{<span class="ident">CollationGenerationMessage</span>, <span class="ident">CollatorProtocolMessage</span>};
 <span class="kw">use</span> <span class="ident">polkadot_overseer::Handle</span>;
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Balance</span>, <span class="ident">CollatorPair</span>, <span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">ValidationCode</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Balance</span>, <span class="ident">CollatorPair</span>, <span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">ValidationCode</span>};
 <span class="kw">use</span> <span class="ident">polkadot_runtime_common::BlockHashCount</span>;
 <span class="kw">use</span> <span class="ident">polkadot_runtime_parachains::paras::ParaGenesisArgs</span>;
 <span class="kw">use</span> <span class="ident">polkadot_service</span>::{
@@ -765,7 +765,7 @@
 	<span class="ident">UncheckedExtrinsic::new_signed</span>(
 		<span class="ident">function</span>.<span class="ident">clone</span>(),
 		<span class="ident">polkadot_test_runtime::Address::Id</span>(<span class="ident">caller</span>.<span class="ident">public</span>().<span class="ident">into</span>()),
-		<span class="ident">polkadot_primitives::v0::Signature::Sr25519</span>(<span class="ident">signature</span>.<span class="ident">clone</span>()),
+		<span class="ident">polkadot_primitives::v2::Signature::Sr25519</span>(<span class="ident">signature</span>.<span class="ident">clone</span>()),
 		<span class="ident">extra</span>.<span class="ident">clone</span>(),
 	)
 }

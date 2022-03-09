@@ -1622,8 +1622,6 @@
 <span id="1622">1622</span>
 <span id="1623">1623</span>
 <span id="1624">1624</span>
-<span id="1625">1625</span>
-<span id="1626">1626</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1660,20 +1658,18 @@
 <span class="kw">use</span> <span class="ident">pallet_session::historical</span> <span class="kw">as</span> <span class="ident">session_historical</span>;
 <span class="kw">use</span> <span class="ident">pallet_transaction_payment</span>::{<span class="ident">CurrencyAdapter</span>, <span class="ident">FeeDetails</span>, <span class="ident">RuntimeDispatchInfo</span>};
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>, <span class="ident">MaxEncodedLen</span>};
-<span class="kw">use</span> <span class="ident">primitives</span>::{
-	<span class="ident">v1</span>::{
-		<span class="ident">AccountId</span>, <span class="ident">AccountIndex</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateEvent</span>, <span class="ident">CommittedCandidateReceipt</span>,
-		<span class="ident">CoreState</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">Id</span>, <span class="ident">InboundDownwardMessage</span>, <span class="ident">InboundHrmpMessage</span>, <span class="ident">Moment</span>,
-		<span class="ident">Nonce</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>, <span class="ident">ScrapedOnChainVotes</span>, <span class="ident">Signature</span>,
-		<span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
-	},
-	<span class="ident">v2</span>::{<span class="ident">PvfCheckStatement</span>, <span class="ident">SessionInfo</span> <span class="kw">as</span> <span class="ident">SessionInfoData</span>},
+<span class="kw">use</span> <span class="ident">primitives::v2</span>::{
+	<span class="ident">AccountId</span>, <span class="ident">AccountIndex</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateEvent</span>, <span class="ident">CommittedCandidateReceipt</span>,
+	<span class="ident">CoreState</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">Id</span>, <span class="ident">InboundDownwardMessage</span>, <span class="ident">InboundHrmpMessage</span>, <span class="ident">Moment</span>,
+	<span class="ident">Nonce</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>, <span class="ident">PvfCheckStatement</span>, <span class="ident">ScrapedOnChainVotes</span>,
+	<span class="ident">SessionInfo</span> <span class="kw">as</span> <span class="ident">SessionInfoData</span>, <span class="ident">Signature</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>,
+	<span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
 };
 <span class="kw">use</span> <span class="ident">runtime_common</span>::{
 	<span class="ident">assigned_slots</span>, <span class="ident">auctions</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::ToAuthor</span>, <span class="ident">paras_registrar</span>, <span class="ident">paras_sudo_wrapper</span>,
 	<span class="ident">slots</span>, <span class="ident">BlockHashCount</span>, <span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>,
 };
-<span class="kw">use</span> <span class="ident">runtime_parachains</span>::{<span class="self">self</span>, <span class="ident">runtime_api_impl::v1</span> <span class="kw">as</span> <span class="ident">runtime_api_impl</span>};
+<span class="kw">use</span> <span class="ident">runtime_parachains</span>::{<span class="self">self</span>, <span class="ident">runtime_api_impl::v2</span> <span class="kw">as</span> <span class="ident">runtime_api_impl</span>};
 <span class="kw">use</span> <span class="ident">scale_info::TypeInfo</span>;
 <span class="kw">use</span> <span class="ident">sp_core</span>::{<span class="ident">OpaqueMetadata</span>, <span class="ident">RuntimeDebug</span>};
 <span class="kw">use</span> <span class="ident">sp_runtime</span>::{
@@ -1839,7 +1835,7 @@
 <span class="macro">construct_runtime!</span> {
 	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Runtime</span> <span class="kw">where</span>
 		<span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>,
-		<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">primitives::v1::Block</span>,
+		<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">primitives::v2::Block</span>,
 		<span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">UncheckedExtrinsic</span>
 	{
 		<span class="ident">System</span>: <span class="ident">frame_system</span>,
@@ -2844,7 +2840,7 @@
 
 		<span class="kw">fn</span> <span class="ident">check_validation_outputs</span>(
 			<span class="ident">para_id</span>: <span class="ident">Id</span>,
-			<span class="ident">outputs</span>: <span class="ident">primitives::v1::CandidateCommitments</span>,
+			<span class="ident">outputs</span>: <span class="ident">primitives::v2::CandidateCommitments</span>,
 		) -&gt; <span class="ident">bool</span> {
 			<span class="ident">runtime_api_impl::check_validation_outputs</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">para_id</span>, <span class="ident">outputs</span>)
 		}

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["generic","The statement table: generic implementation."],["v1","Concrete instantiations suitable for v1 primitives."]]});
+initSidebarItems({"mod":[["generic","The statement table: generic implementation."],["v2","Concrete instantiations suitable for v2 primitives."]]});

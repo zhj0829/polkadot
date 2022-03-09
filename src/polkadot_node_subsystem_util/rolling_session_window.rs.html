@@ -592,9 +592,6 @@
 <span id="592">592</span>
 <span id="593">593</span>
 <span id="594">594</span>
-<span id="595">595</span>
-<span id="596">596</span>
-<span id="597">597</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -617,10 +614,7 @@
 <span class="doccomment">//! care about the state of particular blocks.</span>
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{<span class="ident">new_session_window_size</span>, <span class="ident">SessionWindowSize</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
-	<span class="ident">v1</span>::{<span class="ident">Hash</span>, <span class="ident">SessionIndex</span>},
-	<span class="ident">v2::SessionInfo</span>,
-};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Hash</span>, <span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>};
 
 <span class="kw">use</span> <span class="ident">futures::channel::oneshot</span>;
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem</span>::{
@@ -876,7 +870,7 @@
 	<span class="kw">use</span> <span class="ident">assert_matches::assert_matches</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_node_subsystem::messages</span>::{<span class="ident">AllMessages</span>, <span class="ident">AvailabilityRecoveryMessage</span>};
 	<span class="kw">use</span> <span class="ident">polkadot_node_subsystem_test_helpers::make_subsystem_context</span>;
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::Header</span>;
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2::Header</span>;
 	<span class="kw">use</span> <span class="ident">sp_core::testing::TaskExecutor</span>;
 
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TEST_WINDOW_SIZE</span>: <span class="ident">SessionWindowSize</span> <span class="op">=</span> <span class="macro">new_session_window_size!</span>(<span class="number">6</span>);

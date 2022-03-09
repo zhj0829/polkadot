@@ -77,10 +77,10 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">generic</span>::{<span class="ident">Context</span>, <span class="ident">Table</span>};
 
-<span class="doccomment">/// Concrete instantiations suitable for v1 primitives.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+<span class="doccomment">/// Concrete instantiations suitable for v2 primitives.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2</span> {
 	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::generic</span>;
-	<span class="kw">use</span> <span class="ident">primitives::v1</span>::{
+	<span class="kw">use</span> <span class="ident">primitives::v2</span>::{
 		<span class="ident">CandidateHash</span>, <span class="ident">CommittedCandidateReceipt</span>, <span class="ident">CompactStatement</span> <span class="kw">as</span> <span class="ident">PrimitiveStatement</span>, <span class="ident">Id</span>,
 		<span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
 	};

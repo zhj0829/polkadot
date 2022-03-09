@@ -171,7 +171,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="ident">FullBackend</span>};
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Block</span>, <span class="ident">InherentData</span> <span class="kw">as</span> <span class="ident">ParachainsInherentData</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Block</span>, <span class="ident">InherentData</span> <span class="kw">as</span> <span class="ident">ParachainsInherentData</span>};
 <span class="kw">use</span> <span class="ident">polkadot_test_runtime</span>::{<span class="ident">GetLastTimestamp</span>, <span class="ident">UncheckedExtrinsic</span>};
 <span class="kw">use</span> <span class="ident">sc_block_builder</span>::{<span class="ident">BlockBuilder</span>, <span class="ident">BlockBuilderProvider</span>};
 <span class="kw">use</span> <span class="ident">sp_api::ProvideRuntimeApi</span>;
@@ -265,7 +265,7 @@
 
 		<span class="ident">inherent_data</span>
 			.<span class="ident">put_data</span>(
-				<span class="ident">polkadot_primitives::v1::PARACHAINS_INHERENT_IDENTIFIER</span>,
+				<span class="ident">polkadot_primitives::v2::PARACHAINS_INHERENT_IDENTIFIER</span>,
 				<span class="kw-2">&amp;</span><span class="ident">parachains_inherent_data</span>,
 			)
 			.<span class="ident">expect</span>(<span class="string">&quot;Put parachains inherent data&quot;</span>);

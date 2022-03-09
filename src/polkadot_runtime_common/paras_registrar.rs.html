@@ -1370,7 +1370,7 @@
 	<span class="ident">traits</span>::{<span class="ident">Currency</span>, <span class="ident">Get</span>, <span class="ident">ReservableCurrency</span>},
 };
 <span class="kw">use</span> <span class="ident">frame_system</span>::{<span class="self">self</span>, <span class="ident">ensure_root</span>, <span class="ident">ensure_signed</span>};
-<span class="kw">use</span> <span class="ident">primitives::v1</span>::{<span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">ValidationCode</span>, <span class="ident">LOWEST_PUBLIC_ID</span>};
+<span class="kw">use</span> <span class="ident">primitives::v2</span>::{<span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">ValidationCode</span>, <span class="ident">LOWEST_PUBLIC_ID</span>};
 <span class="kw">use</span> <span class="ident">runtime_parachains</span>::{
 	<span class="ident">configuration</span>, <span class="ident">ensure_parachain</span>,
 	<span class="ident">paras</span>::{<span class="self">self</span>, <span class="ident">ParaGenesisArgs</span>},
@@ -1945,7 +1945,7 @@
 	};
 	<span class="kw">use</span> <span class="ident">frame_system::limits</span>;
 	<span class="kw">use</span> <span class="ident">pallet_balances::Error</span> <span class="kw">as</span> <span class="ident">BalancesError</span>;
-	<span class="kw">use</span> <span class="ident">primitives::v1</span>::{<span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">Header</span>};
+	<span class="kw">use</span> <span class="ident">primitives::v2</span>::{<span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">Header</span>};
 	<span class="kw">use</span> <span class="ident">runtime_parachains</span>::{<span class="ident">configuration</span>, <span class="ident">origin</span>, <span class="ident">shared</span>};
 	<span class="kw">use</span> <span class="ident">sp_core::H256</span>;
 	<span class="kw">use</span> <span class="ident">sp_io::TestExternalities</span>;

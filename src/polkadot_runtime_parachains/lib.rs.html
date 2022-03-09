@@ -130,7 +130,7 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">origin</span>::{<span class="ident">ensure_parachain</span>, <span class="ident">Origin</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">paras::ParaLifecycle</span>;
-<span class="kw">use</span> <span class="ident">primitives::v1::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
+<span class="kw">use</span> <span class="ident">primitives::v2::Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>;
 
 <span class="doccomment">/// Schedule a para to be initialized at the start of the next session with the given genesis data.</span>
 <span class="doccomment">///</span>
@@ -145,7 +145,7 @@
 <span class="doccomment">/// Schedule a para to be cleaned up at the start of the next session.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [`paras::Pallet::schedule_para_cleanup`] for more details.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">schedule_para_cleanup</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">paras::Config</span><span class="op">&gt;</span>(<span class="ident">id</span>: <span class="ident">primitives::v1::Id</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">schedule_para_cleanup</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">paras::Config</span><span class="op">&gt;</span>(<span class="ident">id</span>: <span class="ident">primitives::v2::Id</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span> {
 	<span class="op">&lt;</span><span class="ident">paras::Pallet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::schedule_para_cleanup</span>(<span class="ident">id</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())
 }
 

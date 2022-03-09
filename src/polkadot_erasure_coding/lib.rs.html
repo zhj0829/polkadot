@@ -416,33 +416,6 @@
 <span id="416">416</span>
 <span id="417">417</span>
 <span id="418">418</span>
-<span id="419">419</span>
-<span id="420">420</span>
-<span id="421">421</span>
-<span id="422">422</span>
-<span id="423">423</span>
-<span id="424">424</span>
-<span id="425">425</span>
-<span id="426">426</span>
-<span id="427">427</span>
-<span id="428">428</span>
-<span id="429">429</span>
-<span id="430">430</span>
-<span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
-<span id="434">434</span>
-<span id="435">435</span>
-<span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2018-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -473,7 +446,7 @@
 
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{<span class="ident">AvailableData</span>, <span class="ident">Proof</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v0</span>::{<span class="self">self</span>, <span class="ident">BlakeTwo256</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">H256</span>, <span class="ident">HashT</span>};
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">BlakeTwo256</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">H256</span>, <span class="ident">HashT</span>};
 <span class="kw">use</span> <span class="ident">sp_core::Blake2Hasher</span>;
 <span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 <span class="kw">use</span> <span class="ident">trie</span>::{
@@ -560,16 +533,6 @@
 	})
 }
 
-<span class="doccomment">/// Obtain erasure-coded chunks for v0 `AvailableData`, one for each validator.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Works only up to 65536 validators, and `n_validators` must be non-zero.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">obtain_chunks_v0</span>(
-	<span class="ident">n_validators</span>: <span class="ident">usize</span>,
-	<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">v0::AvailableData</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-	<span class="ident">obtain_chunks</span>(<span class="ident">n_validators</span>, <span class="ident">data</span>)
-}
-
 <span class="doccomment">/// Obtain erasure-coded chunks for v1 `AvailableData`, one for each validator.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Works only up to 65536 validators, and `n_validators` must be non-zero.</span>
@@ -594,20 +557,6 @@
 		.<span class="ident">expect</span>(<span class="string">&quot;Payload non-empty, shard sizes are uniform, and validator numbers checked; qed&quot;</span>);
 
 	<span class="prelude-val">Ok</span>(<span class="ident">shards</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">w</span>: <span class="ident">WrappedShard</span><span class="op">|</span> <span class="ident">w</span>.<span class="ident">into_inner</span>()).<span class="ident">collect</span>())
-}
-
-<span class="doccomment">/// Reconstruct the v0 available data from a set of chunks.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Provide an iterator containing chunk data and the corresponding index.</span>
-<span class="doccomment">/// The indices of the present chunks must be indicated. If too few chunks</span>
-<span class="doccomment">/// are provided, recovery is not possible.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Works only up to 65536 validators, and `n_validators` must be non-zero.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reconstruct_v0</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">I</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">n_validators</span>: <span class="ident">usize</span>, <span class="ident">chunks</span>: <span class="ident">I</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">v0::AvailableData</span>, <span class="ident">Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-	<span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">usize</span>)<span class="op">&gt;</span>,
-{
-	<span class="ident">reconstruct</span>(<span class="ident">n_validators</span>, <span class="ident">chunks</span>)
 }
 
 <span class="doccomment">/// Reconstruct the v1 available data from a set of chunks.</span>
@@ -815,7 +764,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v0</span>::{<span class="ident">AvailableData</span>, <span class="ident">BlockData</span>, <span class="ident">OmittedValidationData</span>, <span class="ident">PoVBlock</span>};
+	<span class="kw">use</span> <span class="ident">polkadot_node_primitives</span>::{<span class="ident">AvailableData</span>, <span class="ident">BlockData</span>, <span class="ident">PoV</span>};
 
 	<span class="comment">// In order to adequately compute the number of entries in the Merkle</span>
 	<span class="comment">// trie, we must account for the fixed 16-ary trie structure.</span>
@@ -828,10 +777,9 @@
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">round_trip_works</span>() {
-		<span class="kw">let</span> <span class="ident">pov_block</span> <span class="op">=</span> <span class="ident">PoVBlock</span> { <span class="ident">block_data</span>: <span class="ident">BlockData</span>((<span class="number">0</span>..<span class="number">255</span>).<span class="ident">collect</span>()) };
+		<span class="kw">let</span> <span class="ident">pov</span> <span class="op">=</span> <span class="ident">PoV</span> { <span class="ident">block_data</span>: <span class="ident">BlockData</span>((<span class="number">0</span>..<span class="number">255</span>).<span class="ident">collect</span>()) };
 
-		<span class="kw">let</span> <span class="ident">available_data</span> <span class="op">=</span>
-			<span class="ident">AvailableData</span> { <span class="ident">pov_block</span>, <span class="ident">omitted_validation</span>: <span class="ident">OmittedValidationData::default</span>() };
+		<span class="kw">let</span> <span class="ident">available_data</span> <span class="op">=</span> <span class="ident">AvailableData</span> { <span class="ident">pov</span>: <span class="ident">pov</span>.<span class="ident">into</span>(), <span class="ident">validation_data</span>: <span class="ident">Default::default</span>() };
 		<span class="kw">let</span> <span class="ident">chunks</span> <span class="op">=</span> <span class="ident">obtain_chunks</span>(<span class="number">10</span>, <span class="kw-2">&amp;</span><span class="ident">available_data</span>).<span class="ident">unwrap</span>();
 
 		<span class="macro">assert_eq!</span>(<span class="ident">chunks</span>.<span class="ident">len</span>(), <span class="number">10</span>);
@@ -856,11 +804,9 @@
 
 	<span class="kw">fn</span> <span class="ident">generate_trie_and_generate_proofs</span>(<span class="ident">magnitude</span>: <span class="ident">u32</span>) {
 		<span class="kw">let</span> <span class="ident">n_validators</span> <span class="op">=</span> <span class="number">2_u32</span>.<span class="ident">pow</span>(<span class="ident">magnitude</span>) <span class="kw">as</span> <span class="ident">usize</span>;
-		<span class="kw">let</span> <span class="ident">pov_block</span> <span class="op">=</span>
-			<span class="ident">PoVBlock</span> { <span class="ident">block_data</span>: <span class="ident">BlockData</span>(<span class="macro">vec!</span>[<span class="number">2</span>; <span class="ident">n_validators</span> <span class="op">/</span> <span class="ident">KEY_INDEX_NIBBLE_SIZE</span>]) };
+		<span class="kw">let</span> <span class="ident">pov</span> <span class="op">=</span> <span class="ident">PoV</span> { <span class="ident">block_data</span>: <span class="ident">BlockData</span>(<span class="macro">vec!</span>[<span class="number">2</span>; <span class="ident">n_validators</span> <span class="op">/</span> <span class="ident">KEY_INDEX_NIBBLE_SIZE</span>]) };
 
-		<span class="kw">let</span> <span class="ident">available_data</span> <span class="op">=</span>
-			<span class="ident">AvailableData</span> { <span class="ident">pov_block</span>, <span class="ident">omitted_validation</span>: <span class="ident">OmittedValidationData::default</span>() };
+		<span class="kw">let</span> <span class="ident">available_data</span> <span class="op">=</span> <span class="ident">AvailableData</span> { <span class="ident">pov</span>: <span class="ident">pov</span>.<span class="ident">into</span>(), <span class="ident">validation_data</span>: <span class="ident">Default::default</span>() };
 
 		<span class="kw">let</span> <span class="ident">chunks</span> <span class="op">=</span> <span class="ident">obtain_chunks</span>(<span class="ident">magnitude</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="ident">available_data</span>).<span class="ident">unwrap</span>();
 

@@ -159,7 +159,7 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::shared</span>;
 <span class="kw">use</span> <span class="ident">pallet_staking::SessionInterface</span>;
-<span class="kw">use</span> <span class="ident">primitives::v1::ValidatorIndex</span>;
+<span class="kw">use</span> <span class="ident">primitives::v2::ValidatorIndex</span>;
 
 <span class="doccomment">/// The amount of era points given by backing a candidate that is included.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BACKING_POINTS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">20</span>;
@@ -210,7 +210,7 @@
 		<span class="ident">mock</span>::{<span class="ident">new_test_ext</span>, <span class="ident">MockGenesisConfig</span>, <span class="ident">ParasShared</span>, <span class="ident">Test</span>},
 	};
 	<span class="kw">use</span> <span class="ident">keyring::Sr25519Keyring</span>;
-	<span class="kw">use</span> <span class="ident">primitives::v1::ValidatorId</span>;
+	<span class="kw">use</span> <span class="ident">primitives::v2::ValidatorId</span>;
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">rewards_based_on_indirection</span>() {

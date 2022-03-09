@@ -1099,7 +1099,7 @@
 <span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>, <span class="ident">vec::BitVec</span>};
 <span class="kw">use</span> <span class="ident">frame_support::pallet_prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
-<span class="kw">use</span> <span class="ident">primitives::v1</span>::{
+<span class="kw">use</span> <span class="ident">primitives::v2</span>::{
 	<span class="ident">AvailabilityBitfield</span>, <span class="ident">BackedCandidate</span>, <span class="ident">CandidateCommitments</span>, <span class="ident">CandidateDescriptor</span>,
 	<span class="ident">CandidateHash</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CommittedCandidateReceipt</span>, <span class="ident">CoreIndex</span>, <span class="ident">GroupIndex</span>, <span class="ident">Hash</span>,
 	<span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">SigningContext</span>, <span class="ident">UncheckedSignedAvailabilityBitfields</span>, <span class="ident">ValidatorId</span>,
@@ -1646,7 +1646,7 @@
 
 						<span class="comment">// check the signatures in the backing and that it is a majority.</span>
 						{
-							<span class="kw">let</span> <span class="ident">maybe_amount_validated</span> <span class="op">=</span> <span class="ident">primitives::v1::check_candidate_backing</span>(
+							<span class="kw">let</span> <span class="ident">maybe_amount_validated</span> <span class="op">=</span> <span class="ident">primitives::v2::check_candidate_backing</span>(
 								<span class="kw-2">&amp;</span><span class="ident">backed_candidate</span>,
 								<span class="kw-2">&amp;</span><span class="ident">signing_context</span>,
 								<span class="ident">group_vals</span>.<span class="ident">len</span>(),
@@ -1764,7 +1764,7 @@
 	<span class="doccomment">/// Run the acceptance criteria checks on the given candidate commitments.</span>
 	<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">check_validation_outputs_for_runtime_api</span>(
 		<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
-		<span class="ident">validation_outputs</span>: <span class="ident">primitives::v1::CandidateCommitments</span>,
+		<span class="ident">validation_outputs</span>: <span class="ident">primitives::v2::CandidateCommitments</span>,
 	) -&gt; <span class="ident">bool</span> {
 		<span class="comment">// This function is meant to be called from the runtime APIs against the relay-parent, hence</span>
 		<span class="comment">// `relay_parent_number` is equal to `now`.</span>
@@ -2110,11 +2110,11 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
 		<span class="ident">head_data</span>: <span class="kw-2">&amp;</span><span class="ident">HeadData</span>,
-		<span class="ident">new_validation_code</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">primitives::v1::ValidationCode</span><span class="op">&gt;</span>,
+		<span class="ident">new_validation_code</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">primitives::v2::ValidationCode</span><span class="op">&gt;</span>,
 		<span class="ident">processed_downward_messages</span>: <span class="ident">u32</span>,
-		<span class="ident">upward_messages</span>: <span class="kw-2">&amp;</span>[<span class="ident">primitives::v1::UpwardMessage</span>],
+		<span class="ident">upward_messages</span>: <span class="kw-2">&amp;</span>[<span class="ident">primitives::v2::UpwardMessage</span>],
 		<span class="ident">hrmp_watermark</span>: <span class="ident">T::BlockNumber</span>,
-		<span class="ident">horizontal_messages</span>: <span class="kw-2">&amp;</span>[<span class="ident">primitives::v1::OutboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>],
+		<span class="ident">horizontal_messages</span>: <span class="kw-2">&amp;</span>[<span class="ident">primitives::v2::OutboundHrmpMessage</span><span class="op">&lt;</span><span class="ident">ParaId</span><span class="op">&gt;</span>],
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">AcceptanceCheckErr</span><span class="op">&lt;</span><span class="ident">T::BlockNumber</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="macro">ensure!</span>(
 			<span class="ident">head_data</span>.<span class="number">0</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">max_head_data_size</span> <span class="kw">as</span> <span class="kw">_</span>,

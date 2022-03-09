@@ -602,9 +602,9 @@
 	<span class="ident">overseer</span>, <span class="ident">ActiveLeavesUpdate</span>, <span class="ident">FromOverseer</span>, <span class="ident">OverseerSignal</span>, <span class="ident">SpawnedSubsystem</span>, <span class="ident">SubsystemContext</span>,
 	<span class="ident">SubsystemError</span>, <span class="ident">SubsystemResult</span>, <span class="ident">SubsystemSender</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
-	<span class="ident">v1</span>::{<span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">SessionIndex</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>},
-	<span class="ident">v2::PvfCheckStatement</span>,
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
+	<span class="ident">BlockNumber</span>, <span class="ident">Hash</span>, <span class="ident">PvfCheckStatement</span>, <span class="ident">SessionIndex</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>,
+	<span class="ident">ValidatorIndex</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_keystore::SyncCryptoStorePtr</span>;
 <span class="kw">use</span> <span class="ident">std::collections::HashSet</span>;

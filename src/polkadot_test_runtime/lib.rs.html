@@ -1035,9 +1035,6 @@
 <span id="1035">1035</span>
 <span id="1036">1036</span>
 <span id="1037">1037</span>
-<span id="1038">1038</span>
-<span id="1039">1039</span>
-<span id="1040">1040</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1068,7 +1065,7 @@
 	<span class="ident">configuration</span> <span class="kw">as</span> <span class="ident">parachains_configuration</span>, <span class="ident">disputes</span> <span class="kw">as</span> <span class="ident">parachains_disputes</span>,
 	<span class="ident">dmp</span> <span class="kw">as</span> <span class="ident">parachains_dmp</span>, <span class="ident">hrmp</span> <span class="kw">as</span> <span class="ident">parachains_hrmp</span>, <span class="ident">inclusion</span> <span class="kw">as</span> <span class="ident">parachains_inclusion</span>,
 	<span class="ident">initializer</span> <span class="kw">as</span> <span class="ident">parachains_initializer</span>, <span class="ident">origin</span> <span class="kw">as</span> <span class="ident">parachains_origin</span>, <span class="ident">paras</span> <span class="kw">as</span> <span class="ident">parachains_paras</span>,
-	<span class="ident">paras_inherent</span> <span class="kw">as</span> <span class="ident">parachains_paras_inherent</span>, <span class="ident">runtime_api_impl::v1</span> <span class="kw">as</span> <span class="ident">runtime_impl</span>,
+	<span class="ident">paras_inherent</span> <span class="kw">as</span> <span class="ident">parachains_paras_inherent</span>, <span class="ident">runtime_api_impl::v2</span> <span class="kw">as</span> <span class="ident">runtime_impl</span>,
 	<span class="ident">scheduler</span> <span class="kw">as</span> <span class="ident">parachains_scheduler</span>, <span class="ident">session_info</span> <span class="kw">as</span> <span class="ident">parachains_session_info</span>,
 	<span class="ident">shared</span> <span class="kw">as</span> <span class="ident">parachains_shared</span>, <span class="ident">ump</span> <span class="kw">as</span> <span class="ident">parachains_ump</span>,
 };
@@ -1084,15 +1081,12 @@
 <span class="kw">use</span> <span class="ident">pallet_session::historical</span> <span class="kw">as</span> <span class="ident">session_historical</span>;
 <span class="kw">use</span> <span class="ident">pallet_transaction_payment</span>::{<span class="ident">FeeDetails</span>, <span class="ident">RuntimeDispatchInfo</span>};
 <span class="kw">use</span> <span class="ident">polkadot_runtime_parachains::reward_points::RewardValidatorsWithEraPoints</span>;
-<span class="kw">use</span> <span class="ident">primitives</span>::{
-	<span class="ident">v1</span>::{
-		<span class="ident">AccountId</span>, <span class="ident">AccountIndex</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateEvent</span>, <span class="ident">CommittedCandidateReceipt</span>,
-		<span class="ident">CoreState</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">HashT</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">InboundDownwardMessage</span>,
-		<span class="ident">InboundHrmpMessage</span>, <span class="ident">Moment</span>, <span class="ident">Nonce</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>,
-		<span class="ident">ScrapedOnChainVotes</span>, <span class="ident">Signature</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>,
-		<span class="ident">ValidatorIndex</span>,
-	},
-	<span class="ident">v2::SessionInfo</span> <span class="kw">as</span> <span class="ident">SessionInfoData</span>,
+<span class="kw">use</span> <span class="ident">primitives::v2</span>::{
+	<span class="ident">AccountId</span>, <span class="ident">AccountIndex</span>, <span class="ident">Balance</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateEvent</span>, <span class="ident">CommittedCandidateReceipt</span>,
+	<span class="ident">CoreState</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span> <span class="kw">as</span> <span class="ident">HashT</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">InboundDownwardMessage</span>,
+	<span class="ident">InboundHrmpMessage</span>, <span class="ident">Moment</span>, <span class="ident">Nonce</span>, <span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>,
+	<span class="ident">ScrapedOnChainVotes</span>, <span class="ident">SessionInfo</span> <span class="kw">as</span> <span class="ident">SessionInfoData</span>, <span class="ident">Signature</span>, <span class="ident">ValidationCode</span>,
+	<span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>,
 };
 <span class="kw">use</span> <span class="ident">runtime_common</span>::{
 	<span class="ident">claims</span>, <span class="ident">paras_sudo_wrapper</span>, <span class="ident">BlockHashCount</span>, <span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">SlowAdjustingFeeUpdate</span>,
@@ -1689,7 +1683,7 @@
 <span class="macro">construct_runtime!</span> {
 	<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Runtime</span> <span class="kw">where</span>
 		<span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>,
-		<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">primitives::v1::Block</span>,
+		<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">primitives::v2::Block</span>,
 		<span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">UncheckedExtrinsic</span>
 	{
 		<span class="comment">// Basic stuff; balances is uncallable initially.</span>
@@ -1873,7 +1867,7 @@
 
 		<span class="kw">fn</span> <span class="ident">check_validation_outputs</span>(
 			<span class="ident">para_id</span>: <span class="ident">ParaId</span>,
-			<span class="ident">outputs</span>: <span class="ident">primitives::v1::CandidateCommitments</span>,
+			<span class="ident">outputs</span>: <span class="ident">primitives::v2::CandidateCommitments</span>,
 		) -&gt; <span class="ident">bool</span> {
 			<span class="ident">runtime_impl::check_validation_outputs</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">para_id</span>, <span class="ident">outputs</span>)
 		}
@@ -1923,7 +1917,7 @@
 
 		<span class="kw">fn</span> <span class="ident">submit_pvf_check_statement</span>(
 			<span class="ident">stmt</span>: <span class="ident">primitives::v2::PvfCheckStatement</span>,
-			<span class="ident">signature</span>: <span class="ident">primitives::v1::ValidatorSignature</span>,
+			<span class="ident">signature</span>: <span class="ident">primitives::v2::ValidatorSignature</span>,
 		) {
 			<span class="ident">runtime_impl::submit_pvf_check_statement</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>(<span class="ident">stmt</span>, <span class="ident">signature</span>)
 		}

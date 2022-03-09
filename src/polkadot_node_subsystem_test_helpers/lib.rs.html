@@ -796,7 +796,7 @@
 	<span class="kw">use</span> <span class="ident">futures::executor::block_on</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_node_subsystem::messages::CollatorProtocolMessage</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_overseer</span>::{<span class="ident">dummy::dummy_overseer_builder</span>, <span class="ident">Handle</span>, <span class="ident">HeadSupportsParachains</span>};
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::Hash</span>;
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2::Hash</span>;
 
 	<span class="kw">struct</span> <span class="ident">AlwaysSupportsParachains</span>;
 	<span class="kw">impl</span> <span class="ident">HeadSupportsParachains</span> <span class="kw">for</span> <span class="ident">AlwaysSupportsParachains</span> {

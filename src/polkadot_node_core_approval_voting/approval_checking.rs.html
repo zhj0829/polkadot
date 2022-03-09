@@ -1401,7 +1401,7 @@
 
 <span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>, <span class="ident">slice::BitSlice</span>};
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives::approval::DelayTranche</span>;
-<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::ValidatorIndex</span>;
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2::ValidatorIndex</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
 	<span class="ident">persisted_entries</span>::{<span class="ident">ApprovalEntry</span>, <span class="ident">CandidateEntry</span>, <span class="ident">TrancheEntry</span>},
@@ -1843,7 +1843,7 @@
 	<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">approval_db</span>, <span class="ident">BTreeMap</span>};
 	<span class="kw">use</span> <span class="ident">::test_helpers</span>::{<span class="ident">dummy_candidate_receipt</span>, <span class="ident">dummy_hash</span>};
 	<span class="kw">use</span> <span class="ident">bitvec</span>::{<span class="ident">bitvec</span>, <span class="ident">order::Lsb0</span> <span class="kw">as</span> <span class="ident">BitOrderLsb0</span>, <span class="ident">vec::BitVec</span>};
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1::GroupIndex</span>;
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2::GroupIndex</span>;
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
 	<span class="kw">fn</span> <span class="ident">pending_is_not_approved</span>() {

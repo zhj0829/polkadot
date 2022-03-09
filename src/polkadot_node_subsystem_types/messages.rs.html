@@ -918,7 +918,6 @@
 <span id="918">918</span>
 <span id="919">919</span>
 <span id="920">920</span>
-<span id="921">921</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -959,19 +958,16 @@
 	<span class="ident">CollationSecondedSignal</span>, <span class="ident">DisputeMessage</span>, <span class="ident">ErasureChunk</span>, <span class="ident">PoV</span>, <span class="ident">SignedDisputeStatement</span>,
 	<span class="ident">SignedFullStatement</span>, <span class="ident">ValidationResult</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
-	<span class="ident">v1</span>::{
-		<span class="ident">AuthorityDiscoveryId</span>, <span class="ident">BackedCandidate</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateDescriptor</span>, <span class="ident">CandidateEvent</span>,
-		<span class="ident">CandidateHash</span>, <span class="ident">CandidateIndex</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CollatorId</span>, <span class="ident">CommittedCandidateReceipt</span>,
-		<span class="ident">CoreState</span>, <span class="ident">GroupIndex</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">Header</span> <span class="kw">as</span> <span class="ident">BlockHeader</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>,
-		<span class="ident">InboundDownwardMessage</span>, <span class="ident">InboundHrmpMessage</span>, <span class="ident">MultiDisputeStatementSet</span>,
-		<span class="ident">OccupiedCoreAssumption</span>, <span class="ident">PersistedValidationData</span>, <span class="ident">SessionIndex</span>, <span class="ident">SignedAvailabilityBitfield</span>,
-		<span class="ident">SignedAvailabilityBitfields</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>,
-		<span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
-	},
-	<span class="ident">v2</span>::{<span class="ident">PvfCheckStatement</span>, <span class="ident">SessionInfo</span>},
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
+	<span class="ident">AuthorityDiscoveryId</span>, <span class="ident">BackedCandidate</span>, <span class="ident">BlockNumber</span>, <span class="ident">CandidateDescriptor</span>, <span class="ident">CandidateEvent</span>,
+	<span class="ident">CandidateHash</span>, <span class="ident">CandidateIndex</span>, <span class="ident">CandidateReceipt</span>, <span class="ident">CollatorId</span>, <span class="ident">CommittedCandidateReceipt</span>,
+	<span class="ident">CoreState</span>, <span class="ident">GroupIndex</span>, <span class="ident">GroupRotationInfo</span>, <span class="ident">Hash</span>, <span class="ident">Header</span> <span class="kw">as</span> <span class="ident">BlockHeader</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>,
+	<span class="ident">InboundDownwardMessage</span>, <span class="ident">InboundHrmpMessage</span>, <span class="ident">MultiDisputeStatementSet</span>, <span class="ident">OccupiedCoreAssumption</span>,
+	<span class="ident">PersistedValidationData</span>, <span class="ident">PvfCheckStatement</span>, <span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>,
+	<span class="ident">SignedAvailabilityBitfield</span>, <span class="ident">SignedAvailabilityBitfields</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>,
+	<span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>, <span class="ident">ValidatorSignature</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_statement_table::v1::Misbehavior</span>;
+<span class="kw">use</span> <span class="ident">polkadot_statement_table::v2::Misbehavior</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
 	<span class="ident">collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">HashSet</span>},
 	<span class="ident">sync::Arc</span>,
@@ -1536,6 +1532,8 @@
 <span class="doccomment">/// A request to the Runtime API subsystem.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RuntimeApiRequest</span> {
+	<span class="doccomment">/// Get the version of the runtime API, if any.</span>
+	<span class="ident">Version</span>(<span class="ident">RuntimeApiSender</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>),
 	<span class="doccomment">/// Get the next, current and some previous authority discovery set deduplicated.</span>
 	<span class="ident">Authorities</span>(<span class="ident">RuntimeApiSender</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AuthorityDiscoveryId</span><span class="op">&gt;</span><span class="op">&gt;</span>),
 	<span class="doccomment">/// Get the current validator set.</span>
@@ -1562,7 +1560,7 @@
 	<span class="doccomment">/// Sends back `true` if the validation outputs pass all acceptance criteria checks.</span>
 	<span class="ident">CheckValidationOutputs</span>(
 		<span class="ident">ParaId</span>,
-		<span class="ident">polkadot_primitives::v1::CandidateCommitments</span>,
+		<span class="ident">polkadot_primitives::v2::CandidateCommitments</span>,
 		<span class="ident">RuntimeApiSender</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 	),
 	<span class="doccomment">/// Get the session index that a child of the block will have.</span>
@@ -1592,7 +1590,7 @@
 	<span class="doccomment">/// Get information about the BABE epoch the block was included in.</span>
 	<span class="ident">CurrentBabeEpoch</span>(<span class="ident">RuntimeApiSender</span><span class="op">&lt;</span><span class="ident">BabeEpoch</span><span class="op">&gt;</span>),
 	<span class="doccomment">/// Get all disputes in relation to a relay parent.</span>
-	<span class="ident">FetchOnChainVotes</span>(<span class="ident">RuntimeApiSender</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v1::ScrapedOnChainVotes</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+	<span class="ident">FetchOnChainVotes</span>(<span class="ident">RuntimeApiSender</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">polkadot_primitives::v2::ScrapedOnChainVotes</span><span class="op">&gt;</span><span class="op">&gt;</span>),
 	<span class="doccomment">/// Submits a PVF pre-checking statement into the transaction pool.</span>
 	<span class="ident">SubmitPvfCheckStatement</span>(<span class="ident">PvfCheckStatement</span>, <span class="ident">ValidatorSignature</span>, <span class="ident">RuntimeApiSender</span><span class="op">&lt;</span>()<span class="op">&gt;</span>),
 	<span class="doccomment">/// Returns code hashes of PVFs that require pre-checking by validators in the active set.</span>

@@ -868,7 +868,6 @@
 <span id="868">868</span>
 <span id="869">869</span>
 <span id="870">870</span>
-<span id="871">871</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -891,9 +890,8 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_primitives::approval</span>::{
 	<span class="self">self</span> <span class="kw">as</span> <span class="ident">approval_types</span>, <span class="ident">AssignmentCert</span>, <span class="ident">AssignmentCertKind</span>, <span class="ident">DelayTranche</span>, <span class="ident">RelayVRFStory</span>,
 };
-<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
-	<span class="ident">v1</span>::{<span class="ident">AssignmentId</span>, <span class="ident">AssignmentPair</span>, <span class="ident">CandidateHash</span>, <span class="ident">CoreIndex</span>, <span class="ident">GroupIndex</span>, <span class="ident">ValidatorIndex</span>},
-	<span class="ident">v2::SessionInfo</span>,
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
+	<span class="ident">AssignmentId</span>, <span class="ident">AssignmentPair</span>, <span class="ident">CandidateHash</span>, <span class="ident">CoreIndex</span>, <span class="ident">GroupIndex</span>, <span class="ident">SessionInfo</span>, <span class="ident">ValidatorIndex</span>,
 };
 <span class="kw">use</span> <span class="ident">sc_keystore::LocalKeystore</span>;
 <span class="kw">use</span> <span class="ident">sp_application_crypto::ByteArray</span>;
@@ -1408,7 +1406,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 	<span class="kw">use</span> <span class="ident">polkadot_node_primitives::approval</span>::{<span class="ident">VRFOutput</span>, <span class="ident">VRFProof</span>};
-	<span class="kw">use</span> <span class="ident">polkadot_primitives::v1</span>::{<span class="ident">Hash</span>, <span class="ident">ASSIGNMENT_KEY_TYPE_ID</span>};
+	<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Hash</span>, <span class="ident">ASSIGNMENT_KEY_TYPE_ID</span>};
 	<span class="kw">use</span> <span class="ident">sp_application_crypto::sr25519</span>;
 	<span class="kw">use</span> <span class="ident">sp_core::crypto::Pair</span> <span class="kw">as</span> <span class="ident">PairT</span>;
 	<span class="kw">use</span> <span class="ident">sp_keyring::sr25519::Keyring</span> <span class="kw">as</span> <span class="ident">Sr25519Keyring</span>;

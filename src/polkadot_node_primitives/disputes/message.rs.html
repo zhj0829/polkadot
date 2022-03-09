@@ -264,7 +264,6 @@
 <span id="264">264</span>
 <span id="265">265</span>
 <span id="266">266</span>
-<span id="267">267</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -291,9 +290,8 @@
 <span class="kw">use</span> <span class="ident">parity_scale_codec</span>::{<span class="ident">Decode</span>, <span class="ident">Encode</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">InvalidDisputeVote</span>, <span class="ident">SignedDisputeStatement</span>, <span class="ident">ValidDisputeVote</span>};
-<span class="kw">use</span> <span class="ident">polkadot_primitives</span>::{
-	<span class="ident">v1</span>::{<span class="ident">CandidateReceipt</span>, <span class="ident">DisputeStatement</span>, <span class="ident">SessionIndex</span>, <span class="ident">ValidatorIndex</span>},
-	<span class="ident">v2::SessionInfo</span>,
+<span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{
+	<span class="ident">CandidateReceipt</span>, <span class="ident">DisputeStatement</span>, <span class="ident">SessionIndex</span>, <span class="ident">SessionInfo</span>, <span class="ident">ValidatorIndex</span>,
 };
 
 <span class="doccomment">/// A dispute initiating/participating message that is guaranteed to have been built from signed</span>
