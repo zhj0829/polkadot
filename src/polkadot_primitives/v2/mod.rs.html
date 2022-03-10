@@ -1877,6 +1877,24 @@
 <span id="1877">1877</span>
 <span id="1878">1878</span>
 <span id="1879">1879</span>
+<span id="1880">1880</span>
+<span id="1881">1881</span>
+<span id="1882">1882</span>
+<span id="1883">1883</span>
+<span id="1884">1884</span>
+<span id="1885">1885</span>
+<span id="1886">1886</span>
+<span id="1887">1887</span>
+<span id="1888">1888</span>
+<span id="1889">1889</span>
+<span id="1890">1890</span>
+<span id="1891">1891</span>
+<span id="1892">1892</span>
+<span id="1893">1893</span>
+<span id="1894">1894</span>
+<span id="1895">1895</span>
+<span id="1896">1896</span>
+<span id="1897">1897</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2054,6 +2072,24 @@
 	<span class="comment">//</span>
 	<span class="comment">//     &lt;Hrmp as Store&gt;::HrmpEgressChannelsIndex::prefix_hash();</span>
 	<span class="comment">//</span>
+
+	<span class="doccomment">/// The current relay chain block randomness</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// The storage item should be accessed as a `schnorrkel::Randomness` encoded value.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CURRENT_BLOCK_RANDOMNESS</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
+		<span class="kw-2">&amp;</span><span class="macro">hex!</span>[<span class="string">&quot;1cb6f36e027abb2091cfb5110ab5087fd077dfdb8adb10f78f10a5df8742c545&quot;</span>];
+
+	<span class="doccomment">/// The randomness for one epoch ago</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// The storage item should be accessed as a `schnorrkel::Randomness` encoded value.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ONE_EPOCH_AGO_RANDOMNESS</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
+		<span class="kw-2">&amp;</span><span class="macro">hex!</span>[<span class="string">&quot;1cb6f36e027abb2091cfb5110ab5087f7ce678799d3eff024253b90e84927cc6&quot;</span>];
+
+	<span class="doccomment">/// The randomness for two epochs ago</span>
+	<span class="doccomment">///</span>
+	<span class="doccomment">/// The storage item should be accessed as a `schnorrkel::Randomness` encoded value.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TWO_EPOCHS_AGO_RANDOMNESS</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span>
+		<span class="kw-2">&amp;</span><span class="macro">hex!</span>[<span class="string">&quot;1cb6f36e027abb2091cfb5110ab5087f7a414cb008e0e61e46722aa60abdd672&quot;</span>];
 
 	<span class="doccomment">/// The current slot number.</span>
 	<span class="doccomment">///</span>
