@@ -117,6 +117,8 @@
 <span id="117">117</span>
 <span id="118">118</span>
 <span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -135,33 +137,35 @@
 
 <span class="doccomment">//! Code for elections.</span>
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">BlockExecutionWeight</span>, <span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>};
 <span class="kw">use</span> <span class="ident">frame_election_provider_support::SortedListProvider</span>;
-<span class="kw">use</span> <span class="ident">frame_support</span>::{
-	<span class="ident">parameter_types</span>,
-	<span class="ident">weights</span>::{<span class="ident">DispatchClass</span>, <span class="ident">Weight</span>},
-};
-<span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
-<span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">boxed::Box</span>, <span class="ident">convert::From</span>, <span class="ident">marker::PhantomData</span>};
+<span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">boxed::Box</span>, <span class="ident">marker::PhantomData</span>};
 
-<span class="macro">parameter_types!</span> {
-	<span class="doccomment">/// A limit for off-chain phragmen unsigned solution submission.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// We want to keep it as high as possible, but can&#39;t risk having it reject,</span>
-	<span class="doccomment">/// so we always subtract the base block execution weight.</span>
-	<span class="kw">pub</span> <span class="ident">OffchainSolutionWeightLimit</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">BlockWeights::get</span>()
-		.<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>)
-		.<span class="ident">max_extrinsic</span>
-		.<span class="ident">expect</span>(<span class="string">&quot;Normal extrinsics have weight limit configured by default; qed&quot;</span>)
-		.<span class="ident">saturating_sub</span>(<span class="ident">BlockExecutionWeight::get</span>());
+<span class="doccomment">/// Implements the weight types for the elections module and a specific</span>
+<span class="doccomment">/// runtime.</span>
+<span class="doccomment">/// This macro should not be called directly; use [`impl_runtime_weights`] instead.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">impl_elections_weights</span> {
+	(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span>:<span class="ident">ident</span>) =&gt; {
+		<span class="macro">parameter_types!</span> {
+			<span class="doccomment">/// A limit for off-chain phragmen unsigned solution submission.</span>
+			<span class="doccomment">///</span>
+			<span class="doccomment">/// We want to keep it as high as possible, but can&#39;t risk having it reject,</span>
+			<span class="doccomment">/// so we always subtract the base block execution weight.</span>
+			<span class="kw">pub</span> <span class="ident">OffchainSolutionWeightLimit</span>: <span class="ident">Weight</span> <span class="op">=</span> <span class="ident">BlockWeights::get</span>()
+				.<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>)
+				.<span class="ident">max_extrinsic</span>
+				.<span class="ident">expect</span>(<span class="string">&quot;Normal extrinsics have weight limit configured by default; qed&quot;</span>)
+				.<span class="ident">saturating_sub</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime::weights::BlockExecutionWeight::get</span>());
 
-	<span class="doccomment">/// A limit for off-chain phragmen unsigned solution length.</span>
-	<span class="doccomment">///</span>
-	<span class="doccomment">/// We allow up to 90% of the block&#39;s size to be consumed by the solution.</span>
-	<span class="kw">pub</span> <span class="ident">OffchainSolutionLengthLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">Perbill::from_rational</span>(<span class="number">90_u32</span>, <span class="number">100</span>) <span class="op">*</span>
-		<span class="kw-2">*</span><span class="ident">BlockLength::get</span>()
-		.<span class="ident">max</span>
-		.<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>);
+			<span class="doccomment">/// A limit for off-chain phragmen unsigned solution length.</span>
+			<span class="doccomment">///</span>
+			<span class="doccomment">/// We allow up to 90% of the block&#39;s size to be consumed by the solution.</span>
+			<span class="kw">pub</span> <span class="ident">OffchainSolutionLengthLimit</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">Perbill::from_rational</span>(<span class="number">90_u32</span>, <span class="number">100</span>) <span class="op">*</span>
+				<span class="kw-2">*</span><span class="ident">BlockLength::get</span>()
+				.<span class="ident">max</span>
+				.<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>);
+		}
+	};
 }
 
 <span class="doccomment">/// The numbers configured here could always be more than the the maximum limits of staking pallet</span>

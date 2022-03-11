@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["currency","Money matters."],["fee","Fee-related."],["time","Time and blocks."]]});
+initSidebarItems({"mod":[["currency","Money matters."],["fee","Fee-related."],["time","Time and blocks."],["weights","Expose the auto generated weight files."]]});

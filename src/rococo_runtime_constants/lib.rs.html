@@ -121,6 +121,8 @@
 <span id="121">121</span>
 <span id="122">122</span>
 <span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -138,6 +140,8 @@
 <span class="comment">// along with Polkadot.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">weights</span>;
 
 <span class="doccomment">/// Money matters.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">currency</span> {
@@ -176,11 +180,11 @@
 
 <span class="doccomment">/// Fee-related.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fee</span> {
+	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::weights::ExtrinsicBaseWeight</span>;
 	<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{
 		<span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>, <span class="ident">WeightToFeePolynomial</span>,
 	};
 	<span class="kw">use</span> <span class="ident">primitives::v2::Balance</span>;
-	<span class="kw">use</span> <span class="ident">runtime_common::ExtrinsicBaseWeight</span>;
 	<span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
 	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
 
@@ -220,15 +224,16 @@
 		<span class="ident">currency</span>::{<span class="ident">CENTS</span>, <span class="ident">DOLLARS</span>, <span class="ident">MILLICENTS</span>},
 		<span class="ident">fee::WeightToFee</span>,
 	};
-	<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{<span class="ident">DispatchClass</span>, <span class="ident">WeightToFeePolynomial</span>};
-	<span class="kw">use</span> <span class="ident">runtime_common::BlockWeights</span>;
+	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::weights::ExtrinsicBaseWeight</span>;
+	<span class="kw">use</span> <span class="ident">frame_support::weights::WeightToFeePolynomial</span>;
+	<span class="kw">use</span> <span class="ident">runtime_common::MAXIMUM_BLOCK_WEIGHT</span>;
 
 	<span class="attribute">#[<span class="ident">test</span>]</span>
-	<span class="comment">// This function tests that the fee for `MaximumBlockWeight` of weight is correct</span>
+	<span class="comment">// This function tests that the fee for `MAXIMUM_BLOCK_WEIGHT` of weight is correct</span>
 	<span class="kw">fn</span> <span class="ident">full_block_fee_is_correct</span>() {
 		<span class="comment">// A full block should cost 16 DOLLARS</span>
-		<span class="macro">println!</span>(<span class="string">&quot;Base: {}&quot;</span>, <span class="ident">BlockWeights::get</span>().<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>).<span class="ident">base_extrinsic</span>);
-		<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">BlockWeights::get</span>().<span class="ident">max_block</span>);
+		<span class="macro">println!</span>(<span class="string">&quot;Base: {}&quot;</span>, <span class="ident">ExtrinsicBaseWeight::get</span>());
+		<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">MAXIMUM_BLOCK_WEIGHT</span>);
 		<span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="number">16</span> <span class="op">*</span> <span class="ident">DOLLARS</span>;
 		<span class="macro">assert!</span>(<span class="ident">x</span>.<span class="ident">max</span>(<span class="ident">y</span>) <span class="op">-</span> <span class="ident">x</span>.<span class="ident">min</span>(<span class="ident">y</span>) <span class="op">&lt;</span> <span class="ident">MILLICENTS</span>);
 	}
@@ -237,9 +242,8 @@
 	<span class="comment">// This function tests that the fee for `ExtrinsicBaseWeight` of weight is correct</span>
 	<span class="kw">fn</span> <span class="ident">extrinsic_base_fee_is_correct</span>() {
 		<span class="comment">// `ExtrinsicBaseWeight` should cost 1/10 of a CENT</span>
-		<span class="kw">let</span> <span class="ident">base_weight</span> <span class="op">=</span> <span class="ident">BlockWeights::get</span>().<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>).<span class="ident">base_extrinsic</span>;
-		<span class="macro">println!</span>(<span class="string">&quot;Base: {}&quot;</span>, <span class="ident">base_weight</span>);
-		<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">base_weight</span>);
+		<span class="macro">println!</span>(<span class="string">&quot;Base: {}&quot;</span>, <span class="ident">ExtrinsicBaseWeight::get</span>());
+		<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">WeightToFee::calc</span>(<span class="kw-2">&amp;</span><span class="ident">ExtrinsicBaseWeight::get</span>());
 		<span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="ident">CENTS</span> <span class="op">/</span> <span class="number">10</span>;
 		<span class="macro">assert!</span>(<span class="ident">x</span>.<span class="ident">max</span>(<span class="ident">y</span>) <span class="op">-</span> <span class="ident">x</span>.<span class="ident">min</span>(<span class="ident">y</span>) <span class="op">&lt;</span> <span class="ident">MILLICENTS</span>);
 	}

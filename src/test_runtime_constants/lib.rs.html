@@ -82,6 +82,8 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2019-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -99,6 +101,8 @@
 <span class="comment">// along with Polkadot.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">weights</span>;
 
 <span class="doccomment">/// Money matters.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">currency</span> {
@@ -130,11 +134,11 @@
 
 <span class="doccomment">/// Fee-related.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fee</span> {
+	<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::weights::ExtrinsicBaseWeight</span>;
 	<span class="kw">use</span> <span class="ident">frame_support::weights</span>::{
 		<span class="ident">WeightToFeeCoefficient</span>, <span class="ident">WeightToFeeCoefficients</span>, <span class="ident">WeightToFeePolynomial</span>,
 	};
 	<span class="kw">use</span> <span class="ident">primitives::v2::Balance</span>;
-	<span class="kw">use</span> <span class="ident">runtime_common::ExtrinsicBaseWeight</span>;
 	<span class="kw">use</span> <span class="ident">smallvec::smallvec</span>;
 	<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
 

@@ -1661,9 +1661,8 @@
 	<span class="ident">SessionInfo</span>, <span class="ident">Signature</span>, <span class="ident">ValidationCode</span>, <span class="ident">ValidationCodeHash</span>, <span class="ident">ValidatorId</span>, <span class="ident">ValidatorIndex</span>,
 };
 <span class="kw">use</span> <span class="ident">runtime_common</span>::{
-	<span class="ident">assigned_slots</span>, <span class="ident">auctions</span>, <span class="ident">crowdloan</span>, <span class="ident">impls::ToAuthor</span>, <span class="ident">paras_registrar</span>, <span class="ident">paras_sudo_wrapper</span>,
-	<span class="ident">slots</span>, <span class="ident">BlockHashCount</span>, <span class="ident">BlockLength</span>, <span class="ident">BlockWeights</span>, <span class="ident">CurrencyToVote</span>, <span class="ident">OffchainSolutionLengthLimit</span>,
-	<span class="ident">OffchainSolutionWeightLimit</span>, <span class="ident">RocksDbWeight</span>, <span class="ident">SlowAdjustingFeeUpdate</span>,
+	<span class="ident">assigned_slots</span>, <span class="ident">auctions</span>, <span class="ident">crowdloan</span>, <span class="ident">impl_runtime_weights</span>, <span class="ident">impls::ToAuthor</span>, <span class="ident">paras_registrar</span>,
+	<span class="ident">paras_sudo_wrapper</span>, <span class="ident">slots</span>, <span class="ident">CurrencyToVote</span>,
 };
 <span class="kw">use</span> <span class="ident">sp_std</span>::{<span class="ident">collections::btree_map::BTreeMap</span>, <span class="ident">prelude</span>::<span class="kw-2">*</span>};
 
@@ -1681,7 +1680,6 @@
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
 	<span class="ident">construct_runtime</span>, <span class="ident">parameter_types</span>,
 	<span class="ident">traits</span>::{<span class="ident">Contains</span>, <span class="ident">InstanceFilter</span>, <span class="ident">KeyOwnerProofSystem</span>, <span class="ident">OnRuntimeUpgrade</span>},
-	<span class="ident">weights::Weight</span>,
 	<span class="ident">PalletId</span>, <span class="ident">RuntimeDebug</span>,
 };
 <span class="kw">use</span> <span class="ident">frame_system::EnsureRoot</span>;
@@ -1729,6 +1727,8 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span>;
+
+<span class="macro">impl_runtime_weights!</span>(<span class="ident">westend_runtime_constants</span>);
 
 <span class="comment">// Make the WASM binary available.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
