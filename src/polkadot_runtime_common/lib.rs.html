@@ -396,17 +396,20 @@
 <span class="kw">mod</span> <span class="ident">mock</span>;
 
 <span class="kw">use</span> <span class="ident">frame_support</span>::{
+	<span class="ident">parameter_types</span>,
 	<span class="ident">traits</span>::{<span class="ident">ConstU32</span>, <span class="ident">Currency</span>, <span class="ident">OneSessionHandler</span>},
 	<span class="ident">weights</span>::{<span class="ident">constants::WEIGHT_PER_SECOND</span>, <span class="ident">Weight</span>},
 };
-<span class="kw">use</span> <span class="ident">primitives::v2</span>::{<span class="ident">AssignmentId</span>, <span class="ident">ValidatorId</span>};
-<span class="kw">use</span> <span class="ident">sp_runtime::Perbill</span>;
+<span class="kw">use</span> <span class="ident">frame_system::limits</span>;
+<span class="kw">use</span> <span class="ident">primitives::v2</span>::{<span class="ident">AssignmentId</span>, <span class="ident">BlockNumber</span>, <span class="ident">ValidatorId</span>};
+<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">FixedPointNumber</span>, <span class="ident">Perbill</span>, <span class="ident">Perquintill</span>};
 <span class="kw">use</span> <span class="ident">static_assertions::const_assert</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet_balances::Call</span> <span class="kw">as</span> <span class="ident">BalancesCall</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet_staking::StakerStatus</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pallet_timestamp::Call</span> <span class="kw">as</span> <span class="ident">TimestampCall</span>;
+<span class="kw">use</span> <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Multiplier</span>, <span class="ident">TargetedFeeAdjustment</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">test</span>))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sp_runtime::BuildStorage</span>;
 
@@ -428,6 +431,29 @@
 
 <span class="macro">const_assert!</span>(<span class="ident">NORMAL_DISPATCH_RATIO</span>.<span class="ident">deconstruct</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>.<span class="ident">deconstruct</span>());
 
+<span class="comment">// Common constants used in all runtimes.</span>
+<span class="macro">parameter_types!</span> {
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockHashCount</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">2400</span>;
+	<span class="doccomment">/// The portion of the `NORMAL_DISPATCH_RATIO` that we adjust the fees with. Blocks filled less</span>
+	<span class="doccomment">/// than this will decrease the weight and more will increase.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TargetBlockFullness</span>: <span class="ident">Perquintill</span> <span class="op">=</span> <span class="ident">Perquintill::from_percent</span>(<span class="number">25</span>);
+	<span class="doccomment">/// The adjustment variable of the runtime. Higher values will cause `TargetBlockFullness` to</span>
+	<span class="doccomment">/// change the fees more rapidly.</span>
+	<span class="kw">pub</span> <span class="ident">AdjustmentVariable</span>: <span class="ident">Multiplier</span> <span class="op">=</span> <span class="ident">Multiplier::saturating_from_rational</span>(<span class="number">3</span>, <span class="number">100_000</span>);
+	<span class="doccomment">/// Minimum amount of the multiplier. This value cannot be too low. A test case should ensure</span>
+	<span class="doccomment">/// that combined with `AdjustmentVariable`, we can recover from the minimum.</span>
+	<span class="doccomment">/// See `multiplier_can_grow_from_zero`.</span>
+	<span class="kw">pub</span> <span class="ident">MinimumMultiplier</span>: <span class="ident">Multiplier</span> <span class="op">=</span> <span class="ident">Multiplier::saturating_from_rational</span>(<span class="number">1</span>, <span class="number">1_000_000u128</span>);
+	<span class="doccomment">/// Maximum length of block. Up to 5MB.</span>
+	<span class="kw">pub</span> <span class="ident">BlockLength</span>: <span class="ident">limits::BlockLength</span> <span class="op">=</span>
+	<span class="ident">limits::BlockLength::max_with_normal_ratio</span>(<span class="number">5</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>, <span class="ident">NORMAL_DISPATCH_RATIO</span>);
+}
+
+<span class="doccomment">/// Parameterized slow adjusting fee updated based on</span>
+<span class="doccomment">/// https://research.web3.foundation/en/latest/polkadot/overview/2-token-economics.html#-2.-slow-adjusting-mechanism</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SlowAdjustingFeeUpdate</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="op">=</span>
+	<span class="ident">TargetedFeeAdjustment</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">TargetBlockFullness</span>, <span class="ident">AdjustmentVariable</span>, <span class="ident">MinimumMultiplier</span><span class="op">&gt;</span>;
+
 <span class="doccomment">/// Implements the weight types for a runtime.</span>
 <span class="doccomment">/// It expects the passed runtime constants to contain a `weights` module.</span>
 <span class="doccomment">/// The generated weight types were formerly part of the common</span>
@@ -439,37 +465,20 @@
 		<span class="kw">use</span> <span class="ident">frame_system::limits</span>;
 		<span class="kw">use</span> <span class="ident">pallet_transaction_payment</span>::{<span class="ident">Multiplier</span>, <span class="ident">TargetedFeeAdjustment</span>};
 		<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">runtime_common</span>::{
-			<span class="ident">impl_elections_weights</span>, <span class="ident">impl_multiplier_tests</span>, <span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>,
-			<span class="ident">MAXIMUM_BLOCK_WEIGHT</span>, <span class="ident">NORMAL_DISPATCH_RATIO</span>,
+			<span class="ident">impl_elections_weights</span>, <span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>, <span class="ident">MAXIMUM_BLOCK_WEIGHT</span>,
+			<span class="ident">NORMAL_DISPATCH_RATIO</span>,
 		};
 		<span class="kw">use</span> <span class="ident">sp_runtime</span>::{<span class="ident">FixedPointNumber</span>, <span class="ident">Perquintill</span>};
 
 		<span class="comment">// Implement the weight types of the elections module.</span>
 		<span class="macro">impl_elections_weights!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime</span>);
-		<span class="comment">// Implement tests for the weight multiplier.</span>
-		<span class="macro">impl_multiplier_tests!</span>();
 
 		<span class="comment">// Expose the weight from the runtime constants module.</span>
 		<span class="kw">pub</span> <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime::weights</span>::{
 			<span class="ident">BlockExecutionWeight</span>, <span class="ident">ExtrinsicBaseWeight</span>, <span class="ident">ParityDbWeight</span>, <span class="ident">RocksDbWeight</span>,
 		};
 
-		<span class="comment">// Common constants used in all runtimes.</span>
 		<span class="macro">parameter_types!</span> {
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockHashCount</span>: <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="number">2400</span>;
-			<span class="doccomment">/// The portion of the `NORMAL_DISPATCH_RATIO` that we adjust the fees with. Blocks filled less</span>
-			<span class="doccomment">/// than this will decrease the weight and more will increase.</span>
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TargetBlockFullness</span>: <span class="ident">Perquintill</span> <span class="op">=</span> <span class="ident">Perquintill::from_percent</span>(<span class="number">25</span>);
-			<span class="doccomment">/// The adjustment variable of the runtime. Higher values will cause `TargetBlockFullness` to</span>
-			<span class="doccomment">/// change the fees more rapidly.</span>
-			<span class="kw">pub</span> <span class="ident">AdjustmentVariable</span>: <span class="ident">Multiplier</span> <span class="op">=</span> <span class="ident">Multiplier::saturating_from_rational</span>(<span class="number">3</span>, <span class="number">100_000</span>);
-			<span class="doccomment">/// Minimum amount of the multiplier. This value cannot be too low. A test case should ensure</span>
-			<span class="doccomment">/// that combined with `AdjustmentVariable`, we can recover from the minimum.</span>
-			<span class="doccomment">/// See `multiplier_can_grow_from_zero`.</span>
-			<span class="kw">pub</span> <span class="ident">MinimumMultiplier</span>: <span class="ident">Multiplier</span> <span class="op">=</span> <span class="ident">Multiplier::saturating_from_rational</span>(<span class="number">1</span>, <span class="number">1_000_000u128</span>);
-			<span class="doccomment">/// Maximum length of block. Up to 5MB.</span>
-			<span class="kw">pub</span> <span class="ident">BlockLength</span>: <span class="ident">limits::BlockLength</span> <span class="op">=</span>
-			<span class="ident">limits::BlockLength::max_with_normal_ratio</span>(<span class="number">5</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>, <span class="ident">NORMAL_DISPATCH_RATIO</span>);
 			<span class="doccomment">/// Block weights base values and limits.</span>
 			<span class="kw">pub</span> <span class="ident">BlockWeights</span>: <span class="ident">limits::BlockWeights</span> <span class="op">=</span> <span class="ident">limits::BlockWeights::builder</span>()
 				.<span class="ident">base_block</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">runtime::weights::BlockExecutionWeight::get</span>())
@@ -490,11 +499,6 @@
 				.<span class="ident">avg_block_initialization</span>(<span class="ident">AVERAGE_ON_INITIALIZE_RATIO</span>)
 				.<span class="ident">build_or_panic</span>();
 		}
-
-		<span class="doccomment">/// Parameterized slow adjusting fee updated based on</span>
-		<span class="doccomment">/// https://research.web3.foundation/en/latest/polkadot/overview/2-token-economics.html#-2.-slow-adjusting-mechanism</span>
-		<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SlowAdjustingFeeUpdate</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="op">=</span>
-			<span class="ident">TargetedFeeAdjustment</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">TargetBlockFullness</span>, <span class="ident">AdjustmentVariable</span>, <span class="ident">MinimumMultiplier</span><span class="op">&gt;</span>;
 	};
 }
 
@@ -598,120 +602,116 @@
 	};
 }
 
-<span class="doccomment">/// Generates tests that check that the different weight multiplier work together.</span>
-<span class="doccomment">/// Should not be called directly, use [`impl_runtime_weights`] instead.</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">impl_multiplier_tests</span> {
-	() =&gt; {
-	<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-	<span class="kw">mod</span> <span class="ident">multiplier_tests</span> {
-		<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-		<span class="kw">use</span> <span class="ident">frame_support</span>::{<span class="ident">parameter_types</span>, <span class="ident">weights::Weight</span>};
-		<span class="kw">use</span> <span class="ident">sp_core::H256</span>;
-		<span class="kw">use</span> <span class="ident">sp_runtime</span>::{
-			<span class="ident">testing::Header</span>,
-			<span class="ident">traits</span>::{<span class="ident">BlakeTwo256</span>, <span class="ident">One</span>, <span class="ident">Convert</span>, <span class="ident">IdentityLookup</span>},
-			<span class="ident">Perbill</span>,
-		};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">multiplier_tests</span> {
+	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+	<span class="kw">use</span> <span class="ident">frame_support</span>::{
+		<span class="ident">parameter_types</span>,
+		<span class="ident">weights</span>::{<span class="ident">DispatchClass</span>, <span class="ident">Weight</span>},
+	};
+	<span class="kw">use</span> <span class="ident">sp_core::H256</span>;
+	<span class="kw">use</span> <span class="ident">sp_runtime</span>::{
+		<span class="ident">testing::Header</span>,
+		<span class="ident">traits</span>::{<span class="ident">BlakeTwo256</span>, <span class="ident">Convert</span>, <span class="ident">IdentityLookup</span>, <span class="ident">One</span>},
+		<span class="ident">Perbill</span>,
+	};
 
-		<span class="kw">type</span> <span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">frame_system::mocking::MockUncheckedExtrinsic</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
-		<span class="kw">type</span> <span class="ident">Block</span> <span class="op">=</span> <span class="ident">frame_system::mocking::MockBlock</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">frame_system::mocking::MockUncheckedExtrinsic</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+	<span class="kw">type</span> <span class="ident">Block</span> <span class="op">=</span> <span class="ident">frame_system::mocking::MockBlock</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 
-		<span class="macro">frame_support::construct_runtime!</span>(
-			<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Runtime</span> <span class="kw">where</span>
-				<span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>,
-				<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">Block</span>,
-				<span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">UncheckedExtrinsic</span>,
-			{
-				<span class="ident">System</span>: <span class="ident">frame_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>}
-			}
-		);
-
-		<span class="macro">parameter_types!</span> {
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockHashCount</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">250</span>;
-			<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AvailableBlockRatio</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::one</span>();
-			<span class="kw">pub</span> <span class="ident">BlockLength</span>: <span class="ident">frame_system::limits::BlockLength</span> <span class="op">=</span>
-				<span class="ident">frame_system::limits::BlockLength::max</span>(<span class="number">2</span> <span class="op">*</span> <span class="number">1024</span>);
-			<span class="kw">pub</span> <span class="ident">BlockWeights</span>: <span class="ident">frame_system::limits::BlockWeights</span> <span class="op">=</span>
-				<span class="ident">frame_system::limits::BlockWeights::simple_max</span>(<span class="number">1024</span>);
-		}
-
-		<span class="kw">impl</span> <span class="ident">frame_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
-			<span class="kw">type</span> <span class="ident">BaseCallFilter</span> <span class="op">=</span> <span class="ident">frame_support::traits::Everything</span>;
-			<span class="kw">type</span> <span class="ident">BlockWeights</span> <span class="op">=</span> <span class="ident">BlockWeights</span>;
-			<span class="kw">type</span> <span class="ident">BlockLength</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">DbWeight</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
-			<span class="kw">type</span> <span class="ident">Index</span> <span class="op">=</span> <span class="ident">u64</span>;
-			<span class="kw">type</span> <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="ident">u64</span>;
-			<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
-			<span class="kw">type</span> <span class="ident">Hash</span> <span class="op">=</span> <span class="ident">H256</span>;
-			<span class="kw">type</span> <span class="ident">Hashing</span> <span class="op">=</span> <span class="ident">BlakeTwo256</span>;
-			<span class="kw">type</span> <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">u64</span>;
-			<span class="kw">type</span> <span class="ident">Lookup</span> <span class="op">=</span> <span class="ident">IdentityLookup</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::AccountId</span><span class="op">&gt;</span>;
-			<span class="kw">type</span> <span class="ident">Header</span> <span class="op">=</span> <span class="ident">Header</span>;
-			<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
-			<span class="kw">type</span> <span class="ident">BlockHashCount</span> <span class="op">=</span> <span class="ident">BlockHashCount</span>;
-			<span class="kw">type</span> <span class="ident">Version</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">PalletInfo</span> <span class="op">=</span> <span class="ident">PalletInfo</span>;
-			<span class="kw">type</span> <span class="ident">AccountData</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">OnNewAccount</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">OnKilledAccount</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">SystemWeightInfo</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">SS58Prefix</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">OnSetCode</span> <span class="op">=</span> ();
-			<span class="kw">type</span> <span class="ident">MaxConsumers</span> <span class="op">=</span> <span class="ident">frame_support::traits::ConstU32</span><span class="op">&lt;</span><span class="number">16</span><span class="op">&gt;</span>;
-		}
-
-		<span class="kw">fn</span> <span class="ident">run_with_system_weight</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">w</span>: <span class="ident">Weight</span>, <span class="kw-2">mut</span> <span class="ident">assertions</span>: <span class="ident">F</span>)
-		<span class="kw">where</span>
-			<span class="ident">F</span>: <span class="ident">FnMut</span>() -&gt; (),
+	<span class="macro">frame_support::construct_runtime!</span>(
+		<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Runtime</span> <span class="kw">where</span>
+			<span class="ident">Block</span> <span class="op">=</span> <span class="ident">Block</span>,
+			<span class="ident">NodeBlock</span> <span class="op">=</span> <span class="ident">Block</span>,
+			<span class="ident">UncheckedExtrinsic</span> <span class="op">=</span> <span class="ident">UncheckedExtrinsic</span>,
 		{
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span>: <span class="ident">sp_io::TestExternalities</span> <span class="op">=</span> <span class="ident">frame_system::GenesisConfig::default</span>()
-				.<span class="ident">build_storage</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>()
-				.<span class="ident">unwrap</span>()
-				.<span class="ident">into</span>();
-			<span class="ident">t</span>.<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
-				<span class="ident">System::set_block_consumed_resources</span>(<span class="ident">w</span>, <span class="number">0</span>);
-				<span class="ident">assertions</span>()
-			});
+			<span class="ident">System</span>: <span class="ident">frame_system</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Config</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>}
 		}
+	);
 
-		<span class="attribute">#[<span class="ident">test</span>]</span>
-		<span class="kw">fn</span> <span class="ident">multiplier_can_grow_from_zero</span>() {
-			<span class="kw">let</span> <span class="ident">minimum_multiplier</span> <span class="op">=</span> <span class="ident">MinimumMultiplier::get</span>();
-			<span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">TargetBlockFullness::get</span>() <span class="op">*</span>
-				<span class="ident">BlockWeights::get</span>().<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>).<span class="ident">max_total</span>.<span class="ident">unwrap</span>();
-			<span class="comment">// if the min is too small, then this will not change, and we are doomed forever.</span>
-			<span class="comment">// the weight is 1/100th bigger than target.</span>
-			<span class="ident">run_with_system_weight</span>(<span class="ident">target</span> <span class="op">*</span> <span class="number">101</span> <span class="op">/</span> <span class="number">100</span>, <span class="op">|</span><span class="op">|</span> {
-				<span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">SlowAdjustingFeeUpdate</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::convert</span>(<span class="ident">minimum_multiplier</span>);
-				<span class="macro">assert!</span>(<span class="ident">next</span> <span class="op">&gt;</span> <span class="ident">minimum_multiplier</span>, <span class="string">&quot;{:?} !&gt;= {:?}&quot;</span>, <span class="ident">next</span>, <span class="ident">minimum_multiplier</span>);
-			})
-		}
-
-		<span class="attribute">#[<span class="ident">test</span>]</span>
-		<span class="attribute">#[<span class="ident">ignore</span>]</span>
-		<span class="kw">fn</span> <span class="ident">multiplier_growth_simulator</span>() {
-			<span class="comment">// assume the multiplier is initially set to its minimum. We update it with values twice the</span>
-			<span class="comment">//target (target is 25%, thus 50%) and we see at which point it reaches 1.</span>
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">multiplier</span> <span class="op">=</span> <span class="ident">MinimumMultiplier::get</span>();
-			<span class="kw">let</span> <span class="ident">block_weight</span> <span class="op">=</span> <span class="ident">TargetBlockFullness::get</span>() <span class="op">*</span>
-				<span class="ident">BlockWeights::get</span>().<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>).<span class="ident">max_total</span>.<span class="ident">unwrap</span>() <span class="op">*</span>
-				<span class="number">2</span>;
-			<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">blocks</span> <span class="op">=</span> <span class="number">0</span>;
-			<span class="kw">while</span> <span class="ident">multiplier</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">Multiplier::one</span>() {
-				<span class="ident">run_with_system_weight</span>(<span class="ident">block_weight</span>, <span class="op">|</span><span class="op">|</span> {
-					<span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">SlowAdjustingFeeUpdate</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::convert</span>(<span class="ident">multiplier</span>);
-					<span class="comment">// ensure that it is growing as well.</span>
-					<span class="macro">assert!</span>(<span class="ident">next</span> <span class="op">&gt;</span> <span class="ident">multiplier</span>, <span class="string">&quot;{:?} !&gt;= {:?}&quot;</span>, <span class="ident">next</span>, <span class="ident">multiplier</span>);
-					<span class="ident">multiplier</span> <span class="op">=</span> <span class="ident">next</span>;
-				});
-				<span class="ident">blocks</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-				<span class="macro">println!</span>(<span class="string">&quot;block = {} multiplier {:?}&quot;</span>, <span class="ident">blocks</span>, <span class="ident">multiplier</span>);
-			}
-		}
+	<span class="macro">parameter_types!</span> {
+		<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BlockHashCount</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">250</span>;
+		<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">AvailableBlockRatio</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::one</span>();
+		<span class="kw">pub</span> <span class="ident">BlockLength</span>: <span class="ident">frame_system::limits::BlockLength</span> <span class="op">=</span>
+			<span class="ident">frame_system::limits::BlockLength::max</span>(<span class="number">2</span> <span class="op">*</span> <span class="number">1024</span>);
+		<span class="kw">pub</span> <span class="ident">BlockWeights</span>: <span class="ident">frame_system::limits::BlockWeights</span> <span class="op">=</span>
+			<span class="ident">frame_system::limits::BlockWeights::simple_max</span>(<span class="number">1024</span>);
 	}
+
+	<span class="kw">impl</span> <span class="ident">frame_system::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+		<span class="kw">type</span> <span class="ident">BaseCallFilter</span> <span class="op">=</span> <span class="ident">frame_support::traits::Everything</span>;
+		<span class="kw">type</span> <span class="ident">BlockWeights</span> <span class="op">=</span> <span class="ident">BlockWeights</span>;
+		<span class="kw">type</span> <span class="ident">BlockLength</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">DbWeight</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">Origin</span> <span class="op">=</span> <span class="ident">Origin</span>;
+		<span class="kw">type</span> <span class="ident">Index</span> <span class="op">=</span> <span class="ident">u64</span>;
+		<span class="kw">type</span> <span class="ident">BlockNumber</span> <span class="op">=</span> <span class="ident">u64</span>;
+		<span class="kw">type</span> <span class="ident">Call</span> <span class="op">=</span> <span class="ident">Call</span>;
+		<span class="kw">type</span> <span class="ident">Hash</span> <span class="op">=</span> <span class="ident">H256</span>;
+		<span class="kw">type</span> <span class="ident">Hashing</span> <span class="op">=</span> <span class="ident">BlakeTwo256</span>;
+		<span class="kw">type</span> <span class="ident">AccountId</span> <span class="op">=</span> <span class="ident">u64</span>;
+		<span class="kw">type</span> <span class="ident">Lookup</span> <span class="op">=</span> <span class="ident">IdentityLookup</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::AccountId</span><span class="op">&gt;</span>;
+		<span class="kw">type</span> <span class="ident">Header</span> <span class="op">=</span> <span class="ident">Header</span>;
+		<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+		<span class="kw">type</span> <span class="ident">BlockHashCount</span> <span class="op">=</span> <span class="ident">BlockHashCount</span>;
+		<span class="kw">type</span> <span class="ident">Version</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">PalletInfo</span> <span class="op">=</span> <span class="ident">PalletInfo</span>;
+		<span class="kw">type</span> <span class="ident">AccountData</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">OnNewAccount</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">OnKilledAccount</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">SystemWeightInfo</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">SS58Prefix</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">OnSetCode</span> <span class="op">=</span> ();
+		<span class="kw">type</span> <span class="ident">MaxConsumers</span> <span class="op">=</span> <span class="ident">frame_support::traits::ConstU32</span><span class="op">&lt;</span><span class="number">16</span><span class="op">&gt;</span>;
+	}
+
+	<span class="kw">fn</span> <span class="ident">run_with_system_weight</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">w</span>: <span class="ident">Weight</span>, <span class="kw-2">mut</span> <span class="ident">assertions</span>: <span class="ident">F</span>)
+	<span class="kw">where</span>
+		<span class="ident">F</span>: <span class="ident">FnMut</span>() -&gt; (),
+	{
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span>: <span class="ident">sp_io::TestExternalities</span> <span class="op">=</span> <span class="ident">frame_system::GenesisConfig::default</span>()
+			.<span class="ident">build_storage</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>()
+			.<span class="ident">unwrap</span>()
+			.<span class="ident">into</span>();
+		<span class="ident">t</span>.<span class="ident">execute_with</span>(<span class="op">|</span><span class="op">|</span> {
+			<span class="ident">System::set_block_consumed_resources</span>(<span class="ident">w</span>, <span class="number">0</span>);
+			<span class="ident">assertions</span>()
+		});
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="kw">fn</span> <span class="ident">multiplier_can_grow_from_zero</span>() {
+		<span class="kw">let</span> <span class="ident">minimum_multiplier</span> <span class="op">=</span> <span class="ident">MinimumMultiplier::get</span>();
+		<span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">TargetBlockFullness::get</span>() <span class="op">*</span>
+			<span class="ident">BlockWeights::get</span>().<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>).<span class="ident">max_total</span>.<span class="ident">unwrap</span>();
+		<span class="comment">// if the min is too small, then this will not change, and we are doomed forever.</span>
+		<span class="comment">// the weight is 1/100th bigger than target.</span>
+		<span class="ident">run_with_system_weight</span>(<span class="ident">target</span> <span class="op">*</span> <span class="number">101</span> <span class="op">/</span> <span class="number">100</span>, <span class="op">|</span><span class="op">|</span> {
+			<span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">SlowAdjustingFeeUpdate</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::convert</span>(<span class="ident">minimum_multiplier</span>);
+			<span class="macro">assert!</span>(<span class="ident">next</span> <span class="op">&gt;</span> <span class="ident">minimum_multiplier</span>, <span class="string">&quot;{:?} !&gt;= {:?}&quot;</span>, <span class="ident">next</span>, <span class="ident">minimum_multiplier</span>);
+		})
+	}
+
+	<span class="attribute">#[<span class="ident">test</span>]</span>
+	<span class="attribute">#[<span class="ident">ignore</span>]</span>
+	<span class="kw">fn</span> <span class="ident">multiplier_growth_simulator</span>() {
+		<span class="comment">// assume the multiplier is initially set to its minimum. We update it with values twice the</span>
+		<span class="comment">//target (target is 25%, thus 50%) and we see at which point it reaches 1.</span>
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">multiplier</span> <span class="op">=</span> <span class="ident">MinimumMultiplier::get</span>();
+		<span class="kw">let</span> <span class="ident">block_weight</span> <span class="op">=</span> <span class="ident">TargetBlockFullness::get</span>() <span class="op">*</span>
+			<span class="ident">BlockWeights::get</span>().<span class="ident">get</span>(<span class="ident">DispatchClass::Normal</span>).<span class="ident">max_total</span>.<span class="ident">unwrap</span>() <span class="op">*</span>
+			<span class="number">2</span>;
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">blocks</span> <span class="op">=</span> <span class="number">0</span>;
+		<span class="kw">while</span> <span class="ident">multiplier</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">Multiplier::one</span>() {
+			<span class="ident">run_with_system_weight</span>(<span class="ident">block_weight</span>, <span class="op">|</span><span class="op">|</span> {
+				<span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">SlowAdjustingFeeUpdate</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span><span class="ident">::convert</span>(<span class="ident">multiplier</span>);
+				<span class="comment">// ensure that it is growing as well.</span>
+				<span class="macro">assert!</span>(<span class="ident">next</span> <span class="op">&gt;</span> <span class="ident">multiplier</span>, <span class="string">&quot;{:?} !&gt;= {:?}&quot;</span>, <span class="ident">next</span>, <span class="ident">multiplier</span>);
+				<span class="ident">multiplier</span> <span class="op">=</span> <span class="ident">next</span>;
+			});
+			<span class="ident">blocks</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+			<span class="macro">println!</span>(<span class="string">&quot;block = {} multiplier {:?}&quot;</span>, <span class="ident">blocks</span>, <span class="ident">multiplier</span>);
+		}
 	}
 }
 </code></pre></div>

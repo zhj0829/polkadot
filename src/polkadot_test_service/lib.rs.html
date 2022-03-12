@@ -390,6 +390,7 @@
 <span id="390">390</span>
 <span id="391">391</span>
 <span id="392">392</span>
+<span id="393">393</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -418,13 +419,14 @@
 <span class="kw">use</span> <span class="ident">polkadot_node_subsystem::messages</span>::{<span class="ident">CollationGenerationMessage</span>, <span class="ident">CollatorProtocolMessage</span>};
 <span class="kw">use</span> <span class="ident">polkadot_overseer::Handle</span>;
 <span class="kw">use</span> <span class="ident">polkadot_primitives::v2</span>::{<span class="ident">Balance</span>, <span class="ident">CollatorPair</span>, <span class="ident">HeadData</span>, <span class="ident">Id</span> <span class="kw">as</span> <span class="ident">ParaId</span>, <span class="ident">ValidationCode</span>};
+<span class="kw">use</span> <span class="ident">polkadot_runtime_common::BlockHashCount</span>;
 <span class="kw">use</span> <span class="ident">polkadot_runtime_parachains::paras::ParaGenesisArgs</span>;
 <span class="kw">use</span> <span class="ident">polkadot_service</span>::{
 	<span class="ident">ClientHandle</span>, <span class="ident">Error</span>, <span class="ident">ExecuteWithClient</span>, <span class="ident">FullClient</span>, <span class="ident">IsCollator</span>, <span class="ident">NewFull</span>, <span class="ident">PrometheusConfig</span>,
 };
 <span class="kw">use</span> <span class="ident">polkadot_test_runtime</span>::{
-	<span class="ident">BlockHashCount</span>, <span class="ident">ParasSudoWrapperCall</span>, <span class="ident">Runtime</span>, <span class="ident">SignedExtra</span>, <span class="ident">SignedPayload</span>, <span class="ident">SudoCall</span>,
-	<span class="ident">UncheckedExtrinsic</span>, <span class="ident">VERSION</span>,
+	<span class="ident">ParasSudoWrapperCall</span>, <span class="ident">Runtime</span>, <span class="ident">SignedExtra</span>, <span class="ident">SignedPayload</span>, <span class="ident">SudoCall</span>, <span class="ident">UncheckedExtrinsic</span>,
+	<span class="ident">VERSION</span>,
 };
 <span class="kw">use</span> <span class="ident">sc_chain_spec::ChainSpec</span>;
 <span class="kw">use</span> <span class="ident">sc_client_api::execution_extensions::ExecutionStrategies</span>;
