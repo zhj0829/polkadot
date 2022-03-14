@@ -1719,6 +1719,20 @@
 		);
 
 		{
+			<span class="kw">for</span> (<span class="ident">peer_id</span>, <span class="ident">view</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">peer_views</span>.<span class="ident">iter</span>() {
+				<span class="kw">let</span> <span class="ident">intersection</span> <span class="op">=</span> <span class="ident">view</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="ident">new_hashes</span>.<span class="ident">contains</span>(<span class="ident">h</span>));
+				<span class="kw">let</span> <span class="ident">view_intersection</span> <span class="op">=</span> <span class="ident">View::new</span>(<span class="ident">intersection</span>.<span class="ident">cloned</span>(), <span class="ident">view</span>.<span class="ident">finalized_number</span>);
+				<span class="ident"><span class="self">Self</span>::unify_with_peer</span>(
+					<span class="ident">ctx</span>,
+					<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">gossip_peers</span>,
+					<span class="ident">metrics</span>,
+					<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">blocks</span>,
+					<span class="ident">peer_id</span>.<span class="ident">clone</span>(),
+					<span class="ident">view_intersection</span>,
+				)
+				.<span class="kw">await</span>;
+			}
+
 			<span class="kw">let</span> <span class="ident">pending_now_known</span> <span class="op">=</span> <span class="self">self</span>
 				.<span class="ident">pending_known</span>
 				.<span class="ident">keys</span>()
@@ -1772,20 +1786,6 @@
 					}
 				}
 			}
-		}
-
-		<span class="kw">for</span> (<span class="ident">peer_id</span>, <span class="ident">view</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">peer_views</span>.<span class="ident">iter</span>() {
-			<span class="kw">let</span> <span class="ident">intersection</span> <span class="op">=</span> <span class="ident">view</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">h</span><span class="op">|</span> <span class="ident">new_hashes</span>.<span class="ident">contains</span>(<span class="ident">h</span>));
-			<span class="kw">let</span> <span class="ident">view_intersection</span> <span class="op">=</span> <span class="ident">View::new</span>(<span class="ident">intersection</span>.<span class="ident">cloned</span>(), <span class="ident">view</span>.<span class="ident">finalized_number</span>);
-			<span class="ident"><span class="self">Self</span>::unify_with_peer</span>(
-				<span class="ident">ctx</span>,
-				<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">gossip_peers</span>,
-				<span class="ident">metrics</span>,
-				<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">blocks</span>,
-				<span class="ident">peer_id</span>.<span class="ident">clone</span>(),
-				<span class="ident">view_intersection</span>,
-			)
-			.<span class="kw">await</span>;
 		}
 	}
 
