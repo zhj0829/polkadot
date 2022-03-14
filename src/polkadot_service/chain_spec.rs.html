@@ -3421,8 +3421,8 @@
 ) -&gt; <span class="ident">westend::GenesisConfig</span> {
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">endowed_accounts</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">testnet_accounts</span>);
 
-	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">DOT</span>;
-	<span class="kw">const</span> <span class="ident">STASH</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="ident">DOT</span>;
+	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">WND</span>;
+	<span class="kw">const</span> <span class="ident">STASH</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">100</span> <span class="op">*</span> <span class="ident">WND</span>;
 
 	<span class="ident">westend::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">westend::SystemConfig</span> { <span class="ident">code</span>: <span class="ident">wasm_binary</span>.<span class="ident">to_vec</span>() },
@@ -3502,7 +3502,7 @@
 ) -&gt; <span class="ident">rococo_runtime::GenesisConfig</span> {
 	<span class="kw">let</span> <span class="ident">endowed_accounts</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AccountId</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">endowed_accounts</span>.<span class="ident">unwrap_or_else</span>(<span class="ident">testnet_accounts</span>);
 
-	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">DOT</span>;
+	<span class="kw">const</span> <span class="ident">ENDOWMENT</span>: <span class="ident">u128</span> <span class="op">=</span> <span class="number">1_000_000</span> <span class="op">*</span> <span class="ident">ROC</span>;
 
 	<span class="ident">rococo_runtime::GenesisConfig</span> {
 		<span class="ident">system</span>: <span class="ident">rococo_runtime::SystemConfig</span> { <span class="ident">code</span>: <span class="ident">wasm_binary</span>.<span class="ident">to_vec</span>() },
