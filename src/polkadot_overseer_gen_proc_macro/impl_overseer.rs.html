@@ -472,7 +472,7 @@
 					}).<span class="ident">timeout</span>(<span class="ident">MESSAGE_TIMEOUT</span>).<span class="kw">await</span>
 					{
 						<span class="prelude-val">None</span> =&gt; {
-							#<span class="ident">support_crate</span> <span class="macro">::tracing::error!</span>(
+							#<span class="ident">support_crate</span> <span class="macro">::gum::error!</span>(
 								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 								<span class="op">%</span><span class="ident">origin</span>,
 								<span class="string">&quot;Subsystem {} appears unresponsive.&quot;</span>,

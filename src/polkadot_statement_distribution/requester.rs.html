@@ -326,7 +326,7 @@
 				.<span class="ident">feed</span>(<span class="ident">RequesterMessage::SendRequest</span>(<span class="ident">Requests::StatementFetching</span>(<span class="ident">outgoing</span>)))
 				.<span class="kw">await</span>
 			{
-				<span class="macro">tracing::info!</span>(
+				<span class="macro">gum::info!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">err</span>,
 					<span class="string">&quot;Sending request failed, node might be shutting down - exiting.&quot;</span>
@@ -345,7 +345,7 @@
 						<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span>
 							<span class="ident">sender</span>.<span class="ident">feed</span>(<span class="ident">RequesterMessage::ReportPeer</span>(<span class="ident">peer</span>, <span class="ident">COST_WRONG_HASH</span>)).<span class="kw">await</span>
 						{
-							<span class="macro">tracing::warn!</span>(
+							<span class="macro">gum::warn!</span>(
 								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 								<span class="question-mark">?</span><span class="ident">err</span>,
 								<span class="string">&quot;Sending reputation change failed: This should not happen.&quot;</span>
@@ -365,7 +365,7 @@
 						})
 						.<span class="kw">await</span>
 					{
-						<span class="macro">tracing::warn!</span>(
+						<span class="macro">gum::warn!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="question-mark">?</span><span class="ident">err</span>,
 							<span class="string">&quot;Sending task response failed: This should not happen.&quot;</span>
@@ -378,7 +378,7 @@
 					<span class="kw">return</span>
 				},
 				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="question-mark">?</span><span class="ident">err</span>,
 						<span class="string">&quot;Receiving response failed with error - trying next peer.&quot;</span>
@@ -397,7 +397,7 @@
 		<span class="comment">// All our peers failed us - try getting new ones before trying again:</span>
 		<span class="kw">match</span> <span class="ident">try_get_new_peers</span>(<span class="ident">relay_parent</span>, <span class="ident">candidate_hash</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sender</span>, <span class="kw-2">&amp;</span><span class="ident">span</span>).<span class="kw">await</span> {
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">peers</span>)) =&gt; {
-				<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">peers</span>, <span class="string">&quot;Received new peers.&quot;</span>);
+				<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">peers</span>, <span class="string">&quot;Received new peers.&quot;</span>);
 				<span class="comment">// New arrivals will be tried first:</span>
 				<span class="ident">new_peers</span>.<span class="ident">append</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">peers</span>);
 			},
@@ -428,7 +428,7 @@
 		.<span class="ident">send</span>(<span class="ident">RequesterMessage::GetMorePeers</span> { <span class="ident">relay_parent</span>, <span class="ident">candidate_hash</span>, <span class="ident">tx</span> })
 		.<span class="kw">await</span>
 	{
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">err</span>,
 			<span class="string">&quot;Failed sending background task message, subsystem probably moved on.&quot;</span>
@@ -438,7 +438,7 @@
 
 	<span class="kw">match</span> <span class="ident">rx</span>.<span class="ident">timeout</span>(<span class="ident">RETRY_TIMEOUT</span>).<span class="kw">await</span>.<span class="ident">transpose</span>() {
 		<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-			<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Failed fetching more peers.&quot;</span>);
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Failed fetching more peers.&quot;</span>);
 			<span class="prelude-val">Err</span>(())
 		},
 		<span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">val</span>),

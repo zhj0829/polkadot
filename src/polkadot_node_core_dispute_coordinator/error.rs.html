@@ -247,10 +247,10 @@
 		<span class="kw">match</span> <span class="self">self</span> {
 			<span class="comment">// don&#39;t spam the log with spurious errors</span>
 			<span class="ident"><span class="self">Self</span>::Runtime</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident"><span class="self">Self</span>::Oneshot</span>(<span class="kw">_</span>) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>)
+				<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>)
 			},
 			<span class="comment">// it&#39;s worth reporting otherwise</span>
-			<span class="kw">_</span> =&gt; <span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>),
+			<span class="kw">_</span> =&gt; <span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>),
 		}
 	}
 }

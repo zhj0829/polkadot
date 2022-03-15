@@ -1312,10 +1312,6 @@
 <span id="1312">1312</span>
 <span id="1313">1313</span>
 <span id="1314">1314</span>
-<span id="1315">1315</span>
-<span id="1316">1316</span>
-<span id="1317">1317</span>
-<span id="1318">1318</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1456,7 +1452,7 @@
 			.<span class="ident">as_ref</span>()
 			.<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">session_index</span> <span class="op">&lt;</span> <span class="ident">s</span>.<span class="ident">earliest_session</span>())
 		{
-			<span class="macro">tracing::debug!</span>(
+			<span class="macro">gum::debug!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;Block {} is from ancient session {}. Skipping&quot;</span>,
 				<span class="ident">block_hash</span>,
@@ -1506,11 +1502,7 @@
 	{
 		<span class="prelude-val">Some</span>(<span class="ident">s</span>) =&gt; <span class="ident">s</span>,
 		<span class="prelude-val">None</span> =&gt; {
-			<span class="macro">tracing::debug!</span>(
-				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-				<span class="string">&quot;Session info unavailable for block {}&quot;</span>,
-				<span class="ident">block_hash</span>,
-			);
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Session info unavailable for block {}&quot;</span>, <span class="ident">block_hash</span>,);
 
 			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 		},
@@ -1545,7 +1537,7 @@
 				}
 			},
 			<span class="prelude-val">None</span> =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="string">&quot;BABE VRF info unavailable for block {}&quot;</span>,
 					<span class="ident">block_hash</span>,
@@ -1556,12 +1548,12 @@
 		}
 	};
 
-	<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">n_assignments</span> <span class="op">=</span> <span class="ident">assignments</span>.<span class="ident">len</span>(), <span class="string">&quot;Produced assignments&quot;</span>);
+	<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">n_assignments</span> <span class="op">=</span> <span class="ident">assignments</span>.<span class="ident">len</span>(), <span class="string">&quot;Produced assignments&quot;</span>);
 
 	<span class="kw">let</span> <span class="ident">force_approve</span> <span class="op">=</span>
 		<span class="ident">block_header</span>.<span class="ident">digest</span>.<span class="ident">convert_first</span>(<span class="op">|</span><span class="ident">l</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">ConsensusLog::from_digest_item</span>(<span class="ident">l</span>) {
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">ConsensusLog::ForceApprove</span>(<span class="ident">num</span>))) <span class="kw">if</span> <span class="ident">num</span> <span class="op">&lt;</span> <span class="ident">block_header</span>.<span class="ident">number</span> =&gt; {
-				<span class="macro">tracing::trace!</span>(
+				<span class="macro">gum::trace!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">block_hash</span>,
 					<span class="ident">current_number</span> <span class="op">=</span> <span class="ident">block_header</span>.<span class="ident">number</span>,
@@ -1574,7 +1566,7 @@
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="prelude-val">None</span>,
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">err</span>,
 					<span class="question-mark">?</span><span class="ident">block_hash</span>,
@@ -1631,7 +1623,7 @@
 
 		<span class="kw">match</span> <span class="ident">h_rx</span>.<span class="kw">await</span><span class="question-mark">?</span> {
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="string">&quot;Chain API subsystem temporarily unreachable {}&quot;</span>,
 					<span class="ident">e</span>,
@@ -1640,7 +1632,7 @@
 				<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Vec::new</span>())
 			},
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-				<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Missing header for new head {}&quot;</span>, <span class="ident">head</span>);
+				<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Missing header for new head {}&quot;</span>, <span class="ident">head</span>);
 				<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Vec::new</span>())
 			},
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">h</span>)) =&gt; <span class="ident">h</span>,
@@ -1650,7 +1642,7 @@
 	<span class="comment">// Update session info based on most recent head.</span>
 	<span class="kw">match</span> <span class="ident">state</span>.<span class="ident">cache_session_info_for_head</span>(<span class="ident">ctx</span>, <span class="ident">head</span>).<span class="kw">await</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-			<span class="macro">tracing::debug!</span>(
+			<span class="macro">gum::debug!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="question-mark">?</span><span class="ident">head</span>,
 				<span class="question-mark">?</span><span class="ident">e</span>,
@@ -1660,7 +1652,7 @@
 			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Vec::new</span>())
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">a</span> @ <span class="ident">SessionWindowUpdate::Advanced</span> { .. })) =&gt; {
-			<span class="macro">tracing::info!</span>(
+			<span class="macro">gum::info!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">update</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">a</span>,
 				<span class="string">&quot;Advanced session window for approvals&quot;</span>,
@@ -1722,7 +1714,7 @@
 					<span class="kw">if</span> <span class="op">!</span><span class="ident">lost_to_finality</span> {
 						<span class="comment">// Such errors are likely spurious, but this prevents us from getting gaps</span>
 						<span class="comment">// in the approval-db.</span>
-						<span class="macro">tracing::warn!</span>(
+						<span class="macro">gum::warn!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="string">&quot;Unable to gather info about imported block {:?}. Skipping chain.&quot;</span>,
 							(<span class="ident">block_hash</span>, <span class="ident">block_header</span>.<span class="ident">number</span>),
@@ -1737,7 +1729,7 @@
 		<span class="ident">imported_blocks_and_info</span>
 	};
 
-	<span class="macro">tracing::trace!</span>(
+	<span class="macro">gum::trace!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="ident">imported_blocks</span> <span class="op">=</span> <span class="ident">imported_blocks_and_info</span>.<span class="ident">len</span>(),
 		<span class="string">&quot;Inserting imported blocks into database&quot;</span>
@@ -1776,7 +1768,7 @@
 		<span class="kw">let</span> <span class="ident">num_candidates</span> <span class="op">=</span> <span class="ident">included_candidates</span>.<span class="ident">len</span>();
 		<span class="kw">let</span> <span class="ident">approved_bitfield</span> <span class="op">=</span> {
 			<span class="kw">if</span> <span class="ident">needed_approvals</span> <span class="op">==</span> <span class="number">0</span> {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">block_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">block_hash</span>,
 					<span class="string">&quot;Insta-approving all candidates&quot;</span>,
@@ -1794,7 +1786,7 @@
 					}
 				}
 				<span class="kw">if</span> <span class="ident">result</span>.<span class="ident">any</span>() {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">block_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">block_hash</span>,
 						<span class="string">&quot;Insta-approving {}/{} candidates as the number of validators is too low&quot;</span>,
@@ -1828,7 +1820,7 @@
 		};
 
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">up_to</span>) <span class="op">=</span> <span class="ident">force_approve</span> {
-			<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">block_hash</span>, <span class="ident">up_to</span>, <span class="string">&quot;Enacting force-approve&quot;</span>);
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">block_hash</span>, <span class="ident">up_to</span>, <span class="string">&quot;Enacting force-approve&quot;</span>);
 
 			<span class="kw">let</span> <span class="ident">approved_hashes</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::ops::force_approve</span>(<span class="ident">db</span>, <span class="ident">block_hash</span>, <span class="ident">up_to</span>)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">SubsystemError::with_origin</span>(<span class="string">&quot;approval-voting&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
@@ -1839,7 +1831,7 @@
 			}
 		}
 
-		<span class="macro">tracing::trace!</span>(
+		<span class="macro">gum::trace!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">block_hash</span>,
 			<span class="ident">block_number</span> <span class="op">=</span> <span class="ident">block_header</span>.<span class="ident">number</span>,
@@ -1879,7 +1871,7 @@
 		});
 	}
 
-	<span class="macro">tracing::trace!</span>(
+	<span class="macro">gum::trace!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="ident">head</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">head</span>,
 		<span class="ident">chain_length</span> <span class="op">=</span> <span class="ident">approval_meta</span>.<span class="ident">len</span>(),

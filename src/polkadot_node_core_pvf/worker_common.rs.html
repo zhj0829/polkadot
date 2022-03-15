@@ -363,7 +363,7 @@
 		<span class="kw">let</span> <span class="ident">socket_path</span> <span class="op">=</span> <span class="ident">socket_path</span>.<span class="ident">to_owned</span>();
 		<span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">listener</span> <span class="op">=</span> <span class="ident">UnixListener::bind</span>(<span class="kw-2">&amp;</span><span class="ident">socket_path</span>).<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="op">%</span><span class="ident">debug_id</span>,
 					<span class="string">&quot;cannot bind unix socket: {:?}&quot;</span>,
@@ -374,7 +374,7 @@
 
 			<span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span>
 				<span class="ident">WorkerHandle::spawn</span>(<span class="ident">program_path</span>, <span class="ident">extra_args</span>, <span class="ident">socket_path</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-					<span class="macro">tracing::warn!</span>(
+					<span class="macro">gum::warn!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="op">%</span><span class="ident">debug_id</span>,
 						<span class="string">&quot;cannot spawn a worker: {:?}&quot;</span>,
@@ -386,7 +386,7 @@
 			<span class="macro">futures::select!</span> {
 				<span class="ident">accept_result</span> <span class="op">=</span> <span class="ident">listener</span>.<span class="ident">accept</span>().<span class="ident">fuse</span>() =&gt; {
 					<span class="kw">let</span> (<span class="ident">stream</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">accept_result</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-						<span class="macro">tracing::warn!</span>(
+						<span class="macro">gum::warn!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="op">%</span><span class="ident">debug_id</span>,
 							<span class="string">&quot;cannot accept a worker: {:?}&quot;</span>,
@@ -475,7 +475,7 @@
 	})
 	.<span class="ident">unwrap_err</span>(); <span class="comment">// it&#39;s never `Ok` because it&#39;s `Ok(Never)`</span>
 
-	<span class="macro">tracing::debug!</span>(
+	<span class="macro">gum::debug!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="ident">worker_pid</span> <span class="op">=</span> <span class="op">%</span><span class="ident">std::process::id</span>(),
 		<span class="string">&quot;pvf worker ({}): {:?}&quot;</span>,

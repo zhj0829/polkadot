@@ -239,7 +239,7 @@
 					<span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
 					<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Signal</span>(<span class="ident">OverseerSignal::Conclude</span>)) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
 					<span class="prelude-val">Ok</span>(<span class="ident">overseer_msg</span>) =&gt; {
-						<span class="macro">tracing::debug!</span>(
+						<span class="macro">gum::debug!</span>(
 							<span class="ident">target</span>: <span class="string">&quot;dummy-subsystem&quot;</span>,
 							<span class="string">&quot;Discarding a message sent from overseer {:?}&quot;</span>,
 							<span class="ident">overseer_msg</span>

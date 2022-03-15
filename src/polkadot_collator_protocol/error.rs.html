@@ -119,7 +119,7 @@
 	<span class="kw">match</span> <span class="ident">result</span>.<span class="ident">into_nested</span>()<span class="question-mark">?</span> {
 		<span class="prelude-val">Ok</span>(()) =&gt; <span class="prelude-val">Ok</span>(()),
 		<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>);
 			<span class="prelude-val">Ok</span>(())
 		},
 	}

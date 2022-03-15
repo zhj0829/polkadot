@@ -708,7 +708,7 @@
 			<span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">do_request</span>(<span class="kw-2">&amp;</span><span class="ident">validator</span>).<span class="kw">await</span> {
 				<span class="prelude-val">Ok</span>(<span class="ident">resp</span>) =&gt; <span class="ident">resp</span>,
 				<span class="prelude-val">Err</span>(<span class="ident">TaskError::ShuttingDown</span>) =&gt; {
-					<span class="macro">tracing::info!</span>(
+					<span class="macro">gum::info!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="string">&quot;Node seems to be shutting down, canceling fetch task&quot;</span>
 					);
@@ -723,7 +723,7 @@
 			<span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">resp</span> {
 				<span class="ident">ChunkFetchingResponse::Chunk</span>(<span class="ident">resp</span>) =&gt; <span class="ident">resp</span>.<span class="ident">recombine_into_chunk</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">request</span>),
 				<span class="ident">ChunkFetchingResponse::NoSuchChunk</span> =&gt; {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">validator</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,
 						<span class="string">&quot;Validator did not have our chunk&quot;</span>
@@ -774,7 +774,7 @@
 		<span class="kw">match</span> <span class="ident">response_recv</span>.<span class="kw">await</span> {
 			<span class="prelude-val">Ok</span>(<span class="ident">resp</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">resp</span>),
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::InvalidResponse</span>(<span class="ident">err</span>)) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">origin</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,
 					<span class="ident">err</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
@@ -783,7 +783,7 @@
 				<span class="prelude-val">Err</span>(<span class="ident">TaskError::PeerError</span>)
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::NetworkError</span>(<span class="ident">err</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">origin</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,
 					<span class="ident">err</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
@@ -792,7 +792,7 @@
 				<span class="prelude-val">Err</span>(<span class="ident">TaskError::PeerError</span>)
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::Canceled</span>(<span class="ident">oneshot::Canceled</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+				<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							   <span class="ident">origin</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,
 							   <span class="string">&quot;Erasure chunk request got canceled&quot;</span>);
 				<span class="prelude-val">Err</span>(<span class="ident">TaskError::PeerError</span>)
@@ -805,7 +805,7 @@
 			<span class="kw">match</span> <span class="ident">branch_hash</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">erasure_root</span>, <span class="ident">chunk</span>.<span class="ident">proof</span>(), <span class="ident">chunk</span>.<span class="ident">index</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>) {
 				<span class="prelude-val">Ok</span>(<span class="ident">hash</span>) =&gt; <span class="ident">hash</span>,
 				<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-					<span class="macro">tracing::warn!</span>(
+					<span class="macro">gum::warn!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">candidate_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>.<span class="ident">request</span>.<span class="ident">candidate_hash</span>,
 						<span class="ident">origin</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,
@@ -817,7 +817,7 @@
 			};
 		<span class="kw">let</span> <span class="ident">erasure_chunk_hash</span> <span class="op">=</span> <span class="ident">BlakeTwo256::hash</span>(<span class="kw-2">&amp;</span><span class="ident">chunk</span>.<span class="ident">chunk</span>);
 		<span class="kw">if</span> <span class="ident">anticipated_hash</span> <span class="op">!</span><span class="op">=</span> <span class="ident">erasure_chunk_hash</span> {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">origin</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,  <span class="string">&quot;Received chunk does not match merkle tree&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">origin</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">validator</span>,  <span class="string">&quot;Received chunk does not match merkle tree&quot;</span>);
 			<span class="kw">return</span> <span class="bool-val">false</span>
 		}
 		<span class="bool-val">true</span>
@@ -837,11 +837,11 @@
 			)))
 			.<span class="kw">await</span>;
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">r</span> {
-			<span class="macro">tracing::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Storing erasure chunk failed, system shutting down?&quot;</span>);
+			<span class="macro">gum::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Storing erasure chunk failed, system shutting down?&quot;</span>);
 		}
 
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) <span class="op">=</span> <span class="ident">rx</span>.<span class="kw">await</span> {
-			<span class="macro">tracing::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Storing erasure chunk failed&quot;</span>);
+			<span class="macro">gum::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Storing erasure chunk failed&quot;</span>);
 		}
 	}
 
@@ -857,7 +857,7 @@
 			})
 		};
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">FromFetchTask::Concluded</span>(<span class="ident">payload</span>)).<span class="kw">await</span> {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">err</span><span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
 				<span class="string">&quot;Sending concluded message for task failed&quot;</span>
@@ -868,7 +868,7 @@
 	<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">conclude_fail</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">FromFetchTask::Failed</span>(<span class="self">self</span>.<span class="ident">request</span>.<span class="ident">candidate_hash</span>)).<span class="kw">await</span>
 		{
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Sending `Failed` message for task failed&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Sending `Failed` message for task failed&quot;</span>);
 		}
 	}
 }

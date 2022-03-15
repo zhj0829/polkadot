@@ -422,7 +422,7 @@
 		<span class="kw">let</span> <span class="ident">removed</span> <span class="op">=</span> <span class="ident">peers_to_remove</span>.<span class="ident">len</span>();
 		<span class="ident">state</span>.<span class="ident">previously_requested</span> <span class="op">=</span> <span class="ident">new_peer_ids</span>;
 
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">peer_set</span>,
 			<span class="question-mark">?</span><span class="ident">num_peers</span>,
@@ -435,7 +435,7 @@
 			.<span class="ident">set_reserved_peers</span>(<span class="ident">peer_set</span>.<span class="ident">into_protocol_name</span>(), <span class="ident">newly_requested</span>)
 			.<span class="kw">await</span>
 		{
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;AuthorityDiscoveryService returned an invalid multiaddress&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;AuthorityDiscoveryService returned an invalid multiaddress&quot;</span>);
 		}
 		<span class="comment">// the addresses are known to be valid</span>
 		<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">network_service</span>
@@ -472,7 +472,7 @@
 				<span class="ident">newly_requested</span>.<span class="ident">extend</span>(<span class="ident">addresses</span>);
 			} <span class="kw">else</span> {
 				<span class="ident">failed_to_resolve</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="string">&quot;Authority Discovery couldn&#39;t resolve {:?}&quot;</span>,
 					<span class="ident">authority</span>
@@ -480,7 +480,7 @@
 			}
 		}
 
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">peer_set</span>,
 			<span class="question-mark">?</span><span class="ident">requested</span>,

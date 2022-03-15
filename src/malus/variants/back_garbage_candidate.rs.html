@@ -400,15 +400,15 @@
 									<span class="ident">response_sender</span>,
 								);
 							} <span class="kw">else</span> {
-								<span class="macro">tracing::info!</span>(
-									<span class="ident">target</span> <span class="op">=</span> <span class="ident">MALUS</span>,
+								<span class="macro">gum::info!</span>(
+									<span class="ident">target</span>: <span class="ident">MALUS</span>,
 									<span class="string">&quot;Could not get availability data, can&#39;t back&quot;</span>
 								);
 							}
 						}),
 					);
 				} <span class="kw">else</span> {
-					<span class="macro">tracing::info!</span>(<span class="ident">target</span> <span class="op">=</span> <span class="ident">MALUS</span>, <span class="string">&quot;No CandidateReceipt available to work with&quot;</span>);
+					<span class="macro">gum::info!</span>(<span class="ident">target</span>: <span class="ident">MALUS</span>, <span class="string">&quot;No CandidateReceipt available to work with&quot;</span>);
 				}
 				<span class="prelude-val">None</span>
 			},

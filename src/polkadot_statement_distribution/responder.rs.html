@@ -199,11 +199,11 @@
 		<span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">receiver</span>.<span class="ident">recv</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">vec!</span>[<span class="ident">COST_INVALID_REQUEST</span>]).<span class="kw">await</span>.<span class="ident">into_nested</span>() {
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">v</span>)) =&gt; <span class="ident">v</span>,
 			<span class="prelude-val">Err</span>(<span class="ident">fatal</span>) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">fatal</span>, <span class="string">&quot;Shutting down request responder&quot;</span>);
+				<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">fatal</span>, <span class="string">&quot;Shutting down request responder&quot;</span>);
 				<span class="kw">return</span>
 			},
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="string">&quot;Decoding request failed&quot;</span>);
+				<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="string">&quot;Decoding request failed&quot;</span>);
 				<span class="kw">continue</span>
 			},
 		};
@@ -218,12 +218,12 @@
 			})
 			.<span class="kw">await</span>
 		{
-			<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Shutting down responder&quot;</span>);
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Shutting down responder&quot;</span>);
 			<span class="kw">return</span>
 		}
 		<span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rx</span>.<span class="kw">await</span> {
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Requested data not found.&quot;</span>);
+				<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Requested data not found.&quot;</span>);
 				<span class="prelude-val">Err</span>(())
 			},
 			<span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">StatementFetchingResponse::Statement</span>(<span class="ident">v</span>)),
@@ -236,7 +236,7 @@
 		};
 		<span class="ident">pending_out</span>.<span class="ident">push</span>(<span class="ident">pending_sent_rx</span>);
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">send_outgoing_response</span>(<span class="ident">response</span>) {
-			<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Sending response failed&quot;</span>);
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Sending response failed&quot;</span>);
 		}
 	}
 }

@@ -1286,9 +1286,9 @@
 
 			<span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
 				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">future</span>.<span class="kw">await</span> {
-					#<span class="ident">support_crate</span> <span class="macro">::tracing::error!</span>(<span class="ident">subsystem</span><span class="op">=</span><span class="ident">name</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;subsystem exited with error&quot;</span>);
+					#<span class="ident">support_crate</span> <span class="macro">::gum::error!</span>(<span class="ident">subsystem</span><span class="op">=</span><span class="ident">name</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;subsystem exited with error&quot;</span>);
 				} <span class="kw">else</span> {
-					#<span class="ident">support_crate</span> <span class="macro">::tracing::debug!</span>(<span class="ident">subsystem</span><span class="op">=</span><span class="ident">name</span>, <span class="string">&quot;subsystem exited without an error&quot;</span>);
+					#<span class="ident">support_crate</span> <span class="macro">::gum::debug!</span>(<span class="ident">subsystem</span><span class="op">=</span><span class="ident">name</span>, <span class="string">&quot;subsystem exited without an error&quot;</span>);
 				}
 				<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(());
 			});
@@ -1297,7 +1297,7 @@
 
 			<span class="ident">futures</span>.<span class="ident">push</span>(<span class="ident">Box::pin</span>(
 				<span class="ident">rx</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-					<span class="macro">tracing::warn!</span>(<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;dropping error&quot;</span>);
+					<span class="macro">gum::warn!</span>(<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;dropping error&quot;</span>);
 					<span class="prelude-val">Ok</span>(())
 				})
 			));

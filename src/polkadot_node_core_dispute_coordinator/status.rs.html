@@ -317,7 +317,7 @@
 		<span class="kw">match</span> <span class="ident">SystemTime::now</span>().<span class="ident">duration_since</span>(<span class="ident">UNIX_EPOCH</span>) {
 			<span class="prelude-val">Ok</span>(<span class="ident">d</span>) =&gt; <span class="ident">d</span>.<span class="ident">as_secs</span>(),
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
 					<span class="string">&quot;Current time is before unix epoch. Validation will not work correctly.&quot;</span>

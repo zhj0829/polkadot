@@ -193,7 +193,7 @@
 	<span class="ident">receiver</span>
 		.<span class="kw">await</span>
 		.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
-			<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">relay_parent</span>, <span class="string">&quot;Runtime API request dropped&quot;</span>);
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">relay_parent</span>, <span class="string">&quot;Runtime API request dropped&quot;</span>);
 			<span class="ident">RuntimeRequestError::CommunicationError</span>
 		})
 		.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
@@ -201,7 +201,7 @@
 				<span class="kw">use</span> <span class="ident">RuntimeApiSubsystemError</span>::<span class="kw-2">*</span>;
 				<span class="kw">match</span> <span class="ident">e</span> {
 					<span class="ident">Execution</span> { .. } =&gt; {
-						<span class="macro">tracing::debug!</span>(
+						<span class="macro">gum::debug!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 							<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,

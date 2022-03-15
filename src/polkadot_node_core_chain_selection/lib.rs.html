@@ -655,11 +655,6 @@
 <span id="655">655</span>
 <span id="656">656</span>
 <span id="657">657</span>
-<span id="658">658</span>
-<span id="659">659</span>
-<span id="660">660</span>
-<span id="661">661</span>
-<span id="662">662</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -869,9 +864,9 @@
 	<span class="kw">fn</span> <span class="ident">trace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 		<span class="kw">match</span> <span class="self">self</span> {
 			<span class="comment">// don&#39;t spam the log with spurious errors</span>
-			<span class="ident"><span class="self">Self</span>::Oneshot</span>(<span class="kw">_</span>) =&gt; <span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>),
+			<span class="ident"><span class="self">Self</span>::Oneshot</span>(<span class="kw">_</span>) =&gt; <span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>),
 			<span class="comment">// it&#39;s worth reporting otherwise</span>
-			<span class="kw">_</span> =&gt; <span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>),
+			<span class="kw">_</span> =&gt; <span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>),
 		}
 	}
 }
@@ -897,7 +892,7 @@
 		<span class="kw">match</span> <span class="ident">SystemTime::now</span>().<span class="ident">duration_since</span>(<span class="ident">UNIX_EPOCH</span>) {
 			<span class="prelude-val">Ok</span>(<span class="ident">d</span>) =&gt; <span class="ident">d</span>.<span class="ident">as_secs</span>(),
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
 					<span class="string">&quot;Current time is before unix epoch. Validation will not work correctly.&quot;</span>
@@ -1018,7 +1013,7 @@
 				<span class="kw">break</span>
 			},
 			<span class="prelude-val">Ok</span>(()) =&gt; {
-				<span class="macro">tracing::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;received `Conclude` signal, exiting&quot;</span>);
+				<span class="macro">gum::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;received `Conclude` signal, exiting&quot;</span>);
 				<span class="kw">break</span>
 			},
 		}
@@ -1106,7 +1101,7 @@
 	<span class="kw">let</span> <span class="ident">number</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">number_rx</span>.<span class="kw">await</span><span class="question-mark">?</span> {
 		<span class="prelude-val">Ok</span>(<span class="ident">number</span>) =&gt; <span class="ident">number</span>,
 		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Fetching finalized number failed&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Fetching finalized number failed&quot;</span>);
 			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 		},
 	};
@@ -1117,16 +1112,11 @@
 
 	<span class="kw">match</span> <span class="ident">hash_rx</span>.<span class="kw">await</span><span class="question-mark">?</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
-				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-				<span class="ident">number</span>,
-				<span class="question-mark">?</span><span class="ident">err</span>,
-				<span class="string">&quot;Fetching finalized block number failed&quot;</span>
-			);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">number</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Fetching finalized block number failed&quot;</span>);
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">number</span>, <span class="string">&quot;Missing hash for finalized block number&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">number</span>, <span class="string">&quot;Missing hash for finalized block number&quot;</span>);
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">h</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((<span class="ident">h</span>, <span class="ident">number</span>))),
@@ -1141,7 +1131,7 @@
 	<span class="ident">ctx</span>.<span class="ident">send_message</span>(<span class="ident">ChainApiMessage::BlockHeader</span>(<span class="ident">hash</span>, <span class="ident">tx</span>)).<span class="kw">await</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">rx</span>.<span class="kw">await</span><span class="question-mark">?</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-		<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">hash</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Missing hash for finalized block number&quot;</span>);
+		<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">hash</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Missing hash for finalized block number&quot;</span>);
 		<span class="prelude-val">None</span>
 	}))
 }
@@ -1156,7 +1146,7 @@
 	<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">rx</span>.<span class="kw">await</span><span class="question-mark">?</span>;
 
 	<span class="prelude-val">Ok</span>(<span class="ident">res</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-		<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">hash</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Missing hash for finalized block number&quot;</span>);
+		<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">hash</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Missing hash for finalized block number&quot;</span>);
 		<span class="prelude-val">None</span>
 	}))
 }
@@ -1180,7 +1170,7 @@
 
 	<span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">fetch_header</span>(<span class="ident">ctx</span>, <span class="ident">hash</span>).<span class="kw">await</span><span class="question-mark">?</span> {
 		<span class="prelude-val">None</span> =&gt; {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">hash</span>, <span class="string">&quot;Missing header for new head&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">hash</span>, <span class="string">&quot;Missing header for new head&quot;</span>);
 			<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Vec::new</span>())
 		},
 		<span class="prelude-val">Some</span>(<span class="ident">h</span>) =&gt; <span class="ident">h</span>,
@@ -1202,7 +1192,7 @@
 	<span class="kw">for</span> (<span class="ident">hash</span>, <span class="ident">header</span>) <span class="kw">in</span> <span class="ident">new_blocks</span>.<span class="ident">into_iter</span>().<span class="ident">rev</span>() {
 		<span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">fetch_block_weight</span>(<span class="ident">ctx</span>, <span class="ident">hash</span>).<span class="kw">await</span><span class="question-mark">?</span> {
 			<span class="prelude-val">None</span> =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">hash</span>,
 					<span class="string">&quot;Missing block weight for new head. Skipping chain.&quot;</span>,
@@ -1242,7 +1232,7 @@
 		.<span class="ident">enumerate</span>()
 		.<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">i</span>, <span class="ident">d</span>)<span class="op">|</span> <span class="kw">match</span> <span class="ident">ConsensusLog::from_digest_item</span>(<span class="ident">d</span>) {
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
 					<span class="ident">index</span> <span class="op">=</span> <span class="ident">i</span>,
@@ -1254,7 +1244,7 @@
 			},
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">ConsensusLog::Revert</span>(<span class="ident">b</span>))) <span class="kw">if</span> <span class="ident">b</span> <span class="op">&lt;</span> <span class="ident">number</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">b</span>),
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">ConsensusLog::Revert</span>(<span class="ident">b</span>))) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">revert_target</span> <span class="op">=</span> <span class="ident">b</span>,
 					<span class="ident">block_number</span> <span class="op">=</span> <span class="ident">number</span>,

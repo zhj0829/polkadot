@@ -1816,13 +1816,13 @@
 	<span class="ident">artifact_ttl</span>: <span class="ident">Duration</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Fatal</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="ident">to_remove</span> <span class="op">=</span> <span class="ident">artifacts</span>.<span class="ident">prune</span>(<span class="ident">artifact_ttl</span>);
-	<span class="macro">tracing::debug!</span>(
+	<span class="macro">gum::debug!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="string">&quot;PVF pruning: {} artifacts reached their end of life&quot;</span>,
 		<span class="ident">to_remove</span>.<span class="ident">len</span>(),
 	);
 	<span class="kw">for</span> <span class="ident">artifact_id</span> <span class="kw">in</span> <span class="ident">to_remove</span> {
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="ident">validation_code_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">artifact_id</span>.<span class="ident">code_hash</span>,
 			<span class="string">&quot;pruning artifact&quot;</span>,
@@ -1841,7 +1841,7 @@
 			<span class="prelude-val">None</span> =&gt; <span class="kw">break</span>,
 			<span class="prelude-val">Some</span>(<span class="ident">condemned</span>) =&gt; {
 				<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">async_std::fs::remove_file</span>(<span class="kw-2">&amp;</span><span class="ident">condemned</span>).<span class="kw">await</span>;
-				<span class="macro">tracing::trace!</span>(
+				<span class="macro">gum::trace!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">result</span>,
 					<span class="string">&quot;Sweeping the artifact file {}&quot;</span>,

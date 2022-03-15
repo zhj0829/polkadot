@@ -429,7 +429,7 @@
 	<span class="kw">where</span>
 		<span class="ident">Context</span>: <span class="ident">SubsystemContext</span>,
 	{
-		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">update</span>, <span class="string">&quot;Update fetching heads&quot;</span>);
+		<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">update</span>, <span class="string">&quot;Update fetching heads&quot;</span>);
 		<span class="kw">let</span> <span class="ident">ActiveLeavesUpdate</span> { <span class="ident">activated</span>, <span class="ident">deactivated</span> } <span class="op">=</span> <span class="ident">update</span>;
 		<span class="comment">// Stale leaves happen after a reversion - we don&#39;t want to re-run availability there.</span>
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">leaf</span>) <span class="op">=</span> <span class="ident">activated</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">leaf</span><span class="op">|</span> <span class="ident">leaf</span>.<span class="ident">status</span> <span class="op">==</span> <span class="ident">LeafStatus::Fresh</span>) {
@@ -466,7 +466,7 @@
 		<span class="comment">// Also spawn or bump tasks for candidates in ancestry in the same session.</span>
 		<span class="kw">for</span> <span class="ident">hash</span> <span class="kw">in</span> <span class="ident">std::iter::once</span>(<span class="ident">leaf</span>).<span class="ident">chain</span>(<span class="ident">ancestors_in_session</span>) {
 			<span class="kw">let</span> <span class="ident">cores</span> <span class="op">=</span> <span class="ident">get_occupied_cores</span>(<span class="ident">ctx</span>, <span class="ident">hash</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-			<span class="macro">tracing::trace!</span>(
+			<span class="macro">gum::trace!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">occupied_cores</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">cores</span>,
 				<span class="string">&quot;Query occupied core&quot;</span>
@@ -538,7 +538,7 @@
 						)
 						.<span class="kw">await</span>
 						.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-							<span class="macro">tracing::warn!</span>(
+							<span class="macro">gum::warn!</span>(
 								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 								<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
 								<span class="string">&quot;Failed to spawn a fetch task&quot;</span>

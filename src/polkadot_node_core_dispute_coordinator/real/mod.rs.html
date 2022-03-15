@@ -406,10 +406,6 @@
 <span id="406">406</span>
 <span id="407">407</span>
 <span id="408">408</span>
-<span id="409">409</span>
-<span id="410">410</span>
-<span id="411">411</span>
-<span id="412">412</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -606,7 +602,7 @@
 			<span class="kw">let</span> (<span class="ident">first_leaf</span>, <span class="ident">rolling_session_window</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_rolling_session_window</span>(<span class="ident">ctx</span>).<span class="kw">await</span> {
 				<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">update</span>)) =&gt; <span class="ident">update</span>,
 				<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-					<span class="macro">tracing::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;received `Conclude` signal, exiting&quot;</span>);
+					<span class="macro">gum::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;received `Conclude` signal, exiting&quot;</span>);
 					<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
 				},
 				<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
@@ -679,11 +675,7 @@
 				<span class="ident">get_active_with_status</span>(<span class="ident">disputes</span>.<span class="ident">into_iter</span>(), <span class="ident">clock</span>.<span class="ident">now</span>()).<span class="ident">collect</span>(),
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="ident">Vec::new</span>(),
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-				<span class="macro">tracing::error!</span>(
-					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-					<span class="string">&quot;Failed initial load of recent disputes: {:?}&quot;</span>,
-					<span class="ident">e</span>
-				);
+				<span class="macro">gum::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Failed initial load of recent disputes: {:?}&quot;</span>, <span class="ident">e</span>);
 				<span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>())
 			},
 		};
@@ -697,7 +689,7 @@
 					<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">votes</span>)) =&gt; <span class="ident">votes</span>.<span class="ident">into</span>(),
 					<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">continue</span>,
 					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-						<span class="macro">tracing::error!</span>(
+						<span class="macro">gum::error!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="string">&quot;Failed initial load of candidate votes: {:?}&quot;</span>,
 							<span class="ident">e</span>
@@ -708,7 +700,7 @@
 
 			<span class="kw">let</span> <span class="ident">validators</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rolling_session_window</span>.<span class="ident">session_info</span>(<span class="ident">session</span>) {
 				<span class="prelude-val">None</span> =&gt; {
-					<span class="macro">tracing::warn!</span>(
+					<span class="macro">gum::warn!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">session</span>,
 						<span class="string">&quot;Missing info for session which has an active dispute&quot;</span>,
@@ -813,7 +805,7 @@
 			<span class="comment">// hour old database state, we should rather cancel contained oneshots and delay</span>
 			<span class="comment">// finality until we are fully functional.</span>
 			{
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">msg</span>,
 					<span class="string">&quot;Received msg before first active leaves update. This is not expected - message will be dropped.&quot;</span>

@@ -667,7 +667,7 @@
 					)
 					.<span class="kw">await</span>
 					{
-						<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;failed to handle new activations&quot;</span>);
+						<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;failed to handle new activations&quot;</span>);
 					}
 				}
 
@@ -678,7 +678,7 @@
 				<span class="ident">msg</span>: <span class="ident">CollationGenerationMessage::Initialize</span>(<span class="ident">config</span>),
 			}) =&gt; {
 				<span class="kw">if</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">is_some</span>() {
-					<span class="macro">tracing::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;double initialization&quot;</span>);
+					<span class="macro">gum::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;double initialization&quot;</span>);
 				} <span class="kw">else</span> {
 					<span class="self">self</span>.<span class="ident">config</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Arc::new</span>(<span class="ident">config</span>));
 				}
@@ -686,7 +686,7 @@
 			},
 			<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Signal</span>(<span class="ident">OverseerSignal::BlockFinalized</span>(..))) =&gt; <span class="bool-val">false</span>,
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-				<span class="macro">tracing::error!</span>(
+				<span class="macro">gum::error!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
 					<span class="string">&quot;error receiving message from subsystem context: {:?}&quot;</span>,
@@ -745,7 +745,7 @@
 					(<span class="ident">scheduled_core</span>, <span class="ident">OccupiedCoreAssumption::Free</span>),
 				<span class="ident">CoreState::Occupied</span>(<span class="ident">_occupied_core</span>) =&gt; {
 					<span class="comment">// TODO: https://github.com/paritytech/polkadot/issues/1573</span>
-					<span class="macro">tracing::trace!</span>(
+					<span class="macro">gum::trace!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">core_idx</span> <span class="op">=</span> <span class="op">%</span><span class="ident">core_idx</span>,
 						<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">relay_parent</span>,
@@ -754,7 +754,7 @@
 					<span class="kw">continue</span>
 				},
 				<span class="ident">CoreState::Free</span> =&gt; {
-					<span class="macro">tracing::trace!</span>(
+					<span class="macro">gum::trace!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">core_idx</span> <span class="op">=</span> <span class="op">%</span><span class="ident">core_idx</span>,
 						<span class="string">&quot;core is free. Keep going.&quot;</span>,
@@ -764,7 +764,7 @@
 			};
 
 			<span class="kw">if</span> <span class="ident">scheduled_core</span>.<span class="ident">para_id</span> <span class="op">!</span><span class="op">=</span> <span class="ident">config</span>.<span class="ident">para_id</span> {
-				<span class="macro">tracing::trace!</span>(
+				<span class="macro">gum::trace!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">core_idx</span> <span class="op">=</span> <span class="op">%</span><span class="ident">core_idx</span>,
 					<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">relay_parent</span>,
@@ -790,7 +790,7 @@
 			{
 				<span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
 				<span class="prelude-val">None</span> =&gt; {
-					<span class="macro">tracing::trace!</span>(
+					<span class="macro">gum::trace!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">core_idx</span> <span class="op">=</span> <span class="op">%</span><span class="ident">core_idx</span>,
 						<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">relay_parent</span>,
@@ -812,7 +812,7 @@
 			{
 				<span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
 				<span class="prelude-val">None</span> =&gt; {
-					<span class="macro">tracing::trace!</span>(
+					<span class="macro">gum::trace!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">core_idx</span> <span class="op">=</span> <span class="op">%</span><span class="ident">core_idx</span>,
 						<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">relay_parent</span>,
@@ -836,7 +836,7 @@
 						<span class="kw">match</span> (<span class="ident">task_config</span>.<span class="ident">collator</span>)(<span class="ident">relay_parent</span>, <span class="kw-2">&amp;</span><span class="ident">validation_data</span>).<span class="kw">await</span> {
 							<span class="prelude-val">Some</span>(<span class="ident">collation</span>) =&gt; <span class="ident">collation</span>.<span class="ident">into_inner</span>(),
 							<span class="prelude-val">None</span> =&gt; {
-								<span class="macro">tracing::debug!</span>(
+								<span class="macro">gum::debug!</span>(
 									<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 									<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">scheduled_core</span>.<span class="ident">para_id</span>,
 									<span class="string">&quot;collator returned no collation on collate&quot;</span>,
@@ -856,7 +856,7 @@
 						<span class="comment">// As such, honest collators never produce an uncompressed PoV which starts with</span>
 						<span class="comment">// a compression magic number, which would lead validators to reject the collation.</span>
 						<span class="kw">if</span> <span class="ident">encoded_size</span> <span class="op">&gt;</span> <span class="ident">validation_data</span>.<span class="ident">max_pov_size</span> <span class="kw">as</span> <span class="ident">usize</span> {
-							<span class="macro">tracing::debug!</span>(
+							<span class="macro">gum::debug!</span>(
 								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 								<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">scheduled_core</span>.<span class="ident">para_id</span>,
 								<span class="ident">size</span> <span class="op">=</span> <span class="ident">encoded_size</span>,
@@ -884,7 +884,7 @@
 						<span class="kw">match</span> <span class="ident">erasure_root</span>(<span class="ident">n_validators</span>, <span class="ident">validation_data</span>, <span class="ident">pov</span>.<span class="ident">clone</span>()) {
 							<span class="prelude-val">Ok</span>(<span class="ident">erasure_root</span>) =&gt; <span class="ident">erasure_root</span>,
 							<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-								<span class="macro">tracing::error!</span>(
+								<span class="macro">gum::error!</span>(
 									<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 									<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">scheduled_core</span>.<span class="ident">para_id</span>,
 									<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
@@ -918,7 +918,7 @@
 						},
 					};
 
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">candidate_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">ccr</span>.<span class="ident">hash</span>(),
 						<span class="question-mark">?</span><span class="ident">pov_hash</span>,
@@ -934,7 +934,7 @@
 						))
 						.<span class="kw">await</span>
 					{
-						<span class="macro">tracing::warn!</span>(
+						<span class="macro">gum::warn!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">scheduled_core</span>.<span class="ident">para_id</span>,
 							<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,

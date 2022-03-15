@@ -1367,7 +1367,7 @@
 			)
 			.<span class="kw">await</span>
 			{
-				<span class="macro">tracing::error!</span>(
+				<span class="macro">gum::error!</span>(
 					<span class="ident">job</span> <span class="op">=</span> <span class="ident">Job::NAME</span>,
 					<span class="ident">parent_hash</span> <span class="op">=</span> <span class="op">%</span><span class="ident">hash</span>,
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
@@ -1513,7 +1513,7 @@
 							}
 						}
 						<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-							<span class="macro">tracing::error!</span>(
+							<span class="macro">gum::error!</span>(
 								<span class="ident">job</span> <span class="op">=</span> <span class="ident">Job::NAME</span>,
 								<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
 								<span class="string">&quot;error receiving message from subsystem context for job&quot;</span>,
@@ -1532,7 +1532,7 @@
 					};
 
 					<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">res</span> {
-						<span class="macro">tracing::warn!</span>(<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;failed to handle command from job&quot;</span>);
+						<span class="macro">gum::warn!</span>(<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>, <span class="string">&quot;failed to handle command from job&quot;</span>);
 					}
 				}
 				<span class="ident">complete</span> =&gt; <span class="kw">break</span>,

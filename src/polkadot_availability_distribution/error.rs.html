@@ -110,7 +110,6 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
-<span id="113">113</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -213,12 +212,11 @@
 				<span class="ident">JfyiError::InvalidValidatorIndex</span> <span class="op">|</span>
 				<span class="ident">JfyiError::NoSuchCachedSession</span> { .. } <span class="op">|</span>
 				<span class="ident">JfyiError::QueryAvailableDataResponseChannel</span>(<span class="kw">_</span>) <span class="op">|</span>
-				<span class="ident">JfyiError::QueryChunkResponseChannel</span>(<span class="kw">_</span>) =&gt;
-					<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>),
+				<span class="ident">JfyiError::QueryChunkResponseChannel</span>(<span class="kw">_</span>) =&gt; <span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="op">%</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>),
 				<span class="ident">JfyiError::FetchPoV</span>(<span class="kw">_</span>) <span class="op">|</span>
 				<span class="ident">JfyiError::SendResponse</span> <span class="op">|</span>
 				<span class="ident">JfyiError::NoSuchPoV</span> <span class="op">|</span>
-				<span class="ident">JfyiError::Runtime</span>(<span class="kw">_</span>) =&gt; <span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>),
+				<span class="ident">JfyiError::Runtime</span>(<span class="kw">_</span>) =&gt; <span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>),
 			}
 			<span class="prelude-val">Ok</span>(())
 		},

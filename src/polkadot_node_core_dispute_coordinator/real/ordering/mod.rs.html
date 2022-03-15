@@ -540,7 +540,7 @@
 		}
 		<span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">get_block_number</span>(<span class="ident">sender</span>, <span class="ident">candidate</span>.<span class="ident">descriptor</span>().<span class="ident">relay_parent</span>).<span class="kw">await</span><span class="question-mark">?</span> {
 			<span class="prelude-val">None</span> =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">candidate_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">candidate_hash</span>,
 					<span class="string">&quot;Candidate&#39;s relay_parent could not be found via chain API, but we saw candidate included?!&quot;</span>
@@ -575,7 +575,7 @@
 					)
 					.<span class="kw">await</span>
 					.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
-						<span class="macro">tracing::debug!</span>(
+						<span class="macro">gum::debug!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="ident">activated_leaf</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">activated</span>,
 							<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
@@ -587,7 +587,7 @@
 					})
 				},
 				<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">activated_leaf</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">activated</span>,
 						<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">err</span>,
@@ -687,7 +687,7 @@
 				<span class="prelude-val">None</span> =&gt; {
 					<span class="comment">// It&#39;s assumed that it&#39;s impossible to retrieve</span>
 					<span class="comment">// more than N ancestors for block number N.</span>
-					<span class="macro">tracing::error!</span>(
+					<span class="macro">gum::error!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="string">&quot;Received {} ancestors for block number {} from Chain API&quot;</span>,
 						<span class="ident">hashes</span>.<span class="ident">len</span>(),

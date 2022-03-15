@@ -199,14 +199,14 @@
 		<span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">run_until_error</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="ident">subsystem</span>).<span class="kw">await</span>;
 		<span class="kw">match</span> <span class="ident">res</span>.<span class="ident">into_nested</span>() {
 			<span class="prelude-val">Err</span>(<span class="ident">fatal</span>) =&gt; {
-				<span class="macro">tracing::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Observed fatal issue: {:?}&quot;</span>, <span class="ident">fatal</span>);
+				<span class="macro">gum::error!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Observed fatal issue: {:?}&quot;</span>, <span class="ident">fatal</span>);
 				<span class="kw">break</span>
 			},
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Observed issue: {:?}&quot;</span>, <span class="ident">jfyi</span>);
+				<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Observed issue: {:?}&quot;</span>, <span class="ident">jfyi</span>);
 			},
 			<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(())) =&gt; {
-				<span class="macro">tracing::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Received `Conclude` signal, exiting&quot;</span>);
+				<span class="macro">gum::info!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Received `Conclude` signal, exiting&quot;</span>);
 				<span class="kw">break</span>
 			},
 		}

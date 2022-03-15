@@ -702,7 +702,7 @@
 
 	<span class="kw">let</span> <span class="ident">available_data</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">recover_available_data_rx</span>.<span class="kw">await</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;`Oneshot` got cancelled when recovering available data {:?}&quot;</span>,
 				<span class="ident">req</span>.<span class="ident">candidate_hash</span>(),
@@ -734,7 +734,7 @@
 	{
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">code</span>)) =&gt; <span class="ident">code</span>,
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;Validation code unavailable for code hash {:?} in the state of block {:?}&quot;</span>,
 				<span class="ident">req</span>.<span class="ident">candidate_receipt</span>().<span class="ident">descriptor</span>.<span class="ident">validation_code_hash</span>,
@@ -745,7 +745,7 @@
 			<span class="kw">return</span>
 		},
 		<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Error when fetching validation code.&quot;</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="string">&quot;Error when fetching validation code.&quot;</span>);
 			<span class="ident">send_result</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result_sender</span>, <span class="ident">req</span>, <span class="ident">ParticipationOutcome::Error</span>).<span class="kw">await</span>;
 			<span class="kw">return</span>
 		},
@@ -769,14 +769,14 @@
 
 	<span class="kw">match</span> <span class="ident">store_available_data_rx</span>.<span class="kw">await</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;`Oneshot` got cancelled when storing available data {:?}&quot;</span>,
 				<span class="ident">req</span>.<span class="ident">candidate_hash</span>(),
 			);
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="question-mark">?</span><span class="ident">err</span>,
 				<span class="string">&quot;Failed to store available data for candidate {:?}&quot;</span>,
@@ -811,7 +811,7 @@
 	<span class="comment">// the validation and if valid, whether the commitments hash matches</span>
 	<span class="kw">match</span> <span class="ident">validation_rx</span>.<span class="kw">await</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">oneshot::Canceled</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;`Oneshot` got cancelled when validating candidate {:?}&quot;</span>,
 				<span class="ident">req</span>.<span class="ident">candidate_hash</span>(),
@@ -820,7 +820,7 @@
 			<span class="kw">return</span>
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;Candidate {:?} validation failed with: {:?}&quot;</span>,
 				<span class="ident">req</span>.<span class="ident">candidate_hash</span>(),
@@ -830,7 +830,7 @@
 			<span class="ident">send_result</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result_sender</span>, <span class="ident">req</span>, <span class="ident">ParticipationOutcome::Invalid</span>).<span class="kw">await</span>;
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">ValidationResult::Invalid</span>(<span class="ident">invalid</span>))) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;Candidate {:?} considered invalid: {:?}&quot;</span>,
 				<span class="ident">req</span>.<span class="ident">candidate_hash</span>(),
@@ -841,7 +841,7 @@
 		},
 		<span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">ValidationResult::Valid</span>(<span class="ident">commitments</span>, <span class="kw">_</span>))) =&gt; {
 			<span class="kw">if</span> <span class="ident">commitments</span>.<span class="ident">hash</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">req</span>.<span class="ident">candidate_receipt</span>().<span class="ident">commitments_hash</span> {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">expected</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">req</span>.<span class="ident">candidate_receipt</span>().<span class="ident">commitments_hash</span>,
 					<span class="ident">got</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">commitments</span>.<span class="ident">hash</span>(),
@@ -863,7 +863,7 @@
 	<span class="ident">outcome</span>: <span class="ident">ParticipationOutcome</span>,
 ) {
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">feed</span>(<span class="ident">WorkerMessage::from_request</span>(<span class="ident">req</span>, <span class="ident">outcome</span>)).<span class="kw">await</span> {
-		<span class="macro">tracing::error!</span>(
+		<span class="macro">gum::error!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">err</span>,
 			<span class="string">&quot;Sending back participation result failed. Dispute coordinator not working properly!&quot;</span>

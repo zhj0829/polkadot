@@ -303,8 +303,8 @@
 			<span class="kw">move</span> <span class="op">|</span>(<span class="kw-2">mut</span> <span class="ident">subsystem_sender</span>, <span class="ident">hash</span>, <span class="ident">candidate_receipt</span>): (<span class="kw">_</span>, <span class="ident">Hash</span>, <span class="ident">CandidateReceipt</span>)<span class="op">|</span> {
 				<span class="kw">let</span> <span class="ident">keystore</span> <span class="op">=</span> <span class="ident">keystore</span>.<span class="ident">clone</span>();
 				<span class="kw">async</span> <span class="kw">move</span> {
-					<span class="macro">tracing::info!</span>(
-						<span class="ident">target</span> <span class="op">=</span> <span class="ident">MALUS</span>,
+					<span class="macro">gum::info!</span>(
+						<span class="ident">target</span>: <span class="ident">MALUS</span>,
 						<span class="string">&quot;Replacing seconded candidate pov with something else&quot;</span>
 					);
 
@@ -331,7 +331,7 @@
 							))
 							.<span class="kw">await</span>;
 					} <span class="kw">else</span> {
-						<span class="macro">tracing::info!</span>(<span class="string">&quot;We are not a validator. Not siging anything.&quot;</span>);
+						<span class="macro">gum::info!</span>(<span class="string">&quot;We are not a validator. Not siging anything.&quot;</span>);
 					}
 				}
 			},

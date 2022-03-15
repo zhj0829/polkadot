@@ -136,7 +136,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_error</span>(<span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="ident">std::result::Result</span><span class="op">&lt;</span>(), <span class="ident">FatalError</span><span class="op">&gt;</span> {
 	<span class="kw">match</span> <span class="ident">result</span>.<span class="ident">into_nested</span>()<span class="question-mark">?</span> {
 		<span class="prelude-val">Err</span>(<span class="ident">jfyi</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>);
+			<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">jfyi</span>, <span class="ident">ctx</span>);
 			<span class="prelude-val">Ok</span>(())
 		},
 		<span class="prelude-val">Ok</span>(()) =&gt; <span class="prelude-val">Ok</span>(()),

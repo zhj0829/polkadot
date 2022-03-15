@@ -1470,6 +1470,26 @@
 <span id="1470">1470</span>
 <span id="1471">1471</span>
 <span id="1472">1472</span>
+<span id="1473">1473</span>
+<span id="1474">1474</span>
+<span id="1475">1475</span>
+<span id="1476">1476</span>
+<span id="1477">1477</span>
+<span id="1478">1478</span>
+<span id="1479">1479</span>
+<span id="1480">1480</span>
+<span id="1481">1481</span>
+<span id="1482">1482</span>
+<span id="1483">1483</span>
+<span id="1484">1484</span>
+<span id="1485">1485</span>
+<span id="1486">1486</span>
+<span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1603,6 +1623,13 @@
 			.<span class="ident">as_ref</span>()
 			.<span class="ident">map</span>(<span class="op">|</span><span class="ident">metrics</span><span class="op">|</span> <span class="ident">metrics</span>.<span class="ident">collator_peer_count</span>.<span class="ident">set</span>(<span class="ident">collator_peers</span> <span class="kw">as</span> <span class="ident">u64</span>));
 	}
+
+	<span class="doccomment">/// Provide a timer for `PerRequest` structure which observes on drop.</span>
+	<span class="kw">fn</span> <span class="ident">time_collation_request_duration</span>(
+		<span class="kw-2">&amp;</span><span class="self">self</span>,
+	) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">metrics::prometheus::prometheus::HistogramTimer</span><span class="op">&gt;</span> {
+		<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">metrics</span><span class="op">|</span> <span class="ident">metrics</span>.<span class="ident">collation_request_duration</span>.<span class="ident">start_timer</span>())
+	}
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -1611,6 +1638,7 @@
 	<span class="ident">process_msg</span>: <span class="ident">prometheus::Histogram</span>,
 	<span class="ident">handle_collation_request_result</span>: <span class="ident">prometheus::Histogram</span>,
 	<span class="ident">collator_peer_count</span>: <span class="ident">prometheus::Gauge</span><span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span>,
+	<span class="ident">collation_request_duration</span>: <span class="ident">prometheus::Histogram</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">metrics::Metrics</span> <span class="kw">for</span> <span class="ident">Metrics</span> {
@@ -1653,6 +1681,15 @@
 				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
+			<span class="ident">collation_request_duration</span>: <span class="ident">prometheus::register</span>(
+				<span class="ident">prometheus::Histogram::with_opts</span>(
+					<span class="ident">prometheus::HistogramOpts::new</span>(
+						<span class="string">&quot;polkadot_parachain_collator_protocol_validator_collation_request_duration&quot;</span>,
+						<span class="string">&quot;Lifetime of the `PerRequest` structure&quot;</span>,
+					).<span class="ident">buckets</span>(<span class="macro">vec!</span>[<span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.2</span>, <span class="number">0.3</span>, <span class="number">0.4</span>, <span class="number">0.5</span>, <span class="number">0.6</span>, <span class="number">0.75</span>, <span class="number">0.9</span>, <span class="number">1.0</span>, <span class="number">1.2</span>, <span class="number">1.5</span>, <span class="number">1.75</span>]),
+				)<span class="question-mark">?</span>,
+				<span class="ident">registry</span>,
+			)<span class="question-mark">?</span>,
 		};
 
 		<span class="prelude-val">Ok</span>(<span class="ident">Metrics</span>(<span class="prelude-val">Some</span>(<span class="ident">metrics</span>)))
@@ -1666,6 +1703,8 @@
 	<span class="ident">to_requester</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span>(<span class="ident">CandidateReceipt</span>, <span class="ident">PoV</span>)<span class="op">&gt;</span>,
 	<span class="doccomment">/// A jaeger span corresponding to the lifetime of the request.</span>
 	<span class="ident">span</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">jaeger::Span</span><span class="op">&gt;</span>,
+	<span class="doccomment">/// A metric histogram for the lifetime of the request</span>
+	<span class="ident">_lifetime_timer</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">metrics::prometheus::prometheus::HistogramTimer</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -1843,7 +1882,7 @@
 			<span class="kw">let</span> (<span class="ident">validators</span>, <span class="ident">groups</span>, <span class="ident">rotation_info</span>, <span class="ident">cores</span>) <span class="op">=</span> <span class="kw">match</span> (<span class="ident">mv</span>, <span class="ident">mg</span>, <span class="ident">mc</span>) {
 				(<span class="prelude-val">Some</span>(<span class="ident">v</span>), <span class="prelude-val">Some</span>((<span class="ident">g</span>, <span class="ident">r</span>)), <span class="prelude-val">Some</span>(<span class="ident">c</span>)) =&gt; (<span class="ident">v</span>, <span class="ident">g</span>, <span class="ident">r</span>, <span class="ident">c</span>),
 				<span class="kw">_</span> =&gt; {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 						<span class="string">&quot;Failed to query runtime API for relay-parent&quot;</span>,
@@ -1865,7 +1904,7 @@
 						<span class="ident">cores</span>.<span class="ident">get</span>(<span class="ident">core_now</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">usize</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">para_id</span>())
 					},
 					<span class="prelude-val">None</span> =&gt; {
-						<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">relay_parent</span>, <span class="string">&quot;Not a validator&quot;</span>);
+						<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">relay_parent</span>, <span class="string">&quot;Not a validator&quot;</span>);
 
 						<span class="kw">continue</span>
 					},
@@ -1883,7 +1922,7 @@
 				<span class="kw">let</span> <span class="ident">entry</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_assignments</span>.<span class="ident">entry</span>(<span class="ident">para_now</span>).<span class="ident">or_default</span>();
 				<span class="kw-2">*</span><span class="ident">entry</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 				<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">entry</span> <span class="op">==</span> <span class="number">1</span> {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 						<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">para_now</span>,
@@ -1907,7 +1946,7 @@
 						<span class="kw-2">*</span><span class="ident">occupied</span>.<span class="ident">get_mut</span>() <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
 						<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">occupied</span>.<span class="ident">get</span>() <span class="op">==</span> <span class="number">0</span> {
 							<span class="ident">occupied</span>.<span class="ident">remove_entry</span>();
-							<span class="macro">tracing::debug!</span>(
+							<span class="macro">gum::debug!</span>(
 								<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 								<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">cur</span>,
 								<span class="string">&quot;Unassigned from a parachain&quot;</span>,
@@ -2005,7 +2044,7 @@
 		<span class="comment">// If finished one does not match waiting_collation, then we already dequeued another fetch</span>
 		<span class="comment">// to replace it.</span>
 		<span class="kw">if</span> <span class="self">self</span>.<span class="ident">waiting_collation</span> <span class="op">!</span><span class="op">=</span> <span class="ident">finished_one</span> {
-			<span class="macro">tracing::trace!</span>(
+			<span class="macro">gum::trace!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">waiting_collation</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>.<span class="ident">waiting_collation</span>,
 				<span class="question-mark">?</span><span class="ident">finished_one</span>,
@@ -2200,7 +2239,7 @@
 	<span class="ident">Context</span>: <span class="ident">SubsystemContext</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident">CollatorProtocolMessage</span><span class="op">&gt;</span>,
 {
 	<span class="kw">if</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">view</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>) {
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="ident">peer_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">peer_id</span>,
 			<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">para_id</span>,
@@ -2211,7 +2250,7 @@
 	}
 	<span class="kw">let</span> <span class="ident">pending_collation</span> <span class="op">=</span> <span class="ident">PendingCollation::new</span>(<span class="ident">relay_parent</span>, <span class="kw-2">&amp;</span><span class="ident">para_id</span>, <span class="kw-2">&amp;</span><span class="ident">peer_id</span>);
 	<span class="kw">if</span> <span class="ident">state</span>.<span class="ident">requested_collations</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">pending_collation</span>) {
-		<span class="macro">tracing::warn!</span>(
+		<span class="macro">gum::warn!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="ident">peer_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">pending_collation</span>.<span class="ident">peer_id</span>,
 			<span class="op">%</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
@@ -2234,13 +2273,14 @@
 			.<span class="ident">span_per_relay_parent</span>
 			.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>)
 			.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">child</span>(<span class="string">&quot;collation-request&quot;</span>).<span class="ident">with_para_id</span>(<span class="ident">para_id</span>)),
+		<span class="ident">_lifetime_timer</span>: <span class="ident">state</span>.<span class="ident">metrics</span>.<span class="ident">time_collation_request_duration</span>(),
 	};
 
 	<span class="ident">state</span>
 		.<span class="ident">requested_collations</span>
 		.<span class="ident">insert</span>(<span class="ident">PendingCollation::new</span>(<span class="ident">relay_parent</span>, <span class="kw-2">&amp;</span><span class="ident">para_id</span>, <span class="kw-2">&amp;</span><span class="ident">peer_id</span>), <span class="ident">per_request</span>);
 
-	<span class="macro">tracing::debug!</span>(
+	<span class="macro">gum::debug!</span>(
 		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 		<span class="ident">peer_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">peer_id</span>,
 		<span class="op">%</span><span class="ident">para_id</span>,
@@ -2293,7 +2333,7 @@
 			}
 
 			<span class="kw">if</span> <span class="ident">state</span>.<span class="ident">active_paras</span>.<span class="ident">is_current</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>) {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">origin</span>,
 					<span class="question-mark">?</span><span class="ident">collator_id</span>,
@@ -2303,7 +2343,7 @@
 
 				<span class="ident">peer_data</span>.<span class="ident">set_collating</span>(<span class="ident">collator_id</span>, <span class="ident">para_id</span>);
 			} <span class="kw">else</span> {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">origin</span>,
 					<span class="question-mark">?</span><span class="ident">collator_id</span>,
@@ -2312,7 +2352,7 @@
 				);
 
 				<span class="ident">modify_reputation</span>(<span class="ident">ctx</span>, <span class="ident">origin</span>.<span class="ident">clone</span>(), <span class="ident">COST_UNNEEDED_COLLATOR</span>).<span class="kw">await</span>;
-				<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Disconnecting unneeded collator&quot;</span>);
+				<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Disconnecting unneeded collator&quot;</span>);
 				<span class="ident">disconnect_peer</span>(<span class="ident">ctx</span>, <span class="ident">origin</span>).<span class="kw">await</span>;
 			}
 		},
@@ -2322,7 +2362,7 @@
 				.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>)
 				.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">child</span>(<span class="string">&quot;advertise-collation&quot;</span>));
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">view</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>) {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">origin</span>,
 					<span class="question-mark">?</span><span class="ident">relay_parent</span>,
@@ -2343,7 +2383,7 @@
 
 			<span class="kw">match</span> <span class="ident">peer_data</span>.<span class="ident">insert_advertisement</span>(<span class="ident">relay_parent</span>, <span class="kw-2">&amp;</span><span class="ident">state</span>.<span class="ident">view</span>) {
 				<span class="prelude-val">Ok</span>((<span class="ident">id</span>, <span class="ident">para_id</span>)) =&gt; {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">origin</span>,
 						<span class="op">%</span><span class="ident">para_id</span>,
@@ -2369,7 +2409,7 @@
 					}
 				},
 				<span class="prelude-val">Err</span>(<span class="ident">error</span>) =&gt; {
-					<span class="macro">tracing::debug!</span>(
+					<span class="macro">gum::debug!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">origin</span>,
 						<span class="question-mark">?</span><span class="ident">relay_parent</span>,
@@ -2382,7 +2422,7 @@
 			}
 		},
 		<span class="ident">CollationSeconded</span>(<span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">peer_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">origin</span>,
 				<span class="string">&quot;Unexpected `CollationSeconded` message, decreasing reputation&quot;</span>,
@@ -2448,7 +2488,7 @@
 		<span class="comment">// declare.</span>
 		<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">para_id</span>) <span class="op">=</span> <span class="ident">peer_data</span>.<span class="ident">collating_para</span>() {
 			<span class="kw">if</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">active_paras</span>.<span class="ident">is_current</span>(<span class="kw-2">&amp;</span><span class="ident">para_id</span>) {
-				<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Disconnecting peer on view change&quot;</span>);
+				<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Disconnecting peer on view change&quot;</span>);
 				<span class="ident">disconnect_peer</span>(<span class="ident">ctx</span>, <span class="ident">peer_id</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 			}
 		}
@@ -2512,14 +2552,14 @@
 
 	<span class="kw">match</span> <span class="ident">msg</span> {
 		<span class="ident">CollateOn</span>(<span class="ident">id</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">id</span>,
 				<span class="string">&quot;CollateOn message is not expected on the validator side of the protocol&quot;</span>,
 			);
 		},
 		<span class="ident">DistributeCollation</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
-			<span class="macro">tracing::warn!</span>(
+			<span class="macro">gum::warn!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="string">&quot;DistributeCollation message is not expected on the validator side of the protocol&quot;</span>,
 			);
@@ -2529,7 +2569,7 @@
 		},
 		<span class="ident">NetworkBridgeUpdateV1</span>(<span class="ident">event</span>) =&gt; {
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">handle_network_msg</span>(<span class="ident">ctx</span>, <span class="ident">state</span>, <span class="ident">keystore</span>, <span class="ident">event</span>).<span class="kw">await</span> {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">err</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
 					<span class="string">&quot;Failed to handle incoming network message&quot;</span>,
@@ -2547,7 +2587,7 @@
 					<span class="ident">collations</span>.<span class="ident">status</span> <span class="op">=</span> <span class="ident">CollationStatus::Seconded</span>;
 				}
 			} <span class="kw">else</span> {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">parent</span>,
 					<span class="string">&quot;Collation has been seconded, but the relay parent is deactivated&quot;</span>,
@@ -2561,7 +2601,7 @@
 						<span class="prelude-val">Some</span>(<span class="ident">candidate_receipt</span>.<span class="ident">commitments_hash</span>) =&gt;
 					<span class="ident">entry</span>.<span class="ident">remove</span>().<span class="number">0</span>,
 				<span class="ident">Entry::Occupied</span>(<span class="kw">_</span>) =&gt; {
-					<span class="macro">tracing::error!</span>(
+					<span class="macro">gum::error!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">parent</span>,
 						<span class="ident">candidate</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">candidate_receipt</span>.<span class="ident">hash</span>(),
@@ -2622,7 +2662,7 @@
 			<span class="ident">res</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">recv</span>().<span class="ident">fuse</span>() =&gt; {
 				<span class="kw">match</span> <span class="ident">res</span> {
 					<span class="prelude-val">Ok</span>(<span class="ident">FromOverseer::Communication</span> { <span class="ident">msg</span> }) =&gt; {
-						<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">msg</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">msg</span>, <span class="string">&quot;received a message&quot;</span>);
+						<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">msg</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">msg</span>, <span class="string">&quot;received a message&quot;</span>);
 						<span class="ident">process_msg</span>(
 							<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ctx</span>,
 							<span class="kw-2">&amp;</span><span class="ident">keystore</span>,
@@ -2642,7 +2682,7 @@
 			}
 			<span class="ident">res</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">collation_fetch_timeouts</span>.<span class="ident">select_next_some</span>() =&gt; {
 				<span class="kw">let</span> (<span class="ident">collator_id</span>, <span class="ident">relay_parent</span>) <span class="op">=</span> <span class="ident">res</span>;
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 					<span class="question-mark">?</span><span class="ident">collator_id</span>,
@@ -2705,7 +2745,7 @@
 		.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>)
 		.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">get_next_collation_to_fetch</span>(<span class="prelude-val">Some</span>(<span class="ident">previous_fetch</span>)))
 	{
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 			<span class="question-mark">?</span><span class="ident">id</span>,
@@ -2732,7 +2772,7 @@
 	<span class="kw">let</span> (<span class="ident">candidate_receipt</span>, <span class="ident">pov</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">res</span> {
 		<span class="prelude-val">Ok</span>(<span class="ident">res</span>) =&gt; <span class="ident">res</span>,
 		<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-			<span class="macro">tracing::debug!</span>(
+			<span class="macro">gum::debug!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="ident">relay_parent</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">collation_event</span>.<span class="number">1</span>.<span class="ident">relay_parent</span>,
 				<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">collation_event</span>.<span class="number">1</span>.<span class="ident">para_id</span>,
@@ -2749,7 +2789,7 @@
 
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">collations</span>) <span class="op">=</span> <span class="ident">state</span>.<span class="ident">collations_per_relay_parent</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>) {
 		<span class="kw">if</span> <span class="kw">let</span> <span class="ident">CollationStatus::Seconded</span> <span class="op">=</span> <span class="ident">collations</span>.<span class="ident">status</span> {
-			<span class="macro">tracing::debug!</span>(
+			<span class="macro">gum::debug!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 				<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 				<span class="string">&quot;Already seconded - no longer interested in collation fetch result.&quot;</span>
@@ -2770,7 +2810,7 @@
 
 		<span class="ident">entry</span>.<span class="ident">insert</span>(<span class="ident">collation_event</span>);
 	} <span class="kw">else</span> {
-		<span class="macro">tracing::trace!</span>(
+		<span class="macro">gum::trace!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">relay_parent</span>,
 			<span class="ident">candidate</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">candidate_receipt</span>.<span class="ident">hash</span>(),
@@ -2792,7 +2832,7 @@
 {
 	<span class="kw">for</span> (<span class="ident">peer</span>, <span class="ident">peer_data</span>) <span class="kw">in</span> <span class="ident">peers</span> {
 		<span class="kw">if</span> <span class="ident">peer_data</span>.<span class="ident">is_inactive</span>(<span class="kw-2">&amp;</span><span class="ident">eviction_policy</span>) {
-			<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Disconnecting inactive peer&quot;</span>);
+			<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Disconnecting inactive peer&quot;</span>);
 			<span class="ident">disconnect_peer</span>(<span class="ident">ctx</span>, <span class="ident">peer</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
 		}
 	}
@@ -2825,7 +2865,7 @@
 	<span class="ident">per_req</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PerRequest</span>,
 ) -&gt; <span class="ident">CollationFetchResult</span> {
 	<span class="kw">if</span> <span class="macro">never!</span>(<span class="ident">per_req</span>.<span class="ident">from_collator</span>.<span class="ident">is_terminated</span>()) {
-		<span class="macro">tracing::error!</span>(
+		<span class="macro">gum::error!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="string">&quot;We remove pending responses once received, this should not happen.&quot;</span>
 		);
@@ -2843,7 +2883,7 @@
 
 		<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">response</span> {
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::InvalidResponse</span>(<span class="ident">err</span>)) =&gt; {
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
 					<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
@@ -2854,7 +2894,7 @@
 				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">COST_CORRUPTED_MESSAGE</span>))
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">is_timed_out</span>() =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
 					<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
@@ -2866,7 +2906,7 @@
 				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">None</span>)
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::NetworkError</span>(<span class="ident">err</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
 					<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
@@ -2881,7 +2921,7 @@
 				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">COST_NETWORK_ERROR</span>))
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">RequestError::Canceled</span>(<span class="ident">err</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
 					<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
@@ -2894,7 +2934,7 @@
 			<span class="prelude-val">Ok</span>(<span class="ident">CollationFetchingResponse::Collation</span>(<span class="ident">receipt</span>, <span class="kw">_</span>))
 				<span class="kw">if</span> <span class="ident">receipt</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span> <span class="op">!</span><span class="op">=</span> <span class="ident">pending_collation</span>.<span class="ident">para_id</span> =&gt;
 			{
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">expected_para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
 					<span class="ident">got_para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">receipt</span>.<span class="ident">descriptor</span>().<span class="ident">para_id</span>,
@@ -2905,7 +2945,7 @@
 				<span class="ident">CollationFetchResult::Error</span>(<span class="prelude-val">Some</span>(<span class="ident">COST_WRONG_PARA</span>))
 			},
 			<span class="prelude-val">Ok</span>(<span class="ident">CollationFetchingResponse::Collation</span>(<span class="ident">receipt</span>, <span class="ident">pov</span>)) =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="ident">para_id</span> <span class="op">=</span> <span class="op">%</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,
 					<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
@@ -2919,7 +2959,7 @@
 				<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>((<span class="ident">receipt</span>, <span class="ident">pov</span>));
 
 				<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">result</span> {
-					<span class="macro">tracing::warn!</span>(
+					<span class="macro">gum::warn!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="ident">hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">relay_parent</span>,
 						<span class="ident">para_id</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">pending_collation</span>.<span class="ident">para_id</span>,

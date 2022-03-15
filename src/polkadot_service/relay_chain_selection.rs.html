@@ -587,10 +587,6 @@
 <span id="587">587</span>
 <span id="588">588</span>
 <span id="589">589</span>
-<span id="590">590</span>
-<span id="591">591</span>
-<span id="592">592</span>
-<span id="593">593</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -746,7 +742,7 @@
 {
 	<span class="doccomment">/// Use the plain longest chain algorithm exclusively.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_longest_chain</span>(<span class="ident">backend</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-		<span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Using {} chain selection algorithm&quot;</span>, <span class="string">&quot;longest&quot;</span>);
+		<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="string">&quot;Using {} chain selection algorithm&quot;</span>, <span class="string">&quot;longest&quot;</span>);
 
 		<span class="self">Self</span> {
 			<span class="ident">longest_chain</span>: <span class="ident">sc_consensus::LongestChain::new</span>(<span class="ident">backend</span>.<span class="ident">clone</span>()),
@@ -762,7 +758,7 @@
 		<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 		<span class="ident">disputes_enabled</span>: <span class="ident">bool</span>,
 	) -&gt; <span class="self">Self</span> {
-		<span class="macro">tracing::debug!</span>(
+		<span class="macro">gum::debug!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="string">&quot;Using {} chain selection algorithm&quot;</span>,
 			<span class="kw">if</span> <span class="ident">disputes_enabled</span> {
@@ -944,7 +940,7 @@
 			.<span class="ident">map_err</span>(<span class="ident">Error::LeavesCanceled</span>)
 			.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
-		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">leaves</span>, <span class="string">&quot;Chain selection leaves&quot;</span>);
+		<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">leaves</span>, <span class="string">&quot;Chain selection leaves&quot;</span>);
 
 		<span class="prelude-val">Ok</span>(<span class="ident">leaves</span>)
 	}
@@ -961,7 +957,7 @@
 			.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">Error::EmptyLeaves</span>)))<span class="question-mark">?</span>
 			.<span class="ident">clone</span>();
 
-		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Best chain&quot;</span>);
+		<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Best chain&quot;</span>);
 
 		<span class="self">self</span>.<span class="ident">block_header</span>(<span class="ident">best_leaf</span>)
 	}
@@ -982,7 +978,7 @@
 		<span class="ident">maybe_max_number</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BlockNumber</span><span class="op">&gt;</span>,
 	) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Hash</span>, <span class="ident">ConsensusError</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">overseer</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">overseer</span>.<span class="ident">clone</span>();
-		<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Longest chain&quot;</span>);
+		<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Longest chain&quot;</span>);
 
 		<span class="kw">let</span> <span class="ident">subchain_head</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">disputes_enabled</span> {
 			<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
@@ -998,7 +994,7 @@
 				.<span class="ident">map_err</span>(<span class="ident">Error::BestLeafContainingCanceled</span>)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::Other</span>(<span class="ident">Box::new</span>(<span class="ident">e</span>)))<span class="question-mark">?</span>;
 
-			<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best</span>, <span class="string">&quot;Best leaf containing&quot;</span>);
+			<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best</span>, <span class="string">&quot;Best leaf containing&quot;</span>);
 
 			<span class="kw">match</span> <span class="ident">best</span> {
 				<span class="comment">// No viable leaves containing the block.</span>
@@ -1006,7 +1002,7 @@
 				<span class="prelude-val">Some</span>(<span class="ident">best</span>) =&gt; <span class="ident">best</span>,
 			}
 		} <span class="kw">else</span> {
-			<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Dummy disputes active&quot;</span>);
+			<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Dummy disputes active&quot;</span>);
 			<span class="kw">if</span> <span class="ident">best_leaf</span> <span class="op">==</span> <span class="ident">target_hash</span> {
 				<span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">target_hash</span>)
 			} <span class="kw">else</span> {
@@ -1022,7 +1018,7 @@
 			<span class="prelude-val">Some</span>(<span class="ident">max</span>) =&gt; {
 				<span class="kw">if</span> <span class="ident">max</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">target_number</span> {
 					<span class="kw">if</span> <span class="ident">max</span> <span class="op">&lt;</span> <span class="ident">target_number</span> {
-						<span class="macro">tracing::warn!</span>(
+						<span class="macro">gum::warn!</span>(
 							<span class="ident">LOG_TARGET</span>,
 							<span class="ident">max_number</span> <span class="op">=</span> <span class="ident">max</span>,
 							<span class="ident">target_number</span>,
@@ -1035,7 +1031,7 @@
 				<span class="kw">let</span> <span class="ident">subchain_header</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">block_header</span>(<span class="ident">subchain_head</span>)<span class="question-mark">?</span>;
 
 				<span class="kw">if</span> <span class="ident">subchain_header</span>.<span class="ident">number</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">max</span> {
-					<span class="macro">tracing::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Constrained sub-chain head&quot;</span>,);
+					<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">best_leaf</span>, <span class="string">&quot;Constrained sub-chain head&quot;</span>,);
 					<span class="ident">subchain_head</span>
 				} <span class="kw">else</span> {
 					<span class="kw">let</span> (<span class="ident">ancestor_hash</span>, <span class="kw">_</span>) <span class="op">=</span>
@@ -1045,7 +1041,7 @@
 							<span class="kw-2">&amp;</span><span class="ident">subchain_header</span>,
 						)
 						.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::ChainLookup</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
-					<span class="macro">tracing::trace!</span>(
+					<span class="macro">gum::trace!</span>(
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="question-mark">?</span><span class="ident">ancestor_hash</span>,
 						<span class="string">&quot;Grandpa walk backwards sub-chain head&quot;</span>
@@ -1080,11 +1076,7 @@
 			}
 		};
 
-		<span class="macro">tracing::trace!</span>(
-			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
-			<span class="question-mark">?</span><span class="ident">subchain_head</span>,
-			<span class="string">&quot;Ancestor approval restriction applied&quot;</span>,
-		);
+		<span class="macro">gum::trace!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">subchain_head</span>, <span class="string">&quot;Ancestor approval restriction applied&quot;</span>,);
 
 		<span class="kw">let</span> <span class="ident">lag</span> <span class="op">=</span> <span class="ident">initial_leaf_number</span>.<span class="ident">saturating_sub</span>(<span class="ident">subchain_number</span>);
 		<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">note_approval_checking_finality_lag</span>(<span class="ident">lag</span>);
@@ -1094,7 +1086,7 @@
 			<span class="kw">if</span> <span class="prelude-val">Some</span>(<span class="ident">subchain_block_descriptions</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span>
 				<span class="ident">subchain_number</span>.<span class="ident">checked_sub</span>(<span class="ident">target_number</span>)
 			{
-				<span class="macro">tracing::error!</span>(
+				<span class="macro">gum::error!</span>(
 					<span class="ident">LOG_TARGET</span>,
 					<span class="ident">present_block_descriptions</span> <span class="op">=</span> <span class="ident">subchain_block_descriptions</span>.<span class="ident">len</span>(),
 					<span class="ident">target_number</span>,
@@ -1129,7 +1121,7 @@
 						(<span class="ident">lag_disputes</span>, <span class="ident">subchain_head</span>)
 					},
 					<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
-						<span class="macro">tracing::error!</span>(
+						<span class="macro">gum::error!</span>(
 							<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 							<span class="ident">error</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">e</span>,
 							<span class="string">&quot;Call to `DetermineUndisputedChain` failed&quot;</span>,
@@ -1145,7 +1137,7 @@
 			(<span class="ident">lag</span>, <span class="ident">subchain_head</span>)
 		};
 
-		<span class="macro">tracing::trace!</span>(
+		<span class="macro">gum::trace!</span>(
 			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 			<span class="question-mark">?</span><span class="ident">subchain_head</span>,
 			<span class="string">&quot;Disputed blocks in ancestry restriction applied&quot;</span>,
@@ -1158,7 +1150,7 @@
 			<span class="kw">let</span> <span class="ident">safe_target</span> <span class="op">=</span> <span class="ident">initial_leaf_number</span> <span class="op">-</span> <span class="ident">MAX_FINALITY_LAG</span>;
 
 			<span class="kw">if</span> <span class="ident">safe_target</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">target_number</span> {
-				<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">target_hash</span>, <span class="string">&quot;Safeguard enforced finalization&quot;</span>);
+				<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">target_hash</span>, <span class="string">&quot;Safeguard enforced finalization&quot;</span>);
 				<span class="comment">// Minimal vote needs to be on the target number.</span>
 				<span class="prelude-val">Ok</span>(<span class="ident">target_hash</span>)
 			} <span class="kw">else</span> {
@@ -1171,7 +1163,7 @@
 				)
 				.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">ConsensusError::ChainLookup</span>(<span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
 
-				<span class="macro">tracing::warn!</span>(
+				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 					<span class="question-mark">?</span><span class="ident">forced_target</span>,
 					<span class="string">&quot;Safeguard enforced finalization of child&quot;</span>

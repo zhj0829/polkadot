@@ -314,7 +314,7 @@
 	<span class="ident">metrics</span>: <span class="ident">Metrics</span>,
 ) {
 	<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident">do_fetch_pov</span>(<span class="ident">pov_hash</span>, <span class="ident">pending_response</span>, <span class="ident">span</span>, <span class="ident">tx</span>, <span class="ident">metrics</span>).<span class="kw">await</span> {
-		<span class="macro">tracing::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="question-mark">?</span><span class="ident">pov_hash</span>, <span class="question-mark">?</span><span class="ident">authority_id</span>, <span class="string">&quot;fetch_pov_job&quot;</span>);
+		<span class="macro">gum::warn!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">err</span>, <span class="question-mark">?</span><span class="ident">pov_hash</span>, <span class="question-mark">?</span><span class="ident">authority_id</span>, <span class="string">&quot;fetch_pov_job&quot;</span>);
 	}
 }
 
@@ -430,7 +430,7 @@
 							.<span class="ident">unwrap</span>();
 						<span class="kw">break</span>
 					},
-					<span class="ident">msg</span> =&gt; <span class="macro">tracing::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">msg</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">msg</span>, <span class="string">&quot;Received msg&quot;</span>),
+					<span class="ident">msg</span> =&gt; <span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">msg</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">msg</span>, <span class="string">&quot;Received msg&quot;</span>),
 				}
 			}
 			<span class="kw">if</span> <span class="ident">pov</span>.<span class="ident">hash</span>() <span class="op">==</span> <span class="ident">pov_hash</span> {

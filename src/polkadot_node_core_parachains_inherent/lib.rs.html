@@ -230,7 +230,7 @@
 				<span class="ident">parent_header</span>,
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-				<span class="macro">tracing::debug!</span>(
+				<span class="macro">gum::debug!</span>(
 					<span class="question-mark">?</span><span class="ident">err</span>,
 					<span class="string">&quot;Could not get provisioner inherent data; injecting default data&quot;</span>,
 				);
