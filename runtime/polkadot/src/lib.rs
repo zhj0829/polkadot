@@ -1538,7 +1538,7 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
-	(SchedulerMigrationV3, FixCouncilDepositMigration),
+	(SchedulerMigrationV3, FixCouncilDepositMigration, InitializeKusamaBridge),
 >;
 /// The payload being signed in transactions.
 pub type SignedPayload = generic::SignedPayload<Call, SignedExtra>;
@@ -1792,6 +1792,38 @@ impl OnRuntimeUpgrade for SessionHistoricalPalletPrefixMigration {
 	#[cfg(feature = "try-runtime")]
 	fn post_upgrade() -> Result<(), &'static str> {
 		pallet_session::migrations::v1::post_migrate::<Runtime, Historical>();
+		Ok(())
+	}
+}
+
+/// Initialize with-Kusama bridge.
+pub struct InitializeKusamaBridge;
+
+impl OnRuntimeUpgrade for InitializeKusamaBridge {
+	fn on_runtime_upgrade() -> frame_support::weights::Weight {
+		let with_kusama_grandpa_pallet_owner_id = AccountId::from([0xd4, 0x35, 0x93, 0xc7, 0x15, 0xfd, 0xd3, 0x1c, 0x61, 0x14, 0x1a, 0xbd, 0x04, 0xa9, 0x9f, 0xd6, 0x82, 0x2c, 0x85, 0x58, 0x85, 0x4c, 0xcd, 0xe3, 0x9a, 0x56, 0x84, 0xe7, 0xa5, 0x6d, 0xa2, 0x7d]); // TODO: update me
+		pallet_bridge_grandpa::PalletOwner::<Runtime, KusamaGrandpaInstance>::put(
+			with_kusama_grandpa_pallet_owner_id,
+		);
+		let with_kusama_messages_pallet_owner_id = AccountId::from([0xd4, 0x35, 0x93, 0xc7, 0x15, 0xfd, 0xd3, 0x1c, 0x61, 0x14, 0x1a, 0xbd, 0x04, 0xa9, 0x9f, 0xd6, 0x82, 0x2c, 0x85, 0x58, 0x85, 0x4c, 0xcd, 0xe3, 0x9a, 0x56, 0x84, 0xe7, 0xa5, 0x6d, 0xa2, 0x7d]); // TODO: update me
+		pallet_bridge_messages::PalletOwner::<Runtime, WithKusamaMessagesInstance>::put(
+			with_kusama_messages_pallet_owner_id,
+		);
+
+		<Runtime as frame_system::Config>::DbWeight::get().writes(2)
+	}
+
+	#[cfg(feature = "try-runtime")]
+	fn pre_upgrade() -> Result<(), &'static str> {
+		ensure!(pallet_bridge_grandpa::PalletOwner::<Runtime, KusamaGrandpaInstance>::get().is_none());
+		ensure!(pallet_bridge_messages::PalletOwner::<Runtime, WithKusamaMessagesInstance>::get().is_none());
+		Ok(())
+	}
+
+	#[cfg(feature = "try-runtime")]
+	fn post_upgrade() -> Result<(), &'static str> {
+		ensure!(pallet_bridge_grandpa::PalletOwner::<Runtime, KusamaGrandpaInstance>::get().is_some());
+		ensure!(pallet_bridge_messages::PalletOwner::<Runtime, WithKusamaMessagesInstance>::get().is_some());
 		Ok(())
 	}
 }
