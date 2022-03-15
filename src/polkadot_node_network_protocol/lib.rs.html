@@ -455,19 +455,6 @@
 <span id="455">455</span>
 <span id="456">456</span>
 <span id="457">457</span>
-<span id="458">458</span>
-<span id="459">459</span>
-<span id="460">460</span>
-<span id="461">461</span>
-<span id="462">462</span>
-<span id="463">463</span>
-<span id="464">464</span>
-<span id="465">465</span>
-<span id="466">466</span>
-<span id="467">467</span>
-<span id="468">468</span>
-<span id="469">469</span>
-<span id="470">470</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -802,19 +789,6 @@
 	}
 
 	<span class="kw">impl</span> <span class="ident">StatementDistributionMessage</span> {
-		<span class="doccomment">/// Get meta data of the given `StatementDistributionMessage`.</span>
-		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">StatementMetadata</span> {
-			<span class="kw">match</span> <span class="self">self</span> {
-				<span class="ident"><span class="self">Self</span>::Statement</span>(<span class="ident">relay_parent</span>, <span class="ident">statement</span>) =&gt; <span class="ident">StatementMetadata</span> {
-					<span class="ident">relay_parent</span>: <span class="kw-2">*</span><span class="ident">relay_parent</span>,
-					<span class="ident">candidate_hash</span>: <span class="ident">statement</span>.<span class="ident">unchecked_payload</span>().<span class="ident">candidate_hash</span>(),
-					<span class="ident">signed_by</span>: <span class="ident">statement</span>.<span class="ident">unchecked_validator_index</span>(),
-					<span class="ident">signature</span>: <span class="ident">statement</span>.<span class="ident">unchecked_signature</span>().<span class="ident">clone</span>(),
-				},
-				<span class="ident"><span class="self">Self</span>::LargeStatement</span>(<span class="ident">metadata</span>) =&gt; <span class="ident">metadata</span>.<span class="ident">clone</span>(),
-			}
-		}
-
 		<span class="doccomment">/// Get fingerprint describing the contained statement uniquely.</span>
 		<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_fingerprint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">CompactStatement</span>, <span class="ident">ValidatorIndex</span>) {
 			<span class="kw">match</span> <span class="self">self</span> {
