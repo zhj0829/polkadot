@@ -2543,7 +2543,7 @@
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxNominatorRewardedPerValidator</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">256</span>;
 	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">OffendingValidatorsThreshold</span>: <span class="ident">Perbill</span> <span class="op">=</span> <span class="ident">Perbill::from_percent</span>(<span class="number">17</span>);
 	<span class="comment">// 24</span>
-	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxNominations</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">NposCompactSolution24</span> <span class="kw">as</span> <span class="ident">sp_npos_elections::NposSolution</span><span class="op">&gt;</span><span class="ident">::LIMIT</span> <span class="kw">as</span> <span class="ident">u32</span>;
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxNominations</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">NposCompactSolution24</span> <span class="kw">as</span> <span class="ident">frame_election_provider_support::NposSolution</span><span class="op">&gt;</span><span class="ident">::LIMIT</span> <span class="kw">as</span> <span class="ident">u32</span>;
 }
 
 <span class="kw">type</span> <span class="ident">SlashCancelOrigin</span> <span class="op">=</span> <span class="ident">EnsureOneOf</span><span class="op">&lt;</span>
