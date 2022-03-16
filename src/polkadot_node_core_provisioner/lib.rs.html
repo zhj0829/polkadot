@@ -725,6 +725,58 @@
 <span id="725">725</span>
 <span id="726">726</span>
 <span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -996,6 +1048,14 @@
 			<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_inherent_data_request</span>(<span class="prelude-val">Err</span>(()));
 		} <span class="kw">else</span> {
 			<span class="self">self</span>.<span class="ident">metrics</span>.<span class="ident">on_inherent_data_request</span>(<span class="prelude-val">Ok</span>(()));
+			<span class="macro">gum::debug!</span>(
+				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+				<span class="ident">signed_bitfield_count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">signed_bitfields</span>.<span class="ident">len</span>(),
+				<span class="ident">backed_candidates_count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">backed_candidates</span>.<span class="ident">len</span>(),
+				<span class="ident">leaf_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="self">self</span>.<span class="ident">leaf</span>.<span class="ident">hash</span>,
+				<span class="ident">disputes_enabled</span>,
+				<span class="string">&quot;inherent data sent successfully&quot;</span>
+			);
 		}
 	}
 
@@ -1057,11 +1117,23 @@
 	<span class="comment">// Only include bitfields on fresh leaves. On chain reversions, we want to make sure that</span>
 	<span class="comment">// there will be at least one block, which cannot get disputed, so the chain can make progress.</span>
 	<span class="kw">let</span> <span class="ident">bitfields</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">leaf</span>.<span class="ident">status</span> {
-		<span class="ident">LeafStatus::Fresh</span> =&gt; <span class="ident">select_availability_bitfields</span>(<span class="kw-2">&amp;</span><span class="ident">availability_cores</span>, <span class="ident">bitfields</span>),
+		<span class="ident">LeafStatus::Fresh</span> =&gt;
+			<span class="ident">select_availability_bitfields</span>(<span class="kw-2">&amp;</span><span class="ident">availability_cores</span>, <span class="ident">bitfields</span>, <span class="kw-2">&amp;</span><span class="ident">leaf</span>.<span class="ident">hash</span>),
 		<span class="ident">LeafStatus::Stale</span> =&gt; <span class="ident">Vec::new</span>(),
 	};
 	<span class="kw">let</span> <span class="ident">candidates</span> <span class="op">=</span>
 		<span class="ident">select_candidates</span>(<span class="kw-2">&amp;</span><span class="ident">availability_cores</span>, <span class="kw-2">&amp;</span><span class="ident">bitfields</span>, <span class="ident">candidates</span>, <span class="ident">leaf</span>.<span class="ident">hash</span>, <span class="ident">from_job</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+
+	<span class="macro">gum::debug!</span>(
+		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+		<span class="ident">disputes_enabled</span> <span class="op">=</span> <span class="ident">disputes_enabled</span>,
+		<span class="ident">availability_cores_len</span> <span class="op">=</span> <span class="ident">availability_cores</span>.<span class="ident">len</span>(),
+		<span class="ident">disputes_count</span> <span class="op">=</span> <span class="ident">disputes</span>.<span class="ident">len</span>(),
+		<span class="ident">bitfields_count</span> <span class="op">=</span> <span class="ident">bitfields</span>.<span class="ident">len</span>(),
+		<span class="ident">candidates_count</span> <span class="op">=</span> <span class="ident">candidates</span>.<span class="ident">len</span>(),
+		<span class="ident">leaf_hash</span> <span class="op">=</span> <span class="question-mark">?</span><span class="ident">leaf</span>.<span class="ident">hash</span>,
+		<span class="string">&quot;inherent data prepared&quot;</span>,
+	);
 
 	<span class="kw">let</span> <span class="ident">inherent_data</span> <span class="op">=</span>
 		<span class="ident">ProvisionerInherentData</span> { <span class="ident">bitfields</span>, <span class="ident">backed_candidates</span>: <span class="ident">candidates</span>, <span class="ident">disputes</span> };
@@ -1088,11 +1160,20 @@
 <span class="kw">fn</span> <span class="ident">select_availability_bitfields</span>(
 	<span class="ident">cores</span>: <span class="kw-2">&amp;</span>[<span class="ident">CoreState</span>],
 	<span class="ident">bitfields</span>: <span class="kw-2">&amp;</span>[<span class="ident">SignedAvailabilityBitfield</span>],
+	<span class="ident">leaf_hash</span>: <span class="kw-2">&amp;</span><span class="ident">Hash</span>,
 ) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SignedAvailabilityBitfield</span><span class="op">&gt;</span> {
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">selected</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">ValidatorIndex</span>, <span class="ident">SignedAvailabilityBitfield</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">BTreeMap::new</span>();
 
+	<span class="macro">gum::debug!</span>(
+		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+		<span class="ident">bitfields_count</span> <span class="op">=</span> <span class="ident">bitfields</span>.<span class="ident">len</span>(),
+		<span class="question-mark">?</span><span class="ident">leaf_hash</span>,
+		<span class="string">&quot;bitfields count before selection&quot;</span>
+	);
+
 	<span class="lifetime">&#39;a</span>: <span class="kw">for</span> <span class="ident">bitfield</span> <span class="kw">in</span> <span class="ident">bitfields</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>() {
 		<span class="kw">if</span> <span class="ident">bitfield</span>.<span class="ident">payload</span>().<span class="number">0</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">cores</span>.<span class="ident">len</span>() {
+			<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="question-mark">?</span><span class="ident">leaf_hash</span>, <span class="string">&quot;dropping bitfield due to length mismatch&quot;</span>);
 			<span class="kw">continue</span>
 		}
 
@@ -1101,18 +1182,38 @@
 			.<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span>.<span class="ident">payload</span>().<span class="number">0</span>.<span class="ident">count_ones</span>() <span class="op">&lt;</span> <span class="ident">bitfield</span>.<span class="ident">payload</span>().<span class="number">0</span>.<span class="ident">count_ones</span>());
 
 		<span class="kw">if</span> <span class="op">!</span><span class="ident">is_better</span> {
+			<span class="macro">gum::trace!</span>(
+				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+				<span class="ident">val_idx</span> <span class="op">=</span> <span class="ident">bitfield</span>.<span class="ident">validator_index</span>().<span class="number">0</span>,
+				<span class="question-mark">?</span><span class="ident">leaf_hash</span>,
+				<span class="string">&quot;dropping bitfield due to duplication - the better one is kept&quot;</span>
+			);
 			<span class="kw">continue</span>
 		}
 
 		<span class="kw">for</span> (<span class="ident">idx</span>, <span class="kw">_</span>) <span class="kw">in</span> <span class="ident">cores</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="op">!</span><span class="ident">v</span>.<span class="number">1</span>.<span class="ident">is_occupied</span>()) {
 			<span class="comment">// Bit is set for an unoccupied core - invalid</span>
 			<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">bitfield</span>.<span class="ident">payload</span>().<span class="number">0</span>.<span class="ident">get</span>(<span class="ident">idx</span>).<span class="ident">as_deref</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="bool-val">false</span>) {
+				<span class="macro">gum::debug!</span>(
+					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+					<span class="ident">val_idx</span> <span class="op">=</span> <span class="ident">bitfield</span>.<span class="ident">validator_index</span>().<span class="number">0</span>,
+					<span class="question-mark">?</span><span class="ident">leaf_hash</span>,
+					<span class="string">&quot;dropping invalid bitfield - bit is set for an unoccupied core&quot;</span>
+				);
 				<span class="kw">continue</span> <span class="lifetime">&#39;a</span>
 			}
 		}
 
 		<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">selected</span>.<span class="ident">insert</span>(<span class="ident">bitfield</span>.<span class="ident">validator_index</span>(), <span class="ident">bitfield</span>);
 	}
+
+	<span class="macro">gum::debug!</span>(
+		<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+		<span class="question-mark">?</span><span class="ident">leaf_hash</span>,
+		<span class="string">&quot;selected {} of all {} bitfields (each bitfield is from a unique validator)&quot;</span>,
+		<span class="ident">selected</span>.<span class="ident">len</span>(),
+		<span class="ident">bitfields</span>.<span class="ident">len</span>()
+	);
 
 	<span class="ident">selected</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">b</span>)<span class="op">|</span> <span class="ident">b</span>).<span class="ident">collect</span>()
 }
@@ -1129,6 +1230,8 @@
 
 	<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">selected_candidates</span> <span class="op">=</span>
 		<span class="ident">Vec::with_capacity</span>(<span class="ident">candidates</span>.<span class="ident">len</span>().<span class="ident">min</span>(<span class="ident">availability_cores</span>.<span class="ident">len</span>()));
+
+	<span class="macro">gum::debug!</span>(<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>, <span class="ident">leaf_hash</span><span class="op">=</span><span class="question-mark">?</span><span class="ident">relay_parent</span>, <span class="string">&quot;{} candidates before selection&quot;</span>, <span class="ident">candidates</span>.<span class="ident">len</span>());
 
 	<span class="kw">for</span> (<span class="ident">core_idx</span>, <span class="ident">core</span>) <span class="kw">in</span> <span class="ident">availability_cores</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
 		<span class="kw">let</span> (<span class="ident">scheduled_core</span>, <span class="ident">assumption</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">core</span> {
@@ -1180,6 +1283,7 @@
 			<span class="kw">let</span> <span class="ident">candidate_hash</span> <span class="op">=</span> <span class="ident">candidate</span>.<span class="ident">hash</span>();
 			<span class="macro">gum::trace!</span>(
 				<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+				<span class="ident">leaf_hash</span><span class="op">=</span><span class="question-mark">?</span><span class="ident">relay_parent</span>,
 				<span class="string">&quot;Selecting candidate {}. para_id={} core={}&quot;</span>,
 				<span class="ident">candidate_hash</span>,
 				<span class="ident">candidate</span>.<span class="ident">descriptor</span>.<span class="ident">para_id</span>,
