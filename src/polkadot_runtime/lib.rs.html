@@ -2267,6 +2267,26 @@
 <span id="2267">2267</span>
 <span id="2268">2268</span>
 <span id="2269">2269</span>
+<span id="2270">2270</span>
+<span id="2271">2271</span>
+<span id="2272">2272</span>
+<span id="2273">2273</span>
+<span id="2274">2274</span>
+<span id="2275">2275</span>
+<span id="2276">2276</span>
+<span id="2277">2277</span>
+<span id="2278">2278</span>
+<span id="2279">2279</span>
+<span id="2280">2280</span>
+<span id="2281">2281</span>
+<span id="2282">2282</span>
+<span id="2283">2283</span>
+<span id="2284">2284</span>
+<span id="2285">2285</span>
+<span id="2286">2286</span>
+<span id="2287">2287</span>
+<span id="2288">2288</span>
+<span id="2289">2289</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2017-2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -2429,6 +2449,7 @@
 			<span class="ident">Call::Proxy</span>(<span class="kw">_</span>) <span class="op">|</span>
 			<span class="ident">Call::Multisig</span>(<span class="kw">_</span>) <span class="op">|</span>
 			<span class="ident">Call::Bounties</span>(<span class="kw">_</span>) <span class="op">|</span>
+			<span class="ident">Call::ChildBounties</span>(<span class="kw">_</span>) <span class="op">|</span>
 			<span class="ident">Call::Tips</span>(<span class="kw">_</span>) <span class="op">|</span>
 			<span class="ident">Call::ElectionProviderMultiPhase</span>(<span class="kw">_</span>) <span class="op">|</span>
 			<span class="ident">Call::Configuration</span>(<span class="kw">_</span>) <span class="op">|</span>
@@ -3086,10 +3107,25 @@
 	<span class="kw">type</span> <span class="ident">BountyUpdatePeriod</span> <span class="op">=</span> <span class="ident">BountyUpdatePeriod</span>;
 	<span class="kw">type</span> <span class="ident">BountyCuratorDeposit</span> <span class="op">=</span> <span class="ident">BountyCuratorDeposit</span>;
 	<span class="kw">type</span> <span class="ident">BountyValueMinimum</span> <span class="op">=</span> <span class="ident">BountyValueMinimum</span>;
-	<span class="kw">type</span> <span class="ident">ChildBountyManager</span> <span class="op">=</span> ();
+	<span class="kw">type</span> <span class="ident">ChildBountyManager</span> <span class="op">=</span> <span class="ident">ChildBounties</span>;
 	<span class="kw">type</span> <span class="ident">DataDepositPerByte</span> <span class="op">=</span> <span class="ident">DataDepositPerByte</span>;
 	<span class="kw">type</span> <span class="ident">MaximumReasonLength</span> <span class="op">=</span> <span class="ident">MaximumReasonLength</span>;
 	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_bounties::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
+}
+
+<span class="macro">parameter_types!</span> {
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MaxActiveChildBountyCount</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">100</span>;
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ChildBountyValueMinimum</span>: <span class="ident">Balance</span> <span class="op">=</span> <span class="ident">BountyValueMinimum::get</span>() <span class="op">/</span> <span class="number">10</span>;
+	<span class="comment">// This will be 1% of the bounty value.</span>
+	<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ChildBountyCuratorDepositBase</span>: <span class="ident">Permill</span> <span class="op">=</span> <span class="ident">Permill::from_percent</span>(<span class="number">1</span>);
+}
+
+<span class="kw">impl</span> <span class="ident">pallet_child_bounties::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
+	<span class="kw">type</span> <span class="ident">Event</span> <span class="op">=</span> <span class="ident">Event</span>;
+	<span class="kw">type</span> <span class="ident">MaxActiveChildBountyCount</span> <span class="op">=</span> <span class="ident">MaxActiveChildBountyCount</span>;
+	<span class="kw">type</span> <span class="ident">ChildBountyValueMinimum</span> <span class="op">=</span> <span class="ident">ChildBountyValueMinimum</span>;
+	<span class="kw">type</span> <span class="ident">ChildBountyCuratorDepositBase</span> <span class="op">=</span> <span class="ident">ChildBountyCuratorDepositBase</span>;
+	<span class="kw">type</span> <span class="ident">WeightInfo</span> <span class="op">=</span> <span class="ident">weights::pallet_child_bounties::WeightInfo</span><span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">pallet_tips::Config</span> <span class="kw">for</span> <span class="ident">Runtime</span> {
@@ -3374,6 +3410,7 @@
 				<span class="ident">Call::TechnicalMembership</span>(..) <span class="op">|</span>
 				<span class="ident">Call::Treasury</span>(..) <span class="op">|</span>
 				<span class="ident">Call::Bounties</span>(..) <span class="op">|</span>
+				<span class="ident">Call::ChildBounties</span>(..) <span class="op">|</span>
 				<span class="ident">Call::Tips</span>(..) <span class="op">|</span>
 				<span class="ident">Call::Claims</span>(..) <span class="op">|</span>
 				<span class="ident">Call::Vesting</span>(<span class="ident">pallet_vesting::Call::vest</span>{..}) <span class="op">|</span>
@@ -3398,7 +3435,8 @@
 					<span class="ident">Call::Council</span>(..) <span class="op">|</span> <span class="ident">Call::TechnicalCommittee</span>(..) <span class="op">|</span>
 					<span class="ident">Call::PhragmenElection</span>(..) <span class="op">|</span>
 					<span class="ident">Call::Treasury</span>(..) <span class="op">|</span> <span class="ident">Call::Bounties</span>(..) <span class="op">|</span>
-					<span class="ident">Call::Tips</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..)
+					<span class="ident">Call::Tips</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..) <span class="op">|</span>
+					<span class="ident">Call::ChildBounties</span>(..)
 			),
 			<span class="ident">ProxyType::Staking</span> =&gt; {
 				<span class="macro">matches!</span>(<span class="ident">c</span>, <span class="ident">Call::Staking</span>(..) <span class="op">|</span> <span class="ident">Call::Session</span>(..) <span class="op">|</span> <span class="ident">Call::Utility</span>(..))
@@ -3651,8 +3689,9 @@
 		<span class="comment">// Multisig dispatch. Late addition.</span>
 		<span class="ident">Multisig</span>: <span class="ident">pallet_multisig</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">30</span>,
 
-		<span class="comment">// Bounties module.</span>
+		<span class="comment">// Bounties modules.</span>
 		<span class="ident">Bounties</span>: <span class="ident">pallet_bounties</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">34</span>,
+		<span class="ident">ChildBounties</span>: <span class="ident">pallet_child_bounties</span> <span class="op">=</span> <span class="number">38</span>,
 
 		<span class="comment">// Tips module.</span>
 		<span class="ident">Tips</span>: <span class="ident">pallet_tips</span>::{<span class="ident">Pallet</span>, <span class="ident">Call</span>, <span class="ident">Storage</span>, <span class="ident">Event</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="op">=</span> <span class="number">35</span>,
@@ -3961,6 +4000,7 @@
 		[<span class="ident">pallet_balances</span>, <span class="ident">Balances</span>]
 		[<span class="ident">frame_benchmarking::baseline</span>, <span class="ident">Baseline</span>::<span class="op">&lt;</span><span class="ident">Runtime</span><span class="op">&gt;</span>]
 		[<span class="ident">pallet_bounties</span>, <span class="ident">Bounties</span>]
+		[<span class="ident">pallet_child_bounties</span>, <span class="ident">ChildBounties</span>]
 		[<span class="ident">pallet_collective</span>, <span class="ident">Council</span>]
 		[<span class="ident">pallet_collective</span>, <span class="ident">TechnicalCommittee</span>]
 		[<span class="ident">pallet_democracy</span>, <span class="ident">Democracy</span>]
