@@ -1260,19 +1260,19 @@
 	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">ApprovalDistributionMessage</span>)]</span>
 	<span class="ident">approval_distribution</span>: <span class="ident">ApprovalDistribution</span>,
 
-	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">ApprovalVotingMessage</span>)]</span>
+	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">blocking</span>, <span class="ident">ApprovalVotingMessage</span>)]</span>
 	<span class="ident">approval_voting</span>: <span class="ident">ApprovalVoting</span>,
 
 	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">GossipSupportMessage</span>)]</span>
 	<span class="ident">gossip_support</span>: <span class="ident">GossipSupport</span>,
 
-	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">DisputeCoordinatorMessage</span>)]</span>
+	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">blocking</span>, <span class="ident">DisputeCoordinatorMessage</span>)]</span>
 	<span class="ident">dispute_coordinator</span>: <span class="ident">DisputeCoordinator</span>,
 
 	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">DisputeDistributionMessage</span>)]</span>
 	<span class="ident">dispute_distribution</span>: <span class="ident">DisputeDistribution</span>,
 
-	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">ChainSelectionMessage</span>)]</span>
+	<span class="attribute">#[<span class="ident">subsystem</span>(<span class="ident">no_dispatch</span>, <span class="ident">blocking</span>, <span class="ident">ChainSelectionMessage</span>)]</span>
 	<span class="ident">chain_selection</span>: <span class="ident">ChainSelection</span>,
 
 	<span class="doccomment">/// External listeners waiting for a hash to be in the active-leave set.</span>
