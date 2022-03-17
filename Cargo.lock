@@ -6313,6 +6313,7 @@ dependencies = [
  "polkadot-primitives",
  "sp-application-crypto",
  "sp-core",
+ "sp-keyring",
  "sp-keystore",
  "tracing-gum",
 ]
