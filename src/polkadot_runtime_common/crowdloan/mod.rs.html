@@ -4172,7 +4172,7 @@
 			<span class="kw">let</span> <span class="ident">caller</span>: <span class="ident">T::AccountId</span> <span class="op">=</span> <span class="ident">whitelisted_caller</span>();
 			<span class="kw">let</span> <span class="ident">contributor</span> <span class="op">=</span> <span class="ident">account</span>(<span class="string">&quot;contributor&quot;</span>, <span class="number">0</span>, <span class="number">0</span>);
 			<span class="ident">contribute_fund</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">contributor</span>, <span class="ident">fund_index</span>);
-			<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::set_block_number</span>(<span class="number">200u32</span>.<span class="ident">into</span>());
+			<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::set_block_number</span>(<span class="ident">T::BlockNumber::max_value</span>());
 		}: <span class="kw">_</span>(<span class="ident">RawOrigin::Signed</span>(<span class="ident">caller</span>), <span class="ident">contributor</span>.<span class="ident">clone</span>(), <span class="ident">fund_index</span>)
 		<span class="ident">verify</span> {
 			<span class="ident">assert_last_event</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">Event</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::Withdrew</span>(<span class="ident">contributor</span>, <span class="ident">fund_index</span>, <span class="ident">T::MinContribution::get</span>()).<span class="ident">into</span>());
@@ -4192,7 +4192,7 @@
 			}
 
 			<span class="kw">let</span> <span class="ident">caller</span>: <span class="ident">T::AccountId</span> <span class="op">=</span> <span class="ident">whitelisted_caller</span>();
-			<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::set_block_number</span>(<span class="number">200u32</span>.<span class="ident">into</span>());
+			<span class="ident">frame_system::Pallet</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::set_block_number</span>(<span class="ident">T::BlockNumber::max_value</span>());
 		}: <span class="kw">_</span>(<span class="ident">RawOrigin::Signed</span>(<span class="ident">caller</span>), <span class="ident">fund_index</span>)
 		<span class="ident">verify</span> {
 			<span class="ident">assert_last_event</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">Event</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::AllRefunded</span>(<span class="ident">fund_index</span>).<span class="ident">into</span>());
