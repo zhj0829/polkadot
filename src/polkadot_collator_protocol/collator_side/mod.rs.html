@@ -1047,6 +1047,52 @@
 <span id="1047">1047</span>
 <span id="1048">1048</span>
 <span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+<span id="1077">1077</span>
+<span id="1078">1078</span>
+<span id="1079">1079</span>
+<span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
+<span id="1087">1087</span>
+<span id="1088">1088</span>
+<span id="1089">1089</span>
+<span id="1090">1090</span>
+<span id="1091">1091</span>
+<span id="1092">1092</span>
+<span id="1093">1093</span>
+<span id="1094">1094</span>
+<span id="1095">1095</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2020 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -1145,6 +1191,16 @@
 	<span class="kw">fn</span> <span class="ident">time_process_msg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">prometheus::prometheus::HistogramTimer</span><span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">metrics</span><span class="op">|</span> <span class="ident">metrics</span>.<span class="ident">process_msg</span>.<span class="ident">start_timer</span>())
 	}
+
+	<span class="doccomment">/// Provide a timer for `distribute_collation` which observes on drop.</span>
+	<span class="kw">fn</span> <span class="ident">time_collation_distribution</span>(
+		<span class="kw-2">&amp;</span><span class="self">self</span>,
+		<span class="ident">label</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+	) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">prometheus::prometheus::HistogramTimer</span><span class="op">&gt;</span> {
+		<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">metrics</span><span class="op">|</span> {
+			<span class="ident">metrics</span>.<span class="ident">collation_distribution_time</span>.<span class="ident">with_label_values</span>(<span class="kw-2">&amp;</span>[<span class="ident">label</span>]).<span class="ident">start_timer</span>()
+		})
+	}
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -1153,6 +1209,7 @@
 	<span class="ident">collations_sent</span>: <span class="ident">prometheus::Counter</span><span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span>,
 	<span class="ident">collations_send_requested</span>: <span class="ident">prometheus::Counter</span><span class="op">&lt;</span><span class="ident">prometheus::U64</span><span class="op">&gt;</span>,
 	<span class="ident">process_msg</span>: <span class="ident">prometheus::Histogram</span>,
+	<span class="ident">collation_distribution_time</span>: <span class="ident">prometheus::HistogramVec</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">metrics::Metrics</span> <span class="kw">for</span> <span class="ident">Metrics</span> {
@@ -1182,10 +1239,30 @@
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 			<span class="ident">process_msg</span>: <span class="ident">prometheus::register</span>(
-				<span class="ident">prometheus::Histogram::with_opts</span>(<span class="ident">prometheus::HistogramOpts::new</span>(
-					<span class="string">&quot;polkadot_parachain_collator_protocol_collator_process_msg&quot;</span>,
-					<span class="string">&quot;Time spent within `collator_protocol_collator::process_msg`&quot;</span>,
-				))<span class="question-mark">?</span>,
+				<span class="ident">prometheus::Histogram::with_opts</span>(
+					<span class="ident">prometheus::HistogramOpts::new</span>(
+						<span class="string">&quot;polkadot_parachain_collator_protocol_collator_process_msg&quot;</span>,
+						<span class="string">&quot;Time spent within `collator_protocol_collator::process_msg`&quot;</span>,
+					)
+					.<span class="ident">buckets</span>(<span class="macro">vec!</span>[
+						<span class="number">0.001</span>, <span class="number">0.002</span>, <span class="number">0.005</span>, <span class="number">0.01</span>, <span class="number">0.025</span>, <span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.15</span>, <span class="number">0.25</span>, <span class="number">0.35</span>, <span class="number">0.5</span>, <span class="number">0.75</span>,
+						<span class="number">1.0</span>,
+					]),
+				)<span class="question-mark">?</span>,
+				<span class="ident">registry</span>,
+			)<span class="question-mark">?</span>,
+			<span class="ident">collation_distribution_time</span>: <span class="ident">prometheus::register</span>(
+				<span class="ident">prometheus::HistogramVec::new</span>(
+					<span class="ident">prometheus::HistogramOpts::new</span>(
+						<span class="string">&quot;polkadot_parachain_collator_protocol_collator_distribution_time&quot;</span>,
+						<span class="string">&quot;Time spent within `collator_protocol_collator::distribute_collation`&quot;</span>,
+					)
+					.<span class="ident">buckets</span>(<span class="macro">vec!</span>[
+						<span class="number">0.001</span>, <span class="number">0.002</span>, <span class="number">0.005</span>, <span class="number">0.01</span>, <span class="number">0.025</span>, <span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.15</span>, <span class="number">0.25</span>, <span class="number">0.35</span>, <span class="number">0.5</span>, <span class="number">0.75</span>,
+						<span class="number">1.0</span>,
+					]),
+					<span class="kw-2">&amp;</span>[<span class="string">&quot;state&quot;</span>],
+				)<span class="question-mark">?</span>,
 				<span class="ident">registry</span>,
 			)<span class="question-mark">?</span>,
 		};
@@ -1405,6 +1482,11 @@
 
 	<span class="comment">// We have already seen collation for this relay parent.</span>
 	<span class="kw">if</span> <span class="ident">state</span>.<span class="ident">collations</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">relay_parent</span>) {
+		<span class="macro">gum::debug!</span>(
+			<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+			<span class="question-mark">?</span><span class="ident">relay_parent</span>,
+			<span class="string">&quot;Already seen collation for this relay parent&quot;</span>,
+		);
 		<span class="kw">return</span> <span class="prelude-val">Ok</span>(())
 	}
 
@@ -1659,8 +1741,6 @@
 {
 	<span class="kw">use</span> <span class="ident">CollatorProtocolMessage</span>::<span class="kw-2">*</span>;
 
-	<span class="kw">let</span> <span class="ident">_timer</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">metrics</span>.<span class="ident">time_process_msg</span>();
-
 	<span class="kw">match</span> <span class="ident">msg</span> {
 		<span class="ident">CollateOn</span>(<span class="ident">id</span>) =&gt; {
 			<span class="ident">state</span>.<span class="ident">collating_on</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">id</span>);
@@ -1683,6 +1763,7 @@
 					);
 				},
 				<span class="prelude-val">Some</span>(<span class="ident">id</span>) =&gt; {
+					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">metrics</span>.<span class="ident">time_collation_distribution</span>(<span class="string">&quot;distribute&quot;</span>);
 					<span class="ident">distribute_collation</span>(<span class="ident">ctx</span>, <span class="ident">runtime</span>, <span class="ident">state</span>, <span class="ident">id</span>, <span class="ident">receipt</span>, <span class="ident">pov</span>, <span class="ident">result_sender</span>)
 						.<span class="kw">await</span><span class="question-mark">?</span>;
 				},
@@ -1702,6 +1783,8 @@
 			);
 		},
 		<span class="ident">NetworkBridgeUpdateV1</span>(<span class="ident">event</span>) =&gt; {
+			<span class="comment">// We should count only this shoulder in the histogram, as other shoulders are just introducing noise</span>
+			<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">metrics</span>.<span class="ident">time_process_msg</span>();
 			<span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">handle_network_msg</span>(<span class="ident">ctx</span>, <span class="ident">runtime</span>, <span class="ident">state</span>, <span class="ident">event</span>).<span class="kw">await</span> {
 				<span class="macro">gum::warn!</span>(
 					<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
@@ -1822,9 +1905,16 @@
 						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
 						<span class="question-mark">?</span><span class="ident">statement</span>,
 						<span class="question-mark">?</span><span class="ident">origin</span>,
-						<span class="string">&quot;received a `CollationSeconded`&quot;</span>,
+						<span class="string">&quot;received a valid `CollationSeconded`&quot;</span>,
 					);
 					<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">CollationSecondedSignal</span> { <span class="ident">statement</span>, <span class="ident">relay_parent</span> });
+				} <span class="kw">else</span> {
+					<span class="macro">gum::warn!</span>(
+						<span class="ident">target</span>: <span class="ident">LOG_TARGET</span>,
+						<span class="question-mark">?</span><span class="ident">statement</span>,
+						<span class="question-mark">?</span><span class="ident">origin</span>,
+						<span class="string">&quot;received an unexpected `CollationSeconded`: unknown statement&quot;</span>,
+					);
 				}
 			}
 		},
@@ -1885,6 +1975,8 @@
 				<span class="ident">waiting</span>.<span class="ident">waiting</span>.<span class="ident">push_back</span>(<span class="ident">req</span>);
 			} <span class="kw">else</span> {
 				<span class="ident">waiting</span>.<span class="ident">collation_fetch_active</span> <span class="op">=</span> <span class="bool-val">true</span>;
+				<span class="comment">// Obtain a timer for sending collation</span>
+				<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">metrics</span>.<span class="ident">time_collation_distribution</span>(<span class="string">&quot;send&quot;</span>);
 				<span class="ident">send_collation</span>(<span class="ident">state</span>, <span class="ident">req</span>, <span class="ident">receipt</span>, <span class="ident">pov</span>).<span class="kw">await</span>;
 			}
 		},
