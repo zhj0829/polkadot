@@ -1353,7 +1353,7 @@
 		<span class="comment">// We combine the amount of messages from subsystems to the overseer</span>
 		<span class="comment">// as well as the amount of messages from external sources to the overseer</span>
 		<span class="comment">// into one `to_overseer` value.</span>
-		<span class="ident">metronome_metrics</span>.<span class="ident">channel_fill_level_snapshot</span>(
+		<span class="ident">metronome_metrics</span>.<span class="ident">channel_metrics_snapshot</span>(
 			<span class="ident">subsystem_meters</span>
 				.<span class="ident">iter</span>()
 				.<span class="ident">cloned</span>()

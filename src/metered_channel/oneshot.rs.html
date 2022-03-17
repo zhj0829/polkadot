@@ -415,6 +415,8 @@
 <span id="415">415</span>
 <span id="416">416</span>
 <span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright 2021 Parity Technologies (UK) Ltd.</span>
 <span class="comment">// This file is part of Polkadot.</span>
 
@@ -437,7 +439,6 @@
 	<span class="ident">ops::Deref</span>,
 	<span class="ident">pin::Pin</span>,
 	<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
-	<span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">Instant</span>},
 };
 
 <span class="kw">use</span> <span class="ident">futures</span>::{
@@ -446,6 +447,8 @@
 	<span class="ident">prelude</span>::<span class="kw-2">*</span>,
 };
 <span class="kw">use</span> <span class="ident">futures_timer::Delay</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">CoarseDuration</span>, <span class="ident">CoarseInstant</span>};
 
 <span class="doccomment">/// Provides the reason for termination.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -460,9 +463,9 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Measurements</span> {
 	<span class="doccomment">/// Duration between first poll and polling termination.</span>
-	<span class="ident">first_poll_till_end</span>: <span class="ident">Duration</span>,
+	<span class="ident">first_poll_till_end</span>: <span class="ident">CoarseDuration</span>,
 	<span class="doccomment">/// Duration starting with creation until polling termination.</span>
-	<span class="ident">creation_till_end</span>: <span class="ident">Duration</span>,
+	<span class="ident">creation_till_end</span>: <span class="ident">CoarseDuration</span>,
 	<span class="doccomment">/// Reason for resolving the future.</span>
 	<span class="ident">reason</span>: <span class="ident">Reason</span>,
 }
@@ -470,13 +473,13 @@
 <span class="kw">impl</span> <span class="ident">Measurements</span> {
 	<span class="doccomment">/// Obtain the duration of a finished or canceled</span>
 	<span class="doccomment">/// `oneshot` channel.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since_first_poll</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Duration</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since_first_poll</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">CoarseDuration</span> {
 		<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">first_poll_till_end</span>
 	}
 
 	<span class="doccomment">/// Obtain the duration of a finished or canceled</span>
 	<span class="doccomment">/// `oneshot` channel.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since_creation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Duration</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since_creation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">CoarseDuration</span> {
 		<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">creation_till_end</span>
 	}
 
@@ -489,8 +492,8 @@
 <span class="doccomment">/// Create a new pair of `OneshotMetered{Sender,Receiver}`.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channel</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(
 	<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-	<span class="ident">soft_timeout</span>: <span class="ident">Duration</span>,
-	<span class="ident">hard_timeout</span>: <span class="ident">Duration</span>,
+	<span class="ident">soft_timeout</span>: <span class="ident">CoarseDuration</span>,
+	<span class="ident">hard_timeout</span>: <span class="ident">CoarseDuration</span>,
 ) -&gt; (<span class="ident">MeteredSender</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">MeteredReceiver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) {
 	<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot::channel</span>();
 
@@ -504,7 +507,7 @@
 			<span class="ident">soft_timeout_fut</span>: <span class="prelude-val">None</span>,
 			<span class="ident">hard_timeout_fut</span>: <span class="prelude-val">None</span>,
 			<span class="ident">first_poll_timestamp</span>: <span class="prelude-val">None</span>,
-			<span class="ident">creation_timestamp</span>: <span class="ident">Instant::now</span>(),
+			<span class="ident">creation_timestamp</span>: <span class="ident">CoarseInstant::now</span>(),
 		},
 	)
 }
@@ -514,8 +517,8 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
 	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Oneshot was canceled.&quot;</span>)]</span>
 	<span class="ident">Canceled</span>(<span class="attribute">#[<span class="ident">source</span>]</span> <span class="ident">Canceled</span>, <span class="ident">Measurements</span>),
-	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Oneshot did not receive a response within {}&quot;</span>, <span class="ident">Duration::as_secs_f64</span>(.<span class="number">0</span>))]</span>
-	<span class="ident">HardTimeout</span>(<span class="ident">Duration</span>, <span class="ident">Measurements</span>),
+	<span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Oneshot did not receive a response within {}&quot;</span>, <span class="ident">CoarseDuration::as_f64</span>(.<span class="number">0</span>))]</span>
+	<span class="ident">HardTimeout</span>(<span class="ident">CoarseDuration</span>, <span class="ident">Measurements</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">Measurable</span> <span class="kw">for</span> <span class="ident">Error</span> {
@@ -530,14 +533,14 @@
 <span class="doccomment">/// Oneshot sender, created by [`channel`].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MeteredSender</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-	<span class="ident">inner</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span>(<span class="ident">Instant</span>, <span class="ident">T</span>)<span class="op">&gt;</span>,
+	<span class="ident">inner</span>: <span class="ident">oneshot::Sender</span><span class="op">&lt;</span>(<span class="ident">CoarseInstant</span>, <span class="ident">T</span>)<span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">MeteredSender</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="doccomment">/// Send a value.</span>
 	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="self">self</span>, <span class="ident">t</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">T</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="self">Self</span> { <span class="ident">inner</span> } <span class="op">=</span> <span class="self">self</span>;
-		<span class="ident">inner</span>.<span class="ident">send</span>((<span class="ident">Instant::now</span>(), <span class="ident">t</span>)).<span class="ident">map_err</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">t</span>)<span class="op">|</span> <span class="ident">t</span>)
+		<span class="ident">inner</span>.<span class="ident">send</span>((<span class="ident">CoarseInstant::now</span>(), <span class="ident">t</span>)).<span class="ident">map_err</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">t</span>)<span class="op">|</span> <span class="ident">t</span>)
 	}
 
 	<span class="doccomment">/// Poll if the thing is already canceled.</span>
@@ -546,7 +549,7 @@
 	}
 
 	<span class="doccomment">/// Access the cancellation object.</span>
-	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancellation</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Cancellation</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, (<span class="ident">Instant</span>, <span class="ident">T</span>)<span class="op">&gt;</span> {
+	<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancellation</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Cancellation</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, (<span class="ident">CoarseInstant</span>, <span class="ident">T</span>)<span class="op">&gt;</span> {
 		<span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">cancellation</span>()
 	}
 
@@ -565,16 +568,16 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MeteredReceiver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
 	<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-	<span class="ident">inner</span>: <span class="ident">oneshot::Receiver</span><span class="op">&lt;</span>(<span class="ident">Instant</span>, <span class="ident">T</span>)<span class="op">&gt;</span>,
+	<span class="ident">inner</span>: <span class="ident">oneshot::Receiver</span><span class="op">&lt;</span>(<span class="ident">CoarseInstant</span>, <span class="ident">T</span>)<span class="op">&gt;</span>,
 	<span class="doccomment">/// Soft timeout, on expire a warning is printed.</span>
 	<span class="ident">soft_timeout_fut</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Fuse</span><span class="op">&lt;</span><span class="ident">Delay</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-	<span class="ident">soft_timeout</span>: <span class="ident">Duration</span>,
+	<span class="ident">soft_timeout</span>: <span class="ident">CoarseDuration</span>,
 	<span class="doccomment">/// Hard timeout, terminating the sender.</span>
 	<span class="ident">hard_timeout_fut</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Delay</span><span class="op">&gt;</span>,
-	<span class="ident">hard_timeout</span>: <span class="ident">Duration</span>,
+	<span class="ident">hard_timeout</span>: <span class="ident">CoarseDuration</span>,
 	<span class="doccomment">/// The first time the receiver was polled.</span>
-	<span class="ident">first_poll_timestamp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span>,
-	<span class="ident">creation_timestamp</span>: <span class="ident">Instant</span>,
+	<span class="ident">first_poll_timestamp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CoarseInstant</span><span class="op">&gt;</span>,
+	<span class="ident">creation_timestamp</span>: <span class="ident">CoarseInstant</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">MeteredReceiver</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -596,7 +599,7 @@
 			},
 			<span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
 				<span class="kw">let</span> <span class="ident">measurements</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">create_measurement</span>(
-					<span class="self">self</span>.<span class="ident">first_poll_timestamp</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Instant::now</span>()),
+					<span class="self">self</span>.<span class="ident">first_poll_timestamp</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">CoarseInstant::now</span>()),
 					<span class="ident">Reason::Cancellation</span>,
 				);
 				<span class="prelude-val">Err</span>(<span class="ident">Error::Canceled</span>(<span class="ident">e</span>, <span class="ident">measurements</span>))
@@ -608,8 +611,8 @@
 	<span class="doccomment">/// Helper to create a measurement.</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// `start` determines the first possible time where poll can resolve with `Ready`.</span>
-	<span class="kw">fn</span> <span class="ident">create_measurement</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">start</span>: <span class="ident">Instant</span>, <span class="ident">reason</span>: <span class="ident">Reason</span>) -&gt; <span class="ident">Measurements</span> {
-		<span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">Instant::now</span>();
+	<span class="kw">fn</span> <span class="ident">create_measurement</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">start</span>: <span class="ident">CoarseInstant</span>, <span class="ident">reason</span>: <span class="ident">Reason</span>) -&gt; <span class="ident">Measurements</span> {
+		<span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">CoarseInstant::now</span>();
 		<span class="ident">Measurements</span> {
 			<span class="comment">// negative values are ok, if `send` was called before we poll for the first time.</span>
 			<span class="ident">first_poll_till_end</span>: <span class="ident">end</span> <span class="op">-</span> <span class="ident">start</span>,
@@ -633,9 +636,9 @@
 		<span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
 	) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">OutputWithMeasurements</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
 		<span class="kw">let</span> <span class="ident">first_poll_timestamp</span> <span class="op">=</span>
-			<span class="self">self</span>.<span class="ident">first_poll_timestamp</span>.<span class="ident">get_or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Instant::now</span>()).<span class="ident">clone</span>();
+			<span class="self">self</span>.<span class="ident">first_poll_timestamp</span>.<span class="ident">get_or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">CoarseInstant::now</span>()).<span class="ident">clone</span>();
 
-		<span class="kw">let</span> <span class="ident">soft_timeout</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">soft_timeout</span>.<span class="ident">clone</span>();
+		<span class="kw">let</span> <span class="ident">soft_timeout</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">soft_timeout</span>.<span class="ident">clone</span>().<span class="ident">into</span>();
 		<span class="kw">let</span> <span class="ident">soft_timeout</span> <span class="op">=</span> <span class="self">self</span>
 			.<span class="ident">soft_timeout_fut</span>
 			.<span class="ident">get_or_insert_with</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Delay::new</span>(<span class="ident">soft_timeout</span>).<span class="ident">fuse</span>());
@@ -644,7 +647,7 @@
 			<span class="macro">gum::warn!</span>(<span class="string">&quot;Oneshot `{name}` exceeded the soft threshold&quot;</span>, <span class="ident">name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>);
 		}
 
-		<span class="kw">let</span> <span class="ident">hard_timeout</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hard_timeout</span>.<span class="ident">clone</span>();
+		<span class="kw">let</span> <span class="ident">hard_timeout</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">hard_timeout</span>.<span class="ident">clone</span>().<span class="ident">into</span>();
 		<span class="kw">let</span> <span class="ident">hard_timeout</span> <span class="op">=</span>
 			<span class="self">self</span>.<span class="ident">hard_timeout_fut</span>.<span class="ident">get_or_insert_with</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">Delay::new</span>(<span class="ident">hard_timeout</span>));
 
@@ -728,6 +731,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 	<span class="kw">use</span> <span class="ident">assert_matches::assert_matches</span>;
 	<span class="kw">use</span> <span class="ident">futures</span>::{<span class="ident">executor::ThreadPool</span>, <span class="ident">task::SpawnExt</span>};
+	<span class="kw">use</span> <span class="ident">std::time::Duration</span>;
 
 	<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -752,7 +756,7 @@
 		<span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">env_logger::builder</span>().<span class="ident">is_test</span>(<span class="bool-val">true</span>).<span class="ident">filter_level</span>(<span class="ident">LevelFilter::Trace</span>).<span class="ident">try_init</span>();
 
 		<span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">ThreadPool::new</span>().<span class="ident">unwrap</span>();
-		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">channel</span>(<span class="ident">name</span>, <span class="ident">Duration::from_secs</span>(<span class="number">1</span>), <span class="ident">Duration::from_secs</span>(<span class="number">3</span>));
+		<span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">channel</span>(<span class="ident">name</span>, <span class="ident">CoarseDuration::from_secs</span>(<span class="number">1</span>), <span class="ident">CoarseDuration::from_secs</span>(<span class="number">3</span>));
 		<span class="ident">futures::executor::block_on</span>(<span class="kw">async</span> <span class="kw">move</span> {
 			<span class="kw">let</span> <span class="ident">handle_receiver</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">spawn_with_handle</span>(<span class="ident">gen_receiver_test</span>(<span class="ident">rx</span>)).<span class="ident">unwrap</span>();
 			<span class="kw">let</span> <span class="ident">handle_sender</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">spawn_with_handle</span>(<span class="ident">gen_sender_test</span>(<span class="ident">tx</span>)).<span class="ident">unwrap</span>();
